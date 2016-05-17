@@ -12,21 +12,27 @@ Yeoman Generators written to quickly scaffold modern web applications for deskto
 ## Installation
 
 ### Install dependencies
-`npm install -g npm`
-`npm install -g yo`
+```
+npm install -g npm
+npm install -g yo
+```
 
 ### Install gestalt generators
-`git clone https://github.com/Lab41/gestalt.git`
-`cd gestalt/app-scaffolds/generator-gestalt`
-`npm link`
+```
+git clone https://github.com/Lab41/gestalt.git
+cd gestalt/app-scaffolds/generator-gestalt
+npm link
+```
 
 ## Use
 
 ### Generate a web app from gestalt generators
-`cd [working directory]`
-`mkdir [appFolder]`
-`cd [appFolder]`
-`yo`
+```
+cd [working directory]
+mkdir [appFolder]
+cd [appFolder]
+yo
+```
 
 ### Serve up web app
 
