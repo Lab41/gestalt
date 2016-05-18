@@ -18,3 +18,27 @@ mkdocs serve --dev-addr=0.0.0.0:8080
 ```
 
 *Note*: You can make the port whatever you like for the docs; be aware the scaffolded apps already use 127.0.0.1:8000 as a default.
+
+# Tablet Prototype
+Current prototype in tablet form.
+
+## Dependencies
+* Node
+* Express
+* mkdocs (if you want to build the docs)
+
+## Documentation
+
+```
+cd gestalt/prototype-tablet/docs
+mkdocs serve --dev-addr=0.0.0.0:8080
+```
+
+*Note*: You can make the port whatever you like for the docs; be aware the scaffolded apps already use 127.0.0.1:8000 as a default.
+
+## Quickstart
+
+```
+cd gestalt/prototype-tablet
+node app.js
+```
