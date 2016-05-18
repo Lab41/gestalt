@@ -186,6 +186,7 @@ module.exports = generators.Base.extend({
 		this.directory("js/services", "www/js/services"); // angular factories
 		this.directory("js/controllers", "www/js/controllers"); // angular controllers
 		this.directory("lib", "www/lib"); // libraries
+		this.directory("../../../../docs", "docs") // docs
 		
 		// api configs
 		this.fs.copyTpl(

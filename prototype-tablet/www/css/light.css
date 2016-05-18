@@ -1,0 +1,132 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** LIGHT STYLE ***************************************/
+
+/* Light styles. */
+
+/* !IMPORTS
+/* !GLOBALS
+/* IONIC
+/* !CUSTOM
+/* --- !something
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBALS *******************************/
+
+html, body {
+    
+    background: rgb(244, 244, 244);
+    
+}
+
+html, body, p,
+h1, h2, h3, h4, h5, h6 {
+	
+	color: rgb(100, 100, 100);
+	
+}
+
+button {
+	
+	background-color: transparent;
+	border-color: rgb(150, 150, 150);
+	color: currentColor;
+	
+}
+
+/******************************* !IONIC *******************************/
+
+/* empty content area/header */
+.pane {
+	
+	background: rgb(250,250,250);
+	
+}
+
+/* top bar */
+.bar {
+	
+	background: transparent;
+	
+}
+
+/* side menu */
+.menu {
+	
+	background-color: rgb(150,150,150);
+	
+}
+
+/* general item */
+.item,
+.card, .list-inset {
+	
+	border-color: rgb(150,150,150);
+	background-color: transparent;
+	color: rgb(100,100,100);
+	
+}
+
+/* list item */
+.item-complex .item-content {
+	
+	background-color: transparent;
+	color: rgb(100,100,100);
+	
+}
+
+/* touched item */
+.item .item-content.activated,
+.item.activated,
+.item.activated.item-complex > .item-content {
+	
+	background-color: rgb(250,250,250);
+	border-color: rgb(244,244,244);
+	
+}
+
+/* probably temp fix for h2 activated */
+.item-content.activated h2 {
+	
+	background: transparent;
+	
+}
+
+/* pop up */
+.popup-container .popup {
+	
+	background-color: rgba(150,150,150, 0.95);
+	
+}
+
+/* pop up button color */
+.button.button-positive {
+	
+	background-color: rgb(100,100,100);
+	
+}
+
+/* buttons */
+.button:hover {
+	
+	color: currentColor;
+	
+}
+
+/******************************* !CUSTOM *******************************/
+
+/* active panel nav item */
+.panel-nav a.active {
+	
+	color: rgb(60,60,60);
+	
+}
+
+/* navigation link underline */
+.panel-nav a.active:after {
+	
+	background: currentColor;
+	
+}

@@ -11,6 +11,11 @@ urls = (
     "/(.+)", "www"
 )
 
+class appConfig(web.application):
+	def run(self, port=8000, *middleware):
+		func = self.wsgifunc(*middleware)
+		return web.httpserver.runsimple(func, ("127.0.0.1", port))
+
 class www:
     def GET(self, filename):
         try:
@@ -38,9 +43,7 @@ class static_data:
 		json_data.close()
 
 	return json.dumps(data)
-        
-app = web.application(urls, globals())
-    
+            
 if __name__ == "__main__":
-    app = web.application(urls, globals())
+    app = appConfig(urls, globals())
     app.run()

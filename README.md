@@ -8,36 +8,13 @@ Yeoman Generators written to quickly scaffold modern web applications for deskto
 * Node
 * Yeoman
 * web.py (if you choose a python backend)
+* mkdocs (if you want to build the docs)
 
-## Installation
+## Documentation
 
-### Install dependencies
 ```
-npm install -g npm
-npm install -g yo
-```
-
-### Install gestalt generators
-```
-git clone https://github.com/Lab41/gestalt.git
-cd gestalt/app-scaffolds/generator-gestalt
-npm link
+cd gestalt/app-scaffolds/docs
+mkdocs serve --dev-addr=0.0.0.0:8080
 ```
 
-## Use
-
-### Generate a web app from gestalt generators
-```
-cd [working directory]
-mkdir [appFolder]
-cd [appFolder]
-yo
-```
-
-### Serve up web app
-
-If you built a node.js API
-`node app.js`
-
-If you built a web.py API
-`python app.py`
+*Note*: You can make the port whatever you like for the docs; be aware the scaffolded apps already use 127.0.0.1:8000 as a default.
