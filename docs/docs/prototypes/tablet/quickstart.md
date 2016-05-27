@@ -6,6 +6,7 @@ node app.js
 ```
 
 Frontend files are available at `127.0.0.1:8000`
+
 API is available at `127.0.0.1:8000/api/..`
 
 ## Example endpoint

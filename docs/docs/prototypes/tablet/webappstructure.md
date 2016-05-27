@@ -1,6 +1,8 @@
 # Web App Structure
 
-Because we use Angular 1.0, and it has no single right way to implement its framework the following is an attempt to make our engineering of the prototype transparent. We are trying to follow [these standards](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md "John Papa's Angular 1 Style Guide") and a main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.
+Because we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow [these standards](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md "John Papa's Angular 1 Style Guide"). The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.
+
+
 
 ## Angular MVC
 The documentation follows the order of __View -> Controller -> Model__ because that seems the most intuitive to understand the structure.
@@ -8,6 +10,8 @@ The documentation follows the order of __View -> Controller -> Model__ because t
 * __View__ - Users interact with the view (HTML/CSS)
 * __Controller__ - Controllers perform changes on the model (JavaScript)
 * __Model__ - Data
+
+
 
 ## Angular UI-Router
 Routing in this implementation of Angular/Ionic uses [UI-Router](http://angular-ui.github.io/ui-router/site/#/api/ui.router "UI-Router") so some of the specific template reference relationships are unique to this spec. All states are configured in `js/app.js`.
@@ -44,11 +48,10 @@ only relevant code shown
 ![index.html](imgs/template-index.png "Index Template")
 
 ### Controller: none
-There is no overarching controller for this view because at this point we had no need for one but you could easily add one should your use case require it. If one existed it would be declared inside the state object.
+There is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.
 
 ### Model: none
 There is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.
-
 
 
 
