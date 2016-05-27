@@ -16,7 +16,7 @@
     "data",
     "visualization",
     "design",
-	  "yeoman-generator"
+    "yeoman-generator"
   ],
   "author": "Lab41",
   "license": "Apache-2.0",
@@ -27,7 +27,7 @@
   "dependencies": {
     "yeoman-generator": "^0.21.1"
   },
-	"files": [
-		"generators/app"
-	]
+  "files": [
+    "generators/app"
+  ]
 }

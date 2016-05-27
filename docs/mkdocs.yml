@@ -1,0 +1,16 @@
+site_name: Lab41 Gestalt
+site_description: To document Lab41's Gestalt
+site_author: Lab41
+theme: readthedocs
+pages: 
+- Gestalt: 'index.md'
+- Scaffolds: 
+    - About: 'scaffolds/index.md'
+    - Installation: 'scaffolds/installation.md'
+    - Quick Start: 'scaffolds/quickstart.md'
+    - Web App Structure: 'scaffolds/webappstructure.md'
+- Prototypes:
+    - Tablet: 
+      - About: 'prototypes/tablet/index.md'
+      - Quick Start: 'prototypes/tablet/quickstart.md'
+      - Web App Structure: 'prototypes/tablet/webappstructure.md'
