@@ -1,0 +1,16 @@
+<!-- MENU -->
+<button class="button" class="menu">
+	<i class="ion-navicon-round"></i>
+</button>
+
+<!-- PANEL NAV -->
+<nav role="navigation">
+	
+    <a ng-repeat="panel in ::panels"
+	   ui-sref="app.panel({ panel: panel.url.param })"
+       ng-class="{ 'active': panelParam == panel.title }">{{ panel.title }}</a>
+
+</nav>
+
+<!-- CONTENT -->
+<ui-view name="panel"></ui-view>

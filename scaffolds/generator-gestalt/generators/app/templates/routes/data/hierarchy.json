@@ -1,0 +1,11 @@
+{
+	"name": "parent",
+	"children": [
+		{
+			"name": "child1"
+		},
+		{
+			"name": "child2"
+		}
+	]
+}

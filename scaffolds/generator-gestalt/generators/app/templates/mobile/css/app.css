@@ -1,0 +1,128 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** <%= appName %> STYLE ***************************************/
+
+/* Highest <%= appName %> specific styling. */
+
+/* !IMPORTS
+/* !GLOBALS
+/* !IONIC
+/* !CUSTOM
+/* --- !something
+
+/******************************* !IMPORTS *******************************/
+@import url("<%= themeName %>.css");
+
+/******************************* !GLOBAL *******************************/
+
+html,
+body,
+h1,
+h2,
+h3 {
+	
+	font-family: "Source Sans Pro", sans-serif;
+	
+}
+
+a {
+	
+	color: currentColor;
+	
+}
+
+h1 {
+	
+	font-family: "Source Sans Pro Light", sans-serif;
+	font-weight: 300;
+	
+}
+
+button {
+	
+	border: 1px;
+	border-style: solid;
+	font-family: "Source Sans Pro", sans-serif;
+	font-size: 0.85em;
+	padding: 0.5em;
+	
+}
+
+/******************************* !IONIC *******************************/
+
+/* top bar */
+.bar {
+	
+	border-bottom: none;
+	
+}
+
+/* temp list fix */
+.item p,
+.item-content p,
+.item-content h2 {
+	
+	white-space: normal;
+	
+}
+
+/* let panel float to top of viewport */
+.has-header {
+	
+	top: 0;
+	
+}
+
+/* pop up modal title */
+.popup-head {
+	
+	border: 0 none;
+	
+}
+
+/* story title */
+.bar .title {
+	
+	font-size: 1em;
+	margin-left: 20px;
+	
+}
+
+.platform-android .bar .title {
+	
+	font-size: 1em;
+	
+}
+
+.title.title-right.header-item {
+	
+	left: auto;
+	width: 70%;
+	
+}
+
+/******************************* !CUSTOM *******************************/
+
+/* navigation link */
+.panel-nav a {
+	
+	padding: 0.5em;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	text-transform: capitalize;
+	
+}
+
+/* navigation link underline */
+.panel-nav a.active:after {
+	
+	bottom: 0;
+	content: '';
+	height: 3px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	
+}

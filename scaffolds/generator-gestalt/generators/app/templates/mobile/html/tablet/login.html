@@ -1,0 +1,60 @@
+<ion-view>
+
+	<ion-content>
+        
+        <h1 style="font-size: 2em; margin-top: 3em; margin-bottom: 0.5em; margin-left: 0.25em;">{{ loginMessage.title }}</h1>
+        <p style="font-size: 1.2em; margin-left: 0.5em;">
+            {{ loginMessage.body }}
+            <a ng-href="mailto:{{ appData['login_poc'] }}">{{ appData["login_poc"] }}</a>
+        </p>
+        
+        <div class="row"
+             style="margin-top: 1em">
+        
+            <form name="form"
+                  role="form"
+                  ng-submit="login(username, password);"
+                  class="col col-center"
+                  style="width: 100%;">
+
+                <!-- USERNAME -->
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text"
+                           name="username"
+                           id="username"
+                           ng-model="username"
+                           placeholder="{{ appData.form.user}}"
+                           style="color: white;">
+                    <span ng-show="form.username.$dirty && form.username.$error.required" 
+                          class="help-block">Username is required</span>
+                </label>
+
+                <!-- PASSWORD -->
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password"
+                           name="password"
+                           id="password"
+                           ng-model="password"
+                           placeholder="{{ appData.form.pw }}"
+                           style="color: white;">
+                     <span ng-show="form.password.$dirty && form.password.$error.required"
+                           class="help-block">Password is required</span>
+                </label>
+
+                <!-- SUBMIT -->
+                <button type="submit"
+                        ng-disabled="form.$invalid"
+                        class="button button-full button-light">Login</button>
+                <button type="reset"
+                        ng-disabled="form.$invalid"
+                        class="button button-full button-light">Clear Form</button>
+
+            </form>
+            
+        </div>
+            
+	</ion-content>
+
+</ion-view>
