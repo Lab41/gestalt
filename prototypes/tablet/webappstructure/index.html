@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Lab41">
+  
+  <title>Web App Structure - Lab41 Gestalt</title>
+  
+
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Web App Structure";
+    var mkdocs_page_input_path = "prototypes/tablet/webappstructure.md";
+    var mkdocs_page_url = "/prototypes/tablet/webappstructure/";
+  </script>
+  
+  <script src="../../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../../js/highlight.pack.js"></script>
+  <script src="../../../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../.." class="icon icon-home"> Lab41 Gestalt</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../..">Gestalt</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Scaffolds</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../scaffolds/">About</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../scaffolds/installation/">Installation</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../scaffolds/quickstart/">Quick Start</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../../scaffolds/webappstructure/">Web App Structure</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Prototypes</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Tablet</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../">About</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../quickstart/">Quick Start</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Web App Structure</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#web-app-structure">Web App Structure</a></li>
+                
+                    <li><a class="toctree-l4" href="#angular-mvc">Angular MVC</a></li>
+                
+                    <li><a class="toctree-l4" href="#angular-ui-router">Angular UI-Router</a></li>
+                
+                    <li><a class="toctree-l4" href="#app-entry-point">App Entry Point</a></li>
+                
+                    <li><a class="toctree-l4" href="#layout">Layout</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+    </ul>
+
+        
+    </ul>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../..">Lab41 Gestalt</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Prototypes &raquo;</li>
+        
+      
+        
+          <li>Tablet &raquo;</li>
+        
+      
+    
+    <li>Web App Structure</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="web-app-structure">Web App Structure</h1>
+<p>Because we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md" title="John Papa's Angular 1 Style Guide">these standards</a>. The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.</p>
+<h2 id="angular-mvc">Angular MVC</h2>
+<p>The documentation follows the order of <strong>View -&gt; Controller -&gt; Model</strong> because that seems the most intuitive to understand the structure.</p>
+<ul>
+<li><strong>View</strong> - Users interact with the view (HTML/CSS)</li>
+<li><strong>Controller</strong> - Controllers perform changes on the model (JavaScript)</li>
+<li><strong>Model</strong> - Data</li>
+</ul>
+<h2 id="angular-ui-router">Angular UI-Router</h2>
+<p>Routing in this implementation of Angular/Ionic uses <a href="http://angular-ui.github.io/ui-router/site/#/api/ui.router" title="UI-Router">UI-Router</a> so some of the specific template reference relationships are unique to this spec. All states are configured in <code>js/app.js</code>.</p>
+<h2 id="app-entry-point">App Entry Point</h2>
+<table>
+<thead>
+<tr>
+<th>UI-Router state</th>
+<th>Angular View</th>
+<th>Angular Controller</th>
+<th>Angular Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>decides which state loads based on URL match</td>
+<td>decides which HTML file is displayed</td>
+<td>decides which JavsScript file controls the view</td>
+<td>decides how data is structured for the view</td>
+</tr>
+<tr>
+<td>menu</td>
+<td>index.html</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<h3 id="state-menu">State: menu</h3>
+<pre><code class="javascript">.state(&quot;menu&quot;, {
+    url: &quot;/&quot;,
+    abstract: true,
+    template: &quot;&lt;ion-nav-view name='menu'&gt;&lt;/ion-nav-view&gt;&quot;
+});
+</code></pre>
+
+<p>only relevant code shown</p>
+<p>The reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.</p>
+<h3 id="template-indexhtml">Template: index.html</h3>
+<pre><code class="html">&lt;body&gt;
+
+    &lt;!-- renders app view --&gt;
+    &lt;ion-nav-view&gt;&lt;/ion-nav-view&gt;
+
+&lt;/body&gt;
+</code></pre>
+
+<p>only relevant code shown</p>
+<p><img alt="index.html" src="../imgs/template-index.png" title="Index Template" /></p>
+<h3 id="controller-none">Controller: none</h3>
+<p>There is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.</p>
+<h3 id="model-none">Model: none</h3>
+<p>There is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.</p>
+<h2 id="layout">Layout</h2>
+<table>
+<thead>
+<tr>
+<th>UI-Router state</th>
+<th>Angular View</th>
+<th>Angular Controller</th>
+<th>Angular Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>decides which state loads based on URL match</td>
+<td>decides which HTML file is displayed</td>
+<td>decides which JavsScript file controls the view</td>
+<td>decides how data is structured for the view</td>
+</tr>
+<tr>
+<td>app</td>
+<td>app.html</td>
+<td>app-controller.js</td>
+<td><code>api/data/app</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="state-menu_1">State: menu</h3>
+<pre><code class="javascript">.state(&quot;app&quot;, {
+    url: &quot;/{workspace}&quot;,
+    abstract: true,
+    templateUrl: &quot;templates/app.html&quot;,
+    controller: &quot;appCtrl&quot;
+});
+</code></pre>
+
+<p>only relevant code shown</p>
+<h3 id="template-indexhtml_1">Template: index.html</h3>
+<pre><code class="html">&lt;body&gt;
+
+    &lt;!-- this will load the next nested view --&gt;
+    &lt;ion-nav-view&gt;&lt;/ion-nav-view&gt;
+
+&lt;/body&gt;
+</code></pre>
+
+<p>only relevant code shown</p>
+<p><img alt="index.html" src="../imgs/template-app.png" title="App Template" />
+parent templates are light grey</p>
+<h3 id="controller-appctrl">Controller: appCtrl</h3>
+<pre><code class="JavaScript">// get LAYOUT data stored in service    
+layoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {
+
+    // set scope
+    $scope.panels = data;
+
+});
+</code></pre>
+
+<p>only relevant code shown</p>
+<h3 id="model-apidataapp">Model: <code>api/data/app</code></h3>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../quickstart/" class="btn btn-neutral" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../quickstart/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+
+</body>
+</html>

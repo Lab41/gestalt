@@ -1,0 +1,209 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "This challenge will employ various data visualization tools and user experience frameworks to construct cohesive data stories focused on communicating ripple-effect scenarios.\n\n\nScaffolds\n\n\nWe use Yeoman to scaffold modern web applications. \n\n\nPrototypes\n\n\nWe have implemented the following prototypes:\n\n\n\n\ntablet", 
+            "title": "Gestalt"
+        }, 
+        {
+            "location": "/#scaffolds", 
+            "text": "We use Yeoman to scaffold modern web applications.", 
+            "title": "Scaffolds"
+        }, 
+        {
+            "location": "/#prototypes", 
+            "text": "We have implemented the following prototypes:   tablet", 
+            "title": "Prototypes"
+        }, 
+        {
+            "location": "/scaffolds/", 
+            "text": "We use Angular.js 1.0 for a desktop build and Ionic 1.0 for a mobile build. \nCurrently the generators are not meant to accomodate a small mobile device.\nOnly desktops and tablets are supported although the templates could easily \nbe extended to support a small mobile device.", 
+            "title": "About"
+        }, 
+        {
+            "location": "/scaffolds/installation/", 
+            "text": "We use \nYeoman\n to scaffold modern web applications. \nUsing Yeoman, we will create a set of custom generators built for the \n\nLab41 Gestalt Challenge\n.\n\n\nInstall dependencies\n\n\nWe have written a script called install-dependencies.sh to install dependencies on \nyour behalf. You have to specify the operating system where you will run the script. \nThe example below is for Mac OS.  Please replace \"mac\" to \"windows\" for Windows or \n\"ubuntu\" for Ubuntu. \n\n\nCurrently we have only implmented the script for Mac OS.\n\n\ngit clone https://github.com/Lab41/gestalt.git\n./gestalt/scripts/mac/install-dependencies.sh\n\n\n\n\nInstall gestalt generators\n\n\ncd gestalt/scaffolds/generator-gestalt\n\n/* this makes the generator globally available */\nsudo npm link", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/scaffolds/installation/#install-dependencies", 
+            "text": "We have written a script called install-dependencies.sh to install dependencies on \nyour behalf. You have to specify the operating system where you will run the script. \nThe example below is for Mac OS.  Please replace \"mac\" to \"windows\" for Windows or \n\"ubuntu\" for Ubuntu.   Currently we have only implmented the script for Mac OS.  git clone https://github.com/Lab41/gestalt.git\n./gestalt/scripts/mac/install-dependencies.sh", 
+            "title": "Install dependencies"
+        }, 
+        {
+            "location": "/scaffolds/installation/#install-gestalt-generators", 
+            "text": "cd gestalt/scaffolds/generator-gestalt\n\n/* this makes the generator globally available */\nsudo npm link", 
+            "title": "Install gestalt generators"
+        }, 
+        {
+            "location": "/scaffolds/quickstart/", 
+            "text": "Make sure you have followed the instructions on the \nInstallation\n page to install the dependencies and generators.\n\n\nGenerate a web app\n\n\ncd [working directory]\nmkdir [appFolder]\ncd [appFolder]\nyo\n\n\n\n\nPrompts\n\n\nYeoman will walk you through each in the CLI.\n\n\n\n\n\nApplication name\n: Expects a string with no spaces\n\n\nRESTful API\n: Expects a list selection; options are node (javascript) or web.py (python)\n\n\nBuild agent\n: Expects a list selection; options are desktop or tablet\n\n\nTheme\n: Expects a list selection; options are light or dark\n\n\n\n\nBuild complete\n\n\nYou should see a long list of files created with a final success message.\n\n\n\nServe app\n\n\nIf you built a node.js API, simply type into the CLI\n\nnode app.js\n\n\nIf you built a web.py API, simply type into the CLI\n\npython app.py\n\n\nWhether you chose a node.js or a web.py RESTful API, your front-end files will be available at \n127.0.0.1:8000\n and your API will be available at \n127.0.0.1:8000/api/..\n.\n\n\nFor example a default endpoint of \n127.0.0.1:8000/api/data/app\n should resolve with metadata about the application.\n\n\nError when serving app\n\n\nIf you encounter the following error when serving the app \n\nError: Cannot find module 'express'\n, install \"express\" locally.\n\n\nsudo npm install express", 
+            "title": "Quick Start"
+        }, 
+        {
+            "location": "/scaffolds/quickstart/#generate-a-web-app", 
+            "text": "cd [working directory]\nmkdir [appFolder]\ncd [appFolder]\nyo", 
+            "title": "Generate a web app"
+        }, 
+        {
+            "location": "/scaffolds/quickstart/#prompts", 
+            "text": "Yeoman will walk you through each in the CLI.   Application name : Expects a string with no spaces  RESTful API : Expects a list selection; options are node (javascript) or web.py (python)  Build agent : Expects a list selection; options are desktop or tablet  Theme : Expects a list selection; options are light or dark", 
+            "title": "Prompts"
+        }, 
+        {
+            "location": "/scaffolds/quickstart/#build-complete", 
+            "text": "You should see a long list of files created with a final success message.", 
+            "title": "Build complete"
+        }, 
+        {
+            "location": "/scaffolds/quickstart/#serve-app", 
+            "text": "If you built a node.js API, simply type into the CLI node app.js  If you built a web.py API, simply type into the CLI python app.py  Whether you chose a node.js or a web.py RESTful API, your front-end files will be available at  127.0.0.1:8000  and your API will be available at  127.0.0.1:8000/api/.. .  For example a default endpoint of  127.0.0.1:8000/api/data/app  should resolve with metadata about the application.", 
+            "title": "Serve app"
+        }, 
+        {
+            "location": "/scaffolds/quickstart/#error-when-serving-app", 
+            "text": "If you encounter the following error when serving the app  Error: Cannot find module 'express' , install \"express\" locally.  sudo npm install express", 
+            "title": "Error when serving app"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/", 
+            "text": "Because we use Angular 1.0, the controllers are closely tied to the layout implementation.\nWe attempt to correlate the controller to the layout implementation so that it is easier \nfor you to follow the application structure.\n\n\nDesktop\n\n\napp-controller\n\n\n\n\nThe \napp-controller\n controls the highest level data like \nglobal navigation and application info, i.e. like \"about\".\n\n\npanel-controller\n\n\n\n\nThe \npanel-controller\n controls each panel and is a child of the \napp-controller\n, \nwhich is the highest-level of grouping in the app. The stylistic size/position of each \npanel is determined by CSS. The example here is of 2 panels and could be 3 or 6, or even 1, etc.\n\n\nstory-controller\n\n\n\n\nThe \nstory-controller\n controls each story and is a child of the \npanel-controller\n. \nA story should be a concise collection of data with a specific scope and content which is TBD.\n\n\nTablet\n\n\napp-controller\n\n\n\n\nThe \napp-controller\n controls the highest level data like global navigation \nand application info, i.e. like the side menu.\n\n\npanel-controller\n\n\n\n\nThe \npanel-controller\n controls each panel and is a child of the \napp-controller\n, \nwhich is the highest-level of grouping in the app. For mobile, it is likely that \nthere is only a single panel dedicated to the entire viewport, but that doesn't have \nto be the case.\n\n\nstory-controller\n\n\n\n\nThe \nstory-controller\n controls each story and is a child of the \npanel-controller\n. \nA story should be a concise collection of data with a specific scope and content which is TBD. \nThe image simply represents several stories in a single panel; however it is possible that a \nstory in a mobile format would take over the entire viewport.", 
+            "title": "Web App Structure"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#desktop", 
+            "text": "", 
+            "title": "Desktop"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#app-controller", 
+            "text": "The  app-controller  controls the highest level data like \nglobal navigation and application info, i.e. like \"about\".", 
+            "title": "app-controller"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#panel-controller", 
+            "text": "The  panel-controller  controls each panel and is a child of the  app-controller , \nwhich is the highest-level of grouping in the app. The stylistic size/position of each \npanel is determined by CSS. The example here is of 2 panels and could be 3 or 6, or even 1, etc.", 
+            "title": "panel-controller"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#story-controller", 
+            "text": "The  story-controller  controls each story and is a child of the  panel-controller . \nA story should be a concise collection of data with a specific scope and content which is TBD.", 
+            "title": "story-controller"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#tablet", 
+            "text": "", 
+            "title": "Tablet"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#app-controller_1", 
+            "text": "The  app-controller  controls the highest level data like global navigation \nand application info, i.e. like the side menu.", 
+            "title": "app-controller"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#panel-controller_1", 
+            "text": "The  panel-controller  controls each panel and is a child of the  app-controller , \nwhich is the highest-level of grouping in the app. For mobile, it is likely that \nthere is only a single panel dedicated to the entire viewport, but that doesn't have \nto be the case.", 
+            "title": "panel-controller"
+        }, 
+        {
+            "location": "/scaffolds/webappstructure/#story-controller_1", 
+            "text": "The  story-controller  controls each story and is a child of the  panel-controller . \nA story should be a concise collection of data with a specific scope and content which is TBD. \nThe image simply represents several stories in a single panel; however it is possible that a \nstory in a mobile format would take over the entire viewport.", 
+            "title": "story-controller"
+        }, 
+        {
+            "location": "/prototypes/tablet/", 
+            "text": "Lab41 Gestalt Tablet Prototype\n\n\nThis prototype uses Node.js RESTful API backend and an Angular 1.0/Ionic 1.0 frontend. Currently this is an empty shell. Data visualization stories will be developed inside this application framework.", 
+            "title": "About"
+        }, 
+        {
+            "location": "/prototypes/tablet/#lab41-gestalt-tablet-prototype", 
+            "text": "This prototype uses Node.js RESTful API backend and an Angular 1.0/Ionic 1.0 frontend. Currently this is an empty shell. Data visualization stories will be developed inside this application framework.", 
+            "title": "Lab41 Gestalt Tablet Prototype"
+        }, 
+        {
+            "location": "/prototypes/tablet/quickstart/", 
+            "text": "Serve app\n\n\ncd [appFolder]\nnode app.js\n\n\n\n\nFrontend files are available at \n127.0.0.1:8000\n\n\nAPI is available at \n127.0.0.1:8000/api/..\n\n\nExample endpoint\n\n\n127.0.0.1:8000/api/data/app\n should resolve with metadata about the application.", 
+            "title": "Quick Start"
+        }, 
+        {
+            "location": "/prototypes/tablet/quickstart/#serve-app", 
+            "text": "cd [appFolder]\nnode app.js  Frontend files are available at  127.0.0.1:8000  API is available at  127.0.0.1:8000/api/..", 
+            "title": "Serve app"
+        }, 
+        {
+            "location": "/prototypes/tablet/quickstart/#example-endpoint", 
+            "text": "127.0.0.1:8000/api/data/app  should resolve with metadata about the application.", 
+            "title": "Example endpoint"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/", 
+            "text": "Web App Structure\n\n\nBecause we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow \nthese standards\n. The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.\n\n\nAngular MVC\n\n\nThe documentation follows the order of \nView -\n Controller -\n Model\n because that seems the most intuitive to understand the structure.\n\n\n\n\nView\n - Users interact with the view (HTML/CSS)\n\n\nController\n - Controllers perform changes on the model (JavaScript)\n\n\nModel\n - Data\n\n\n\n\nAngular UI-Router\n\n\nRouting in this implementation of Angular/Ionic uses \nUI-Router\n so some of the specific template reference relationships are unique to this spec. All states are configured in \njs/app.js\n.\n\n\nApp Entry Point\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\nmenu\n\n\nindex.html\n\n\nnone\n\n\nnone\n\n\n\n\n\n\n\n\nState: menu\n\n\n.state(\nmenu\n, {\n    url: \n/\n,\n    abstract: true,\n    template: \nion-nav-view name='menu'\n/ion-nav-view\n\n});\n\n\n\n\nonly relevant code shown\n\n\nThe reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.\n\n\nTemplate: index.html\n\n\nbody\n\n\n    \n!-- renders app view --\n\n    \nion-nav-view\n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nonly relevant code shown\n\n\n\n\nController: none\n\n\nThere is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.\n\n\nModel: none\n\n\nThere is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.\n\n\nLayout\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\napp\n\n\napp.html\n\n\napp-controller.js\n\n\napi/data/app\n\n\n\n\n\n\n\n\nState: menu\n\n\n.state(\napp\n, {\n    url: \n/{workspace}\n,\n    abstract: true,\n    templateUrl: \ntemplates/app.html\n,\n    controller: \nappCtrl\n\n});\n\n\n\n\nonly relevant code shown\n\n\nTemplate: index.html\n\n\nbody\n\n\n    \n!-- this will load the next nested view --\n\n    \nion-nav-view\n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nonly relevant code shown\n\n\n\nparent templates are light grey\n\n\nController: appCtrl\n\n\n// get LAYOUT data stored in service    \nlayoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {\n\n    // set scope\n    $scope.panels = data;\n\n});\n\n\n\n\nonly relevant code shown\n\n\nModel: \napi/data/app", 
+            "title": "Web App Structure"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#web-app-structure", 
+            "text": "Because we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow  these standards . The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.", 
+            "title": "Web App Structure"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#angular-mvc", 
+            "text": "The documentation follows the order of  View -  Controller -  Model  because that seems the most intuitive to understand the structure.   View  - Users interact with the view (HTML/CSS)  Controller  - Controllers perform changes on the model (JavaScript)  Model  - Data", 
+            "title": "Angular MVC"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#angular-ui-router", 
+            "text": "Routing in this implementation of Angular/Ionic uses  UI-Router  so some of the specific template reference relationships are unique to this spec. All states are configured in  js/app.js .", 
+            "title": "Angular UI-Router"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#app-entry-point", 
+            "text": "UI-Router state  Angular View  Angular Controller  Angular Model      decides which state loads based on URL match  decides which HTML file is displayed  decides which JavsScript file controls the view  decides how data is structured for the view    menu  index.html  none  none", 
+            "title": "App Entry Point"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#state-menu", 
+            "text": ".state( menu , {\n    url:  / ,\n    abstract: true,\n    template:  ion-nav-view name='menu' /ion-nav-view \n});  only relevant code shown  The reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.", 
+            "title": "State: menu"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#template-indexhtml", 
+            "text": "body \n\n     !-- renders app view -- \n     ion-nav-view /ion-nav-view  /body   only relevant code shown", 
+            "title": "Template: index.html"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#controller-none", 
+            "text": "There is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.", 
+            "title": "Controller: none"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#model-none", 
+            "text": "There is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.", 
+            "title": "Model: none"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#layout", 
+            "text": "UI-Router state  Angular View  Angular Controller  Angular Model      decides which state loads based on URL match  decides which HTML file is displayed  decides which JavsScript file controls the view  decides how data is structured for the view    app  app.html  app-controller.js  api/data/app", 
+            "title": "Layout"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#state-menu_1", 
+            "text": ".state( app , {\n    url:  /{workspace} ,\n    abstract: true,\n    templateUrl:  templates/app.html ,\n    controller:  appCtrl \n});  only relevant code shown", 
+            "title": "State: menu"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#template-indexhtml_1", 
+            "text": "body \n\n     !-- this will load the next nested view -- \n     ion-nav-view /ion-nav-view  /body   only relevant code shown  \nparent templates are light grey", 
+            "title": "Template: index.html"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#controller-appctrl", 
+            "text": "// get LAYOUT data stored in service    \nlayoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {\n\n    // set scope\n    $scope.panels = data;\n\n});  only relevant code shown", 
+            "title": "Controller: appCtrl"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#model-apidataapp", 
+            "text": "", 
+            "title": "Model: api/data/app"
+        }
+    ]
+}
