@@ -4,7 +4,7 @@
     
     <url>
      <loc>None/</loc>
-     <lastmod>2016-05-27</lastmod>
+     <lastmod>2016-06-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,25 +13,25 @@
         
     <url>
      <loc>None/scaffolds/</loc>
-     <lastmod>2016-05-27</lastmod>
+     <lastmod>2016-06-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/scaffolds/installation/</loc>
-     <lastmod>2016-05-27</lastmod>
+     <lastmod>2016-06-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/scaffolds/quickstart/</loc>
-     <lastmod>2016-05-27</lastmod>
+     <lastmod>2016-06-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/scaffolds/webappstructure/</loc>
-     <lastmod>2016-05-27</lastmod>
+     <lastmod>2016-06-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -42,6 +42,44 @@
     <url>
      <loc>None</loc>
      <lastmod></lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>None/datasets/bis/</loc>
+     <lastmod>2016-06-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/datasets/oecd/</loc>
+     <lastmod>2016-06-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>None/readings/</loc>
+     <lastmod>2016-06-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/readings/05272016/</loc>
+     <lastmod>2016-06-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/readings/06032016/</loc>
+     <lastmod>2016-06-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

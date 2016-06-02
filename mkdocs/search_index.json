@@ -204,6 +204,31 @@
             "location": "/prototypes/tablet/webappstructure/#model-apidataapp", 
             "text": "", 
             "title": "Model: api/data/app"
+        }, 
+        {
+            "location": "/datasets/bis/", 
+            "text": "The BIS dataset that we use is the \nconsolidated banking statistics\n, \nwhich provides data on cross-border bilateral banking ownership ties. \n\n\nWe then sort just the rows for:\n\n\n\n\nQuarterly \n\n\nAmounts Outstanding/Stocks\n\n\nDomestic Banks (4B, excluding domestic claims)\n\n\nCBS counterpartly basis: Immediate counterparty basis\n\n\nTotal Claims\n\n\nAll Instruments\n\n\nAll Maturities\n\n\nAll Currencies\n\n\nAll Sectors", 
+            "title": "BIS"
+        }, 
+        {
+            "location": "/datasets/oecd/", 
+            "text": "The OECD (Organisation for Economic Co-Operation and Development) dataset that\nwe use is the \nInternational Trade and Balance of Payments for Trade in Value\nAdded (TiVA): Origin of Value Added in Gross Exports\n.", 
+            "title": "OECD"
+        }, 
+        {
+            "location": "/readings/", 
+            "text": "", 
+            "title": "Reading List"
+        }, 
+        {
+            "location": "/readings/05272016/", 
+            "text": "", 
+            "title": "05/27/2016"
+        }, 
+        {
+            "location": "/readings/06032016/", 
+            "text": "", 
+            "title": "06/03/2016"
         }
     ]
 }
