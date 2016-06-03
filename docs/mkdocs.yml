@@ -8,8 +8,11 @@ pages:
     - About: 'scaffolds/index.md'
     - Installation: 'scaffolds/installation.md'
     - Quick Start: 'scaffolds/quickstart.md'
-    - Web App Structure: 'scaffolds/webappstructure.md'
 - Prototypes:
+    - Desktop: 
+      - About: 'prototypes/desktop/index.md'
+      - Quick Start: 'prototypes/desktop/quickstart.md'
+      - Web App Structure: 'prototypes/desktop/webappstructure.md'
     - Tablet: 
       - About: 'prototypes/tablet/index.md'
       - Quick Start: 'prototypes/tablet/quickstart.md'
