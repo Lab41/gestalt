@@ -6,4 +6,5 @@ We use Yeoman to scaffold modern web applications.
 # Prototypes
 We have implemented the following prototypes:
 
-* tablet
+* [desktop](prototypes/desktop/index.md "desktop")
+* [tablet](prototypes/tablet/index.md "tablet")
