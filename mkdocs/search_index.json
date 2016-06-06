@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "This challenge will employ various data visualization tools and user experience frameworks to construct cohesive data stories focused on communicating ripple-effect scenarios.\n\n\nScaffolds\n\n\nWe use Yeoman to scaffold modern web applications. \n\n\nPrototypes\n\n\nWe have implemented the following prototypes:\n\n\n\n\ntablet", 
+            "text": "This challenge will employ various data visualization tools and user experience frameworks to construct cohesive data stories focused on communicating ripple-effect scenarios.\n\n\nScaffolds\n\n\nWe use Yeoman to scaffold modern web applications. \n\n\nPrototypes\n\n\nWe have implemented the following prototypes:\n\n\n\n\ndesktop\n\n\ntablet", 
             "title": "Gestalt"
         }, 
         {
@@ -12,7 +12,7 @@
         }, 
         {
             "location": "/#prototypes", 
-            "text": "We have implemented the following prototypes:   tablet", 
+            "text": "We have implemented the following prototypes:   desktop  tablet", 
             "title": "Prototypes"
         }, 
         {
@@ -66,49 +66,29 @@
             "title": "Error when serving app"
         }, 
         {
-            "location": "/scaffolds/webappstructure/", 
-            "text": "Because we use Angular 1.0, the controllers are closely tied to the layout implementation.\nWe attempt to correlate the controller to the layout implementation so that it is easier \nfor you to follow the application structure.\n\n\nDesktop\n\n\napp-controller\n\n\n\n\nThe \napp-controller\n controls the highest level data like \nglobal navigation and application info, i.e. like \"about\".\n\n\npanel-controller\n\n\n\n\nThe \npanel-controller\n controls each panel and is a child of the \napp-controller\n, \nwhich is the highest-level of grouping in the app. The stylistic size/position of each \npanel is determined by CSS. The example here is of 2 panels and could be 3 or 6, or even 1, etc.\n\n\nstory-controller\n\n\n\n\nThe \nstory-controller\n controls each story and is a child of the \npanel-controller\n. \nA story should be a concise collection of data with a specific scope and content which is TBD.\n\n\nTablet\n\n\napp-controller\n\n\n\n\nThe \napp-controller\n controls the highest level data like global navigation \nand application info, i.e. like the side menu.\n\n\npanel-controller\n\n\n\n\nThe \npanel-controller\n controls each panel and is a child of the \napp-controller\n, \nwhich is the highest-level of grouping in the app. For mobile, it is likely that \nthere is only a single panel dedicated to the entire viewport, but that doesn't have \nto be the case.\n\n\nstory-controller\n\n\n\n\nThe \nstory-controller\n controls each story and is a child of the \npanel-controller\n. \nA story should be a concise collection of data with a specific scope and content which is TBD. \nThe image simply represents several stories in a single panel; however it is possible that a \nstory in a mobile format would take over the entire viewport.", 
-            "title": "Web App Structure"
+            "location": "/prototypes/desktop/", 
+            "text": "Lab41 Gestalt Desktop Prototype\n\n\nThis prototype uses a webpy RESTful API backend and an Angular 1.0 frontend. Currently this is an empty shell. Data visualization stories will be developed inside this application framework.", 
+            "title": "About"
         }, 
         {
-            "location": "/scaffolds/webappstructure/#desktop", 
-            "text": "", 
-            "title": "Desktop"
+            "location": "/prototypes/desktop/#lab41-gestalt-desktop-prototype", 
+            "text": "This prototype uses a webpy RESTful API backend and an Angular 1.0 frontend. Currently this is an empty shell. Data visualization stories will be developed inside this application framework.", 
+            "title": "Lab41 Gestalt Desktop Prototype"
         }, 
         {
-            "location": "/scaffolds/webappstructure/#app-controller", 
-            "text": "The  app-controller  controls the highest level data like \nglobal navigation and application info, i.e. like \"about\".", 
-            "title": "app-controller"
+            "location": "/prototypes/desktop/quickstart/", 
+            "text": "Serve app\n\n\ncd [appFolder]\npython app.py\n\n\n\n\nFrontend files are available at \n127.0.0.1:8000\n\n\nAPI is available at \n127.0.0.1:8000/api/..\n\n\nExample endpoint\n\n\n127.0.0.1:8000/api/data/app\n should resolve with metadata about the application.", 
+            "title": "Quick Start"
         }, 
         {
-            "location": "/scaffolds/webappstructure/#panel-controller", 
-            "text": "The  panel-controller  controls each panel and is a child of the  app-controller , \nwhich is the highest-level of grouping in the app. The stylistic size/position of each \npanel is determined by CSS. The example here is of 2 panels and could be 3 or 6, or even 1, etc.", 
-            "title": "panel-controller"
+            "location": "/prototypes/desktop/quickstart/#serve-app", 
+            "text": "cd [appFolder]\npython app.py  Frontend files are available at  127.0.0.1:8000  API is available at  127.0.0.1:8000/api/..", 
+            "title": "Serve app"
         }, 
         {
-            "location": "/scaffolds/webappstructure/#story-controller", 
-            "text": "The  story-controller  controls each story and is a child of the  panel-controller . \nA story should be a concise collection of data with a specific scope and content which is TBD.", 
-            "title": "story-controller"
-        }, 
-        {
-            "location": "/scaffolds/webappstructure/#tablet", 
-            "text": "", 
-            "title": "Tablet"
-        }, 
-        {
-            "location": "/scaffolds/webappstructure/#app-controller_1", 
-            "text": "The  app-controller  controls the highest level data like global navigation \nand application info, i.e. like the side menu.", 
-            "title": "app-controller"
-        }, 
-        {
-            "location": "/scaffolds/webappstructure/#panel-controller_1", 
-            "text": "The  panel-controller  controls each panel and is a child of the  app-controller , \nwhich is the highest-level of grouping in the app. For mobile, it is likely that \nthere is only a single panel dedicated to the entire viewport, but that doesn't have \nto be the case.", 
-            "title": "panel-controller"
-        }, 
-        {
-            "location": "/scaffolds/webappstructure/#story-controller_1", 
-            "text": "The  story-controller  controls each story and is a child of the  panel-controller . \nA story should be a concise collection of data with a specific scope and content which is TBD. \nThe image simply represents several stories in a single panel; however it is possible that a \nstory in a mobile format would take over the entire viewport.", 
-            "title": "story-controller"
+            "location": "/prototypes/desktop/quickstart/#example-endpoint", 
+            "text": "127.0.0.1:8000/api/data/app  should resolve with metadata about the application.", 
+            "title": "Example endpoint"
         }, 
         {
             "location": "/prototypes/tablet/", 
@@ -137,7 +117,7 @@
         }, 
         {
             "location": "/prototypes/tablet/webappstructure/", 
-            "text": "Web App Structure\n\n\nBecause we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow \nthese standards\n. The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.\n\n\nAngular MVC\n\n\nThe documentation follows the order of \nView -\n Controller -\n Model\n because that seems the most intuitive to understand the structure.\n\n\n\n\nView\n - Users interact with the view (HTML/CSS)\n\n\nController\n - Controllers perform changes on the model (JavaScript)\n\n\nModel\n - Data\n\n\n\n\nAngular UI-Router\n\n\nRouting in this implementation of Angular/Ionic uses \nUI-Router\n so some of the specific template reference relationships are unique to this spec. All states are configured in \njs/app.js\n.\n\n\nApp Entry Point\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\nmenu\n\n\nindex.html\n\n\nnone\n\n\nnone\n\n\n\n\n\n\n\n\nState: menu\n\n\n.state(\nmenu\n, {\n    url: \n/\n,\n    abstract: true,\n    template: \nion-nav-view name='menu'\n/ion-nav-view\n\n});\n\n\n\n\nonly relevant code shown\n\n\nThe reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.\n\n\nTemplate: index.html\n\n\nbody\n\n\n    \n!-- renders app view --\n\n    \nion-nav-view\n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nonly relevant code shown\n\n\n\n\nController: none\n\n\nThere is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.\n\n\nModel: none\n\n\nThere is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.\n\n\nLayout\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\napp\n\n\napp.html\n\n\napp-controller.js\n\n\napi/data/app\n\n\n\n\n\n\n\n\nState: menu\n\n\n.state(\napp\n, {\n    url: \n/{workspace}\n,\n    abstract: true,\n    templateUrl: \ntemplates/app.html\n,\n    controller: \nappCtrl\n\n});\n\n\n\n\nonly relevant code shown\n\n\nTemplate: index.html\n\n\nbody\n\n\n    \n!-- this will load the next nested view --\n\n    \nion-nav-view\n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nonly relevant code shown\n\n\n\nparent templates are light grey\n\n\nController: appCtrl\n\n\n// get LAYOUT data stored in service    \nlayoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {\n\n    // set scope\n    $scope.panels = data;\n\n});\n\n\n\n\nonly relevant code shown\n\n\nModel: \napi/data/app", 
+            "text": "Web App Structure\n\n\nBecause we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow \nthese standards\n. The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.\n\n\nAngular MVC\n\n\nThe documentation follows the order of \nView -\n Controller -\n Model\n because that seems the most intuitive to understand the structure.\n\n\n\n\nView\n - Users interact with the view (HTML/CSS)\n\n\nController\n - Controllers perform changes on the model (JavaScript)\n\n\nModel\n - Data\n\n\n\n\nAngular UI-Router\n\n\nRouting in this implementation of Angular/Ionic uses \nUI-Router\n so some of the specific template reference relationships are unique to this spec. All states are configured in \njs/app.js\n.\n\n\n\n\nApp Entry Point\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\nmenu\n\n\nindex.html\n\n\nnone\n\n\nnone\n\n\n\n\n\n\n\n\nState: menu\n\n\n.state(\nmenu\n, {\n    url: \n/\n,\n    abstract: true,\n    template: \nion-nav-view name='menu'\n/ion-nav-view\n\n});\n\n\n\n\nThe reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.\n\n\nTemplate: index.html\n\n\n!-- ONLY RELEVANT CODE SHOWN --\n\n\nbody\n\n\n    \n!-- renders app view --\n\n    \nion-nav-view\n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\n\n\n\n\n\n\nAbstract Illustration\n\n\nImplementation Example\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nController: none\n\n\nThere is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.\n\n\nModel: none\n\n\nThere is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.\n\n\n\n\nMenu\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\napp\n\n\napp.html\n\n\napp-controller.js\n\n\n/* Layout */ api/workspaces/\nusername\n \n/* Content */ api/data/TBD\n\n\n\n\n\n\n\n\nState: menu\n\n\n.state(\napp\n, {\n    url: \n/{workspace}\n,\n    abstract: true,\n    templateUrl: \ntemplates/app.html\n,\n    controller: \nappCtrl\n\n});\n\n\n\n\nTemplate: app.html\n\n\n!-- ONLY RELEVANT CODE SHOWN --\n\n\n!-- FROM INDEX.HTML --\n\n\nbody\n\n\n    \nion-nav-view\n\n\n        \n!-- FROM MENU STATE TEMPLATE --\n\n        \nion-nav-view name=\nmenu\n\n\n            \n!-- FROM APP.HTML --\n\n            \n!-- renders center menu from Ionic Framework --\n\n            \nion-side-menu-content\n\n\n                \n!-- renders panel navigation --\n\n                \ndiv\n/div\n\n\n                \n!-- renders panel view --\n\n                \nion-nav-view name=\npanel\n/ion-nav-view\n\n\n            \n/ion-side-menu-content\n\n\n            \n!-- renders left menu from Ionic Framework --\n\n            \nion-side-menu side=\nleft\n/ion-side-menu\n\n\n        \n/ion-nav-view\n\n\n    \n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nThe app is set up in a series of panels which are the highest-level organization of information. Panels usually simply organize smaller bits of content into a organized group.\n\n\n\n\n\n\n\n\nAbstract Illustration\n\n\nImplementation Example\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nController: appCtrl\n\n\n// ONLY RELEVANT CODE SHOWN\n// get LAYOUT data stored in service    \nlayoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {\n\n    // set scope\n    $scope.panels = data;\n\n});\n\n\n\n\nNotice that there is no specific \ncontentService\n API call for this state. This is because at this point there is no panel-specific content needing to be rendered into the app and often there will never be an API call for content at this level.\n\n\nModel:\n\n\nLayout\n\n\napi/workspaces/\nusername\n\n\n// truncated for legibility\n[\n    {\n        \n_id\n: \n1\n,\n        \ntitle\n: \nPanel 1\n,\n        \ndescription\n: \n,\n        \nurl\n: {\n            \nparam\n: \nnavitem1\n\n        }\n    },\n    {\n        \n_id\n: \n2\n,\n        \ntitle\n: \nPanel 2\n,\n        \ndescription\n: \n,\n        \nurl\n: {\n            \nparam\n: \nnavitem2\n\n        }\n    },\n    {\n        \n_id\n: \n3\n,\n        \ntitle\n: \nPanel 3\n,\n        \ndescription\n: \n,\n        \nurl\n: {\n            \nparam\n: \nnavitem3\n\n        }\n    },\n    ...\n]\n\n\n\n\nUsername is an optional parameter. For our purposes we may want to experiement with different layouts/data scopes for specific users and thus need a model for that specificity.\n\n\nContent\n\n\napi/data/TBD\n\n\nContent may or may not make sense at a panel level inside this application. For now it is TBD and not coded in the controller to request any content for the panels.\n\n\n\n\nPanel\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\npanel\n\n\npanel.html\n\n\npanel-controller.js\n\n\n/* Layout */ api/workspaces/\nusername\n \n/* Content */ api/data/\npanelParam\n\n\n\n\n\n\n\n\nState: panel\n\n\n.state(\napp.panel\n, {\n    url: \n/{panel}\n,\n    views: {\n        \npanel\n: { // note this key must match the \nname\n in the HTML parent template\n            templateUrl: \ntemplates/panel.html\n,\n            controller: \npanelCtrl\n\n        }\n    }\n});\n\n\n\n\nTemplate: panel.html\n\n\n!-- ONLY RELEVANT CODE SHOWN --\n\n\n!-- FROM INDEX.HTML --\n\n\nbody\n\n\n    \nion-nav-view\n\n\n        \n!-- FROM MENU STATE TEMPLATE --\n\n        \nion-nav-view name=\nmenu\n\n\n            \n!-- FROM APP.HTML --\n\n            \n!-- renders center menu from Ionic Framework --\n\n            \nion-side-menu-content\n\n\n                \n!-- renders panel navigation --\n\n                \ndiv\n/div\n\n\n                \n!-- renders panel view --\n\n                \nion-nav-view name=\npanel\n\n\n                    \n!-- FROM PANEL.HTML --\n\n                    \n!-- renders panel content --\n\n                    \nion-view\n/ion-view\n\n\n                \n/ion-nav-view\n\n\n            \n/ion-side-menu-content\n\n\n            \n!-- renders left menu from Ionic Framework --\n\n            \nion-side-menu side=\nleft\n/ion-side-menu\n\n\n        \n/ion-nav-view\n\n\n    \n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nEach panel is set up as a series of stories. We may not need this level of abstraction but it allows us to group stories in logical collections like possibly \"contagion stories\", \"gdp stories\", etc.\n\n\n\n\n\n\n\n\nAbstract Illustration\n\n\nImplementation Example\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nController: panelCtrl\n\n\n// ONLY RELEVANT CODE SHOWN\n// get LAYOUT data stored in service    \nlayoutService.getPanel(panel).then(function(data) {\n\n    // set scope\n    $scope.panel = data;\n\n});\n\n// get CONTENT data stored in service\ncontentService.getData(panel).then(function(data) {\n\n    // set scope\n    $scope.content = data.length \n 0 ? data : [{ title: \nNothing Found.\n, content: \nSorry but can't find any content.\n, poster: \nNone\n }];\n\n});\n\n\n\n\nBecause the panel state is dedicated to a single panel at a time both the \nlayoutService\n and the \ncontentService\n load a single panel's layout and content versus loading all of them for each panel.\n\n\nModel:\n\n\nLayout\n\n\napi/workspaces/\nusername\n\n\n{\n    \n_id\n: \n2\n,\n    \ntitle\n: \nPanel 2\n,\n    \ndescription\n: \n,\n    \nurl\n: {\n        \nparam\n: \nnavitem2\n\n    }\n}\n\n\n\n\nUsername is an optional parameter. For our purposes we may want to experiement with different layouts/data scopes for specific users and thus need a model for that specificity. Based on the active panel the workspace will return just that single panel's layout data.\n\n\nContent\n\n\napi/data/\npanelParam\n\n\n[\n    {\n        \nname\n: \nstory1\n\n    },\n    {\n        \nname\n: \nstory2\n\n    },\n    {\n        \nname\n: \nstory3\n\n    }\n]\n\n\n\n\nThe \ncontentService\n takes the panel param as returned by the \nlayoutService\n and queries the content database for that panel's data.\n\n\n\n\nStory\n\n\n\n\n\n\n\n\nUI-Router state\n\n\nAngular View\n\n\nAngular Controller\n\n\nAngular Model\n\n\n\n\n\n\n\n\n\n\ndecides which state loads based on URL match\n\n\ndecides which HTML file is displayed\n\n\ndecides which JavsScript file controls the view\n\n\ndecides how data is structured for the view\n\n\n\n\n\n\nstory\n\n\nstory.html\n\n\nstory-controller.js\n\n\n/* Layout */ TBD\n \n/* Content */ api/data/\nstoryParam\n\n\n\n\n\n\n\n\nState: story\n\n\n.state(\napp.story\n, {\n    url: \n/detail/{id}\n,\n    views: {\n        \npanel\n: { // note this means a story loads in the panel container (and not a dedicated story container)\n            templateUrl: \ntemplates/story.html\n,\n            controller: \nstoryCtrl\n\n        }\n    }\n});\n\n\n\n\nTemplate: story.html\n\n\n!-- ONLY RELEVANT CODE SHOWN --\n\n\n!-- FROM INDEX.HTML --\n\n\nbody\n\n\n    \nion-nav-view\n\n\n        \n!-- FROM MENU STATE TEMPLATE --\n\n        \nion-nav-view name=\nmenu\n\n\n            \n!-- FROM APP.HTML --\n\n            \n!-- renders center menu from Ionic Framework --\n\n            \nion-side-menu-content\n\n\n                \n!-- renders panel navigation --\n\n                \ndiv\n/div\n\n\n                \n!-- renders panel view --\n\n                \nion-nav-view name=\npanel\n\n\n                    \n!-- FROM PANEL.HTML --\n\n                    \n!-- renders story content --\n\n                    \nion-view\n/ion-view\n\n\n                \n/ion-nav-view\n\n\n            \n/ion-side-menu-content\n\n\n            \n!-- renders left menu from Ionic Framework --\n\n            \nion-side-menu side=\nleft\n/ion-side-menu\n\n\n        \n/ion-nav-view\n\n\n    \n/ion-nav-view\n\n\n\n/body\n\n\n\n\n\nEach individual story will render in an entire panel view and not have a unique view alongside a panel view but will replace the panel of stories with the single story when the story state is activated.\n\n\n\n\n\n\n\n\nAbstract Illustration\n\n\nImplementation Example\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nController: storyCtrl\n\n\n// ONLY RELEVANT CODE SHOWN\n// get CONTENT data stored in service\ncontentService.getData(story).then(function(data) {\n\n    // set scope\n    $scope.content = data;\n\n});\n\n\n\n\nCurrently all stories use the same layout, however we could implement a layout specific to each story and then would need a \nlayout-service\n.\n\n\nModel:\n\n\nLayout\n\nNone\n\n\nContent\n\n\napi/data/\nstoryParam\n\n\n{\n    \nname\n: \nstory 2\n,\n    \ndescription\n: \nthis is story two, TBD visualization\n\n}\n\n\n\n\nThe \ncontentService\n takes the story param as returned by the \nlayoutService\n and queries the content database for that story's data.", 
             "title": "Web App Structure"
         }, 
         {
@@ -162,12 +142,12 @@
         }, 
         {
             "location": "/prototypes/tablet/webappstructure/#state-menu", 
-            "text": ".state( menu , {\n    url:  / ,\n    abstract: true,\n    template:  ion-nav-view name='menu' /ion-nav-view \n});  only relevant code shown  The reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.", 
+            "text": ".state( menu , {\n    url:  / ,\n    abstract: true,\n    template:  ion-nav-view name='menu' /ion-nav-view \n});  The reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.", 
             "title": "State: menu"
         }, 
         {
             "location": "/prototypes/tablet/webappstructure/#template-indexhtml", 
-            "text": "body \n\n     !-- renders app view -- \n     ion-nav-view /ion-nav-view  /body   only relevant code shown", 
+            "text": "!-- ONLY RELEVANT CODE SHOWN --  body \n\n     !-- renders app view -- \n     ion-nav-view /ion-nav-view  /body      Abstract Illustration  Implementation Example", 
             "title": "Template: index.html"
         }, 
         {
@@ -181,29 +161,79 @@
             "title": "Model: none"
         }, 
         {
-            "location": "/prototypes/tablet/webappstructure/#layout", 
-            "text": "UI-Router state  Angular View  Angular Controller  Angular Model      decides which state loads based on URL match  decides which HTML file is displayed  decides which JavsScript file controls the view  decides how data is structured for the view    app  app.html  app-controller.js  api/data/app", 
-            "title": "Layout"
+            "location": "/prototypes/tablet/webappstructure/#menu", 
+            "text": "UI-Router state  Angular View  Angular Controller  Angular Model      decides which state loads based on URL match  decides which HTML file is displayed  decides which JavsScript file controls the view  decides how data is structured for the view    app  app.html  app-controller.js  /* Layout */ api/workspaces/ username   /* Content */ api/data/TBD", 
+            "title": "Menu"
         }, 
         {
             "location": "/prototypes/tablet/webappstructure/#state-menu_1", 
-            "text": ".state( app , {\n    url:  /{workspace} ,\n    abstract: true,\n    templateUrl:  templates/app.html ,\n    controller:  appCtrl \n});  only relevant code shown", 
+            "text": ".state( app , {\n    url:  /{workspace} ,\n    abstract: true,\n    templateUrl:  templates/app.html ,\n    controller:  appCtrl \n});", 
             "title": "State: menu"
         }, 
         {
-            "location": "/prototypes/tablet/webappstructure/#template-indexhtml_1", 
-            "text": "body \n\n     !-- this will load the next nested view -- \n     ion-nav-view /ion-nav-view  /body   only relevant code shown  \nparent templates are light grey", 
-            "title": "Template: index.html"
+            "location": "/prototypes/tablet/webappstructure/#template-apphtml", 
+            "text": "!-- ONLY RELEVANT CODE SHOWN --  !-- FROM INDEX.HTML --  body \n\n     ion-nav-view \n\n         !-- FROM MENU STATE TEMPLATE -- \n         ion-nav-view name= menu \n\n             !-- FROM APP.HTML -- \n             !-- renders center menu from Ionic Framework -- \n             ion-side-menu-content \n\n                 !-- renders panel navigation -- \n                 div /div \n\n                 !-- renders panel view -- \n                 ion-nav-view name= panel /ion-nav-view \n\n             /ion-side-menu-content \n\n             !-- renders left menu from Ionic Framework -- \n             ion-side-menu side= left /ion-side-menu \n\n         /ion-nav-view \n\n     /ion-nav-view  /body   The app is set up in a series of panels which are the highest-level organization of information. Panels usually simply organize smaller bits of content into a organized group.     Abstract Illustration  Implementation Example", 
+            "title": "Template: app.html"
         }, 
         {
             "location": "/prototypes/tablet/webappstructure/#controller-appctrl", 
-            "text": "// get LAYOUT data stored in service    \nlayoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {\n\n    // set scope\n    $scope.panels = data;\n\n});  only relevant code shown", 
+            "text": "// ONLY RELEVANT CODE SHOWN\n// get LAYOUT data stored in service    \nlayoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {\n\n    // set scope\n    $scope.panels = data;\n\n});  Notice that there is no specific  contentService  API call for this state. This is because at this point there is no panel-specific content needing to be rendered into the app and often there will never be an API call for content at this level.", 
             "title": "Controller: appCtrl"
         }, 
         {
-            "location": "/prototypes/tablet/webappstructure/#model-apidataapp", 
-            "text": "", 
-            "title": "Model: api/data/app"
+            "location": "/prototypes/tablet/webappstructure/#model", 
+            "text": "Layout  api/workspaces/ username  // truncated for legibility\n[\n    {\n         _id :  1 ,\n         title :  Panel 1 ,\n         description :  ,\n         url : {\n             param :  navitem1 \n        }\n    },\n    {\n         _id :  2 ,\n         title :  Panel 2 ,\n         description :  ,\n         url : {\n             param :  navitem2 \n        }\n    },\n    {\n         _id :  3 ,\n         title :  Panel 3 ,\n         description :  ,\n         url : {\n             param :  navitem3 \n        }\n    },\n    ...\n]  Username is an optional parameter. For our purposes we may want to experiement with different layouts/data scopes for specific users and thus need a model for that specificity.  Content  api/data/TBD  Content may or may not make sense at a panel level inside this application. For now it is TBD and not coded in the controller to request any content for the panels.", 
+            "title": "Model:"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#panel", 
+            "text": "UI-Router state  Angular View  Angular Controller  Angular Model      decides which state loads based on URL match  decides which HTML file is displayed  decides which JavsScript file controls the view  decides how data is structured for the view    panel  panel.html  panel-controller.js  /* Layout */ api/workspaces/ username   /* Content */ api/data/ panelParam", 
+            "title": "Panel"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#state-panel", 
+            "text": ".state( app.panel , {\n    url:  /{panel} ,\n    views: {\n         panel : { // note this key must match the  name  in the HTML parent template\n            templateUrl:  templates/panel.html ,\n            controller:  panelCtrl \n        }\n    }\n});", 
+            "title": "State: panel"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#template-panelhtml", 
+            "text": "!-- ONLY RELEVANT CODE SHOWN --  !-- FROM INDEX.HTML --  body \n\n     ion-nav-view \n\n         !-- FROM MENU STATE TEMPLATE -- \n         ion-nav-view name= menu \n\n             !-- FROM APP.HTML -- \n             !-- renders center menu from Ionic Framework -- \n             ion-side-menu-content \n\n                 !-- renders panel navigation -- \n                 div /div \n\n                 !-- renders panel view -- \n                 ion-nav-view name= panel \n\n                     !-- FROM PANEL.HTML -- \n                     !-- renders panel content -- \n                     ion-view /ion-view \n\n                 /ion-nav-view \n\n             /ion-side-menu-content \n\n             !-- renders left menu from Ionic Framework -- \n             ion-side-menu side= left /ion-side-menu \n\n         /ion-nav-view \n\n     /ion-nav-view  /body   Each panel is set up as a series of stories. We may not need this level of abstraction but it allows us to group stories in logical collections like possibly \"contagion stories\", \"gdp stories\", etc.     Abstract Illustration  Implementation Example", 
+            "title": "Template: panel.html"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#controller-panelctrl", 
+            "text": "// ONLY RELEVANT CODE SHOWN\n// get LAYOUT data stored in service    \nlayoutService.getPanel(panel).then(function(data) {\n\n    // set scope\n    $scope.panel = data;\n\n});\n\n// get CONTENT data stored in service\ncontentService.getData(panel).then(function(data) {\n\n    // set scope\n    $scope.content = data.length   0 ? data : [{ title:  Nothing Found. , content:  Sorry but can't find any content. , poster:  None  }];\n\n});  Because the panel state is dedicated to a single panel at a time both the  layoutService  and the  contentService  load a single panel's layout and content versus loading all of them for each panel.", 
+            "title": "Controller: panelCtrl"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#model_1", 
+            "text": "Layout  api/workspaces/ username  {\n     _id :  2 ,\n     title :  Panel 2 ,\n     description :  ,\n     url : {\n         param :  navitem2 \n    }\n}  Username is an optional parameter. For our purposes we may want to experiement with different layouts/data scopes for specific users and thus need a model for that specificity. Based on the active panel the workspace will return just that single panel's layout data.  Content  api/data/ panelParam  [\n    {\n         name :  story1 \n    },\n    {\n         name :  story2 \n    },\n    {\n         name :  story3 \n    }\n]  The  contentService  takes the panel param as returned by the  layoutService  and queries the content database for that panel's data.", 
+            "title": "Model:"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#story", 
+            "text": "UI-Router state  Angular View  Angular Controller  Angular Model      decides which state loads based on URL match  decides which HTML file is displayed  decides which JavsScript file controls the view  decides how data is structured for the view    story  story.html  story-controller.js  /* Layout */ TBD   /* Content */ api/data/ storyParam", 
+            "title": "Story"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#state-story", 
+            "text": ".state( app.story , {\n    url:  /detail/{id} ,\n    views: {\n         panel : { // note this means a story loads in the panel container (and not a dedicated story container)\n            templateUrl:  templates/story.html ,\n            controller:  storyCtrl \n        }\n    }\n});", 
+            "title": "State: story"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#template-storyhtml", 
+            "text": "!-- ONLY RELEVANT CODE SHOWN --  !-- FROM INDEX.HTML --  body \n\n     ion-nav-view \n\n         !-- FROM MENU STATE TEMPLATE -- \n         ion-nav-view name= menu \n\n             !-- FROM APP.HTML -- \n             !-- renders center menu from Ionic Framework -- \n             ion-side-menu-content \n\n                 !-- renders panel navigation -- \n                 div /div \n\n                 !-- renders panel view -- \n                 ion-nav-view name= panel \n\n                     !-- FROM PANEL.HTML -- \n                     !-- renders story content -- \n                     ion-view /ion-view \n\n                 /ion-nav-view \n\n             /ion-side-menu-content \n\n             !-- renders left menu from Ionic Framework -- \n             ion-side-menu side= left /ion-side-menu \n\n         /ion-nav-view \n\n     /ion-nav-view  /body   Each individual story will render in an entire panel view and not have a unique view alongside a panel view but will replace the panel of stories with the single story when the story state is activated.     Abstract Illustration  Implementation Example", 
+            "title": "Template: story.html"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#controller-storyctrl", 
+            "text": "// ONLY RELEVANT CODE SHOWN\n// get CONTENT data stored in service\ncontentService.getData(story).then(function(data) {\n\n    // set scope\n    $scope.content = data;\n\n});  Currently all stories use the same layout, however we could implement a layout specific to each story and then would need a  layout-service .", 
+            "title": "Controller: storyCtrl"
+        }, 
+        {
+            "location": "/prototypes/tablet/webappstructure/#model_2", 
+            "text": "Layout \nNone  Content  api/data/ storyParam  {\n     name :  story 2 ,\n     description :  this is story two, TBD visualization \n}  The  contentService  takes the story param as returned by the  layoutService  and queries the content database for that story's data.", 
+            "title": "Model:"
         }, 
         {
             "location": "/datasets/bis/", 
@@ -222,13 +252,38 @@
         }, 
         {
             "location": "/readings/05272016/", 
-            "text": "", 
+            "text": "What impacts a user's performance when interacting with visual analytic \nsystems? Typically cognitive factor is not considered or controlled, so \nthe team has introduced ICD3 which takes into consideration the three \ncognitive factors. The three cognitive factors are: \n\n\n\n\nCognitive Traits: user characteristics that remain constant\n\n\nperceptual speed\n\n\nspatial ability\n\n\npersonality factors (i.e. Five Factor Model \n Locus of Control)\n\n\nCognitive States: user characteristics that may change\n\n\ngermane load: memory needed to process and understand schemas\n\n\nintrinsic load: memory needed for a given task and \n    cannot be modified by instructional design\n\n\nextraneous load: memokry needed to absorb information and \n    can be modified based on presentation\n\n\nemotional states\n\n\nExperience/Bias: learned experience that affects behavior\n\n\n\n\nLimiting the scope of evaluation to any two of the three described\ndimensionsn leaves an incomplete and potentially misleading model of \nperformance. With ICD3, the visualization system can be adaptive to\nthe users' analytical needs instead of a one-size-fits-all system \nthat is designed today. \n\n\nTo improve this area of research, we should be able to:\n\n\n\n\nrecord as many cognitive factorsas posssible, in as little time as \n  possible with as little diruption as possible\n\n\nfind the dominant individual cognitive factors both within dimensions\n  and between dimensions in order to limit the number of cognitive tests\n\n\n\n\nOur Discussion\n\n\nWe were left confused as to how to implement the ICD3 model as the paper\ngoes into the theory of ICD3 and not the implementation of ICD3. \n\n\nWe will look into capturing user's analytics with little disruption like\nthe authors have suggested. \n\n\nThe following are interesting tidbits of information learned in the paper:\n\n\n\n\npositive emotional states enhance visuospatial working memory\n\n\nintroverts tend to perform well when given positive feedback and worse\n  when given negative feedback. The opposite is true for extraverts\n\n\nthose who have external locus of control (those who feel controlled by)\n  perform better in visualization where they have had no previous experience\n  compare to those who have internal locus of control (those who feel in \n  control of)", 
             "title": "05/27/2016"
         }, 
         {
+            "location": "/readings/05272016/#our-discussion", 
+            "text": "We were left confused as to how to implement the ICD3 model as the paper\ngoes into the theory of ICD3 and not the implementation of ICD3.   We will look into capturing user's analytics with little disruption like\nthe authors have suggested.   The following are interesting tidbits of information learned in the paper:   positive emotional states enhance visuospatial working memory  introverts tend to perform well when given positive feedback and worse\n  when given negative feedback. The opposite is true for extraverts  those who have external locus of control (those who feel controlled by)\n  perform better in visualization where they have had no previous experience\n  compare to those who have internal locus of control (those who feel in \n  control of)", 
+            "title": "Our Discussion"
+        }, 
+        {
             "location": "/readings/06032016/", 
-            "text": "", 
+            "text": "We looked into two white papers this week.\n\n\nCrowdsourcing Graphical Perception\n\n\nThe paper wants to see how viable crowdsourcing is to assess\nvisualization design. They employ Amazon's Mechanical Turk. \n\n\nHow they assess the viability is by:\n\n\n\n\nreplicating prior laboratory results and see if \n  the crowdsourcing results complied to the prior laboratory \n  results\n\n\nfiguring out what is the best optimizing display parameters\n\n\nanalyze the performance and cost of its use by comparing\n  the cost and speed of crowdsourcing versus lab\n\n\n\n\nThe paper concludes that it is viable to use crowdsourcing.\n\n\n(We will write more notes about this paper in the future.)\n\n\nOur Discussion\n\n\nOne key takeaway is that we do not believe that people who \nparticipate in Mechanical Turk is diverse. They are more \ndiverse than the students used in lab experiments but they \nare not diverse enough that they can be used as a target \naudience for all visualization design evaluation.\n\n\nThey have intersting takeaways:\n\n\n\n\nUsing crowdsourcing, many more subjects can participate \n  for the same cost as the lab's (cost reduction). You are\n  also abe to run better experiments because you can run\n  more since you can complete the experiment faster. You\n  have wider access to populations than you do in the lab.\n\n\nIt will be great if operating system and monitor details \n  can be recorded so that we can better infer what the \n  subjects are seeing.\n\n\nFor treemaps, comparing rectangles with aspect ratios \n  of 1 led to higher estimation error than other aspect\n\n  ratio combinations.\n\n\nGridlines should be spaced at least 8 pixels apart.\n\n\nIncreasing chart heights beyond 80 pixels provides little\n  accuracy benefit on a 0-100 scale.\n\n\nExpect significant subject overlap and unreliable response\n  time when using crowdsourcing. \n\n\nBy using qualification tasks and verifiable questions, one \n  can increase the likelihood of quality responses.\n\n\nIncrease payment level to quicken completion time.\n\n\nTo facilitate replication, state the qualification tasks\n  and completion rate. \n\n\n\n\nExploring the Impact of Emotion on Visual Judgment\n\n\nThe paper applies emotion to the crowdsourced user study performed\nin the previous paper above. They come to the conclusion that \naffective-priming can significantly influence accuracy in visual \njudgment.\n\n\nHow they performed the experiment is that \n  1. they measure the Mechnical Turk user's emotion\n  2. followed by asking the user to read an emotional article\n     that is either positive or negative (aka affective-priming)\n  3. then they test the user how well they accurately read a chart\n     from one of the given 5\n  4. followed up lastly by having the user's emotion measured again\n\n\nOur Discussion\n\n\nThe chart is used to rank visual variables. The experiment does not\ntake into account how well the user can read the chart to begin with.\nIt makes the assumption that the user already knows how to read the \nchart accurately, and the emotion affects how the user reads the chart.", 
             "title": "06/03/2016"
+        }, 
+        {
+            "location": "/readings/06032016/#crowdsourcing-graphical-perception", 
+            "text": "The paper wants to see how viable crowdsourcing is to assess\nvisualization design. They employ Amazon's Mechanical Turk.   How they assess the viability is by:   replicating prior laboratory results and see if \n  the crowdsourcing results complied to the prior laboratory \n  results  figuring out what is the best optimizing display parameters  analyze the performance and cost of its use by comparing\n  the cost and speed of crowdsourcing versus lab   The paper concludes that it is viable to use crowdsourcing.  (We will write more notes about this paper in the future.)", 
+            "title": "Crowdsourcing Graphical Perception"
+        }, 
+        {
+            "location": "/readings/06032016/#our-discussion", 
+            "text": "One key takeaway is that we do not believe that people who \nparticipate in Mechanical Turk is diverse. They are more \ndiverse than the students used in lab experiments but they \nare not diverse enough that they can be used as a target \naudience for all visualization design evaluation.  They have intersting takeaways:   Using crowdsourcing, many more subjects can participate \n  for the same cost as the lab's (cost reduction). You are\n  also abe to run better experiments because you can run\n  more since you can complete the experiment faster. You\n  have wider access to populations than you do in the lab.  It will be great if operating system and monitor details \n  can be recorded so that we can better infer what the \n  subjects are seeing.  For treemaps, comparing rectangles with aspect ratios \n  of 1 led to higher estimation error than other aspect \n  ratio combinations.  Gridlines should be spaced at least 8 pixels apart.  Increasing chart heights beyond 80 pixels provides little\n  accuracy benefit on a 0-100 scale.  Expect significant subject overlap and unreliable response\n  time when using crowdsourcing.   By using qualification tasks and verifiable questions, one \n  can increase the likelihood of quality responses.  Increase payment level to quicken completion time.  To facilitate replication, state the qualification tasks\n  and completion rate.", 
+            "title": "Our Discussion"
+        }, 
+        {
+            "location": "/readings/06032016/#exploring-the-impact-of-emotion-on-visual-judgment", 
+            "text": "The paper applies emotion to the crowdsourced user study performed\nin the previous paper above. They come to the conclusion that \naffective-priming can significantly influence accuracy in visual \njudgment.  How they performed the experiment is that \n  1. they measure the Mechnical Turk user's emotion\n  2. followed by asking the user to read an emotional article\n     that is either positive or negative (aka affective-priming)\n  3. then they test the user how well they accurately read a chart\n     from one of the given 5\n  4. followed up lastly by having the user's emotion measured again", 
+            "title": "Exploring the Impact of Emotion on Visual Judgment"
+        }, 
+        {
+            "location": "/readings/06032016/#our-discussion_1", 
+            "text": "The chart is used to rank visual variables. The experiment does not\ntake into account how well the user can read the chart to begin with.\nIt makes the assumption that the user already knows how to read the \nchart accurately, and the emotion affects how the user reads the chart.", 
+            "title": "Our Discussion"
         }
     ]
 }

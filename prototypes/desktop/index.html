@@ -8,7 +8,7 @@
   
   <meta name="author" content="Lab41">
   
-  <title>Web App Structure - Lab41 Gestalt</title>
+  <title>About - Lab41 Gestalt</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Web App Structure";
-    var mkdocs_page_input_path = "scaffolds/webappstructure.md";
-    var mkdocs_page_url = "/scaffolds/webappstructure/";
+    var mkdocs_page_name = "About";
+    var mkdocs_page_input_path = "prototypes/desktop/index.md";
+    var mkdocs_page_url = "/prototypes/desktop/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -68,50 +68,21 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../">About</a>
+        <a class="" href="../../scaffolds/">About</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../installation/">Installation</a>
+        <a class="" href="../../scaffolds/installation/">Installation</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../quickstart/">Quick Start</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Web App Structure</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#desktop">Desktop</a></li>
-                
-                    <li><a class="toctree-l4" href="#app-controller">app-controller</a></li>
-                
-                    <li><a class="toctree-l4" href="#panel-controller">panel-controller</a></li>
-                
-                    <li><a class="toctree-l4" href="#story-controller">story-controller</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#tablet">Tablet</a></li>
-                
-                    <li><a class="toctree-l4" href="#app-controller_1">app-controller</a></li>
-                
-                    <li><a class="toctree-l4" href="#panel-controller_1">panel-controller</a></li>
-                
-                    <li><a class="toctree-l4" href="#story-controller_1">story-controller</a></li>
-                
-            
-            </ul>
+        <a class="" href="../../scaffolds/quickstart/">Quick Start</a>
         
     </li>
 
@@ -126,26 +97,55 @@
         
             
     <ul class="subnav">
+    <li><span>Desktop</span></li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">About</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#lab41-gestalt-desktop-prototype">Lab41 Gestalt Desktop Prototype</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="quickstart/">Quick Start</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <ul class="subnav">
     <li><span>Tablet</span></li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../prototypes/tablet/">About</a>
+        <a class="" href="../tablet/">About</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../prototypes/tablet/quickstart/">Quick Start</a>
+        <a class="" href="../tablet/quickstart/">Quick Start</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../prototypes/tablet/webappstructure/">Web App Structure</a>
+        <a class="" href="../tablet/webappstructure/">Web App Structure</a>
         
     </li>
 
@@ -229,11 +229,15 @@
     
       
         
-          <li>Scaffolds &raquo;</li>
+          <li>Prototypes &raquo;</li>
+        
+      
+        
+          <li>Desktop &raquo;</li>
         
       
     
-    <li>Web App Structure</li>
+    <li>About</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -243,40 +247,8 @@
           <div role="main">
             <div class="section">
               
-                <p>Because we use Angular 1.0, the controllers are closely tied to the layout implementation.
-We attempt to correlate the controller to the layout implementation so that it is easier 
-for you to follow the application structure.</p>
-<h1 id="desktop">Desktop</h1>
-<h2 id="app-controller">app-controller</h2>
-<p><img alt="app-controller" src="../imgs/scaffold-desktop-app.png" title="App Controller" /></p>
-<p>The <strong>app-controller</strong> controls the highest level data like 
-global navigation and application info, i.e. like "about".</p>
-<h2 id="panel-controller">panel-controller</h2>
-<p><img alt="panel-controller" src="../imgs/scaffold-desktop-panel.png" title="Panel Controller" /></p>
-<p>The <strong>panel-controller</strong> controls each panel and is a child of the <strong>app-controller</strong>, 
-which is the highest-level of grouping in the app. The stylistic size/position of each 
-panel is determined by CSS. The example here is of 2 panels and could be 3 or 6, or even 1, etc.</p>
-<h2 id="story-controller">story-controller</h2>
-<p><img alt="story-controller" src="../imgs/scaffold-desktop-story.png" title="Story Controller" /></p>
-<p>The <strong>story-controller</strong> controls each story and is a child of the <strong>panel-controller</strong>. 
-A story should be a concise collection of data with a specific scope and content which is TBD.</p>
-<h1 id="tablet">Tablet</h1>
-<h2 id="app-controller_1">app-controller</h2>
-<p><img alt="app-controller" src="../imgs/scaffold-mobile-app.png" title="App Controller" /></p>
-<p>The <strong>app-controller</strong> controls the highest level data like global navigation 
-and application info, i.e. like the side menu.</p>
-<h2 id="panel-controller_1">panel-controller</h2>
-<p><img alt="panel-controller" src="../imgs/scaffold-mobile-panel.png" title="Panel Controller" /></p>
-<p>The <strong>panel-controller</strong> controls each panel and is a child of the <strong>app-controller</strong>, 
-which is the highest-level of grouping in the app. For mobile, it is likely that 
-there is only a single panel dedicated to the entire viewport, but that doesn't have 
-to be the case.</p>
-<h2 id="story-controller_1">story-controller</h2>
-<p><img alt="story-controller" src="../imgs/scaffold-mobile-story.png" title="Story Controller" /></p>
-<p>The <strong>story-controller</strong> controls each story and is a child of the <strong>panel-controller</strong>. 
-A story should be a concise collection of data with a specific scope and content which is TBD. 
-The image simply represents several stories in a single panel; however it is possible that a 
-story in a mobile format would take over the entire viewport.</p>
+                <h1 id="lab41-gestalt-desktop-prototype">Lab41 Gestalt Desktop Prototype</h1>
+<p>This prototype uses a webpy RESTful API backend and an Angular 1.0 frontend. Currently this is an empty shell. Data visualization stories will be developed inside this application framework.</p>
               
             </div>
           </div>
@@ -284,10 +256,10 @@ story in a mobile format would take over the entire viewport.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../prototypes/tablet/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="quickstart/" class="btn btn-neutral float-right" title="Quick Start">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../quickstart/" class="btn btn-neutral" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../scaffolds/quickstart/" class="btn btn-neutral" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -313,10 +285,10 @@ story in a mobile format would take over the entire viewport.</p>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../quickstart/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../scaffolds/quickstart/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../prototypes/tablet/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="quickstart/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
