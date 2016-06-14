@@ -1,7 +1,13 @@
-var express = require('express');
+var express = require("express");
+var bodyParser = require("body-parser");
 var app = express();
 
+// set up the request body parser
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+
 // backend API
+app.use(require("./routes/workspace"));
 app.use(require("./routes/index"));
 
 // static front end

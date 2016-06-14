@@ -2,22 +2,9 @@
 
 	<!-- MAIN CONTENT -->
 	<ion-side-menu-content drag-content="false">
-	
-		<!-- MENU -->
-		<button class="button" menu-toggle="left" ng-show="navVisible">
-			<i class="ion-navicon-round"></i>
-		</button>
 		
 		<!-- PANEL NAV -->
-		<div class="row panel-nav" ng-show="navVisible">
-		
-			<a class="col" 
-			   ng-repeat="panel in ::panels" 
-			   ui-sref="app.panel({ panel: panel.url.param })" 
-			   ng-class="{ 'active': panelParam == panel.title }" 
-			   ng-click="changePanel(panel.title);">{{ panel.title }}</a>
-			
-		</div>
+        <panel-nav panels="panels"></panel-nav>
 
 		<!-- MAIN CONTENT -->
 		<ion-nav-view name="panel"></ion-nav-view>
@@ -31,7 +18,15 @@
 
 			<ion-list>
                 
-                <ion-item class="item" ui-sref="app.panel({ panel: 'story1' })" nav-clear menu-close>Home</ion-item>
+                <ion-item class="item" 
+                          nav-clear 
+                          menu-close>Home</ion-item>
+                
+                <!-- WORKSPACES -->
+                <ion-item ng-repeat="workspace in workspaces"
+                          class="item"
+                          ng-click="changeWorkspace(workspace.name, workspace.default_panel);"
+                          nav-clear menu-close>{{ workspace.name }}</ion-item>
 
 			</ion-list>
 

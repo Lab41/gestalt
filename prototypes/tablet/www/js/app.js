@@ -23,7 +23,7 @@ app.run(function($http, $rootScope, $location, $cookies, $ionicPlatform, amMomen
 		// set globals
         $rootScope.globals = {
             currentUser: {
-                username: "undefined"
+                username: "general"
             }
         };
         
@@ -136,6 +136,6 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     	}
     });
 
-    $urlRouterProvider.otherwise("/stories/navitem1");
+    $urlRouterProvider.otherwise("/general/navitem3");
 
 });
