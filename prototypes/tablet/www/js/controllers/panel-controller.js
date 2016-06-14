@@ -1,6 +1,6 @@
 angular.module("panel-controller", [])
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading) {
+.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, $rootScope) {
     
     var workspace = $stateParams.workspace;
     var panel = $stateParams.panel;
@@ -30,11 +30,14 @@ angular.module("panel-controller", [])
 	});
 	
 	// get LAYOUT data stored in service	
-	layoutService.getPanel(panel).then(function(data) {
+	layoutService.getStructure(panel).then(function(data) {
 		
 		// set scope
 		$scope.panel = data;
 		
 	});
+    
+    // show panel navigation
+	//$rootScope.$broadcast("hideNav", { "val": false });
 	
 }]);

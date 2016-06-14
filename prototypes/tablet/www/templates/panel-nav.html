@@ -1,0 +1,15 @@
+<!-- MENU -->
+<button class="button" menu-toggle="left" ng-hide="hideNav">
+    <i class="ion-navicon-round"></i>
+</button>
+
+<div class="row panel-nav" ng-hide="hideNav">
+		
+	<a class="col" 
+       ng-repeat="panel in panels" 
+       id="{{ panel.url }}"
+       ui-sref="app.panel({ panel: panel.url })" 
+       ng-class="{ 'active': panelParam == panel.url }" 
+       ng-click="changePanel($event, $index);">{{ panel.name }}</a>
+	
+</div>

@@ -1,63 +1,41 @@
 angular.module("app-controller", [])
 
-.controller("appCtrl", ["$scope", "$rootScope", "$state", "$window", "$stateParams", "$ionicPopup", "layoutService", "authenticationService", "$ionicHistory", "$ionicViewSwitcher", function($scope, $rootScope, $state, $window, $stateParams, $ionicPopup, layoutService, authenticationService, $ionicHistory, $ionicViewSwitcher) {
+.controller("appCtrl", ["$scope", "$rootScope", "$state", "$stateParams", "$ionicPopup", "layoutService", function($scope, $rootScope, $state, $stateParams, $ionicPopup, layoutService) {
     
-    var workspace = $stateParams.workspace;
+    var persona = $rootScope.globals.currentUser.username;
     
     // data objects
     $scope.panels;
-    $scope.navVisible = true;
+    $scope.workspaces;
     
-	// get LAYOUT data stored in service	
-	layoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {
-		
-		// set scope
-		$scope.panels = data;
-		
-	});
-    
-    // confirm logout
-    $scope.confirmLogout = function() {
+	// get LAYOUT data stored in service
+    function getMultiple(path, structure) {
         
-        // construct popup
-        var alertPopup = $ionicPopup.alert({
-            title: "Goodbye!",
-            template: "You have logged out."
+        layoutService.getStructures(path, structure).then(function(data) {
+
+            // set scope
+            $scope[structure] = data;
+
         });
         
-        // do something afterward
-       alertPopup.then(function(res) {
-           
-           // clear cookies and log out user
-           authenticationService.clearCredentials();
-           
-           // take user to welcome
-           $state.go("login");
-           
-       });
+    };
+    
+    // get layout info
+    getMultiple("workspaces", "workspaces");
+    getMultiple(persona, "panels");
+    
+    // change workspace
+    $scope.changeWorkspace = function(workspace, panel) {
+        
+        // transition state
+        $state.go("app.panel", {
+            workspace: workspace,
+            panel: panel
+        });
+        
+        // populate panels
+        getMultiple(workspace, "panels");
         
     };
-    
-    // toggle navigation
-    $scope.toggleNav = function() {
-    	
-    	// check visibility & set
-    	$scope.navVisible = !$scope.navVisible ? true : false;
-    	
-    };
-    
-    // forced back history
-	$scope.goBack = function() {
-		
-		$ionicHistory.goBack(1);
-		
-	};
-	
-	// change the pane via navigation
-	$scope.changePanel = function(name) {
-		
-		$scope.panelParam = name;
-		
-	};
 	
 }]);
