@@ -1,9 +1,13 @@
-// settings
+// dependencies
 var express = require("express");
-var fs = require("fs");
-var router = express.Router();
+var fs = require("fs"); // file system access
+var router = express.Router(); // express middleware
 
-// data
+/*******************************/
+/************* GET *************/
+/*******************************/
+
+// local json
 router.get("/api/:type/:name", function(req, res) {
     
     var name = req.params.name;
