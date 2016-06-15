@@ -93,6 +93,13 @@ ion-item.item {
 	
 }
 
+/* active item */
+.item.active {
+	
+	background: rgb(240,240,240);
+	
+}
+
 /* probably temp fix for h2 activated */
 .item-content.activated h2 {
 	

@@ -2,11 +2,12 @@ angular.module("app-controller", [])
 
 .controller("appCtrl", ["$scope", "$rootScope", "$state", "$stateParams", "$ionicPopup", "layoutService", function($scope, $rootScope, $state, $stateParams, $ionicPopup, layoutService) {
     
-    var persona = $rootScope.globals.currentUser.username;
+    var persona = $stateParams.workspace;
     
     // data objects
     $scope.panels;
     $scope.workspaces;
+	$scope.workspacePanel = persona;
     
 	// get LAYOUT data stored in service
     function getMultiple(path, structure) {
@@ -32,6 +33,9 @@ angular.module("app-controller", [])
             workspace: workspace,
             panel: panel
         });
+		
+		// set active workspace
+		$scope.workspacePanel = workspace;
         
         // populate panels
         getMultiple(workspace, "panels");
