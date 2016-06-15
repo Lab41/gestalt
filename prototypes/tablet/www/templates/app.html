@@ -25,6 +25,7 @@
                 <!-- WORKSPACES -->
                 <ion-item ng-repeat="workspace in workspaces"
                           class="item"
+						  ng-class="{ 'active': workspacePanel == workspace.name }"
                           ng-click="changeWorkspace(workspace.name, workspace.default_panel);"
                           nav-clear menu-close>{{ workspace.name }}</ion-item>
 

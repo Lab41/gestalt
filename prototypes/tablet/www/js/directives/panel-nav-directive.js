@@ -12,28 +12,42 @@ angular.module("panel-nav-directive", [])
 	    	$scope.panelParam = $state.params.panel;
 	    	
 	    	// change the pane via navigation
-            $scope.changePanel = function(event, idx) {console.log(event);
-console.log(idx);
-                // get clicked on name
-                var panel = event.target.id;
-                var currentIdx = idx;
+            $scope.changePanel = function(event, idx) {
+
+				// set active panel
+				$scope.panelParam = event.target.id;
+				
+				var originUrl = $state.params.panel;
+                var destinationIdx = idx;
                                 
                 // get panel from data stored in service
-                layoutService.getStructure(panel).then(function(data) {
-		
-                    // destination panel
-                    var destination = data;
+                layoutService.getStructure(originUrl).then(function(data) {
+					
+					// origin panel
+					var origin = data;
                     
                     // check all panels
                     angular.forEach($scope.panels, function(value, key) {
                         
                         // get destination index
-                        if (destination.id == value.id) {
+                        if (origin.id == value.id) {
                             
-                            var destIndex = key;
+                            var originIdx = key;
                                                          
                             // check indicies to resolve animation direction
-                            console.log(destIndex + " " + currentIdx);
+                            if (destinationIdx < originIdx) {
+								
+								$ionicViewSwitcher.nextDirection(["back"]);
+								
+							} else if (destinationIdx > originIdx) {
+								
+								$ionicViewSwitcher.nextDirection(["forward"]);
+								
+							} else {
+								
+								$ionicViewSwitcher.nextDirection(["enter"]);
+								
+							};
                             
                         };
                     
