@@ -104,7 +104,10 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
         url: "/{workspace}",
         abstract: true,
 		templateUrl: "templates/app.html",
-		controller: "appCtrl"/*,
+		controller: "appCtrl",
+        params: {
+            workspace: "stories"
+        }/*,
         resolve: {
 			authorized: ["$q", "$cookies", function($q, $cookies) {
 				if($cookies.get("user") === undefined) {
@@ -136,6 +139,6 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     	}
     });
 
-    $urlRouterProvider.otherwise("/general/navitem3");
+    $urlRouterProvider.otherwise("/stories/1");
 
 });
