@@ -1,6 +1,6 @@
 angular.module("panel-nav-directive", [])
 
-.directive("panelNav", ["$state", "$ionicViewSwitcher", "$ionicHistory", "layoutService", "$rootScope", function($state, $ionicViewSwitcher, $ionicHistory, layoutService, $rootScope) {
+.directive("panelNav", ["$state", "$ionicViewSwitcher", "layoutService", "$rootScope", function($state, $ionicViewSwitcher, layoutService, $rootScope) {
 	return {
 		restrict: "E",
 		scope: {

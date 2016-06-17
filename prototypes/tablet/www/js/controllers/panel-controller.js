@@ -14,7 +14,7 @@ angular.module("panel-controller", [])
     $scope.$parent.$parent.panelParam = panel[0].toUpperCase() + panel.substring(1, panel.length);
    
     // block UI show loading
-    $ionicLoading.show({
+    /*$ionicLoading.show({
     	template: "<ion-spinner icon='dots'></ion-spinner><p>Loading...</p>"
     });
 	
@@ -27,7 +27,7 @@ angular.module("panel-controller", [])
 		// hide loading
 		$ionicLoading.hide();
 		
-	});
+	});*/
 	
 	// get LAYOUT data stored in service	
 	layoutService.getStructure(panel).then(function(data) {

@@ -58,7 +58,7 @@ angular.module("layout-service", [])
 				// get single structure from stored data
 				angular.forEach(data, function(value, key) {
 					
-					if (value.url == param) {
+					if (value.param == param) {
 						
 						service.structure = value;
 						

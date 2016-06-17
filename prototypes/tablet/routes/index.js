@@ -27,6 +27,6 @@ router.get("/api/:type/:name", function(req, res) {
                 
     });
     
-});
+})
 
 module.exports = router;

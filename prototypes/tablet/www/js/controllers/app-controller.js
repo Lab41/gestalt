@@ -2,43 +2,58 @@ angular.module("app-controller", [])
 
 .controller("appCtrl", ["$scope", "$rootScope", "$state", "$stateParams", "$ionicPopup", "layoutService", function($scope, $rootScope, $state, $stateParams, $ionicPopup, layoutService) {
     
-    var persona = $stateParams.workspace;
+    var workspace = $stateParams.workspace;
+    
+    // encode url spaces
+    function beautyEncode(str) {
+		str = str.replace(/ /g, '-');
+		return str;
+	};
     
     // data objects
     $scope.panels;
     $scope.workspaces;
-	$scope.workspacePanel = persona;
+    $scope.workspace;
+    $scope.workspacePanel = workspace;
     
 	// get LAYOUT data stored in service
-    function getMultiple(path, structure) {
-        
-        layoutService.getStructures(path, structure).then(function(data) {
+    layoutService.getStructures("").then(function(data) {
 
-            // set scope
-            $scope[structure] = data;
+        // set scope
+        $scope.workspaces = data;
 
-        });
-        
-    };
+    });
     
-    // get layout info
-    getMultiple("workspaces", "workspaces");
-    getMultiple(persona, "panels");
+    // get LAYOUT data stored in service
+    layoutService.getStructures(workspace).then(function(data) {
+        
+        var workspace = data[0];
+
+        // set scope
+        $scope.workspace = workspace;
+        $scope.panels = workspace.panels;
+
+    });
     
     // change workspace
-    $scope.changeWorkspace = function(workspace, panel) {
+    $scope.changeWorkspace = function(workspace, panel, panelType) {
         
         // transition state
         $state.go("app.panel", {
-            workspace: workspace,
-            panel: panel
+            workspace: beautyEncode(workspace),
+            panel: beautyEncode(panel)
         });
 		
 		// set active workspace
 		$scope.workspacePanel = workspace;
         
-        // populate panels
-        getMultiple(workspace, "panels");
+        // get LAYOUT data stored in service
+        layoutService.getStructures("panel/" + panelType).then(function(data) {
+
+            // set scope
+            $scope.panels = data;
+
+        });
         
     };
 	
