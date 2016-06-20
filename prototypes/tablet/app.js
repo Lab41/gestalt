@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 
 // backend API
 app.use(require("./routes/workspace"));
+app.use(require("./routes/story"));
 app.use(require("./routes/index"));
 
 // static front end
