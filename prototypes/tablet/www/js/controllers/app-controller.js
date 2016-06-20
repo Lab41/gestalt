@@ -36,7 +36,7 @@ angular.module("app-controller", [])
     });
     
     // change workspace
-    $scope.changeWorkspace = function(workspace, panel, panelType) {
+    $scope.changeWorkspace = function(workspace, workspaceID, panel, panelType) {
         
         // transition state
         $state.go("app.panel", {
@@ -48,7 +48,7 @@ angular.module("app-controller", [])
 		$scope.workspacePanel = workspace;
         
         // get LAYOUT data stored in service
-        layoutService.getStructures("panel/" + panelType).then(function(data) {
+        layoutService.getStructures(workspaceID + "/panel/" + panelType).then(function(data) {
 
             // set scope
             $scope.panels = data;

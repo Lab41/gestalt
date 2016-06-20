@@ -9,7 +9,7 @@
 /* !GLOBALS
 /* IONIC
 /* !CUSTOM
-/* --- !something
+/* --- !active
 
 /******************************* !IMPORTS *******************************/
 
@@ -130,16 +130,20 @@ ion-item.item {
 
 /******************************* !CUSTOM *******************************/
 
-/* active panel nav item */
-.panel-nav a.active {
+/********************/
+/***** !active ******/
+/********************/
+
+/* active */
+.active {
 	
-	color: rgb(60,60,60);
+	color: currentColor;
 	
 }
 
-/* navigation link underline */
-.panel-nav a.active:after {
-	
-	background: currentColor;
-	
+/* menu title */
+.menu-title:after {
+    
+    background: currentColor;
+    
 }

@@ -139,6 +139,6 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     	}
     });
 
-    $urlRouterProvider.otherwise("/stories/1");
+    $urlRouterProvider.otherwise("/stories/8810b75bdb8daf411368190b7518ad40");
 
 });

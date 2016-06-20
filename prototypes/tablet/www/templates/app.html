@@ -18,16 +18,20 @@
 
 			<ion-list>
                 
-                <ion-item class="item" 
-                          nav-clear 
-                          menu-close>Home</ion-item>
-                
-                <!-- WORKSPACES -->
-                <ion-item ng-repeat="workspace in workspaces"
-                          class="item"
-						  ng-class="{ 'active': workspacePanel == workspace.name }"
-                          ng-click="changeWorkspace(workspace.name, workspace.default_panel, workspace.panel);"
-                          nav-clear menu-close>{{ workspace.name }}</ion-item>
+                <div class="list">
+                    
+                    <p class="menu-title">Menu</p>
+
+                    <!-- WORKSPACES -->
+                    <div class="item item-divider">Explore</div>
+                    
+                    <ion-item ng-repeat="workspace in workspaces"
+                              class="item"
+                              ng-class="{ 'active': workspacePanel == workspace.name }"
+                              ng-click="changeWorkspace(workspace.name, workspace.id, workspace.default_panel, workspace.panel);"
+                              nav-clear menu-close>{{ workspace.name }}</ion-item>
+                    
+                </div>
 
 			</ion-list>
 

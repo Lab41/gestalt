@@ -9,10 +9,9 @@
 /* !GLOBALS
 /* !IONIC
 /* !CUSTOM
-/* --- !something
+/* --- !menu title
 
 /******************************* !IMPORTS *******************************/
-@import url("light.css");
 
 /******************************* !GLOBAL *******************************/
 
@@ -104,25 +103,24 @@ button {
 
 /******************************* !CUSTOM *******************************/
 
-/* navigation link */
-.panel-nav a {
-	
-	padding: 0.5em;
-	position: relative;
-	text-align: center;
-	text-decoration: none;
-	text-transform: capitalize;
-	
+/************************/
+/***** !menu title ******/
+/************************/
+
+.menu-title {
+    
+    padding: 1em;
+    position: relative;
+    
 }
 
-/* navigation link underline */
-.panel-nav a.active:after {
-	
-	bottom: 0;
+.menu-title:after {
+    
+    bottom: 0;
 	content: '';
 	height: 3px;
-	left: 0;
+	left: 1em;
 	position: absolute;
-	width: 100%;
-	
+	width: calc(100% - 2em);
+    
 }
