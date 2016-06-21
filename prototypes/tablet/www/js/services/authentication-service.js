@@ -1,6 +1,6 @@
 angular.module("authentication-service", [])
 
-.factory("authenticationService", ["$http", "$q", "$rootScope", function ($http, $q, $rootScope) {
+.factory("authenticationService", ["$http", "$q", "$timeout", function ($http, $q, $timeout) {
 
     var urlBase = api_config.authentication_service_uri;
     var loginKey = "gestaltUser";
@@ -53,7 +53,7 @@ angular.module("authentication-service", [])
                 user: user,
                 id: id
             };
-
+            
             // store in local storage
             localStorage.setItem(loginKey, JSON.stringify(userObj));
            
@@ -68,16 +68,23 @@ angular.module("authentication-service", [])
             // check for existing stored data
             if (!this.user) {
             
-                // retrieve login from local storage
-                var userObj = JSON.parse(localStorage.getItem(loginKey));
-                
-                // put in promise for app session
-                this.user = userObj;
+                // set up promise
+                var localDeferred = $q.defer();
+            
+                $timeout(function() {
+
+                    // retrieve from local storage
+                    var data = JSON.parse(localStorage.getItem(loginKey));
+
+                    // resolve the promise
+                    localDeferred.resolve(data);
+
+                });
+
+                return localDeferred.promise;
                 
             };
-            
-            return this.user;
-            
+                        
         },
         
         // clear login
