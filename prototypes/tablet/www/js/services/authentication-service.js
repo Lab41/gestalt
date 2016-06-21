@@ -1,53 +1,93 @@
 angular.module("authentication-service", [])
 
-.factory("authenticationService", ["$http", "$cookies", "$rootScope", "base64", function ($http, $cookies, $rootScope, base64) {
+.factory("authenticationService", ["$http", "$q", "$rootScope", function ($http, $q, $rootScope) {
 
     var urlBase = api_config.authentication_service_uri;
-    var authenticationService = {};
+    var loginKey = "gestaltUser";
+    
+    return {
+		
+		// data storage
+		content: "",
+        user: "",
+		
+		// single http request stored in a promise
+		makeRequest: function(url) {
+			
+			// create deferred object
+			var deferred = $q.defer();
+			
+			// make $http request
+			$http.get(urlBase + url).then(function(response) {
+				deferred.resolve(response.data);
+			});
+			
+			// expose the promise data
+			return deferred.promise;
+			
+		},
+		
+		// unique data requests
+		getData: function(path) {
+				
+			var apiUrl = path;
+            
+            // check for existing stored data
+            if (!this.content) {
+			
+                // make request
+                console.log("****** GET " + apiUrl + " ******");
+                this.content = this.makeRequest(apiUrl);
+                
+            };
+			
+			// return stored data
+			return this.content;
+			
+		},
+        
+        // post credentials
+        postCredentials: function(user, id) {
+            
+            var userObj = {
+                user: user,
+                id: id
+            };
 
-    // post user credentials
-    authenticationService.postLogin = function(user, pw) {
+            // store in local storage
+            localStorage.setItem(loginKey, JSON.stringify(userObj));
+           
+            // put in promise for app session
+            this.user = userObj;
 
-        // set up valid object
-        var user = {
-            "username": user,
-            "password": pw
-        };
-
-        // post it real good
-        return $http.post(urlBase + "authenticate/", user);
-
-    };
-
-    // put info in cookies
-    authenticationService.setCredentials = function(user, pw) {
-
-        // encode the data
-        var authdata = base64.encode(user + ':' + pw);
-
-        // set globals
-        $rootScope.globals = {
-            currentUser: {
-                username: user,
-                authdata: authdata
-            }
-        };
-
-        // set header
-        $http.defaults.headers.common['Authorization'] = 'Basic' + authdata;
-        	$cookies.put("user", user);
-
-    };
-
-    // clear info from cookies
-    authenticationService.clearCredentials = function() {
-
-        $rootScope.globals = {};
-        $cookies.remove("user"); // remove user cookie
-        $http.defaults.headers.common.Authorization = 'Basic';
-
-    };
-
-    return authenticationService;
+        },
+        
+        // get credentials
+        getCredentials: function() {
+            
+            // check for existing stored data
+            if (!this.user) {
+            
+                // retrieve login from local storage
+                var userObj = JSON.parse(localStorage.getItem(loginKey));
+                
+                // put in promise for app session
+                this.user = userObj;
+                
+            };
+            
+            return this.user;
+            
+        },
+        
+        // clear login
+        clearCredentials: function() {
+            
+            // remove info from storage
+            localStorage.removeItem(loginKey);
+            
+        }
+		
+	};
 
 }]);
