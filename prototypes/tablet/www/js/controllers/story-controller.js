@@ -10,11 +10,11 @@ angular.module("story-controller", [])
 	$scope.story = story;
     
     // get CONTENT data stored in service
-	contentService.getData(story).then(function(data) {
+	/*contentService.getData(story).then(function(data) {
 		
 		// set scope
 		$scope.content = data;
 		
-	});
+	});*/
     
 }]);

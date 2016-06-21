@@ -1,6 +1,6 @@
 angular.module("app-controller", [])
 
-.controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", "$timeout", function($scope, $stateParams, $state, layoutService, authenticationService, $timeout) {
+.controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", function($scope, $stateParams, $state, layoutService, authenticationService) {
     
     var workspaceParam = $stateParams.workspace;
     var panelID = $stateParams.panel;
@@ -9,17 +9,19 @@ angular.module("app-controller", [])
     // data objects
     $scope.panels;
     $scope.panel;
+    $scope.user;
     $scope.workspaces;
     $scope.workspace;
     $scope.workspaceParam = workspaceParam;
     
     // get persona 
-    var user = authenticationService.getCredentials();
-    
-    $scope.user = user;
-    
-    $timeout(function() {
+    authenticationService.getCredentials().then(function(userData) {
         
+        var user = userData;
+        
+        // set scope
+        $scope.user = userData;
+            
         // get workspaces for persona in local storage (i.e. user)
         layoutService.getStructures("persona/" + user.id).then(function(data) {
     

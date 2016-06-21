@@ -54,7 +54,7 @@ router.get(baseUrl + "/:panel/persona/:persona", function(req, res) {
         var personaID = req.params.persona;
                 
         // SQL query
-        var query = client.query("select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics) and wk.persona = " + panelParam + " and '" + panelParam + "' = c.param;");
+        var query = client.query("select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics) and wk.persona = " + personaID + " and '" + panelParam + "' = c.param;");
         
         // stream results back one row at a time
         query.on("row", function(row) {

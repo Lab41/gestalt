@@ -1,6 +1,6 @@
 angular.module("panel-controller", [])
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "authenticationService", "$timeout", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, authenticationService, $timeout) {
+.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "authenticationService", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, authenticationService) {
     
     var workspace = $stateParams.workspace;
     var panelParam = $stateParams.panel;
@@ -15,36 +15,34 @@ angular.module("panel-controller", [])
     });*/
     
     // get persona 
-    var user = authenticationService.getCredentials();
-    
-    $timeout(function() {
+    // get persona 
+    authenticationService.getCredentials().then(function(userData) {
         
-        // get CONTENT data stored in service
-        contentService.getData("stories/" + panelParam + "/persona/" + user.id).then(function(data) {
-
-            // check for story workspace
-            // TODO make less hacky
-            /*if ($scope.$parent.$parent.workspace.panel == "story") {
-
-                // get stories
-                contentService.getData("stories/" + user.id).then(function(storyData) {
-
-                    // set scope
-                    $scope.content = storyData;
-
-                });
-
-            } else {*/
+        var user = userData;
+        
+        // check for story workspace
+        // TODO make less hacky
+        if (workspace == "fa9ee9a8f53af1d95b97a8ff9ee7572d") {
+            
+            // get all stories for persona
+            contentService.getData("stories/" + user.id).then(function(data) {
 
                 // set scope
                 $scope.content = data;
 
-            //};
-
-            // hide loading
-            //$ionicLoading.hide();
-
-        });
+            });
+            
+        } else {
+            
+            // get all stories for panel and persona
+            contentService.getData("stories/" + panelParam + "/persona/" + user.id).then(function(data) {
+                
+                // set scope
+                $scope.content = data;
+                
+            });
+            
+        };
         
     });
 	
