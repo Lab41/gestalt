@@ -44,7 +44,7 @@ panel-nav a {
 	padding: 1em;
 	position: relative;
 	text-align: center;
-    text-decoration: none;
+    text-transform: capitalize;
 	
 }
 

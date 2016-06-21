@@ -9,7 +9,8 @@
 /* !GLOBALS
 /* !IONIC
 /* !CUSTOM
-/* --- !menu title
+/* --- !menu
+/* --- !login
 
 /******************************* !IMPORTS *******************************/
 
@@ -28,14 +29,23 @@ h3 {
 a {
 	
 	color: currentColor;
+    text-decoration: none;
 	
 }
 
-h1 {
+h1, h2 {
 	
 	font-family: "Source Sans Pro Light", sans-serif;
 	font-weight: 300;
 	
+}
+
+h2 {
+    
+    font-size: 1.5em;
+    max-width: 500px;
+    width: 60%;
+    
 }
 
 button {
@@ -101,12 +111,33 @@ button {
 	
 }
 
+/* TEMP section */
+ion-content section {
+    
+    background: rgba(220,220,220,0.5);
+    padding: 5em;
+    
+}
+
+ion-content section:nth-child(even) {
+    
+    background: rgba(220,220,220,0.8);
+    
+}
+
+ion-content section:last-child {
+    
+    margin-bottom: 8em;
+    
+}
+
 /******************************* !CUSTOM *******************************/
 
-/************************/
-/***** !menu title ******/
-/************************/
+/******************/
+/***** !menu ******/
+/******************/
 
+/* text */
 .menu-title {
     
     padding: 1em;
@@ -114,13 +145,127 @@ button {
     
 }
 
+/* underline */
 .menu-title:after {
     
     bottom: 0;
 	content: '';
-	height: 3px;
+	height: 1px;
 	left: 1em;
 	position: absolute;
 	width: calc(100% - 2em);
+    
+}
+
+/* user */
+.user {
+    
+    display: flex;
+    padding: 1em;
+    
+}
+
+.user span {
+    
+    display: block;
+    font-size: 1.5em;
+    width: 50%;
+    
+}
+
+.user span:first-child {
+    
+    border-right: 1px;
+    border-right-color: currentColor;
+    border-right-style: solid;
+    font-weight: 700;
+    text-transform: uppercase;
+    
+}
+
+.user span:last-child {
+    
+    padding-left: 0.5em;
+    
+}
+
+/* items */
+.menu-item {
+    
+    text-transform: capitalize;
+    
+}
+
+/*******************/
+/***** !login ******/
+/*******************/
+
+/* wrap */
+.login {
+    
+    padding: 5em;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+	transform: translateY(-50%);
+    transform: translateY(-50%);
+    
+}
+
+/* login headline subtext */
+.login h2 + p {
+    
+    margin-bottom: 2em;
+    
+}
+
+/* wrap personas */
+.login section {
+    
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    
+}
+
+/* persona */
+.login section div {
+    
+    padding: 2em;
+    width: 50%;
+    
+}
+
+.login section div:nth-child(1) {
+    
+    background: rgb(200,200,200);
+    
+}
+
+.login section div:nth-child(2) {
+    
+    background: rgb(240,240,240);
+    
+}
+
+.login section div:nth-child(3) {
+    
+    background: rgb(230,230,230);
+    
+}
+
+.login section div:nth-child(4) {
+    
+    background: rgb(220,220,220);
+    
+}
+
+.login section div p:first-child {
+    
+    font-weight: 700;
+    text-transform: capitalize;
     
 }

@@ -21,14 +21,20 @@
                 <div class="list">
                     
                     <p class="menu-title">Menu</p>
+                    
+                    <!-- USER PERSONA -->
+                    <p class="user">
+                        <span>{{ user.user }}</span>
+                        <span ng-click="logout();">Logout</span>
+                    </p>
 
                     <!-- WORKSPACES -->
                     <div class="item item-divider">Explore</div>
                     
                     <ion-item ng-repeat="workspace in workspaces"
-                              class="item"
-                              ng-class="{ 'active': workspacePanel == workspace.name }"
-                              ng-click="changeWorkspace(workspace.name, workspace.id, workspace.default_panel, workspace.panel);"
+                              class="item menu-item"
+                              ng-class="{ 'active': workspaceParam== workspace.param }"
+                              ng-click="changeWorkspace(workspace.id, workspace.param, workspace.default_panel, workspace.panel);"
                               nav-clear menu-close>{{ workspace.name }}</ion-item>
                     
                 </div>

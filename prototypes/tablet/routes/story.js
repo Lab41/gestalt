@@ -5,26 +5,22 @@ var pg = require("pg"); // postgres connector
 var conString = process.env.DATABASE_URL || "";
 var baseUrl = "/api/data/stories";
 
-// decode url spaces
-function beautyDecode(str) {
-    str = str.replace(/-/g, ' ');
-    return str;
-};
-
 /*******************************/
 /************* GET *************/
 /*******************************/
 
-// all stories
-router.get(baseUrl, function(req, res) {
+// all stories for a specific persona
+router.get(baseUrl + "/:persona", function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
+        
+        var personaID = req.params.persona;
                 
         // SQL query
-        var query = client.query("select * from gestalt_story;");
+        var query = client.query("select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics)and wk.persona = " + personaID + ";");
         
         // stream results back one row at a time
         query.on("row", function(row) {
@@ -46,8 +42,8 @@ router.get(baseUrl, function(req, res) {
     
 })
 
-// all stories in a panel
-router.get(baseUrl + "/:panel", function(req, res) {
+// all stories in a panel for a specific persona
+router.get(baseUrl + "/:panel/persona/:persona", function(req, res) {
 
     var results = [];
     
@@ -55,9 +51,10 @@ router.get(baseUrl + "/:panel", function(req, res) {
     pg.connect(conString, function(err, client, done) {
         
         var panelParam = req.params.panel;
+        var personaID = req.params.persona;
                 
         // SQL query
-        var query = client.query("select s.* from gestalt_story s,gestalt_collection c where '" + panelParam + "' = c.param and s.topics && c.topics;");
+        var query = client.query("select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics) and wk.persona = " + panelParam + " and '" + panelParam + "' = c.param;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
