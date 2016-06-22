@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" ng-controller="metaCtrl">
     
     <head>
         
@@ -40,6 +40,7 @@
 		<link rel="stylesheet" href="css/directives.css">
 		<link rel="stylesheet" href="css/ionicons.min.css">
         <link rel="stylesheet" href="css/desktop.css">
+        <link rel="stylesheet" ng-href="css/{{theme.current}}.css">
 
         <!------------->
         <!-- SCRIPTS -->
@@ -51,7 +52,6 @@
         <!-- angular -->
         <script src="lib/angular.js"></script>
         <script src="lib/angular-ui-router.js"></script>
-		<script src="lib/angular-cookies.min.js"></script>
         <script src="lib/moment.js"></script>
         <script src="lib/angular-moment.min.js"></script>
             
@@ -60,6 +60,7 @@
             
         <!-- controllers -->
 		<script src="js/desktop.controllers.js"></script>
+        <script src="js/controllers/meta-controller.js"></script>
 		<script src="js/controllers/login-controller.js"></script>
 		<script src="js/controllers/app-controller.js"></script>
 		<script src="js/controllers/panel-controller.js"></script>

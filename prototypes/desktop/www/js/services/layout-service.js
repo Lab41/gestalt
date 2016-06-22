@@ -7,8 +7,10 @@ angular.module("layout-service", [])
 	return {
 		
 		// data storage
-		panels: "",
-		panel: "",
+		workspaces: "",
+		workspace: "",
+        panels: "",
+        panel: "",
 		
 		// single http request stored in a promise
 		makeRequest: function(url) {
@@ -26,48 +28,43 @@ angular.module("layout-service", [])
 			
 		},
 		
-		// all panels
-		getPanels: function(path) {
+		// all structures
+		getStructures: function(path, obj) {
 			
 			// construct api call from supplied params
 			var apiUrl = path;
-			
-			// check for existing stored data
-			if (!this.panels) {
 				
-				// make request
-				console.log("****** GET " + apiUrl + " ******");
-				this.panels = this.makeRequest(apiUrl);
-
-			};
+            // make request
+            console.log("****** GET " + apiUrl + " ******");
+            this[obj] = this.makeRequest(apiUrl);
 			
 			// return stored data
-			return this.panels;
+			return this[obj];
 			
 		},
 		
-		// single panel
-		getPanel: function(name) {
+		// single structure
+		getStructure: function(param, obj, objs) {
 			
 			// set service object so we can attach data to it
 			var service = this;
 			
-			// return panel obj as a promise to service
-			return this.panels.then(function(data) {
+			// return structure obj as a promise to service
+			return this[objs].then(function(data) {
 				
-				// get single panel from stored data
+				// get single structure from stored data
 				angular.forEach(data, function(value, key) {
 					
-					if (value.url.single == name) {
+					if (value.param == param) {
 						
-						service.panel = value;
+						service[obj] = value;
 						
 					};
 					
 				});
 				
 				// return stored data
-				return service.panel;
+				return service[obj];
 			
 			});
 			

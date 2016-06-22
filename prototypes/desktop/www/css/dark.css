@@ -9,7 +9,9 @@
 /* !GLOBALS
 /* !IONIC
 /* !CUSTOM
-/* --- !something
+/* --- !active
+/* --- !menu
+/* --- !login
 
 /******************************* !IMPORTS *******************************/
 
@@ -24,7 +26,7 @@ html, body {
 html, body, p,
 h1, h2, h3, h4, h5, h6 {
 	
-	color: rgb(100, 100, 100);
+	color: rgb(150, 150, 150);
 	
 }
 
@@ -36,97 +38,75 @@ button {
 	
 }
 
-/******************************* !IONIC *******************************/
+/******************************* !CUSTOM *******************************/
 
-/* empty content area/header */
-.pane {
-	
-	background: rgb(30,30,30);
-	
+/* TEMP section */
+.login section {
+    
+    background: rgba(20,20,20,0.5);
+    
 }
 
-/* top bar */
-.bar {
-	
-	background: transparent;
-	
+.login section:nth-child(even) {
+    
+    background: rgba(20,20,20,0.8);
+    
 }
 
-/* side menu */
-.menu {
-	
-	background-color: rgb(30,30,30);
-	
-}
+/********************/
+/***** !active ******/
+/********************/
 
-/* general item */
-.item,
-.card, .list-inset {
-	
-	border-color: rgb(60,60,60);
-	background-color: transparent;
-	color: rgb(244,244,244);
-	
-}
-
-/* list item */
-.item-complex .item-content {
-	
-	background-color: transparent;
-	color: rgb(244,244,244);
-	
-}
-
-/* touched item */
-.item .item-content.activated,
-.item.activated,
-.item.activated.item-complex > .item-content {
-	
-	background-color: rgb(10,10,10);
-	border-color: rgb(0,0,0);
-	
-}
-
-/* probably temp fix for h2 activated */
-.item-content.activated h2 {
-	
-	background: transparent;
-	
-}
-
-/* pop up */
-.popup-container .popup {
-	
-	background-color: rgba(60, 60, 60, 0.95);
-	
-}
-
-/* pop up button color */
-.button.button-positive {
-	
-	background-color: rgb(30,30,30);
-	
-}
-
-/* buttons */
-.button:hover {
+/* active */
+.active {
 	
 	color: currentColor;
 	
 }
 
-/******************************* !CUSTOM *******************************/
+/******************/
+/***** !menu ******/
+/******************/
 
-/* active panel nav item */
-.panel-nav a.active {
-	
-	color: rgb(244,244,244);
-	
+/* menu title */
+.menu-title:after {
+    
+    background: currentColor;
+    
 }
 
-/* navigation link underline */
-.panel-nav a.active:after {
-	
-	background: currentColor;
-	
+/* theme */
+.theme-change {
+    
+    background: rgb(200,200,200);
+    color: rgb(80,80,80);
+    
+}
+
+/*******************/
+/***** !login ******/
+/*******************/
+
+.login section div:nth-child(1) {
+    
+    background: rgb(80,80,80);
+    
+}
+
+.login section div:nth-child(2) {
+    
+    background: rgb(60,60,60);
+    
+}
+
+.login section div:nth-child(3) {
+    
+    background: rgb(70,70,70);
+    
+}
+
+.login section div:nth-child(4) {
+    
+    background: rgb(50,50,50);
+    
 }

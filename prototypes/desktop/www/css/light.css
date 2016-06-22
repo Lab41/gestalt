@@ -7,9 +7,9 @@
 
 /* !IMPORTS
 /* !GLOBALS
-/* IONIC
 /* !CUSTOM
-/* --- !something
+/* --- !menu
+/* --- !login
 
 /******************************* !IMPORTS *******************************/
 
@@ -36,97 +36,75 @@ button {
 	
 }
 
-/******************************* !IONIC *******************************/
+/******************************* !CUSTOM *******************************/
 
-/* empty content area/header */
-.pane {
-	
-	background: rgb(250,250,250);
-	
+/* TEMP section */
+.login section {
+    
+    background: rgba(220,220,220,0.5);
+    
 }
 
-/* top bar */
-.bar {
-	
-	background: transparent;
-	
+.login section:nth-child(even) {
+    
+    background: rgba(220,220,220,0.8);
+    
 }
 
-/* side menu */
-.menu {
-	
-	background-color: rgb(150,150,150);
-	
-}
+/********************/
+/***** !active ******/
+/********************/
 
-/* general item */
-.item,
-.card, .list-inset {
-	
-	border-color: rgb(150,150,150);
-	background-color: transparent;
-	color: rgb(100,100,100);
-	
-}
-
-/* list item */
-.item-complex .item-content {
-	
-	background-color: transparent;
-	color: rgb(100,100,100);
-	
-}
-
-/* touched item */
-.item .item-content.activated,
-.item.activated,
-.item.activated.item-complex > .item-content {
-	
-	background-color: rgb(250,250,250);
-	border-color: rgb(244,244,244);
-	
-}
-
-/* probably temp fix for h2 activated */
-.item-content.activated h2 {
-	
-	background: transparent;
-	
-}
-
-/* pop up */
-.popup-container .popup {
-	
-	background-color: rgba(150,150,150, 0.95);
-	
-}
-
-/* pop up button color */
-.button.button-positive {
-	
-	background-color: rgb(100,100,100);
-	
-}
-
-/* buttons */
-.button:hover {
+/* active */
+.active {
 	
 	color: currentColor;
 	
 }
 
-/******************************* !CUSTOM *******************************/
+/******************/
+/***** !menu ******/
+/******************/
 
-/* active panel nav item */
-.panel-nav a.active {
-	
-	color: rgb(60,60,60);
-	
+/* menu title */
+.menu-title:after {
+    
+    background: currentColor;
+    
 }
 
-/* navigation link underline */
-.panel-nav a.active:after {
-	
-	background: currentColor;
-	
+/* theme */
+.theme-change {
+    
+    background: rgb(80,80,80);
+    color: rgb(200,200,200);
+    
+}
+
+/*******************/
+/***** !login ******/
+/*******************/
+
+.login section div:nth-child(1) {
+    
+    background: rgb(200,200,200);
+    
+}
+
+.login section div:nth-child(2) {
+    
+    background: rgb(240,240,240);
+    
+}
+
+.login section div:nth-child(3) {
+    
+    background: rgb(230,230,230);
+    
+}
+
+.login section div:nth-child(4) {
+    
+    background: rgb(220,220,220);
+    
 }
