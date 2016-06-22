@@ -1,1 +1,22 @@
-<p>login placeholder</p>
+<ui-view>
+
+	<div class="login">
+        
+        <!-- TITLE -->
+        <h2>Please choose a persona</h2>
+        <p>You can switch personas at any time from tbd.</p>
+        
+        <section>
+            
+            <!-- PERSONA -->
+            <div ng-repeat="persona in content"
+                 ng-click="login(persona.name, persona.id);">
+                <p>{{ persona.name }}</p>
+                <p>{{ persona.description }}</p>
+            </div>
+            
+        </section>
+            
+	</div>
+
+</ui-view>

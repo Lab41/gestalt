@@ -5,7 +5,7 @@ angular.module("meta-controller", [])
     // data objects
 	$scope.theme = {
 		current: theme_config.ui.start,
-		opposite: theme_config.ui.opposite
+		opposite: "light"
 	};
 	
 	// change theme

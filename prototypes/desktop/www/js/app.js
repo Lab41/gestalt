@@ -1,6 +1,5 @@
 var app = angular.module("app", [
     "ui.router",
-	"ngCookies",
 	"angularMoment",
     "desktop.controllers",
     "desktop.directives",
@@ -103,6 +102,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
     	}
     });
 
-    $urlRouterProvider.otherwise("/stories/navitem1");
+    $urlRouterProvider.otherwise("/login");
 
 });

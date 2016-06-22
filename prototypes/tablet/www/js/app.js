@@ -102,9 +102,6 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
         abstract: true,
 		templateUrl: "templates/app.html",
 		controller: "appCtrl",
-        params: {
-            workspace: "stories"
-        },
         resolve: {
 			authorized: ["$q", function($q) {
 				if(localStorage.getItem("gestaltUser") === null) {

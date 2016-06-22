@@ -1,11 +1,14 @@
 import json
 import web
+import persona
+import workspace
 
 urls = (
     
     # rest API backend endpoints
-    "/api/(.*)/(.*)", "static_data",
-    
+    "/api/persona/", persona.app_persona,
+    "/api/workspaces/", workspace.app_workspaces,
+
     # front-end routes to load angular app
     "/", "index",
     "/(.+)", "www"
