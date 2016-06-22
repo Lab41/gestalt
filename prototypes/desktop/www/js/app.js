@@ -11,22 +11,28 @@ var app = angular.module("app", [
 /***********************/
 
 app.run(function(amMoment, $rootScope) {
-	
-	/****************/
-	/**** VALUES ****/
-	/****************/
-	
-	// if cookie exists, set scope
-	//if (cookieUser !== undefined) {
-	
-		// set globals
-        $rootScope.globals = {
-            currentUser: {
-                username: "undefined"
-            }
+    
+    /***********************/
+	/**** DESKTOP PANEL ****/
+	/***********************/
+    
+    // stop propagation of event to trigger menu
+    // so menu doesn't auto hide after it's shown
+    document.addEventListener("keyup", function(e) {
+
+        if(e.keyCode === 27) {
+
+            $rootScope.$broadcast("escapedPressed", e.target);
+
         };
-        
-    //};
+
+    });
+
+    document.addEventListener("click", function(e) {
+
+        $rootScope.$broadcast("documentClicked", e.target);
+
+    });
     
     /****************/
 	/**** MOMENT ****/
@@ -50,7 +56,9 @@ app.run(function(amMoment, $rootScope) {
 /********* CONFIG *********/
 /**************************/
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
+    
+    $compileProvider.debugInfoEnabled(false);
 
 	/****************/
 	/**** ROUTES ****/
@@ -70,14 +78,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
         url: "/{workspace}",
         abstract: true,
         templateUrl: "templates/app.html",
-		controller: "appCtrl"/*,
-    	resolve: {
-			authorized: ["$q", "$cookies", function($q, $cookies) {
-				if($cookies.get("user") === undefined) {
+		controller: "appCtrl",
+        resolve: {
+			authorized: ["$q", function($q) {
+				if(localStorage.getItem("gestaltUser") === null) {
 					return $q.reject("requires login");
 				};
 			}]
-		}*/
+		}
     })
     
     // panel
@@ -87,7 +95,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
     		"panel": {
     			templateUrl: "templates/panel.html",
     			controller: "panelCtrl"
-    		}
+    		},
+            "slide": {
+                templateUrl: "templates/slide-panel.html",
+                controller: "panelCtrl"
+            }
     	}
     })
 	

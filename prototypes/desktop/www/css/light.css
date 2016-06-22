@@ -81,6 +81,23 @@ button {
     
 }
 
+/* active item */
+.item.active {
+	
+	background: rgb(240,240,240);
+	
+}
+
+/* active menut item */
+.item.active.menu-item {
+    
+    margin-left: -1em;
+    margin-right: -1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    
+}
+
 /*******************/
 /***** !login ******/
 /*******************/

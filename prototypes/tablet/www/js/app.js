@@ -63,12 +63,14 @@ app.run(function($http, $rootScope, $location, $ionicPlatform, amMoment, $state)
 /********* CONFIG *********/
 /**************************/
 
-app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicConfigProvider) {
+app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicConfigProvider, $compileProvider) {
     
     // config to ensure platform specific styles are uniform across devices
     $ionicConfigProvider.navBar.alignTitle('center');
 
 	$httpProvider.defaults.withCredentials = true;
+    
+    $compileProvider.debugInfoEnabled(false);
 	
 	/****************/
 	/**** ROUTES ****/

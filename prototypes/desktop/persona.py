@@ -9,12 +9,14 @@ urls = (
     "", "persona"
     
 )
+
+connection_string = ""
         
 class persona:
     def GET(self):
         
         # connection string
-        con_string = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password=''")
+        con_string = psycopg2.connect(connection_string)
         
         # postgres connector
         cursor = con_string.cursor(cursor_factory=RealDictCursor)

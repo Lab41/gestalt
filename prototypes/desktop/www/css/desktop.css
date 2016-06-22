@@ -8,6 +8,7 @@
 /* !IMPORTS
 /* !GLOBALS
 /* !CUSTOM
+/* --- !item
 /* --- !menu
 /* --- !login
 
@@ -15,6 +16,12 @@
 @import url("reset.css");
 
 /******************************* !GLOBALS *******************************/
+
+html, body {
+    
+    font-size: 18px;
+    
+}
 
 html,
 body,
@@ -48,6 +55,13 @@ h2 {
     
 }
 
+p {
+    
+    line-height: 1.4;
+    margin-bottom: 1em;
+    
+}
+
 button {
 	
 	border: 1px;
@@ -61,8 +75,51 @@ button {
 /******************************* !CUSTOM *******************************/
 
 /******************/
+/***** !item ******/
+/******************/
+
+/* vanilla item for lists */
+.item {
+    
+    display: block;
+    padding: 1em;
+    position: relative;
+    
+}
+
+.item.menu-item.active {
+    
+    margin-left: -1em;
+    margin-right: -1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    
+}
+
+.item-divider {
+    
+    font-size: 2em;
+    font-weight: 300;
+    margin-bottom: 0.25em;
+    margin-top: 1em;
+    padding: 0;
+    padding-left: 0.5em;
+    
+}
+
+/******************/
 /***** !menu ******/
 /******************/
+
+/* icon */
+.menu-icon {
+    
+    border: 0 none;
+    cursor: pointer;
+    font-size: 1.7em;
+    padding: 0.5em;
+    
+}
 
 /* text */
 .menu-title {
@@ -144,7 +201,17 @@ button {
 /* wrap */
 .login {
     
+    left: 50%;
+    max-width: 900px;
     padding: 5em;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width: 70%;
     
 }
 
@@ -168,7 +235,7 @@ button {
 .login section div {
     
     padding: 2em;
-    width: 50%;
+    width: 42%;
     
 }
 

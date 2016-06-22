@@ -13,7 +13,7 @@ angular.module("panel-controller", [])
     $scope.busyLoadingData = false; // prevent loading more while async is loading more
 	
 	// get CONTENT data stored in service
-	contentService.getData(panel).then(function(data) {
+	/*contentService.getData(panel).then(function(data) {
 		
 		// set scope
 		$scope.content = data.length > 0 ? data : [{ title: "Nothing Found.", content: "Sorry but can't find any content.", poster: "None" }];
@@ -26,6 +26,6 @@ angular.module("panel-controller", [])
 		// set scope
 		$scope.panel = data;
 		
-	});
+	});*/
 	
 }]);
