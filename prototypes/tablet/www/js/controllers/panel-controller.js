@@ -1,6 +1,6 @@
 angular.module("panel-controller", [])
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "authenticationService", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, authenticationService) {
+.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, authenticationService, $rootScope) {
     
     var workspace = $stateParams.workspace;
     var panelParam = $stateParams.panel;
@@ -15,34 +15,48 @@ angular.module("panel-controller", [])
     });*/
     
     // get persona 
-    // get persona 
     authenticationService.getCredentials().then(function(userData) {
         
         var user = userData;
         
-        // check for story workspace
-        // TODO make less hacky
-        if (workspace == "fa9ee9a8f53af1d95b97a8ff9ee7572d") {
-            
-            // get all stories for persona
-            contentService.getData("stories/" + user.id).then(function(data) {
-
-                // set scope
-                $scope.content = data;
-
-            });
-            
-        } else {
-            
-            // get all stories for panel and persona
-            contentService.getData("stories/" + panelParam + "/persona/" + user.id).then(function(data) {
+        function getPanels(panel, param) {
+                    
+            // check for stories
+            if (panel == "story") {
                 
-                // set scope
-                $scope.content = data;
+                // get all stories for persona
+                contentService.getData("stories/" + user.id).then(function(data) {
+
+                    // set scope
+                    $scope.content = data;
+
+                    // hide UI loading
+                    $ionicLoading.hide();
+
+                });
                 
-            });
+            } else {
+                
+                // get all stories for panel and persona
+                contentService.getData("stories/" + param + "/persona/" + user.id).then(function(data) {
+
+                    // set scope
+                    $scope.content = data;
+
+                    // hide UI loading
+                    $ionicLoading.hide();
+                    
+                });
+                
+            };
             
         };
+
+        $rootScope.$on("workspaceSet", function(event, args) {
+            
+            getPanels(args.panelType, panelParam);
+
+        });
         
     });
 	

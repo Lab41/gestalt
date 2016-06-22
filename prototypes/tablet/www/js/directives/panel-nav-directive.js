@@ -21,11 +21,11 @@ angular.module("panel-nav-directive", [])
                 var destinationIdx = idx;
                                 
                 // get panel from data stored in service
-                layoutService.getStructure(originUrl).then(function(data) {
+                layoutService.getStructure(originUrl, "panel", "panels").then(function(data) {
 					
 					// origin panel
 					var origin = data;
-                    
+                    console.log($scope.panels);
                     // check all panels
                     angular.forEach($scope.panels, function(value, key) {
                         
