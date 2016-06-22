@@ -1,0 +1,28 @@
+<p class="menu-title">Menu</p>
+    
+<!-- USER PERSONA -->
+<p class="user">
+    <span>{{ content.user.user }}</span>
+    <span ng-click="logout();">Logout</span>
+</p>
+
+<!-- UPDATE -->
+<div class="item item-divider">Update</div>
+
+<!-- THEME -->
+<div class="item menu-item">
+    
+    <span>Theme</span>
+    <span class="theme-change"
+          ng-click="changeTheme(theme.opposite);">{{ content.theme.opposite }}</span>
+
+</div>
+
+<!-- WORKSPACES -->
+<div class="item item-divider">Explore</div>
+
+<div ng-repeat="workspace in content.workspaces"
+          class="item menu-item"
+          ng-class="{ 'active': content.workspaceParam == workspace.param }"
+          ng-click="changeWorkspace(workspace.id, workspace.param, workspace.default_panel, workspace.panel);"
+          nav-clear menu-close>{{ workspace.name }}</div>

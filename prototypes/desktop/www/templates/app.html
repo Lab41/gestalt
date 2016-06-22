@@ -1,16 +1,17 @@
 <!-- MENU -->
-<button class="button" class="menu">
-	<i class="ion-navicon-round"></i>
-</button>
+<div class="menu-icon"
+     ng-click="showLeft($event);">
+    <i class="ion-navicon-round"></i>
+</div>
 
 <!-- PANEL NAV -->
-<nav role="navigation">
-	
-    <a ng-repeat="panel in ::panels"
-	   ui-sref="app.panel({ panel: panel.url.param })"
-       ng-class="{ 'active': panelParam == panel.title }">{{ panel.title }}</a>
+<panel-nav panels="panels"></panel-nav>
 
-</nav>
-
-<!-- CONTENT -->
+<!-- MAIN CONTENT -->
 <ui-view name="panel"></ui-view>
+
+<!-- MENU -->
+<slide-panel visible="leftVisible"
+             alignment="left"
+             content="menu">
+</slide-panel>

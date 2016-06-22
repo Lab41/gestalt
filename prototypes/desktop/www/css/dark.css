@@ -83,6 +83,14 @@ button {
     
 }
 
+/* active item */
+.item.active {
+	
+	background: rgb(10,10,10);
+    color: rgb(240,240,240);
+	
+}
+
 /*******************/
 /***** !login ******/
 /*******************/

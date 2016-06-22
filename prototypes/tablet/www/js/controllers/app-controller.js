@@ -1,6 +1,6 @@
 angular.module("app-controller", [])
 
-.controller("appCtrl", ["$scope", "$stateParams", "$state", "$window", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, $window, layoutService, authenticationService, $rootScope) {
+.controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, layoutService, authenticationService, $rootScope) {
     
     var workspaceParam = $stateParams.workspace;
     var panelID = $stateParams.panel;
