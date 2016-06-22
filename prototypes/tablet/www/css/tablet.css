@@ -114,14 +114,7 @@ button {
 /* TEMP section */
 ion-content section {
     
-    background: rgba(220,220,220,0.5);
     padding: 5em;
-    
-}
-
-ion-content section:nth-child(even) {
-    
-    background: rgba(220,220,220,0.8);
     
 }
 
@@ -157,19 +150,32 @@ ion-content section:last-child {
     
 }
 
+/* theme */
+.theme-change {
+    
+    font-size: 0.7em;
+    font-weight: 700;
+    left: 5px;
+    padding-bottom: 0.25em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.1em;
+    position: relative;
+    text-transform: lowercase;
+    top: -2px;
+    
+}
+
 /* user */
 .user {
     
-    display: flex;
     padding: 1em;
     
 }
 
 .user span {
     
-    display: block;
     font-size: 1.5em;
-    width: 50%;
     
 }
 
@@ -179,6 +185,7 @@ ion-content section:last-child {
     border-right-color: currentColor;
     border-right-style: solid;
     font-weight: 700;
+    padding-right: 0.5em;
     text-transform: uppercase;
     
 }
@@ -210,7 +217,6 @@ ion-content section:last-child {
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     -o-transform: translateY(-50%);
-	transform: translateY(-50%);
     transform: translateY(-50%);
     
 }
@@ -236,30 +242,6 @@ ion-content section:last-child {
     
     padding: 2em;
     width: 50%;
-    
-}
-
-.login section div:nth-child(1) {
-    
-    background: rgb(200,200,200);
-    
-}
-
-.login section div:nth-child(2) {
-    
-    background: rgb(240,240,240);
-    
-}
-
-.login section div:nth-child(3) {
-    
-    background: rgb(230,230,230);
-    
-}
-
-.login section div:nth-child(4) {
-    
-    background: rgb(220,220,220);
     
 }
 

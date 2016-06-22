@@ -27,6 +27,17 @@
                         <span>{{ user.user }}</span>
                         <span ng-click="logout();">Logout</span>
                     </p>
+                    
+                    <!-- UPDATE -->
+                    <div class="item item-divider">Update</div>
+                    
+                    <ion-item class="item menu-item">
+                        
+                        <span>Theme</span>
+                        <span class="theme-change"
+                              ng-click="changeTheme(theme.opposite);">{{ theme.opposite }}</span>
+                        
+                    </ion-item>
 
                     <!-- WORKSPACES -->
                     <div class="item item-divider">Explore</div>

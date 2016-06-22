@@ -54,11 +54,23 @@ angular.module("authentication-service", [])
                 id: id
             };
             
-            // store in local storage
-            localStorage.setItem(loginKey, JSON.stringify(userObj));
-           
-            // put in promise for app session
-            this.user = userObj;
+            // set up promise
+            var localDeferred = $q.defer();
+            
+            $timeout(function() {
+                
+                // store in local storage
+                localStorage.setItem(loginKey, JSON.stringify(userObj));
+                
+                // put in promise for app session
+                this.user = userObj;
+                
+                // resolve the promise to return immediately
+                localDeferred.resolve(userObj);
+                
+            });
+            
+            return localDeferred.promise;
 
         },
         

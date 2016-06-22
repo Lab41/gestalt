@@ -1,6 +1,5 @@
 var app = angular.module("app", [
 	"ionic",
-    "ngCookies",
 	"angularMoment",
 	"tablet.controllers",
     "tablet.directives",
