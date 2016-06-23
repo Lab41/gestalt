@@ -25,12 +25,6 @@ angular.module("slide-panel-directive", [])
             // change workspace
             $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, panelType) {
 
-                // transition state
-                $state.go("app.panel", {
-                    workspace: workspaceParam,
-                    panel: panelParam
-                });
-
                 // set active workspace
                 $scope.$parent.workspaceParam = workspaceParam;
 
@@ -39,6 +33,12 @@ angular.module("slide-panel-directive", [])
 
                     // set scope
                     $scope.$parent.panels = panelType == "story" ? [{name: "all stories"}] : data;
+                        
+                     // transition state
+                    $state.go("app.panel", {
+                        workspace: workspaceParam,
+                        panel: panelParam
+                    });
 
                 });
 

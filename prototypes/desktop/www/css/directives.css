@@ -13,3 +13,17 @@
 /******************************* !IMPORTS *******************************/
 
 /******************************* !CUSTOM *******************************/
+
+/* panel wrap */
+ui-view[name="panel"] {
+    
+    display: block;
+    padding: 2em;
+    
+}
+
+/* section in panel */
+ui-view[name="panel"] section {
+    
+    padding: 1em;
+}

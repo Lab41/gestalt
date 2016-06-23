@@ -20,7 +20,7 @@ angular.module("panel-controller", [])
         var user = userData;
         
         layoutService.getStructure(panelParam, "panel", "panels").then(function(panelData) {
-                   console.log(panelData);
+                   
             // check for stories
             if (panelData.panel == "story") {
 

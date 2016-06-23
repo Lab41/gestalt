@@ -46,9 +46,6 @@ angular.module("app-controller", [])
             // set scope
             $scope.workspace = workspace;
             $scope.panels = workspace.panel == "story" ? [{name: storyPanelTitle}] : workspace.panels;
-            
-            // broadcast so menu text will update
-            //$rootScope.$broadcast("workspaceSet", { panelType: workspace.panel });
 
         });
         
