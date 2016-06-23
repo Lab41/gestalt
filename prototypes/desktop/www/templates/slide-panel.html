@@ -1,4 +1,9 @@
-<p class="menu-title">Menu</p>
+<p class="menu-title">
+    Menu
+    <span ng-click="closePanel();">
+        <i class="ion-close-round"></i>
+    </span>
+</p>
     
 <!-- USER PERSONA -->
 <p class="user">
@@ -14,7 +19,7 @@
     
     <span>Theme</span>
     <span class="theme-change"
-          ng-click="changeTheme(theme.opposite);">{{ content.theme.opposite }}</span>
+          ng-click="$parent.$parent.changeTheme(content.theme.opposite);">{{ content.theme.opposite }}</span>
 
 </div>
 

@@ -57,38 +57,15 @@ angular.module("app-controller", [])
             // set scope
             $scope.workspace = workspace;
             $scope.panels = workspace.panel == "story" ? [{name: storyPanelTitle}] : workspace.panels;
-            
-            // broadcast so menu text will update
-            $rootScope.$broadcast("workspaceSet", { panelType: workspace.panel });
 
+        });
+        
+        // store panels for later
+        layoutService.getStructures("panel/", "panels").then(function(data) {
+            
         });
         
     });
-    
-    // change workspace
-    $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, panelType) {
-        
-        // transition state
-        $state.go("app.panel", {
-            workspace: workspaceParam,
-            panel: panelParam
-        });
-		
-		// set active workspace
-		$scope.workspaceParam = workspaceParam;
-        
-        // get current workspace panels
-        layoutService.getStructures(workspaceID + "/panel/" + panelType, "panels").then(function(data) {
-
-            // set scope
-            $scope.panels = panelType == "story" ? [{name: storyPanelTitle}] : data;
-            
-            // broadcast so menu text will update
-            $rootScope.$broadcast("workspaceSet", { panelType: panelType });
-
-        });
-        
-    };
     
     function _close() {
         $scope.$apply(function() {
@@ -101,28 +78,17 @@ angular.module("app-controller", [])
         $scope.rightVisible = false;
     };
 
-    $scope.showLeft = function(e) {
+    $scope.showLeft = function(event) {
         $scope.leftVisible = true;
-        e.stopPropagation();
+        event.stopPropagation();
     };
 
-    $scope.showRight = function(e) {
+    $scope.showRight = function(event) {
         $scope.rightVisible = true;
-        e.stopPropagation();
+        event.stopPropagation();
     };
 
     $rootScope.$on("documentClicked", _close);
     $rootScope.$on("escapedPressed", _close);
-    
-    // log out
-    $scope.logout = function() {
-        
-        // clear credentials
-        authenticationService.clearCredentials();
-                
-        // transition state
-        $state.go("login");
-        
-    };
 	
 }]);

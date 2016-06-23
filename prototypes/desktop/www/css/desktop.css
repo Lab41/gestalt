@@ -19,7 +19,7 @@
 
 html, body {
     
-    font-size: 18px;
+    font-size: 16px;
     
 }
 
@@ -57,7 +57,7 @@ h2 {
 
 p {
     
-    line-height: 1.4;
+    line-height: 1.2;
     margin-bottom: 1em;
     
 }
@@ -82,7 +82,7 @@ button {
 .item {
     
     display: block;
-    padding: 1em;
+    padding: 0.5em;
     position: relative;
     
 }
@@ -141,11 +141,28 @@ button {
     
 }
 
+/* close button */
+.menu-title span {
+    
+    cursor: pointer;
+    font-size: 0.9em;
+    position: absolute;
+    right: 1em;
+    top: 1.4em;
+    
+}
+
+/* menu item */
+.menu-item {
+    
+    padding-left: 1em;
+    
+}
+
 /* theme */
 .theme-change {
     
     font-size: 0.7em;
-    font-weight: 700;
     left: 5px;
     padding-bottom: 0.25em;
     padding-left: 1em;
@@ -164,9 +181,9 @@ button {
     
 }
 
-.user span {
+.user span:last-child {
     
-    font-size: 1.5em;
+    cursor: pointer;
     
 }
 
@@ -190,7 +207,18 @@ button {
 /* items */
 .menu-item {
     
+    cursor: pointer;
     text-transform: capitalize;
+    
+}
+
+/* active menu item */
+.item.active.menu-item {
+    
+    margin-left: -1em;
+    margin-right: -1em;
+    padding-left: 2em;
+    padding-right: 2em;
     
 }
 
@@ -234,6 +262,7 @@ button {
 /* persona */
 .login section div {
     
+    cursor: pointer;
     padding: 2em;
     width: 42%;
     

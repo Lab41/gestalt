@@ -88,7 +88,72 @@ router.get(baseUrl + "/:workspace/panel/:panel", function(req, res) {
         var workspaceID = req.params.workspace;
         
         // SQL query
-        var query = client.query("select t.* from gestalt_" + panelType + " t left join gestalt_workspace wk on wk.id = " + workspaceID + " where t.id = any(wk.topics) and wk.id = " + workspaceID + ";");
+        var query = client.query("select t.*,'" + panelType + "' as panel from gestalt_" + panelType + " t left join gestalt_workspace wk on wk.id = " + workspaceID + " where t.id = any(wk.topics) and wk.id = " + workspaceID + ";");
+        
+        // stream results back one row at a time
+        query.on("row", function(row) {
+            results.push(row);
+        });
+        
+        // close connection and return results
+        query.on("end", function() {
+            client.end();
+            return res.json(results);
+        });
+        
+        // handle errors
+        if(err) {
+            console.log(err);
+        };
+        
+    });
+    
+})
+
+// all panels
+router.get(baseUrl + "/panel", function(req, res) {
+
+    var results = [];
+    
+    // get a postgres client from the connection pool
+    pg.connect(conString, function(err, client, done) {
+        
+        // SQL query
+        var query = client.query("select *,'collection' as panel from gestalt_collection;");
+        
+        // stream results back one row at a time
+        query.on("row", function(row) {
+            results.push(row);
+        });
+        
+        // close connection and return results
+        query.on("end", function() {
+            client.end();
+            return res.json(results);
+        });
+        
+        // handle errors
+        if(err) {
+            console.log(err);
+        };
+        
+    });
+    
+})
+
+// a single panel
+router.get(baseUrl + "/panel/:type/:panel", function(req, res) {
+
+    var results = [];
+    
+    // get a postgres client from the connection pool
+    pg.connect(conString, function(err, client, done) {
+        
+        var panelID = req.params.panel;
+        var panelType = req.params.type;
+        
+        // SQL query
+        var query = client.query("select t.* from gestalt_" + panelType + " t where t.param = " + panelID + ";");
         
         // stream results back one row at a time
         query.on("row", function(row) {

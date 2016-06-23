@@ -48,8 +48,13 @@ angular.module("app-controller", [])
             $scope.panels = workspace.panel == "story" ? [{name: storyPanelTitle}] : workspace.panels;
             
             // broadcast so menu text will update
-            $rootScope.$broadcast("workspaceSet", { panelType: workspace.panel });
+            //$rootScope.$broadcast("workspaceSet", { panelType: workspace.panel });
 
+        });
+        
+        // store panels for later
+        layoutService.getStructures("panel", "panels").then(function(data) {
+            
         });
         
     });
@@ -71,9 +76,6 @@ angular.module("app-controller", [])
 
             // set scope
             $scope.panels = panelType == "story" ? [{name: storyPanelTitle}] : data;
-            
-            // broadcast so menu text will update
-            $rootScope.$broadcast("workspaceSet", { panelType: panelType });
 
         });
         

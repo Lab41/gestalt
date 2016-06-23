@@ -10,20 +10,20 @@ angular.module("panel-controller", [])
     $scope.busyLoadingData = false; // prevent loading more while async is loading more
    
     // block UI show loading
-    /*$ionicLoading.show({
+    $ionicLoading.show({
     	template: "<ion-spinner icon='dots'></ion-spinner><p>Loading...</p>"
-    });*/
+    });
     
     // get persona 
     authenticationService.getCredentials().then(function(userData) {
         
         var user = userData;
         
-        function getPanels(panel, param) {
-                    
+        layoutService.getStructure(panelParam, "panel", "panels").then(function(panelData) {
+                   console.log(panelData);
             // check for stories
-            if (panel == "story") {
-                
+            if (panelData.panel == "story") {
+
                 // get all stories for persona
                 contentService.getData("stories/" + user.id).then(function(data) {
 
@@ -34,28 +34,22 @@ angular.module("panel-controller", [])
                     $ionicLoading.hide();
 
                 });
-                
+
             } else {
-                
+
                 // get all stories for panel and persona
-                contentService.getData("stories/" + param + "/persona/" + user.id).then(function(data) {
+                contentService.getData("stories/" + panelParam + "/persona/" + user.id).then(function(data) {
 
                     // set scope
                     $scope.content = data;
 
                     // hide UI loading
                     $ionicLoading.hide();
-                    
+
                 });
-                
+
             };
             
-        };
-
-        $rootScope.$on("workspaceSet", function(event, args) {
-            
-            getPanels(args.panelType, panelParam);
-
         });
         
     });

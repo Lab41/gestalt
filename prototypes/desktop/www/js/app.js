@@ -97,8 +97,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     			controller: "panelCtrl"
     		},
             "slide": {
-                templateUrl: "templates/slide-panel.html",
-                controller: "panelCtrl"
+                templateUrl: "templates/slide-panel.html"/*,
+                controller: "appCtrl"*/
             }
     	}
     })

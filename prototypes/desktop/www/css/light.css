@@ -10,6 +10,7 @@
 /* !CUSTOM
 /* --- !menu
 /* --- !login
+/* --- !slide panel
 
 /******************************* !IMPORTS *******************************/
 
@@ -81,21 +82,18 @@ button {
     
 }
 
+/* menu item */
+.menu-item:hover {
+    
+    background: rgb(220,220,220);
+    
+}
+
 /* active item */
 .item.active {
 	
-	background: rgb(240,240,240);
+	background: rgb(220,220,220);
 	
-}
-
-/* active menut item */
-.item.active.menu-item {
-    
-    margin-left: -1em;
-    margin-right: -1em;
-    padding-left: 2em;
-    padding-right: 2em;
-    
 }
 
 /*******************/
@@ -123,5 +121,23 @@ button {
 .login section div:nth-child(4) {
     
     background: rgb(220,220,220);
+    
+}
+
+.login section div:hover {
+    
+    background: rgb(210,210,210);
+    
+}
+
+
+/*************************/
+/***** !slide panel ******/
+/*************************/
+
+slide-panel section.left,
+slide-panel section.right {
+  
+    background: rgba(240,240,240,0.95);
     
 }

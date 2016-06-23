@@ -12,6 +12,7 @@
 /* --- !active
 /* --- !menu
 /* --- !login
+/* --- !slide panel
 
 /******************************* !IMPORTS *******************************/
 
@@ -83,6 +84,13 @@ button {
     
 }
 
+/* menu item */
+.menu-item:hover {
+    
+    background: rgb(30,30,30);
+    
+}
+
 /* active item */
 .item.active {
 	
@@ -116,5 +124,22 @@ button {
 .login section div:nth-child(4) {
     
     background: rgb(50,50,50);
+    
+}
+
+.login section div:hover {
+    
+    background: rgb(40,40,40);
+    
+}
+
+/*************************/
+/***** !slide panel ******/
+/*************************/
+
+slide-panel section.left,
+slide-panel section.right {
+  
+    background: rgba(20,20,20,0.95);
     
 }

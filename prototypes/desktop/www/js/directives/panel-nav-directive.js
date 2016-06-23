@@ -25,7 +25,7 @@ angular.module("panel-nav-directive", [])
 					
 					// origin panel
 					var origin = data;
-                    console.log($scope.panels);
+                    
                     // check all panels
                     angular.forEach($scope.panels, function(value, key) {
                         
