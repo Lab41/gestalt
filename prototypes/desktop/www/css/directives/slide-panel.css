@@ -50,13 +50,6 @@ slide-panel section {
     
 }
 
-slide-panel section.left,
-slide-panel section.right {
-  
-    background: rgba(20,20,20,0.95);
-    
-}
-
 slide-panel section.left {
     
     left: calc(-500px - 2em);
