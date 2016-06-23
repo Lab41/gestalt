@@ -8,19 +8,269 @@
 /* !IMPORTS
 /* !GLOBALS
 /* !CUSTOM
-/* --- !something
+/* --- !item
+/* --- !menu
+/* --- !login
 
 /******************************* !IMPORTS *******************************/
-@import url("main.css");
-@import url("light.css");
+@import url("reset.css");
 
 /******************************* !GLOBALS *******************************/
 
+html, body {
+    
+    font-size: 16px;
+    
+}
+
+html,
+body,
+h1,
+h2,
+h3 {
+	
+	font-family: "Source Sans Pro", sans-serif;
+	
+}
+
+a {
+	
+	color: currentColor;
+    text-decoration: none;
+	
+}
+
+h1, h2 {
+	
+	font-family: "Source Sans Pro Light", sans-serif;
+	font-weight: 300;
+	
+}
+
+h2 {
+    
+    font-size: 1.5em;
+    max-width: 500px;
+    width: 60%;
+    
+}
+
+p {
+    
+    line-height: 1.2;
+    margin-bottom: 1em;
+    
+}
+
+button {
+	
+	border: 1px;
+	border-style: solid;
+	font-family: "Source Sans Pro", sans-serif;
+	font-size: 0.85em;
+	padding: 0.5em;
+	
+}
+
 /******************************* !CUSTOM *******************************/
 
-/* menu icon */
-.menu {
-	
-	font-size: 1.5em;
-	
+/******************/
+/***** !item ******/
+/******************/
+
+/* vanilla item for lists */
+.item {
+    
+    display: block;
+    padding: 0.5em;
+    position: relative;
+    
+}
+
+.item.menu-item.active {
+    
+    margin-left: -1em;
+    margin-right: -1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    
+}
+
+.item-divider {
+    
+    font-size: 2em;
+    font-weight: 300;
+    margin-bottom: 0.25em;
+    margin-top: 1em;
+    padding: 0;
+    padding-left: 0.5em;
+    
+}
+
+/******************/
+/***** !menu ******/
+/******************/
+
+/* icon */
+.menu-icon {
+    
+    border: 0 none;
+    cursor: pointer;
+    font-size: 1.7em;
+    padding: 0.5em;
+    
+}
+
+/* text */
+.menu-title {
+    
+    padding: 1em;
+    position: relative;
+    
+}
+
+/* underline */
+.menu-title:after {
+    
+    bottom: 0;
+	content: '';
+	height: 1px;
+	left: 1em;
+	position: absolute;
+	width: calc(100% - 2em);
+    
+}
+
+/* close button */
+.menu-title span {
+    
+    cursor: pointer;
+    font-size: 0.9em;
+    position: absolute;
+    right: 1em;
+    top: 1.4em;
+    
+}
+
+/* menu item */
+.menu-item {
+    
+    padding-left: 1em;
+    
+}
+
+/* theme */
+.theme-change {
+    
+    font-size: 0.7em;
+    left: 5px;
+    padding-bottom: 0.25em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.1em;
+    position: relative;
+    text-transform: lowercase;
+    top: -2px;
+    
+}
+
+/* user */
+.user {
+    
+    padding: 1em;
+    
+}
+
+.user span:last-child {
+    
+    cursor: pointer;
+    
+}
+
+.user span:first-child {
+    
+    border-right: 1px;
+    border-right-color: currentColor;
+    border-right-style: solid;
+    font-weight: 700;
+    padding-right: 0.5em;
+    text-transform: uppercase;
+    
+}
+
+.user span:last-child {
+    
+    padding-left: 0.5em;
+    
+}
+
+/* items */
+.menu-item {
+    
+    cursor: pointer;
+    text-transform: capitalize;
+    
+}
+
+/* active menu item */
+.item.active.menu-item {
+    
+    margin-left: -1em;
+    margin-right: -1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    
+}
+
+/*******************/
+/***** !login ******/
+/*******************/
+
+/* wrap */
+.login {
+    
+    left: 50%;
+    max-width: 900px;
+    padding: 5em;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width: 70%;
+    
+}
+
+/* login headline subtext */
+.login h2 + p {
+    
+    margin-bottom: 2em;
+    
+}
+
+/* wrap personas */
+.login section {
+    
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    
+}
+
+/* persona */
+.login section div {
+    
+    cursor: pointer;
+    padding: 2em;
+    width: 42%;
+    
+}
+
+.login section div p:first-child {
+    
+    font-weight: 700;
+    text-transform: capitalize;
+    
 }

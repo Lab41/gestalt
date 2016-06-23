@@ -1,63 +1,92 @@
 angular.module("app-controller", [])
 
-.controller("appCtrl", ["$scope", "$rootScope", "$state", "$window", "$stateParams", "$ionicPopup", "layoutService", "authenticationService", "$ionicHistory", "$ionicViewSwitcher", function($scope, $rootScope, $state, $window, $stateParams, $ionicPopup, layoutService, authenticationService, $ionicHistory, $ionicViewSwitcher) {
+.controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, layoutService, authenticationService, $rootScope) {
     
-    var workspace = $stateParams.workspace;
+    var workspaceParam = $stateParams.workspace;
+    var panelID = $stateParams.panel;
+    var storyPanelTitle = "all stories";
     
     // data objects
     $scope.panels;
-    $scope.navVisible = true;
+    $scope.panel;
+    $scope.user;
+    $scope.workspaces;
+    $scope.workspace;
+    $scope.workspaceParam = workspaceParam;
     
-	// get LAYOUT data stored in service	
-	layoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {
-		
-		// set scope
-		$scope.panels = data;
-		
-	});
-    
-    // confirm logout
-    $scope.confirmLogout = function() {
+    $rootScope.$on("login", function(event, args) {
         
-        // construct popup
-        var alertPopup = $ionicPopup.alert({
-            title: "Goodbye!",
-            template: "You have logged out."
+        // scope
+        $scope.user = args.user;
+        $scope.workspaces = args.workspaces;
+        
+    });
+    
+    // get persona 
+    authenticationService.getCredentials().then(function(userData) {
+        
+        var user = userData;
+        
+        // set scope
+        $scope.user = userData;
+            
+        // get workspaces for persona in local storage (i.e. user)
+        layoutService.getStructures("persona/" + user.id, "workspaces").then(function(data) {
+    
+            // set scope
+            $scope.workspaces = data;
+
         });
         
-        // do something afterward
-       alertPopup.then(function(res) {
-           
-           // clear cookies and log out user
-           authenticationService.clearCredentials();
-           
-           // take user to welcome
-           $state.go("login");
-           
-       });
+        // get single workspace
+        layoutService.getStructures(workspaceParam + "/persona/" + user.id, "workspaces").then(function(data) {
+
+            var workspace = data[0];
+            
+            // set scope
+            $scope.workspace = workspace;
+            $scope.panels = workspace.panel == "story" ? [{name: storyPanelTitle}] : workspace.panels;
+
+        });
+        
+        // store panels for later
+        layoutService.getStructures("panel", "panels").then(function(data) {
+            
+        });
+        
+    });
+    
+    // change workspace
+    $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, panelType) {
+        
+        // transition state
+        $state.go("app.panel", {
+            workspace: workspaceParam,
+            panel: panelParam
+        });
+		
+		// set active workspace
+		$scope.workspaceParam = workspaceParam;
+        
+        // get current workspace panels
+        layoutService.getStructures(workspaceID + "/panel/" + panelType, "panels").then(function(data) {
+
+            // set scope
+            $scope.panels = panelType == "story" ? [{name: storyPanelTitle}] : data;
+
+        });
         
     };
     
-    // toggle navigation
-    $scope.toggleNav = function() {
-    	
-    	// check visibility & set
-    	$scope.navVisible = !$scope.navVisible ? true : false;
-    	
+    // log out
+    $scope.logout = function() {
+        
+        // clear credentials
+        authenticationService.clearCredentials();
+                
+        // transition state
+        $state.go("login");
+        
     };
-    
-    // forced back history
-	$scope.goBack = function() {
-		
-		$ionicHistory.goBack(1);
-		
-	};
-	
-	// change the pane via navigation
-	$scope.changePanel = function(name) {
-		
-		$scope.panelParam = name;
-		
-	};
 	
 }]);

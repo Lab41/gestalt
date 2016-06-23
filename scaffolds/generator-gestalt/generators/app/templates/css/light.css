@@ -55,7 +55,7 @@ button {
 /* side menu */
 .menu {
 	
-	background-color: rgb(150,150,150);
+	background-color: rgb(220,220,220);
 	
 }
 
@@ -75,6 +75,12 @@ button {
 	background-color: transparent;
 	color: rgb(100,100,100);
 	
+}
+
+ion-item.item {
+    
+    border-color: rgb(200,200,200);
+    
 }
 
 /* touched item */

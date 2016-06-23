@@ -1,6 +1,5 @@
 var app = angular.module("app", [
 	"ionic",
-    "ngCookies",
 	"angularMoment",
 	"tablet.controllers",
     "tablet.directives",
@@ -11,23 +10,21 @@ var app = angular.module("app", [
 /********* RUN *********/
 /***********************/
 
-app.run(function($http, $rootScope, $location, $cookies, $ionicPlatform, amMoment, $state, $timeout) {
+app.run(function($http, $rootScope, $location, $ionicPlatform, amMoment, $state) {
     
-    /****************/
-	/**** VALUES ****/
-	/****************/
-	
-	// if cookie exists, set scope
-	//if (cookieUser !== undefined) {
-	
-		// set globals
-        $rootScope.globals = {
-            currentUser: {
-                username: "undefined"
-            }
-        };
+    $rootScope.$on("$stateChangeError", function(e, toState, toParams, fromState, fromParams, error) {
+    	
+    	if (error === "requires login") {
+	        
+	        // prevent any other state to load
+	        e.preventDefault();
+	                   
+	        // navigate to login
+	        $state.go("login");
+	        
+	    };
         
-    //};
+    });
     
     /****************/
 	/**** MOMENT ****/
@@ -66,12 +63,14 @@ app.run(function($http, $rootScope, $location, $cookies, $ionicPlatform, amMomen
 /********* CONFIG *********/
 /**************************/
 
-app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicConfigProvider) {
+app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicConfigProvider, $compileProvider) {
     
     // config to ensure platform specific styles are uniform across devices
     $ionicConfigProvider.navBar.alignTitle('center');
 
 	$httpProvider.defaults.withCredentials = true;
+    
+    $compileProvider.debugInfoEnabled(false);
 	
 	/****************/
 	/**** ROUTES ****/
@@ -89,14 +88,14 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     .state("menu", {
     	url: "/",
     	abstract: true,
-    	template: "<ion-nav-view name='menu'></ion-nav-view>"/*,
+    	template: "<ion-nav-view name='menu'></ion-nav-view>",
     	resolve: {
-			authorized: ["$q", "$cookies", function($q, $cookies) {
-				if($cookies.get("user") === undefined) {
+			authorized: ["$q", function($q) {
+				if(localStorage.getItem("gestaltUser") === null) {
 					return $q.reject("requires login");
 				};
 			}]
-		}*/
+		}
     })
     
     // main
@@ -104,14 +103,14 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
         url: "/{workspace}",
         abstract: true,
 		templateUrl: "templates/app.html",
-		controller: "appCtrl"/*,
+		controller: "appCtrl",
         resolve: {
-			authorized: ["$q", "$cookies", function($q, $cookies) {
-				if($cookies.get("user") === undefined) {
+			authorized: ["$q", function($q) {
+				if(localStorage.getItem("gestaltUser") === null) {
 					return $q.reject("requires login");
 				};
 			}]
-		}*/
+		}
     })
     
     // panel
@@ -136,6 +135,6 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     	}
     });
 
-    $urlRouterProvider.otherwise("/stories/navitem1");
+    $urlRouterProvider.otherwise("/login");
 
 });

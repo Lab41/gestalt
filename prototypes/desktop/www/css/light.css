@@ -7,9 +7,10 @@
 
 /* !IMPORTS
 /* !GLOBALS
-/* IONIC
 /* !CUSTOM
-/* --- !something
+/* --- !menu
+/* --- !login
+/* --- !slide panel
 
 /******************************* !IMPORTS *******************************/
 
@@ -36,97 +37,120 @@ button {
 	
 }
 
-/******************************* !IONIC *******************************/
+/******************************* !CUSTOM *******************************/
 
-/* empty content area/header */
-.pane {
-	
-	background: rgb(250,250,250);
-	
+/* TEMP section */
+.login section {
+    
+    background: rgba(220,220,220,0.5);
+    
 }
 
-/* top bar */
-.bar {
-	
-	background: transparent;
-	
+.login section:nth-child(even) {
+    
+    background: rgba(220,220,220,0.8);
+    
 }
 
-/* side menu */
-.menu {
-	
-	background-color: rgb(150,150,150);
-	
+/* TEMP section */
+ui-view[name="panel"] section {
+    
+    background: rgba(220,220,220,0.5);
+    
 }
 
-/* general item */
-.item,
-.card, .list-inset {
-	
-	border-color: rgb(150,150,150);
-	background-color: transparent;
-	color: rgb(100,100,100);
-	
+ui-view[name="panel"] section:nth-child(even) {
+    
+    background: rgba(220,220,220,0.8);
+    
 }
 
-/* list item */
-.item-complex .item-content {
-	
-	background-color: transparent;
-	color: rgb(100,100,100);
-	
-}
+/********************/
+/***** !active ******/
+/********************/
 
-/* touched item */
-.item .item-content.activated,
-.item.activated,
-.item.activated.item-complex > .item-content {
-	
-	background-color: rgb(250,250,250);
-	border-color: rgb(244,244,244);
-	
-}
-
-/* probably temp fix for h2 activated */
-.item-content.activated h2 {
-	
-	background: transparent;
-	
-}
-
-/* pop up */
-.popup-container .popup {
-	
-	background-color: rgba(150,150,150, 0.95);
-	
-}
-
-/* pop up button color */
-.button.button-positive {
-	
-	background-color: rgb(100,100,100);
-	
-}
-
-/* buttons */
-.button:hover {
+/* active */
+.active {
 	
 	color: currentColor;
 	
 }
 
-/******************************* !CUSTOM *******************************/
+/******************/
+/***** !menu ******/
+/******************/
 
-/* active panel nav item */
-.panel-nav a.active {
+/* menu title */
+.menu-title:after {
+    
+    background: currentColor;
+    
+}
+
+/* theme */
+.theme-change {
+    
+    background: rgb(80,80,80);
+    color: rgb(200,200,200);
+    
+}
+
+/* menu item */
+.menu-item:hover {
+    
+    background: rgb(220,220,220);
+    
+}
+
+/* active item */
+.item.active {
 	
-	color: rgb(60,60,60);
+	background: rgb(220,220,220);
 	
 }
 
-/* navigation link underline */
-.panel-nav a.active:after {
-	
-	background: currentColor;
-	
+/*******************/
+/***** !login ******/
+/*******************/
+
+.login section div:nth-child(1) {
+    
+    background: rgb(200,200,200);
+    
+}
+
+.login section div:nth-child(2) {
+    
+    background: rgb(240,240,240);
+    
+}
+
+.login section div:nth-child(3) {
+    
+    background: rgb(230,230,230);
+    
+}
+
+.login section div:nth-child(4) {
+    
+    background: rgb(220,220,220);
+    
+}
+
+.login section div:hover {
+    
+    background: rgb(210,210,210);
+    
+}
+
+
+/*************************/
+/***** !slide panel ******/
+/*************************/
+
+slide-panel section.left,
+slide-panel section.right {
+  
+    background: rgba(240,240,240,0.95);
+    
 }

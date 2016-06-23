@@ -1,0 +1,65 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** panel-nav directive STYLE ***************************************/
+
+/* panel nav directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !panel nav
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBALS *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/***********************/
+/***** !panel nav ******/
+/***********************/
+
+/* nav wrap */
+panel-nav nav {
+	
+	display: flex;
+    left: 4em;
+	max-width: 400px;
+	padding: 1em;
+    padding-top: 0.3em;
+    position: absolute;
+    top: 0;
+	width: 40%;
+	
+}
+
+/* nav item */
+panel-nav a {
+	
+	padding: 1em;
+	position: relative;
+	text-align: center;
+    text-transform: capitalize;
+	
+}
+
+panel-nav a:not(:last-child) {
+	
+	margin-right: 1em;
+	
+}
+
+/* navigation link underline */
+panel-nav a.active:after {
+	
+	background: currentColor;
+	bottom: 0;
+	content: '';
+	height: 3px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	
+}

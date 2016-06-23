@@ -1,11 +1,16 @@
 import json
 import web
+import persona
+import workspace
+import story
 
 urls = (
     
     # rest API backend endpoints
-    "/api/(.*)/(.*)", "static_data",
-    
+    "/api/workspace/", workspace.app_workspaces,
+    "/api/data/stories/", story.app_story,
+    "/api/persona/", persona.app_persona,
+
     # front-end routes to load angular app
     "/", "index",
     "/(.+)", "www"
@@ -33,16 +38,6 @@ class index:
             return f.read()
         except IOError:
             web.notfound()
-
-class static_data:
-    def GET(self, type, name):
-
-	# open file	
-	with open("routes/" + type + "/" + name + ".json") as json_data:
-		data = json.load(json_data)
-		json_data.close()
-
-	return json.dumps(data)
             
 if __name__ == "__main__":
     app = appConfig(urls, globals())
