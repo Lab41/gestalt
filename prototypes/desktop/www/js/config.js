@@ -8,7 +8,7 @@ var api_config = {
 // app starting theme
 var theme_config = {
     ui: {
-        start: "dark",
-        opposite: "light"
+        start: "light",
+        opposite: "dark"
     }
 };

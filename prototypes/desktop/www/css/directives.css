@@ -27,3 +27,9 @@ ui-view[name="panel"] section {
     
     padding: 1em;
 }
+
+sticky-nodes .node {
+	
+	fill: #667080;
+	
+}

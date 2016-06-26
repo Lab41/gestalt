@@ -3,22 +3,24 @@ var express = require("express");
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
 var conString = process.env.DATABASE_URL ? process.env.DATABASE_URL.split(",")[0] + "://" + process.env.DATABASE_URL.split(",")[1] + ":" + process.env.DATABASE_URL.split(",")[3] + "@" + process.env.DATABASE_URL.split(",")[2] + "/" + process.env.DATABASE_URL.split(",")[0] : "";
-var baseUrl = "/api/persona";
+var baseUrl = "/api/data/visualization";
 
 /*******************************/
 /************* GET *************/
 /*******************************/
 
-// all personas
-router.get(baseUrl, function(req, res) {
+// cdis viz
+router.get(baseUrl + "/:table", function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
+		
+		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select * from gestalt_persona;");
+        var query = client.query("select array_agg(row_to_json(cd)) as nodes from gestalt_" + table + " cd");
         
         // stream results back one row at a time
         query.on("row", function(row) {

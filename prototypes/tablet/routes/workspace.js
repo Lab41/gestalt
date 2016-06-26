@@ -2,7 +2,7 @@
 var express = require("express");
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
-var conString = process.env.DATABASE_URL || "";
+var conString = process.env.DATABASE_URL ? process.env.DATABASE_URL.split(",")[0] + "://" + process.env.DATABASE_URL.split(",")[1] + ":" + process.env.DATABASE_URL.split(",")[3] + "@" + process.env.DATABASE_URL.split(",")[2] + "/" + process.env.DATABASE_URL.split(",")[0] : "";
 var baseUrl = "/api/workspace";
 
 /*******************************/
