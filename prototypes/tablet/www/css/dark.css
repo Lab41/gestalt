@@ -12,6 +12,8 @@
 /* --- !active
 /* --- !menu
 /* --- !login
+/* --- !group nodes
+/* --- !hex tile map
 
 /******************************* !IMPORTS *******************************/
 
@@ -202,4 +204,25 @@ ion-content section:nth-child(even) {
     
     background: rgb(50,50,50);
     
+}
+
+/**************************/
+/***** !group nodes ******/
+/**************************/
+
+group-nodes .node {
+	
+	fill: #444b5a;
+	
+}
+
+/***********************/
+/**** !hex tile map ****/
+/***********************/
+
+hex-tile-map polygon {
+  
+    fill: #444b5a;
+    stroke: rgb(26,26,26);
+
 }

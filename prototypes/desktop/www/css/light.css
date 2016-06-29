@@ -11,6 +11,8 @@
 /* --- !menu
 /* --- !login
 /* --- !slide panel
+/* --- !group nodes
+/* --- !hex tile map
 
 /******************************* !IMPORTS *******************************/
 
@@ -153,4 +155,25 @@ slide-panel section.right {
   
     background: rgba(240,240,240,0.95);
     
+}
+
+/**************************/
+/***** !group nodes ******/
+/**************************/
+
+group-nodes .node {
+	
+	fill: #667080;
+	
+}
+
+/***********************/
+/**** !hex tile map ****/
+/***********************/
+
+hex-tile-map polygon {
+  
+    fill: #667080;
+    stroke: rgb(244,244,244);
+
 }

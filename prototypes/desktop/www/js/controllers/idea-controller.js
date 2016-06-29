@@ -11,7 +11,7 @@ angular.module("idea-controller", [])
 	contentService.getData("visualization/" + dataset + "/").then(function(data) {
 		
 		// set scope
-		$scope.content = data[0];console.log(data);
+		$scope.content = data;
 		
 	});
     

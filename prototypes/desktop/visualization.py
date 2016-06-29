@@ -30,7 +30,7 @@ class viz:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select array_agg(row_to_json(cd)) as nodes from gestalt_""" + table + """ cd""")
+        cursor.execute("""select c.origin,'group0' as cluster,row_to_json(r) as clusterGroups,3 as radius from gestalt_""" + table + """ c,(select 'group' || trunc(random() * 2 + 1) as cluster from gestalt_""" + table + """) r limit 200;""")
         
         # get rows
         data = cursor.fetchall()
