@@ -3,7 +3,7 @@ var bodyParser = require("body-parser");
 var app = express();
 
 // set up the request body parser
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // backend API
