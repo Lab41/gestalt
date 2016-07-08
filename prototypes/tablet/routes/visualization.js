@@ -20,7 +20,7 @@ router.get(baseUrl + "/:table", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select array_agg(row_to_json(cd)) as nodes from gestalt_" + table + " cd");
+        var query = client.query("select c.name,'group0' as cluster,row_to_json(r) as clustergroups,5 as radius from gestalt_cdis_1 c,(select 'group' || trunc(random() * 2 + 1) as cluster from gestalt_cdis_1) r limit 200;");
         
         // stream results back one row at a time
         query.on("row", function(row) {

@@ -8,7 +8,7 @@ angular.module("group-nodes-directive", [])
             canvasWidth: "=",
             canvasHeight: "="
 		},
-        template: "<button>group</button>",
+        template: "<button id='group'>group</button>",
 		link: function(scope, element, attrs) {
 			
 			// get d3 promise
@@ -48,7 +48,7 @@ angular.module("group-nodes-directive", [])
 						function draw(data) {
                             
                             // attach event to button
-                            d3.select("button")
+                            d3.select("#group")
                                 .on("click", clusterNodes);
                             
                             // set nodes from data

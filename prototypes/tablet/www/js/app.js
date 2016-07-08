@@ -124,6 +124,17 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     	}
     })
     
+    // ideas
+    .state("app.ideas", {
+        url: "/ideas/:table",
+        views: {
+            "panel": {
+                templateUrl: "templates/ideas.html",
+                controller: "ideaCtrl"
+            }
+        }
+    })
+    
     // story
     .state("app.story", {
     	url: "/detail/{id}",
