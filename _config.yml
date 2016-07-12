@@ -17,8 +17,8 @@ github_editme_path: Lab41/gestalt/blob/gh-pages/pages/
 disqus_shortname: 
 # if you're using disqus for comments, add the shortname here. if not, leave this value blank.
 
-production_url: https://tiffanyj41.github.io/gestalt
-BASE_PATH: https://tiffanyj41.github.io/gestalt
+url: tiffanyj41.github.io
+baseurl: /gestalt
 
 host: 127.0.0.1
 # the preview server used. Leave as is.
