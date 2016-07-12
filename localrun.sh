@@ -1,1 +1,1 @@
-bundle exec jekyll serve --watch --incremental
+bundle exec jekyll serve --baseurl '' --watch --incremental
