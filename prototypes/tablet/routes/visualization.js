@@ -42,4 +42,37 @@ router.get(baseUrl + "/:table", function(req, res) {
     
 })
 
+// geojson
+router.get(baseUrl + "/geojson/:grid", function(req, res) {
+
+    var results = [];
+    
+    // get a postgres client from the connection pool
+    pg.connect(conString, function(err, client, done) {
+		
+		var table = req.params.table;
+                
+        // SQL query
+        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (select id,grid_id,name,string_to_array(boundary_polygon, ',') as coordinates from gestalt_country where boundary_polygon is not null and grid_id is not null) r group by type;");
+        
+        // stream results back one row at a time
+        query.on("row", function(row) {
+            results.push(row);
+        });
+        
+        // close connection and return results
+        query.on("end", function() {
+            client.end();
+            return res.json(results);
+        });
+        
+        // handle errors
+        if(err) {
+            console.log(err);
+        };
+        
+    });
+    
+})
+
 module.exports = router;

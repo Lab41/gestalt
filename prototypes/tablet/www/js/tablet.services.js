@@ -3,5 +3,7 @@ angular.module("tablet.services", [
 	"authentication-service",
 	"base64-service",
 	"content-service",
-    "d3-service"
+    "d3-service",
+    "agent-service",
+    "mapbox-service"
 ]);
