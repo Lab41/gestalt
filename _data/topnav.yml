@@ -1,0 +1,28 @@
+#Topnav dropdowns
+topnav_dropdowns:
+- title: Topnav dropdowns
+  folders:
+    - title: Lab41 Resources
+      folderitems:
+        - title: Website
+          external_url: https://www.lab41.org
+        - title: Blog
+          external_url: https://gab41.lab41.org
+        - title: GitHub Repo
+          external_url: https://github.com/Lab41
+        - title: Twitter
+          external_url: https://twitter.com/_lab41
+    - title: Gestalt Resources
+      folderitems:
+        - title: GitHub Repo
+          external_url: https://github.com/Lab41/gestalt
+        - title: Documentation
+          external_url: https://lab41.github.io/gestalt
+    - title: Additional Resources
+      folderitems:
+        - title: Jekyll Documentation Theme
+          url: /mydoc_introduction.html
+        - title: Product 1
+          url: /p1_landing_page.html
+        - title: Product 2
+          url: /p2_landing_page.html
