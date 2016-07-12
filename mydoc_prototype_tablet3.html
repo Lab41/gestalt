@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="prototypes,  tablet prototype">
+<title>Tablet Prototype | Documentation for Gestalt</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<link rel="stylesheet" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Lab41's Gestalt Docs</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- entries without drop-downs appear here -->
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lab41 Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.lab41.org" target="_blank">Website</a></li>
+                        
+                        
+                        
+                        <li><a href="https://gab41.lab41.org" target="_blank">Blog</a></li>
+                        
+                        
+                        
+                        <li><a href="https://github.com/Lab41" target="_blank">GitHub Repo</a></li>
+                        
+                        
+                        
+                        <li><a href="https://twitter.com/_lab41" target="_blank">Twitter</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestalt Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://github.com/Lab41/gestalt" target="_blank">GitHub Repo</a></li>
+                        
+                        
+                        
+                        <li><a href="https://lab41.github.io/gestalt" target="_blank">Documentations</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Additional Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="readings_index.html">Reading Group</a></li>
+                        
+                        
+                        
+                        <li><a href="updates_index.html">Updates</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+			<!-- Send feedback function -->
+<script>
+function SendLinkByMail(href) {
+var subject= "Documentation for Gestalt feedback";
+var body = "I have some feedback about the Tablet Prototype page: ";
+body += window.location.href;
+body += "";
+var uri = "mailto:info@lab41.org?subject=";
+uri += encodeURIComponent(subject);
+uri += "&body=";
+uri += encodeURIComponent(body);
+window.location.href = uri;
+}
+</script>
+
+<li><a href="javascript:(function()%7BSendLinkByMail()%3B%7D)()%3B" target="_blank"><i class="fa fa-envelope-o"></i> Feedback</a></li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Tablet Prototype">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+    <div class="col-lg-12">&nbsp;</div>
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-md-3">
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="mysidebar" class="nav">
+    <li class="sidebarTitle">Gestalt 1.0</li>
+    
+    
+    
+        
+    
+    <li>
+        <a href="#">Overview</a>
+        <ul>
+            
+            
+            
+            <li><a href="index.html">Introduction</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_quickstart.html">Quick start</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_team.html">About the team</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_support.html">Support</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_documentation.html">Documentation</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="updates_index.html">Updates</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Understanding components</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_schema_overview.html">Overview of components</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_raw.html">Raw schema</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_user.html">User schema</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_story.html">Story schema</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_ui.html">UI schema</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Handling data</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_database.html">Database</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">Datasets and Tables</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_dataset_contagion.html">Contagion</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Developing prototypes</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_prototype_scaffold1.html">Scaffold</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">Prototypes</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_prototype_desktop1.html">Desktop prototype</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_prototype_tablet1.html">Tablet prototype</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Visualizations</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_visualizations.html">Visualizations</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Receiving user feedback</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_user_feedback.html">Receiving user feedback</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Testing</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_testing.html">Testing</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+        
+        <!-- if you aren't using the accordion, uncomment this block:
+           <p class="external">
+               <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+           </p>
+           -->
+    </li>
+</ul>
+</div>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+    <!-- Content Column -->
+    <div class="col-md-9">
+        <div class="post-header">
+   <h1 class="post-title-main">Tablet Prototype</h1>
+</div>
+
+
+
+<script>
+    $(document).ready ( function(){
+        $('.box3').addClass('active');
+    });
+</script>
+
+<div id="userMap">
+<div class="content"><a href="mydoc_prototype_tablet1.html"><div class="box box1">Overview</div></a></div>
+<div class="arrow">→</div>
+<div class="content"><a href="mydoc_prototype_tablet2.html"><div class="box box2">Serving the App</div></a></div>
+<div class="arrow">→</div>
+<div class="content"><a href="mydoc_prototype_tablet3.html"><div class="box box3">Prototype Structure</div></a></div>
+</div>
+
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+    
+
+    
+
+    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages/mydoc/mydoc_prototype_tablet3.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    
+
+    
+
+  <h2 id="web-app-structure">Web App Structure</h2>
+
+<p>Because we use Angular 1.0 and there are many different ways to implement the framework, the following is an attempt to make our engineering of the prototype transparent. We are trying to follow <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md" title="John Papa's Angular 1 Style Guide">these standards</a>. The main concept is the idea of single responsibility (1 component per file and ideally less than 400 lines of code). In practice, this means a lot of files and a lot of linkages between files. The following maps out our implementation to aid in modification.</p>
+
+<h3 id="angular-mvc">Angular MVC</h3>
+
+<p>The documentation follows the order of <strong>View -&gt; Controller -&gt; Model</strong> because that seems the most intuitive to understand the structure.</p>
+
+<ul>
+  <li><strong>View</strong> - Users interact with the view (HTML/CSS)</li>
+  <li><strong>Controller</strong> - Controllers perform changes on the model (JavaScript)</li>
+  <li><strong>Model</strong> - Data</li>
+</ul>
+
+<h3 id="angular-ui-router">Angular UI-Router</h3>
+
+<p>Routing in this implementation of Angular/Ionic uses <a href="http://angular-ui.github.io/ui-router/site/#/api/ui.router" title="UI-Router">UI-Router</a> so some of the specific template reference relationships are unique to this spec. All states are configured in <code class="highlighter-rouge">js/app.js</code>.</p>
+
+<hr />
+
+<h3 id="app-entry-point">App Entry Point</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>UI-Router state</th>
+      <th>Angular View</th>
+      <th>Angular Controller</th>
+      <th>Angular Model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>decides which state loads based on URL match</td>
+      <td>decides which HTML file is displayed</td>
+      <td>decides which JavsScript file controls the view</td>
+      <td>decides how data is structured for the view</td>
+    </tr>
+    <tr>
+      <td>menu</td>
+      <td>index.html</td>
+      <td>none</td>
+      <td>none</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="state-menu">State: menu</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">.</span><span class="nx">state</span><span class="p">(</span><span class="s2">"menu"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="s2">"/"</span><span class="p">,</span>
+    <span class="na">abstract</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">"&lt;ion-nav-view name='menu'&gt;&lt;/ion-nav-view&gt;"</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>The reason this prototype is set up with the menu state as the highest-level state and as an abstract state is due to the specific implementation of the Ionic Framework when working with their menu directives. It is also the reason why two ion-nav-views are nested inside each other.</p>
+
+<h4 id="template-indexhtml">Template: index.html</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- ONLY RELEVANT CODE SHOWN --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+    <span class="c">&lt;!-- renders app view --&gt;</span>
+    <span class="nt">&lt;ion-nav-view&gt;&lt;/ion-nav-view&gt;</span>
+    
+<span class="nt">&lt;/body&gt;</span>
+</code></pre>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Abstract Illustration</th>
+      <th>Implementation Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="../images/template-index.png" alt="index.html" title="Index Template" /></td>
+      <td><img src="../images/template-index-implement.png" alt="Index Template" title="Index Template" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="controller-none">Controller: none</h4>
+
+<p>There is no overarching controller for this view because at this point we do not need one but you can easily add one should your use case require it. If one existed, it would be declared inside the state object.</p>
+
+<h4 id="model-none">Model: none</h4>
+
+<p>There is no overarching model for this view because currently no data needs to be accessed by the user at this level of the app.</p>
+
+<hr />
+
+<h3 id="menu">Menu</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>UI-Router state</th>
+      <th>Angular View</th>
+      <th>Angular Controller</th>
+      <th>Angular Model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>decides which state loads based on URL match</td>
+      <td>decides which HTML file is displayed</td>
+      <td>decides which JavsScript file controls the view</td>
+      <td>decides how data is structured for the view</td>
+    </tr>
+    <tr>
+      <td>app</td>
+      <td>app.html</td>
+      <td>app-controller.js</td>
+      <td><code class="highlighter-rouge">/* Layout */ api/workspaces/&lt;username&gt;</code> <code class="highlighter-rouge">/* Content */ api/data/TBD</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="state-menu-1">State: menu</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">.</span><span class="nx">state</span><span class="p">(</span><span class="s2">"app"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="s2">"/{workspace}"</span><span class="p">,</span>
+    <span class="na">abstract</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">templateUrl</span><span class="p">:</span> <span class="s2">"templates/app.html"</span><span class="p">,</span>
+    <span class="na">controller</span><span class="p">:</span> <span class="s2">"appCtrl"</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<h4 id="template-apphtml">Template: app.html</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- ONLY RELEVANT CODE SHOWN --&gt;</span>
+<span class="c">&lt;!-- FROM INDEX.HTML --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;ion-nav-view&gt;</span>
+    
+        <span class="c">&lt;!-- FROM MENU STATE TEMPLATE --&gt;</span>
+        <span class="nt">&lt;ion-nav-view</span> <span class="na">name=</span><span class="s">"menu"</span><span class="nt">&gt;</span>
+        
+            <span class="c">&lt;!-- FROM APP.HTML --&gt;</span>
+            <span class="c">&lt;!-- renders center menu from Ionic Framework --&gt;</span>
+            <span class="nt">&lt;ion-side-menu-content&gt;</span>
+            
+                <span class="c">&lt;!-- renders panel navigation --&gt;</span>
+                <span class="nt">&lt;div&gt;&lt;/div&gt;</span>
+            
+                <span class="c">&lt;!-- renders panel view --&gt;</span>
+                <span class="nt">&lt;ion-nav-view</span> <span class="na">name=</span><span class="s">"panel"</span><span class="nt">&gt;&lt;/ion-nav-view&gt;</span>
+                
+            <span class="nt">&lt;/ion-side-menu-content&gt;</span>
+            
+            <span class="c">&lt;!-- renders left menu from Ionic Framework --&gt;</span>
+            <span class="nt">&lt;ion-side-menu</span> <span class="na">side=</span><span class="s">"left"</span><span class="nt">&gt;&lt;/ion-side-menu&gt;</span>
+            
+        <span class="nt">&lt;/ion-nav-view&gt;</span>
+    
+    <span class="nt">&lt;/ion-nav-view&gt;</span>
+    
+<span class="nt">&lt;/body&gt;</span>
+</code></pre>
+</div>
+
+<p>The app is set up in a series of panels which are the highest-level organization of information. Panels usually simply organize smaller bits of content into a organized group.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Abstract Illustration</th>
+      <th>Implementation Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="../images/template-app.png" alt="app.html" title="App Template" /></td>
+      <td><img src="../images/template-app-implement.png" alt="app.html" title="App Template" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="controller-appctrl">Controller: appCtrl</h4>
+
+<pre><code class="language-JavaScript">// ONLY RELEVANT CODE SHOWN
+// get LAYOUT data stored in service    
+layoutService.getPanels($rootScope.globals.currentUser.username).then(function(data) {
+
+    // set scope
+    $scope.panels = data;
+
+});
+</code></pre>
+<p>Notice that there is no specific <code class="highlighter-rouge">contentService</code> API call for this state. This is because at this point there is no panel-specific content needing to be rendered into the app and often there will never be an API call for content at this level.</p>
+
+<h4 id="model">Model</h4>
+
+<p><strong>Layout</strong>
+<code class="highlighter-rouge">api/workspaces/&lt;username&gt;</code></p>
+
+<pre><code class="language-JavaScript">// truncated for legibility
+[
+    {
+        "_id": "1",
+        "title": "Panel 1",
+        "description": "",
+        "url": {
+            "param": "navitem1"
+        }
+    },
+    {
+        "_id": "2",
+        "title": "Panel 2",
+        "description": "",
+        "url": {
+            "param": "navitem2"
+        }
+    },
+    {
+        "_id": "3",
+        "title": "Panel 3",
+        "description": "",
+        "url": {
+            "param": "navitem3"
+        }
+    },
+    ...
+]
+</code></pre>
+
+<p>Username is an optional parameter. For our purposes we may want to experiement with different layouts/data scopes for specific users and thus need a model for that specificity.</p>
+
+<p><strong>Content</strong>
+<code class="highlighter-rouge">api/data/TBD</code></p>
+
+<p>Content may or may not make sense at a panel level inside this application. For now it is TBD and not coded in the controller to request any content for the panels.</p>
+
+<hr />
+
+<h3 id="panel">Panel</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>UI-Router state</th>
+      <th>Angular View</th>
+      <th>Angular Controller</th>
+      <th>Angular Model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>decides which state loads based on URL match</td>
+      <td>decides which HTML file is displayed</td>
+      <td>decides which JavsScript file controls the view</td>
+      <td>decides how data is structured for the view</td>
+    </tr>
+    <tr>
+      <td>panel</td>
+      <td>panel.html</td>
+      <td>panel-controller.js</td>
+      <td><code class="highlighter-rouge">/* Layout */ api/workspaces/&lt;username&gt;</code> <code class="highlighter-rouge">/* Content */ api/data/&lt;panelParam&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="state-panel">State: panel</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">.</span><span class="nx">state</span><span class="p">(</span><span class="s2">"app.panel"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="s2">"/{panel}"</span><span class="p">,</span>
+    <span class="na">views</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"panel"</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// note this key must match the "name" in the HTML parent template</span>
+            <span class="nl">templateUrl</span><span class="p">:</span> <span class="s2">"templates/panel.html"</span><span class="p">,</span>
+            <span class="na">controller</span><span class="p">:</span> <span class="s2">"panelCtrl"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<h4 id="template-panelhtml">Template: panel.html</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- ONLY RELEVANT CODE SHOWN --&gt;</span>
+<span class="c">&lt;!-- FROM INDEX.HTML --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;ion-nav-view&gt;</span>
+    
+        <span class="c">&lt;!-- FROM MENU STATE TEMPLATE --&gt;</span>
+        <span class="nt">&lt;ion-nav-view</span> <span class="na">name=</span><span class="s">"menu"</span><span class="nt">&gt;</span>
+        
+            <span class="c">&lt;!-- FROM APP.HTML --&gt;</span>
+            <span class="c">&lt;!-- renders center menu from Ionic Framework --&gt;</span>
+            <span class="nt">&lt;ion-side-menu-content&gt;</span>
+            
+                <span class="c">&lt;!-- renders panel navigation --&gt;</span>
+                <span class="nt">&lt;div&gt;&lt;/div&gt;</span>
+            
+                <span class="c">&lt;!-- renders panel view --&gt;</span>
+                <span class="nt">&lt;ion-nav-view</span> <span class="na">name=</span><span class="s">"panel"</span><span class="nt">&gt;</span>
+                
+                    <span class="c">&lt;!-- FROM PANEL.HTML --&gt;</span>
+                    <span class="c">&lt;!-- renders panel content --&gt;</span>
+                    <span class="nt">&lt;ion-view&gt;&lt;/ion-view&gt;</span>
+                    
+                <span class="nt">&lt;/ion-nav-view&gt;</span>
+                
+            <span class="nt">&lt;/ion-side-menu-content&gt;</span>
+            
+            <span class="c">&lt;!-- renders left menu from Ionic Framework --&gt;</span>
+            <span class="nt">&lt;ion-side-menu</span> <span class="na">side=</span><span class="s">"left"</span><span class="nt">&gt;&lt;/ion-side-menu&gt;</span>
+            
+        <span class="nt">&lt;/ion-nav-view&gt;</span>
+    
+    <span class="nt">&lt;/ion-nav-view&gt;</span>
+    
+<span class="nt">&lt;/body&gt;</span>
+</code></pre>
+</div>
+
+<p>Each panel is set up as a series of stories. We may not need this level of abstraction but it allows us to group stories in logical collections like possibly “contagion stories”, “gdp stories”, etc.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Abstract Illustration</th>
+      <th>Implementation Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="../images/template-panel.png" alt="panel.html" title="Panel Template" /></td>
+      <td><img src="../images/template-panel-implement.png" alt="panel.html" title="Panel Template" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="controller-panelctrl">Controller: panelCtrl</h4>
+
+<pre><code class="language-JavaScript">// ONLY RELEVANT CODE SHOWN
+// get LAYOUT data stored in service    
+layoutService.getPanel(panel).then(function(data) {
+        
+    // set scope
+    $scope.panel = data;
+
+});
+
+// get CONTENT data stored in service
+contentService.getData(panel).then(function(data) {
+        
+    // set scope
+    $scope.content = data.length &gt; 0 ? data : [{ title: "Nothing Found.", content: "Sorry but can't find any content.", poster: "None" }];
+
+});
+</code></pre>
+
+<p>Because the panel state is dedicated to a single panel at a time both the <code class="highlighter-rouge">layoutService</code> and the <code class="highlighter-rouge">contentService</code> load a single panel’s layout and content versus loading all of them for each panel.</p>
+
+<h4 id="model-1">Model</h4>
+
+<p><strong>Layout</strong>
+<code class="highlighter-rouge">api/workspaces/&lt;username&gt;</code></p>
+
+<pre><code class="language-JavaScript">{
+    "_id": "2",
+    "title": "Panel 2",
+    "description": "",
+    "url": {
+        "param": "navitem2"
+    }
+}
+</code></pre>
+
+<p>Username is an optional parameter. For our purposes we may want to experiement with different layouts/data scopes for specific users and thus need a model for that specificity. Based on the active panel the workspace will return just that single panel’s layout data.</p>
+
+<p><strong>Content</strong>
+<code class="highlighter-rouge">api/data/&lt;panelParam&gt;</code></p>
+
+<pre><code class="language-JavaScript">[
+    {
+        "name": "story1"
+    },
+    {
+        "name": "story2"
+    },
+    {
+        "name": "story3"
+    }
+]
+</code></pre>
+
+<p>The <code class="highlighter-rouge">contentService</code> takes the panel param as returned by the <code class="highlighter-rouge">layoutService</code> and queries the content database for that panel’s data.</p>
+
+<hr />
+
+<h3 id="story">Story</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>UI-Router state</th>
+      <th>Angular View</th>
+      <th>Angular Controller</th>
+      <th>Angular Model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>decides which state loads based on URL match</td>
+      <td>decides which HTML file is displayed</td>
+      <td>decides which JavsScript file controls the view</td>
+      <td>decides how data is structured for the view</td>
+    </tr>
+    <tr>
+      <td>story</td>
+      <td>story.html</td>
+      <td>story-controller.js</td>
+      <td><code class="highlighter-rouge">/* Layout */ TBD</code> <code class="highlighter-rouge">/* Content */ api/data/&lt;storyParam&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="state-story">State: story</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">.</span><span class="nx">state</span><span class="p">(</span><span class="s2">"app.story"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="s2">"/detail/{id}"</span><span class="p">,</span>
+    <span class="na">views</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"panel"</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// note this means a story loads in the panel container (and not a dedicated story container)</span>
+            <span class="nl">templateUrl</span><span class="p">:</span> <span class="s2">"templates/story.html"</span><span class="p">,</span>
+            <span class="na">controller</span><span class="p">:</span> <span class="s2">"storyCtrl"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<h4 id="template-storyhtml">Template: story.html</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- ONLY RELEVANT CODE SHOWN --&gt;</span>
+<span class="c">&lt;!-- FROM INDEX.HTML --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;ion-nav-view&gt;</span>
+    
+        <span class="c">&lt;!-- FROM MENU STATE TEMPLATE --&gt;</span>
+        <span class="nt">&lt;ion-nav-view</span> <span class="na">name=</span><span class="s">"menu"</span><span class="nt">&gt;</span>
+        
+            <span class="c">&lt;!-- FROM APP.HTML --&gt;</span>
+            <span class="c">&lt;!-- renders center menu from Ionic Framework --&gt;</span>
+            <span class="nt">&lt;ion-side-menu-content&gt;</span>
+            
+                <span class="c">&lt;!-- renders panel navigation --&gt;</span>
+                <span class="nt">&lt;div&gt;&lt;/div&gt;</span>
+            
+                <span class="c">&lt;!-- renders panel view --&gt;</span>
+                <span class="nt">&lt;ion-nav-view</span> <span class="na">name=</span><span class="s">"panel"</span><span class="nt">&gt;</span>
+                
+                    <span class="c">&lt;!-- FROM PANEL.HTML --&gt;</span>
+                    <span class="c">&lt;!-- renders story content --&gt;</span>
+                    <span class="nt">&lt;ion-view&gt;&lt;/ion-view&gt;</span>
+                    
+                <span class="nt">&lt;/ion-nav-view&gt;</span>
+                
+            <span class="nt">&lt;/ion-side-menu-content&gt;</span>
+            
+            <span class="c">&lt;!-- renders left menu from Ionic Framework --&gt;</span>
+            <span class="nt">&lt;ion-side-menu</span> <span class="na">side=</span><span class="s">"left"</span><span class="nt">&gt;&lt;/ion-side-menu&gt;</span>
+            
+        <span class="nt">&lt;/ion-nav-view&gt;</span>
+    
+    <span class="nt">&lt;/ion-nav-view&gt;</span>
+    
+<span class="nt">&lt;/body&gt;</span>
+</code></pre>
+</div>
+
+<p>Each individual story will render in an entire panel view and not have a unique view alongside a panel view but will replace the panel of stories with the single story when the story state is activated.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Abstract Illustration</th>
+      <th>Implementation Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="../images/template-story.png" alt="story.html" title="Story Template" /></td>
+      <td><img src="../images/template-story-implement.png" alt="story.html" title="Story Template" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="controller-storyctrl">Controller: storyCtrl</h4>
+
+<pre><code class="language-JavaScript">// ONLY RELEVANT CODE SHOWN
+// get CONTENT data stored in service
+contentService.getData(story).then(function(data) {
+
+    // set scope
+    $scope.content = data;
+
+});
+</code></pre>
+
+<p>Currently all stories use the same layout, however we could implement a layout specific to each story and then would need a <code class="highlighter-rouge">layout-service</code>.</p>
+
+<h4 id="model-2">Model</h4>
+
+<p><strong>Layout</strong>
+None</p>
+
+<p><strong>Content</strong>
+<code class="highlighter-rouge">api/data/&lt;storyParam&gt;</code></p>
+
+<pre><code class="language-JavaScript">{
+    "name": "story 2",
+    "description": "this is story two, TBD visualization"
+}
+</code></pre>
+
+<p>The <code class="highlighter-rouge">contentService</code> takes the story param as returned by the <code class="highlighter-rouge">layoutService</code> and queries the content database for that story’s data.</p>
+
+
+
+    <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        <a href="tag_prototypes.html" class="btn btn-default navbar-btn cursorNorm" role="button">prototypes</a>
+        
+        
+        
+    </div>
+
+    
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2016 In-Q-Tel. All rights reserved. <br />
+<p>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 19, 2016 <br />
+<p><img style="PADDING-TOP:5px" src="images/company_logo.svg" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+    </div>
+    <script>
+    jQuery(function ($) {
+        $('.post-content').annotator()
+                .annotator('setupPlugins', {tokenUrl: 'http://example.com/api/token'})
+    });
+    </script>
+</body>
+
+</html>

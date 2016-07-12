@@ -1,300 +1,536 @@
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="To document Lab41's Gestalt">
-  <meta name="author" content="Lab41">
-  
-  <title>Lab41 Gestalt</title>
-  
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="getting_started,  gestalt, homepage">
+<title>Introduction to Gestalt | Documentation for Gestalt</title>
+<link rel="stylesheet" href="css/syntax.css">
 
-  <link rel="shortcut icon" href="./img/favicon.ico">
 
-  
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<link rel="stylesheet" href="css/lavish-bootstrap.css">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/theme-blue.css">
 
-  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="./css/highlight.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
 
-  
-  <script>
-    // Current page data
-    var mkdocs_page_name = "None";
-    var mkdocs_page_input_path = "index.md";
-    var mkdocs_page_url = "/";
-  </script>
-  
-  <script src="./js/jquery-2.1.1.min.js"></script>
-  <script src="./js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="./js/highlight.pack.js"></script>
-  <script src="./js/theme.js"></script> 
 
-  
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="" href="feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    
+
 </head>
-
-<body class="wy-body-for-nav" role="document">
-
-  <div class="wy-grid-for-nav">
-
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-      <div class="wy-side-nav-search">
-        <a href="." class="icon icon-home"> Lab41 Gestalt</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-  </form>
-</div>
-      </div>
-
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        <ul class="current">
-          
-            <li>
-    <li class="toctree-l1 current">
-        <a class="current" href=".">Gestalt</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#scaffolds">Scaffolds</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#prototypes">Prototypes</a></li>
-                
-            
-            </ul>
-        
-    </li>
-<li>
-          
-            <li>
-    <ul class="subnav">
-    <li><span>Scaffolds</span></li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="scaffolds/">About</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="scaffolds/installation/">Installation</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="scaffolds/quickstart/">Quick Start</a>
-        
-    </li>
-
-        
-    </ul>
-<li>
-          
-            <li>
-    <ul class="subnav">
-    <li><span>Prototypes</span></li>
-
-        
-            
-    <ul class="subnav">
-    <li><span>Desktop</span></li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="prototypes/desktop/">About</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="prototypes/desktop/quickstart/">Quick Start</a>
-        
-    </li>
-
-        
-    </ul>
-
-        
-            
-    <ul class="subnav">
-    <li><span>Tablet</span></li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="prototypes/tablet/">About</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="prototypes/tablet/quickstart/">Quick Start</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="prototypes/tablet/webappstructure/">Web App Structure</a>
-        
-    </li>
-
-        
-    </ul>
-
-        
-    </ul>
-<li>
-          
-            <li>
-    <ul class="subnav">
-    <li><span>Datasets</span></li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="datasets/bis/">BIS</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="datasets/oecd/">OECD</a>
-        
-    </li>
-
-        
-    </ul>
-<li>
-          
-            <li>
-    <ul class="subnav">
-    <li><span>Reading Groups</span></li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="readings/">Reading List</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="readings/05272016/">05/27/2016</a>
-        
-    </li>
-
-        
-            
-    <li class="toctree-l1 ">
-        <a class="" href="readings/06032016/">06/03/2016</a>
-        
-    </li>
-
-        
-    </ul>
-<li>
-          
-        </ul>
-      </div>
-      &nbsp;
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href=".">Lab41 Gestalt</a>
-      </nav>
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".">Docs</a> &raquo;</li>
-    
-      
-    
-    <li>Gestalt</li>
-    <li class="wy-breadcrumbs-aside">
-      
-    </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main">
-            <div class="section">
-              
-                <p>This challenge will employ various data visualization tools and user experience frameworks to construct cohesive data stories focused on communicating ripple-effect scenarios.</p>
-<h1 id="scaffolds">Scaffolds</h1>
-<p>We use Yeoman to scaffold modern web applications. </p>
-<h1 id="prototypes">Prototypes</h1>
-<p>We have implemented the following prototypes:</p>
-<ul>
-<li><a href="prototypes/desktop/" title="desktop">desktop</a></li>
-<li><a href="prototypes/tablet/" title="tablet">tablet</a></li>
-</ul>
-              
-            </div>
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="scaffolds/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
-      
-      
-    </div>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-    
-  </div>
-
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
-	  
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Lab41's Gestalt Docs</span></a>
         </div>
-      </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- entries without drop-downs appear here -->
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lab41 Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.lab41.org" target="_blank">Website</a></li>
+                        
+                        
+                        
+                        <li><a href="https://gab41.lab41.org" target="_blank">Blog</a></li>
+                        
+                        
+                        
+                        <li><a href="https://github.com/Lab41" target="_blank">GitHub Repo</a></li>
+                        
+                        
+                        
+                        <li><a href="https://twitter.com/_lab41" target="_blank">Twitter</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestalt Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://github.com/Lab41/gestalt" target="_blank">GitHub Repo</a></li>
+                        
+                        
+                        
+                        <li><a href="https://lab41.github.io/gestalt" target="_blank">Documentations</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Additional Resources<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="readings_index.html">Reading Group</a></li>
+                        
+                        
+                        
+                        <li><a href="updates_index.html">Updates</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+			<!-- Send feedback function -->
+<script>
+function SendLinkByMail(href) {
+var subject= "Documentation for Gestalt feedback";
+var body = "I have some feedback about the Introduction to Gestalt page: ";
+body += window.location.href;
+body += "";
+var uri = "mailto:info@lab41.org?subject=";
+uri += encodeURIComponent(subject);
+uri += "&body=";
+uri += encodeURIComponent(body);
+window.location.href = uri;
+}
+</script>
 
-    </section>
+<li><a href="javascript:(function()%7BSendLinkByMail()%3B%7D)()%3B" target="_blank"><i class="fa fa-envelope-o"></i> Feedback</a></li>
 
-  </div>
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Introduction to Gestalt">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
 
-<div class="rst-versions" role="note" style="cursor: pointer">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      
-      
-      
-        <span style="margin-left: 15px"><a href="scaffolds/" style="color: #fcfcfc">Next &raquo;</a></span>
-      
-    </span>
+<!-- Page Content -->
+<div class="container">
+    <div class="col-lg-12">&nbsp;</div>
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-md-3">
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="mysidebar" class="nav">
+    <li class="sidebarTitle">Gestalt 1.0</li>
+    
+    
+    
+        
+    
+    <li>
+        <a href="#">Overview</a>
+        <ul>
+            
+            
+            
+            <li class="active"><a href="index.html">Introduction</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_quickstart.html">Quick start</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_team.html">About the team</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_support.html">Support</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_documentation.html">Documentation</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="updates_index.html">Updates</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Understanding components</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_schema_overview.html">Overview of components</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_raw.html">Raw schema</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_user.html">User schema</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_story.html">Story schema</a></li>
+            
+            
+            
+            
+            
+            
+            <li><a href="mydoc_schema_ui.html">UI schema</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Handling data</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_database.html">Database</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">Datasets and Tables</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_dataset_contagion.html">Contagion</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Developing prototypes</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_prototype_scaffold1.html">Scaffold</a></li>
+            
+            
+            
+            <li class="subfolders">
+                <a href="#">Prototypes</a>
+                <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_prototype_desktop1.html">Desktop prototype</a></li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="mydoc_prototype_tablet1.html">Tablet prototype</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Visualizations</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_visualizations.html">Visualizations</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Receiving user feedback</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_user_feedback.html">Receiving user feedback</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+    
+    <li>
+        <a href="#">Testing</a>
+        <ul>
+            
+            
+            
+            <li><a href="mydoc_testing.html">Testing</a></li>
+            
+            
+            
+            
+        </ul>
+        
+        
+        
+        <!-- if you aren't using the accordion, uncomment this block:
+           <p class="external">
+               <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+           </p>
+           -->
+    </li>
+</ul>
 </div>
 
-</body>
-</html>
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
 
-<!--
-MkDocs version : 0.15.3
-Build Date UTC : 2016-06-06 07:18:00.373720
--->
+    <!-- Content Column -->
+    <div class="col-md-9">
+        <div class="post-header">
+   <h1 class="post-title-main">Introduction to Gestalt</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+
+    
+
+    
+
+    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages//index.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    
+
+    
+
+  <h2 id="our-goal">Our Goal</h2>
+
+<p><a href="https://www.lab41.org">Lab41</a> embarks on an open source project called Gestalt.
+Its goal is to tell a visual story from big data.</p>
+
+<p>We will employ various data visualization tools and user experience frameworks 
+to construct cohesive data stories focused on communicating ripple-effect 
+scenarios. Several event-based datasets from different disciplines will serve 
+as the basis for data story development. Lab41 will develop an optimal front-end 
+visualization development stack in which user experience is a driver. Our 
+ultimate goal is to create a roadmap for how to approach visual data stories 
+from technical considerations to user engagement.</p>
+
+<h2 id="products">Products</h2>
+
+<p>We will develop two prototypes: one for the <a href="mydoc_prototype_desktop1.html">desktop</a> 
+and one for the <a href="mydoc_prototype_tablet1.html">tablet</a>. Please checkout our 
+<a href="mydoc_quickstart.md">quick start page</a> to start running the prototypes locally on
+your computer.</p>
+
+<h2 id="updates">Updates</h2>
+
+<p>Please check our <a href="updates_index.html">updates page</a> for the latest news about Gestalt.</p>
+
+
+
+    <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        <a href="tag_getting_started.html" class="btn btn-default navbar-btn cursorNorm" role="button">getting_started</a>
+        
+        
+        
+    </div>
+
+    
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2016 In-Q-Tel. All rights reserved. <br />
+<p>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 19, 2016 <br />
+<p><img style="PADDING-TOP:5px" src="images/company_logo.svg" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+    </div>
+    <script>
+    jQuery(function ($) {
+        $('.post-content').annotator()
+                .annotator('setupPlugins', {tokenUrl: 'http://example.com/api/token'})
+    });
+    </script>
+</body>
+
+</html>

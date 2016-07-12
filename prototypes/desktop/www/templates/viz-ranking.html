@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Testing Plotly</title>
+    <script type="text/javascript" src='plotly.min.js'></script>
+    <script type="text/javascript" src='jquery.min.js'></script>
+    <script type="text/javascript" src='angular.min.js'></script>
+    <script type="text/javascript" src='plotApp.js'></script>
+</head>
+<body ng-app='myApp'>
+<div id="graph" style="width:600px;height:250px;"></div>
+<script type="text/javascript" ng-controller='plotXY'>
+
+    // var data = [{
+    //     x:[1,2,3,4],
+    //     y:[5,3,6,12],
+    // }];
+
+    Plotly.plot( $('#graph')[0], {{data}}  , {margin: {t:0}});
+</script>
+<hr><div ng-controller='plotXY'>{{data}}</div>
+
+</body>
+</html>
