@@ -6,7 +6,7 @@ angular.module("tile-grid-map-directive", [])
 		scope: {
 			vizData: "="
 		},
-		template: "<div data-tap-disabled='true' style='height: 500px; width: 100%; background: black;'></div>",
+		template: "<div data-tap-disabled='true' style='height: 500px; width: 100%; background: none;'></div>",
 		link: function(scope, element, attrs) {
 			
 			var canvas = element.find("div")[0];
@@ -32,29 +32,20 @@ angular.module("tile-grid-map-directive", [])
                 var map = L.mapbox.map(canvas);
 
                 // add style
-                L.mapbox.styleLayer(style).addTo(map);
+                //L.mapbox.styleLayer(style).addTo(map);
                 
-                map.setView([40, -74.50], 9);
-
                 function draw(data, map, interactive) {
 
                     var geoJsonLayer = L.geoJson(data, {
 
                         // modify color
-                        /*style: function(feature) {
-                            switch (feature.properties.type) {
+                        style: function(feature) {
+                            /*switch (feature.properties.type) {
                                 case "article": return { color: articleColor };
-                                case "tweet": return { color: tweetColor };
-                            }
-                        },*/
-
-                        // add marker
-                        pointToLayer: function(feature, latlng) {
-                            switch (feature.properties.type) {
-                                case "article": return L.circleMarker(latlng, circleMarker);
-                                case "tweet": return L.circleMarker(latlng, circleMarker);
-                                case "location": return L.marker(latlng, { icon: L.divIcon({className: "facility"}) });
-                            }
+                                    break;
+                                default "tweet": return { color: tweetColor };
+                            }*/
+                            return { color: "#667080" };
                         }/*,
 
                         // add labels
@@ -83,10 +74,10 @@ angular.module("tile-grid-map-directive", [])
                     }).addTo(map);
 
                     // center and zoom map based on markers
-                    /*map.fitBounds(geoJsonLayer.getBounds(), {
+                    map.fitBounds(geoJsonLayer.getBounds(), {
                         padding: [0,12],
                         maxZoom: 5
-                    });*/
+                    });
 
                 };
 
@@ -96,7 +87,7 @@ angular.module("tile-grid-map-directive", [])
                     // async check
                     if (newData !== undefined) {
 
-                        //draw(newData, map, interactivity);
+                        draw(newData, map, interactivity);
 
                     };
 

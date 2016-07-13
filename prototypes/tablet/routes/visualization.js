@@ -53,7 +53,7 @@ router.get(baseUrl + "/geojson/:grid", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (select id,grid_id,name,string_to_array(boundary_polygon, ',') as coordinates from gestalt_country where boundary_polygon is not null and grid_id is not null) r group by type;");
+        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t,gestalt_country gc left join (select id,name from gestalt_country) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc.boundary_polygon as coordinates from t,gestalt_country gcc) c on c.coordinates = gc.boundary_polygon where gc.boundary_polygon is not null and gc.id = 1) r group by type;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
