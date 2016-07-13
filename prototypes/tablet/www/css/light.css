@@ -9,7 +9,9 @@
 /* !GLOBALS
 /* IONIC
 /* !CUSTOM
-/* --- !something
+/* --- !active
+/* --- !menu
+/* --- !login
 
 /******************************* !IMPORTS *******************************/
 
@@ -55,7 +57,7 @@ button {
 /* side menu */
 .menu {
 	
-	background-color: rgb(150,150,150);
+	background-color: rgb(220,220,220);
 	
 }
 
@@ -77,6 +79,12 @@ button {
 	
 }
 
+ion-item.item {
+    
+    border-color: rgb(200,200,200);
+    
+}
+
 /* touched item */
 .item .item-content.activated,
 .item.activated,
@@ -84,6 +92,13 @@ button {
 	
 	background-color: rgb(250,250,250);
 	border-color: rgb(244,244,244);
+	
+}
+
+/* active item */
+.item.active {
+	
+	background: rgb(240,240,240);
 	
 }
 
@@ -115,18 +130,75 @@ button {
 	
 }
 
+/* TEMP section */
+ion-content section {
+    
+    background: rgba(220,220,220,0.5);
+    
+}
+
+ion-content section:nth-child(even) {
+    
+    background: rgba(220,220,220,0.8);
+    
+}
+
 /******************************* !CUSTOM *******************************/
 
-/* active panel nav item */
-.panel-nav a.active {
+/********************/
+/***** !active ******/
+/********************/
+
+/* active */
+.active {
 	
-	color: rgb(60,60,60);
+	color: currentColor;
 	
 }
 
-/* navigation link underline */
-.panel-nav a.active:after {
-	
-	background: currentColor;
-	
+/******************/
+/***** !menu ******/
+/******************/
+
+/* menu title */
+.menu-title:after {
+    
+    background: currentColor;
+    
+}
+
+/* theme */
+.theme-change {
+    
+    background: rgb(80,80,80);
+    color: rgb(200,200,200);
+    
+}
+
+/*******************/
+/***** !login ******/
+/*******************/
+
+.login section div:nth-child(1) {
+    
+    background: rgb(200,200,200);
+    
+}
+
+.login section div:nth-child(2) {
+    
+    background: rgb(240,240,240);
+    
+}
+
+.login section div:nth-child(3) {
+    
+    background: rgb(230,230,230);
+    
+}
+
+.login section div:nth-child(4) {
+    
+    background: rgb(220,220,220);
+    
 }

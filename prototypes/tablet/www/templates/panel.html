@@ -2,8 +2,11 @@
 
 	<ion-content has-bouncing="true">
 		
-		<h2 ng-repeat="story in content"
-			ui-sref="app.story({ id: story.name })">{{ story.name }}</h2>
+        <section ng-repeat="story in content">
+            
+            <h2>{{ story.name }}</h2>
+            
+        </section>
 						
 	</ion-content>
 

@@ -2,22 +2,9 @@
 
 	<!-- MAIN CONTENT -->
 	<ion-side-menu-content drag-content="false">
-	
-		<!-- MENU -->
-		<button class="button" menu-toggle="left" ng-show="navVisible">
-			<i class="ion-navicon-round"></i>
-		</button>
 		
 		<!-- PANEL NAV -->
-		<div class="row panel-nav" ng-show="navVisible">
-		
-			<a class="col" 
-			   ng-repeat="panel in ::panels" 
-			   ui-sref="app.panel({ panel: panel.url.param })" 
-			   ng-class="{ 'active': panelParam == panel.title }" 
-			   ng-click="changePanel(panel.title);">{{ panel.title }}</a>
-			
-		</div>
+        <panel-nav panels="panels"></panel-nav>
 
 		<!-- MAIN CONTENT -->
 		<ion-nav-view name="panel"></ion-nav-view>
@@ -31,7 +18,38 @@
 
 			<ion-list>
                 
-                <ion-item class="item" ui-sref="app.panel({ panel: 'story1' })" nav-clear menu-close>Home</ion-item>
+                <div class="list">
+                    
+                    <p class="menu-title">Menu</p>
+                    
+                    <!-- USER PERSONA -->
+                    <p class="user">
+                        <span>{{ user.user }}</span>
+                        <span ng-click="logout();">Logout</span>
+                    </p>
+                    
+                    <!-- UPDATE -->
+                    <div class="item item-divider">Update</div>
+                    
+                    <!-- THEME -->
+                    <ion-item class="item menu-item">
+                        
+                        <span>Theme</span>
+                        <span class="theme-change"
+                              ng-click="changeTheme(theme.opposite);">{{ theme.opposite }}</span>
+                        
+                    </ion-item>
+
+                    <!-- WORKSPACES -->
+                    <div class="item item-divider">Explore</div>
+                    
+                    <ion-item ng-repeat="workspace in workspaces"
+                              class="item menu-item"
+                              ng-class="{ 'active': workspaceParam== workspace.param }"
+                              ng-click="changeWorkspace(workspace.id, workspace.param, workspace.default_panel, workspace.panel);"
+                              nav-clear menu-close>{{ workspace.name }}</ion-item>
+                    
+                </div>
 
 			</ion-list>
 

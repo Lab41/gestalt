@@ -1,40 +1,57 @@
 angular.module("panel-controller", [])
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading) {
+.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, authenticationService, $rootScope) {
     
     var workspace = $stateParams.workspace;
-    var panel = $stateParams.panel;
+    var panelParam = $stateParams.panel;
 	
 	// data objects
 	$scope.content;
-	$scope.panel;
-	$scope.workspace = workspace;
-	$scope.moreDataExists = true; // for infinite scroll
     $scope.busyLoadingData = false; // prevent loading more while async is loading more
-    $scope.$parent.$parent.panelParam = panel[0].toUpperCase() + panel.substring(1, panel.length);
    
     // block UI show loading
     $ionicLoading.show({
     	template: "<ion-spinner icon='dots'></ion-spinner><p>Loading...</p>"
     });
-	
-	// get CONTENT data stored in service
-	contentService.getData(panel).then(function(data) {
-		
-		// set scope
-		$scope.content = data.length > 0 ? data : [{ title: "Nothing Found.", content: "Sorry but can't find any content.", poster: "None" }];
-		
-		// hide loading
-		$ionicLoading.hide();
-		
-	});
-	
-	// get LAYOUT data stored in service	
-	layoutService.getPanel(panel).then(function(data) {
-		
-		// set scope
-		$scope.panel = data;
-		
-	});
+    
+    // get persona 
+    authenticationService.getCredentials().then(function(userData) {
+        
+        var user = userData;
+        
+        layoutService.getStructure(panelParam, "panel", "panels").then(function(panelData) {
+                   
+            // check for stories
+            if (panelData.panel == "story") {
+
+                // get all stories for persona
+                contentService.getData("stories/" + user.id).then(function(data) {
+
+                    // set scope
+                    $scope.content = data;
+
+                    // hide UI loading
+                    $ionicLoading.hide();
+
+                });
+
+            } else {
+
+                // get all stories for panel and persona
+                contentService.getData("stories/" + panelParam + "/persona/" + user.id).then(function(data) {
+
+                    // set scope
+                    $scope.content = data;
+
+                    // hide UI loading
+                    $ionicLoading.hide();
+
+                });
+
+            };
+            
+        });
+        
+    });
 	
 }]);

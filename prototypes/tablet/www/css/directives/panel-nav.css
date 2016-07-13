@@ -1,0 +1,68 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** panel-nav directive STYLE ***************************************/
+
+/* panel nav directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* --- !panel nav
+/* !CUSTOM
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !IONIC *******************************/
+
+/***********************/
+/***** !panel nav ******/
+/***********************/
+
+/* nav wrap */
+panel-nav div.row {
+	
+	display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+	padding: 1em;
+	width: 50%;
+	
+}
+
+/* menu icon */
+panel-nav .button {
+    
+    font-size: 2em;
+    
+}
+
+/* nav item */
+panel-nav a {
+	
+	padding: 1em;
+	position: relative;
+	text-align: center;
+    text-transform: capitalize;
+	
+}
+
+panel-nav a:not(:last-child) {
+	
+	margin-right: 1em;
+	
+}
+
+/* navigation link underline */
+panel-nav a.active:after {
+	
+	background: currentColor;
+	bottom: 0;
+	content: '';
+	height: 3px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	
+}
