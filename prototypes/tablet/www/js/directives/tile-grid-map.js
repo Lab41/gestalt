@@ -46,7 +46,17 @@ angular.module("tile-grid-map-directive", [])
                                 default "tweet": return { color: tweetColor };
                             }*/
                             return { color: "#667080" };
-                        }/*,
+                        },
+                        
+                        // add marker
+                        /*pointToLayer: function(feature, latlng) {
+                            
+                            return L.marker(feature.geometry.coordinates[0][0][0][0], { icon: L.divIcon({
+                                    html: "<p>blah</p>"
+                                })
+                            });
+                                                     
+                        },*/
 
                         // add labels
                         onEachFeature: function (feature, layer) {
@@ -57,19 +67,13 @@ angular.module("tile-grid-map-directive", [])
                             };
 
                             // custom popup content
-                            var label = feature.properties.label == undefined ? feature.properties.properties.label : feature.properties.label;
-                            var threat = label.assessment == null ? "Unassessed" : label.assessment;
-                            var content = "<p>" + label.title + "</p><p>Activity level: <span class='" + threat + "'>" + threat + "</span></p>";
+                            var label = feature.properties;
+                            var content = "<p>" + label.name + "</p>";
 
-                            // check for location
-                            if (feature.properties.type == "location") {
+                            // add pop up
+                            layer.bindPopup(content, popUpOptions);
 
-                                // add pop up
-                                layer.bindPopup(content, popUpOptions);
-
-                            };
-
-                        }*/
+                        }
 
                     }).addTo(map);
 
