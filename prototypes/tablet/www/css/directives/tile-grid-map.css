@@ -19,3 +19,11 @@
 /***** !tile grid map ******/
 /***************************/
 
+/* reset path style from what mapbox defines */
+tile-grid-map path {
+    
+    fill-opacity: 1;
+    stroke-width: 1;
+    stroke-opacity: 1;
+    
+}

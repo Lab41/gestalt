@@ -30,6 +30,8 @@ angular.module("tile-grid-map-directive", [])
 
                 // initialize map object
                 var map = L.mapbox.map(canvas);
+                
+                map.options.crs = L.CRS.Simple;
 
                 // add style
                 //L.mapbox.styleLayer(style).addTo(map);
@@ -45,7 +47,7 @@ angular.module("tile-grid-map-directive", [])
                                     break;
                                 default "tweet": return { color: tweetColor };
                             }*/
-                            return { color: "#667080" };
+                            return { className: "default" };
                         },
                         
                         // add marker
@@ -65,7 +67,7 @@ angular.module("tile-grid-map-directive", [])
                             var popUpOptions = {
                                 offset: L.point(0, 10)
                             };
-
+                            
                             // custom popup content
                             var label = feature.properties;
                             var content = "<p>" + label.name + "</p>";
@@ -79,8 +81,8 @@ angular.module("tile-grid-map-directive", [])
 
                     // center and zoom map based on markers
                     map.fitBounds(geoJsonLayer.getBounds(), {
-                        padding: [0,12],
-                        maxZoom: 5
+                        //padding: [0,12],
+                        //maxZoom: 5
                     });
 
                 };

@@ -13,7 +13,7 @@
 /* --- !menu
 /* --- !login
 /* --- !group nodes
-/* --- !hex tile map
+/* --- !tile grid map
 
 /******************************* !IMPORTS *******************************/
 
@@ -132,19 +132,6 @@ ion-item.item {
 	
 }
 
-/* TEMP section */
-ion-content section {
-    
-    background: rgba(220,220,220,0.5);
-    
-}
-
-ion-content section:nth-child(even) {
-    
-    background: rgba(220,220,220,0.8);
-    
-}
-
 /******************************* !CUSTOM *******************************/
 
 /********************/
@@ -215,13 +202,14 @@ group-nodes .node {
 	
 }
 
-/***********************/
-/**** !hex tile map ****/
-/***********************/
+/************************/
+/**** !tile grid map ****/
+/************************/
 
-hex-tile-map polygon {
-  
-    fill: #667080;
+/* empty tile */
+tile-grid-map path.default {
+    
+    fill: rgb(102, 112, 128);
     stroke: rgb(244,244,244);
-
+    
 }
