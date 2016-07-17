@@ -49,19 +49,16 @@ angular.module("tile-grid-map-directive", [])
                             }*/
                             return { className: "default" };
                         },
-                        
-                        // add marker
-                        /*pointToLayer: function(feature, latlng) {
-                            
-                            return L.marker(feature.geometry.coordinates[0][0][0][0], { icon: L.divIcon({
-                                    html: "<p>blah</p>"
-                                })
-                            });
-                                                     
-                        },*/
 
                         // add labels
                         onEachFeature: function (feature, layer) {
+							
+							var polygonLabel = L.marker(layer.getBounds().getCenter(), {
+								icon: L.divIcon({
+									html: "<p>" + feature.properties.iso + "</p>",
+									iconSize: [60,60]
+								})
+							}).addTo(map);
 
                             // set popup options
                             var popUpOptions = {
@@ -82,7 +79,7 @@ angular.module("tile-grid-map-directive", [])
                     // center and zoom map based on markers
                     map.fitBounds(geoJsonLayer.getBounds(), {
                         //padding: [0,12],
-                        //maxZoom: 5
+                        //minZoom: 5
                     });
 
                 };

@@ -1,5 +1,6 @@
 // dependencies
 var express = require("express");
+var fs = require("fs"); // file system access
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
 var conString = process.env.DATABASE_URL ? process.env.DATABASE_URL.split(",")[0] + "://" + process.env.DATABASE_URL.split(",")[1] + ":" + process.env.DATABASE_URL.split(",")[3] + "@" + process.env.DATABASE_URL.split(",")[2] + "/" + process.env.DATABASE_URL.split(",")[0] : "";
@@ -53,7 +54,7 @@ router.get(baseUrl + "/geojson/:grid", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t,gestalt_country gc left join (select id,name from gestalt_country) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc.rectangle_polygon as coordinates from t,gestalt_country gcc) c on c.coordinates = gc.rectangle_polygon where gc.rectangle_polygon is not null and gc.grid_id is not null) r group by type;");
+        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t,gestalt_country gc left join (select id,name,iso_alpha2code as iso,hex_grid_id from gestalt_country) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc.hexagon_polygon as coordinates from t,gestalt_country gcc) c on c.coordinates = gc.hexagon_polygon where gc.hexagon_polygon is not null and gc.grid_id is not null) r group by type;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
@@ -71,6 +72,24 @@ router.get(baseUrl + "/geojson/:grid", function(req, res) {
             console.log(err);
         };
         
+    });
+    
+})
+
+router.get(baseUrl + "/geojson/test/test", function(req, res) {
+
+    // read file
+    fs.readFile("./routes/hexagons.json", "utf8", function(err, data) {
+        
+        // check for error
+        if (err) {
+            
+            return console.log(err);
+            
+        };
+        
+        res.send(data);
+                
     });
     
 })

@@ -22,8 +22,26 @@
 /* reset path style from what mapbox defines */
 tile-grid-map path {
     
-    fill-opacity: 1;
+    fill-opacity: 0.5;
     stroke-width: 1;
     stroke-opacity: 1;
     
+}
+
+/* polygon label wrap */
+tile-grid-map .leaflet-div-icon {
+	
+	background: none;
+	border: none 0;
+	text-align: center;
+	
+}
+
+/* polygon label text */
+tile-grid-map .leaflet-div-icon p {
+	
+	color: magenta;
+	font-size: 1em;
+	margin: 0;
+	
 }

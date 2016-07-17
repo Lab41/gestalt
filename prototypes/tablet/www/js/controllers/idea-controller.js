@@ -16,7 +16,7 @@ angular.module("idea-controller", [])
 	});
     
     // geojson
-    contentService.getData("visualization/geojson/" + dataset).then(function(data) {
+    contentService.getData("visualization/geojson/test").then(function(data) {
 		
 		// set scope
 		$scope.geojson = data[0];
