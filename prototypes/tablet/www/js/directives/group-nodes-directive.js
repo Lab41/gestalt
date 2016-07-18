@@ -18,7 +18,7 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 5;
+                var radius = 3;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
@@ -34,11 +34,6 @@ angular.module("group-nodes-directive", [])
                         viewBox: "0 0 " + width + " " + height
                     });
                 
-                var groups = [{"name": "group1"},{"name": "group2"},{"name": "group3"}];
-
-                // coordinates for groups
-                var foci = { group0: {x: center.x, y: center.y}, group1: {x: (width * 0.1), y: center.y}, group2: {x: (width * 0.9), y: center.y}};
-                
                 // bind data
                 scope.$watch("vizData", function(newData, oldData) {
     
@@ -46,6 +41,18 @@ angular.module("group-nodes-directive", [])
                     if (newData !== undefined) {
 						
 						function draw(data) {
+							
+							// get groups from data
+							console.log(data[0]);
+							
+							// coordinates for groups
+							var foci = { 
+								group0: {x: center.x, y: center.y}, 
+								trade: {x: (width * 0.1), y: center.y}, 
+								investment: {x: (width * 0.5), y: center.y},
+								region: {x: (width * 0.4), y: center.y},
+								export: {x: (width * 0.2), y: center.y}
+							};
                             
                             // attach event to button
                             d3.select("#group")
@@ -69,7 +76,7 @@ angular.module("group-nodes-directive", [])
                                 .append("circle")
                                 .attr({
                                     class: "node",
-                                    r: function(d) { return d.radius; }
+                                    r: radius
                                 });
 
                             // update nodes based on cluster groups

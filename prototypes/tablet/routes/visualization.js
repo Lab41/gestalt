@@ -21,7 +21,7 @@ router.get(baseUrl + "/:table", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select distinct on (c.origin) c.origin,count(distinct destination) as total_unique_count_all_years,'group0' as cluster,row_to_json(r) as clusterGroups,3 as radius from gestalt_cdis c, (select 'group' || trunc(random() * 2 + 1) as cluster from gestalt_cdis limit 1) r group by c.origin,r.* order by c.origin limit 200;");
+        var query = client.query("select distinct on (gcdis.origin) gcdis.origin,gc.name,gc.groups,'group0' as cluster,row_to_json(r) as clustergroups,array_agg(row_to_json(g)) as allgroups from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin left join (select gt.name as cluster,gt.id from gestalt_group_type gt) r on r.id = any(gc.groups) left join (select gt.name as cluster,gt.id from gestalt_group_type gt) g on g.id > 0 group by gcdis.origin,gc.name,gc.groups,r.*;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
