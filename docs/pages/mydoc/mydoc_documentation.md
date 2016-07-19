@@ -67,10 +67,9 @@ bundle exec jekyll serve --baseurl '' --watch --incremental
 
 ## Submitting the Changes to GitHub
 
-After you made changes to the documentation, you can submit them
-to GitHub by running our script 
-`<gestalt directory>/docs/scripts/create-ghpages.sh` or you can
-run it manually as follows:
+After you made changes to the documentation, you can submit them to GitHub by 
+running our script `<gestalt directory>/docs/scripts/create-ghpages.sh` 
+or you can run it manually as follows:
 
 ```
 bundle exec rake publish

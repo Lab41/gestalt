@@ -6,7 +6,6 @@
 *.exe
 *.o
 *.so
-_site
 
 # Packages #
 ############
@@ -40,3 +39,4 @@ Thumbs.db
 # Directories #
 ###############
 node_modules
+_site
