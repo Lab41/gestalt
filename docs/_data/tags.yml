@@ -1,0 +1,14 @@
+allowed-tags:
+  - components
+  - contact_us
+  - database
+  - datasets
+  - documentations
+  - getting_started
+  - prototypes
+  - reading_group
+  - testing
+  - troubleshooting
+  - visualizations
+  - updates
+  - ux

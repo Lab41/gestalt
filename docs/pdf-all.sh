@@ -1,0 +1,1 @@
+. pdf-mydoc.sh; . pdf-readings.sh; .  pdf-updates.sh;

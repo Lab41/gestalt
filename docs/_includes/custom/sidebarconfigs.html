@@ -1,0 +1,27 @@
+{% if page.sidebar == "mydoc_sidebar" %}
+{% assign sidebar = site.data.sidebars.mydoc_sidebar.entries %}
+
+{% elsif page.sidebar == "readings_sidebar" %}
+{% assign sidebar = site.data.sidebars.readings_sidebar.entries %}
+
+{% else %}
+{% assign sidebar = site.data.sidebars.mydoc_sidebar.entries %}
+{% endif %}
+
+
+
+{% comment %}
+sidebar configuration for print files
+{% endcomment %}
+
+{% if site.product == "mydoc" %}
+{% assign sidebar_pdf = site.data.sidebars.mydoc_sidebar.entries %}
+{% endif %}
+
+{% if site.product == "readings" %}
+{% assign sidebar_pdf = site.data.sidebars.readings_sidebar.entries %}
+{% endif %}
+
+{% if site.product == "updates" %}
+{% assign sidebar_pdf = site.data.sidebars.updates_sidebar.entries %}
+{% endif %}

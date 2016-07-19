@@ -1,0 +1,69 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+
+entries:
+- title: Sidebar
+  product:
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage
+      output: pdf
+      type: frontmatter
+
+
+  - title: Reading Group
+    output: web, pdf
+    folderitems:
+
+    - title: Introduction
+      url: /readings_index.html
+      output: web
+
+    - title: List of Readings
+      url: /readings_list.html
+      output: web, pdf
+
+      subfolders:
+      - title: Summaries
+        output: web, pdf
+        subfolderitems:
+          
+        - title: 07/22/2016
+          url: /readings_07022016.html
+          output: web, pdf 
+          
+        - title: 07/01/2016
+          url: /readings_07012016.html
+          output: web, pdf
+
+        - title: 06/24/2016
+          url: /readings_06242016.html
+          output: web, pdf
+
+        - title: 06/17/2016
+          url: /readings_06172016.html
+          output: web, pdf
+
+        - title: 06/10/2016
+          url: /readings_06102016.html
+          output: web, pdf
+
+        - title: 06/03/2016
+          url: /readings_06032016.html
+          output: web, pdf
+
+        - title: 05/27/2016
+          url: /readings_05272016.html
+          output: web, pdf
+
+

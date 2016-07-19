@@ -1,0 +1,145 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: Gestalt
+  version: 1.0
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage
+      output: pdf
+      type: frontmatter
+
+  - title: Overview
+    output: web, pdf
+    folderitems:
+
+    - title: Introduction
+      url: /index.html
+      output: web, pdf
+      type: homepage
+
+    - title: Quick start
+      url: /mydoc_quickstart.html
+      output: web, pdf
+
+    - title: About the team
+      url: /mydoc_team.html
+      output: web, pdf
+
+    - title: Support
+      url: /mydoc_support.html
+      output: web, pdf   
+
+    - title: Documentation
+      url: /mydoc_documentation.html
+      output: web, pdf          
+
+    - title: Updates
+      url: /updates_index.html
+      output: web, pdf                                                                                
+                                                   
+
+  - title: Understanding components
+    output: web, pdf
+    folderitems:
+
+    - title: Overview of components
+      url: /mydoc_schema_overview.html
+      output: web, pdf
+
+    - title: Raw schema
+      url: /mydoc_schema_raw.html
+      output: web, pdf
+
+    - title: User schema
+      url: /mydoc_schema_user.html
+      output: web, pdf
+
+    - title: Story schema
+      url: /mydoc_schema_story.html
+      output: web, pdf
+
+    - title: UI schema
+      url: /mydoc_schema_ui.html
+      output: web, pdf
+
+
+  - title: Handling data
+    output: web, pdf
+    folderitems:
+
+    - title: Database
+      url: /mydoc_database.html
+      output: web, pdf
+    
+      subfolders:
+      - title: Datasets and Tables
+        output: web, pdf
+        subfolderitems:
+
+        - title: Contagion
+          url: /mydoc_dataset_contagion.html
+          output: web, pdf
+
+
+  - title: Developing prototypes
+    output: web, pdf
+    folderitems:
+
+    - title: Scaffold
+      url: /mydoc_prototype_scaffold1.html
+      output: web, pdf
+    
+      subfolders:
+      - title: Prototypes
+        output: web, pdf
+        subfolderitems:
+
+        - title: Desktop prototype
+          url: /mydoc_prototype_desktop1.html
+          output: web, pdf
+
+        - title: Tablet prototype
+          url: /mydoc_prototype_tablet1.html
+          output: web, pdf
+
+
+  - title: Visualizations
+    output: web, pdf
+    folderitems:
+
+      - title: Visualizations
+        url: /mydoc_visualizations.html
+        output: web,pdf
+
+
+  - title: Receiving user feedback
+    output: web, pdf
+    folderitems:
+
+      - title: Receiving user feedback
+        url: /mydoc_user_feedback.html
+        output: web,pdf
+
+
+  - title: Testing
+    output: web, pdf
+    folderitems:
+
+      - title: Testing
+        url: /mydoc_testing.html
+        output: web,pdf
+                                                   
+
+
+
