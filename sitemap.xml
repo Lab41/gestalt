@@ -1,88 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>/visualization_updates.html</loc>
+  </url>
+  
+  
 
-    
-    <url>
-     <loc>None/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
 
-    
-        
-    <url>
-     <loc>None/scaffolds/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/scaffolds/installation/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/scaffolds/quickstart/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>None</loc>
-     <lastmod></lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None</loc>
-     <lastmod></lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>None/datasets/bis/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/datasets/oecd/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>None/readings/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/readings/05272016/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/readings/06032016/</loc>
-     <lastmod>2016-06-06</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>/index.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_database.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_dataset_contagion.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_documentation.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_desktop1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_desktop2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_scaffold1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_scaffold2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_scaffold3.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_tablet1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_tablet2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_prototype_tablet3.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_quickstart.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_schema_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_schema_raw.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_schema_story.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_schema_ui.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_schema_user.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_support.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_team.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_testing.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_user_feedback.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/mydoc_visualizations.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>/readings_05272016.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/readings_06032016.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/readings_index.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/readings_list.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>/updates_archive.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/updates_index.html</loc>
+  </url>
+  
+  
 </urlset>

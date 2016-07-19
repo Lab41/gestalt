@@ -1,0 +1,350 @@
+[
+
+
+
+
+
+
+{
+"title": "Introduction to Gestalt",
+"tags": "getting_started",
+"keywords": "gestalt, homepage",
+"url": "index.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Database",
+"tags": "database",
+"keywords": "db, database",
+"url": "mydoc_database.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Contagion Dataset",
+"tags": "datasets",
+"keywords": "dataset, contagion",
+"url": "mydoc_dataset_contagion.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Documentation",
+"tags": "documentations",
+"keywords": "documentation",
+"url": "mydoc_documentation.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Desktop Prototype",
+"tags": "prototypes",
+"keywords": "desktop prototype",
+"url": "mydoc_prototype_desktop1.html",
+"summary": "Instructions about the desktop prototype and how to use it"
+},
+
+
+
+{
+"title": "Desktop Prototype",
+"tags": "prototypes",
+"keywords": "desktop prototype",
+"url": "mydoc_prototype_desktop2.html",
+"summary": "Instructions about the desktop prototype and how to use it"
+},
+
+
+
+{
+"title": "Scaffold",
+"tags": "prototypes",
+"keywords": "scaffold",
+"url": "mydoc_prototype_scaffold1.html",
+"summary": "Instructions on how to build the basic prototype using scaffold"
+},
+
+
+
+{
+"title": "Scaffold",
+"tags": "prototypes",
+"keywords": "scaffold",
+"url": "mydoc_prototype_scaffold2.html",
+"summary": "Instructions on how to build the basic prototype using scaffold"
+},
+
+
+
+{
+"title": "Scaffold",
+"tags": "prototypes",
+"keywords": "scaffold",
+"url": "mydoc_prototype_scaffold3.html",
+"summary": "Instructions on how to build the basic prototype using scaffold"
+},
+
+
+
+{
+"title": "Tablet Prototype",
+"tags": "prototypes",
+"keywords": "tablet prototype",
+"url": "mydoc_prototype_tablet1.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Tablet Prototype",
+"tags": "prototypes",
+"keywords": "tablet prototype",
+"url": "mydoc_prototype_tablet2.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Tablet Prototype",
+"tags": "prototypes",
+"keywords": "tablet prototype",
+"url": "mydoc_prototype_tablet3.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Quick Start",
+"tags": "getting_started",
+"keywords": "gestalt, quick start",
+"url": "mydoc_quickstart.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Overview of Components",
+"tags": "components",
+"keywords": "gestalt, components, infrastructure",
+"url": "mydoc_schema_overview.html",
+"summary": "Provide an overview of each Gestalt's component"
+},
+
+
+
+{
+"title": "Raw Schema",
+"tags": "componentsdatasets",
+"keywords": "gestalt, components, infrastructure, raw schema",
+"url": "mydoc_schema_raw.html",
+"summary": "Provide an overview of the raw schema"
+},
+
+
+
+{
+"title": "Story Schema",
+"tags": "components",
+"keywords": "gestalt, components, infrastructure, story schema",
+"url": "mydoc_schema_story.html",
+"summary": "Provide an overview of the story schema"
+},
+
+
+
+{
+"title": "UI Schema",
+"tags": "components",
+"keywords": "gestalt, components, infrastructure, UI schema",
+"url": "mydoc_schema_ui.html",
+"summary": "Provide an overview of the UI schema"
+},
+
+
+
+{
+"title": "User Schema",
+"tags": "components",
+"keywords": "gestalt, components, infrastructure, user schema",
+"url": "mydoc_schema_user.html",
+"summary": "Provide an overview of the user schema"
+},
+
+
+
+{
+"title": "Support",
+"tags": "contact_ustroubleshooting",
+"keywords": "gestalt, contact us, issue, bug, question, support, troubleshooting",
+"url": "mydoc_support.html",
+"summary": "How to contact us for any support issues"
+},
+
+
+
+{
+"title": "About the team",
+"tags": "contact_us",
+"keywords": "gestalt, team, contact us, question, support, troubleshooting",
+"url": "mydoc_team.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Testing",
+"tags": "testing",
+"keywords": "testing",
+"url": "mydoc_testing.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Receiving User Feedback",
+"tags": "ux",
+"keywords": "ux, user input, user feedback",
+"url": "mydoc_user_feedback.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Visualizations",
+"tags": "visualizations",
+"keywords": "visualizations",
+"url": "mydoc_visualizations.html",
+"summary": ""
+},
+
+
+
+
+
+{
+"title": "Reading Group on 05/27/2016",
+"tags": "reading_group",
+"keywords": "reading group, list of readings",
+"url": "readings_05272016.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Reading Group on 06/03/2016",
+"tags": "reading_group",
+"keywords": "reading group, list of readings",
+"url": "readings_06032016.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Reading Group",
+"tags": "reading_group",
+"keywords": "reading group, summary",
+"url": "readings_index.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Reading List",
+"tags": "reading_group",
+"keywords": "reading group, list of readings",
+"url": "readings_list.html",
+"summary": ""
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+"title": "Updates",
+"tags": "",
+"keywords": "news, blog, updates, release notes, announcements",
+"url": "updates_archive.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Updates",
+"tags": "",
+"keywords": "news, blog, updates, release notes, announcements",
+"url": "updates_index.html",
+"summary": ""
+},
+
+
+
+
+
+{
+"title": "Visualization Updates",
+"tags": "updatesvisualizations",
+"keywords": "",
+"url": "/visualization_updates.html",
+"summary": ""
+}
+
+
+
+]

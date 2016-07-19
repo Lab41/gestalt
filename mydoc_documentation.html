@@ -4,8 +4,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="keywords" content="getting_started,  gestalt, homepage">
-<title>Introduction to Gestalt | Documentation for Gestalt</title>
+<meta name="keywords" content="documentations,  documentation">
+<title>Documentation | Documentation for Gestalt</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -157,7 +157,7 @@
 <script>
 function SendLinkByMail(href) {
 var subject= "Documentation for Gestalt feedback";
-var body = "I have some feedback about the Introduction to Gestalt page: ";
+var body = "I have some feedback about the Documentation page: ";
 body += window.location.href;
 body += "";
 var uri = "mailto:info@lab41.org?subject=";
@@ -184,7 +184,7 @@ window.location.href = uri;
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Introduction to Gestalt">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Documentation">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -232,7 +232,7 @@ window.location.href = uri;
             
             
             
-            <li class="active"><a href="index.html">Introduction</a></li>
+            <li><a href="index.html">Introduction</a></li>
             
             
             
@@ -260,7 +260,7 @@ window.location.href = uri;
             
             
             
-            <li><a href="mydoc_documentation.html">Documentation</a></li>
+            <li class="active"><a href="mydoc_documentation.html">Documentation</a></li>
             
             
             
@@ -445,7 +445,7 @@ window.location.href = uri;
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Introduction to Gestalt</h1>
+   <h1 class="post-title-main">Documentation</h1>
 </div>
 
 
@@ -455,39 +455,112 @@ window.location.href = uri;
    
 
     
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
 
     
 
     
 
-    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages//index.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    
+
+    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages/mydoc/mydoc_documentation.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
     
 
     
 
-  <h2 id="our-goal">Our Goal</h2>
+  <h2 id="about-the-documentation">About the Documentation</h2>
 
-<p><a href="https://www.lab41.org">Lab41</a> embarks on an open source project called Gestalt.
-Its goal is to tell a visual story from big data.</p>
+<p>We use Jekyll as our documentation as it provides us greater flexibility. 
+Jekyll gives you the option to write your documentation in either 
+Markdown or HTML.</p>
 
-<p>We will employ various data visualization tools and user experience frameworks 
-to construct cohesive data stories focused on communicating ripple-effect 
-scenarios. Several event-based datasets from different disciplines will serve 
-as the basis for data story development. Lab41 will develop an optimal front-end 
-visualization development stack in which user experience is a driver. Our 
-ultimate goal is to create a roadmap for how to approach visual data stories 
-from technical considerations to user engagement.</p>
+<p>We are fortunate to stumble upon Tom Johnson’s theme. Please feel free to check out <a href="http://idratherbewriting.com/aboutme/">his blog’s about page</a> to learn more about him.</p>
 
-<h2 id="products">Products</h2>
+<h2 id="layout-of-the-documentation">Layout of the Documentation</h2>
 
-<p>We will develop two prototypes: one for the <a href="mydoc_prototype_desktop1.html">desktop</a> 
-and one for the <a href="mydoc_prototype_tablet1.html">tablet</a>. Please checkout our 
-<a href="mydoc_quickstart.md">quick start page</a> to start running the prototypes locally on
-your computer.</p>
+<p>Please read <a href="http://idratherbewriting.com/documentation-theme-jekyll/index.html">Jekyll Documentation Theme</a> 
+for a more detailed insight to the documentation layout.</p>
 
-<h2 id="updates">Updates</h2>
+<h3 id="main-documentation">Main Documentation</h3>
 
-<p>Please check our <a href="updates_index.html">updates page</a> for the latest news about Gestalt.</p>
+<p>The main documentation can be found in <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/pages/mydoc</code>.</p>
+
+<p>Adding or updating a main documentation page means you have to make updates to
+the side menu at <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/_data/sidebars/mydoc_sidebar.yml</code>.</p>
+
+<h3 id="tags">Tags</h3>
+
+<p>You can add new tags in the main documentation by:</p>
+
+<ol>
+  <li>Adding the tag in <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/_data/tags.yml</code>.</li>
+  <li>Creating a tag webpage in <code class="highlighter-rouge">&lt;gestalt directory&gt;/pages/tags</code>.</li>
+</ol>
+
+<h3 id="updates">Updates</h3>
+
+<p>You can notify updates by adding a file in `<gestalt directory="">/docs/_posts.'
+The file has to be in the format of yyyy-mm-dd-name_of_file.md.</gestalt></p>
+
+<h3 id="reading-groups">Reading Groups</h3>
+
+<p>The reading group documentation can be found in <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/pages/readings</code>.</p>
+
+<p>Adding or updating a reading group documentation page means you have to make updates to
+the side menu at <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/_data/sidebars/readings_sidebar.yml</code>.</p>
+
+<h2 id="formatting-the-documentation">Formatting the Documentation</h2>
+
+<p>Please read <a href="http://idratherbewriting.com/documentation-theme-jekyll/mydoc_adding_tooltips.html">Jekyll Documentation Theme</a> as it has great insight to formatting the documentation.</p>
+
+<h2 id="running-the-documentation-locally">Running the Documentation Locally</h2>
+
+<p>Once you have cloned the Gestalt project locally to your computer, 
+you can run the Gestalt documentation locally as well. We have 
+written a script to expedite the process. You can either run the 
+script <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/scripts/localrun.sh</code> or you can 
+run the instructions manually as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec jekyll build --trace
+bundle exec jekyll serve --baseurl '' --watch --incremental
+</code></pre>
+</div>
+
+<h2 id="submitting-the-changes-to-github">Submitting the Changes to GitHub</h2>
+
+<p>After you made changes to the documentation, you can submit them to GitHub by 
+running our script <code class="highlighter-rouge">&lt;gestalt directory&gt;/docs/scripts/create-ghpages.sh</code> 
+or you can run it manually as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake publish
+</code></pre>
+</div>
+
+<p>The script will create a local branch called gh-pages. You still
+need to submit those changes to Gestalt by pushing the changes to
+your remote fork’s branch and creating a pull request to Gestalt.
+Please submit gh-pages as well as the branch where you have
+made updates to the docs directory.</p>
 
 
 
@@ -497,7 +570,7 @@ your computer.</p>
         
         
         
-        <a href="tag_getting_started.html" class="btn btn-default navbar-btn cursorNorm" role="button">getting_started</a>
+        <a href="tag_documentations.html" class="btn btn-default navbar-btn cursorNorm" role="button">documentations</a>
         
         
         

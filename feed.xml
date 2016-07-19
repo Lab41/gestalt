@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title></title>
+        <description>Documentation for Gestalt</description>
+        <link>/</link>
+        <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Tue, 19 Jul 2016 18:57:45 -0700</pubDate>
+        <lastBuildDate>Tue, 19 Jul 2016 18:57:45 -0700</lastBuildDate>
+        <generator>Jekyll v3.0.3</generator>
+        
+        <item>
+            <title>Visualization Updates</title>
+            <description>&lt;p&gt;Gestalt is in the process of building multiple different visualizations
+for the contagion dataset. More to come!&lt;/p&gt;
+
+</description>
+            <pubDate>Mon, 18 Jul 2016 00:00:00 -0700</pubDate>
+            <link>/visualization_updates.html</link>
+            <guid isPermaLink="true">/visualization_updates.html</guid>
+            
+            <category>updates</category>
+            
+            <category>visualizations</category>
+            
+            
+        </item>
+        
+    </channel>
+</rss>
