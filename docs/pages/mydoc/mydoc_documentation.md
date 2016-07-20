@@ -52,9 +52,21 @@ the side menu at `<gestalt directory>/docs/_data/sidebars/readings_sidebar.yml`.
 
 Please read [Jekyll Documentation Theme](http://idratherbewriting.com/documentation-theme-jekyll/mydoc_adding_tooltips.html) as it has great insight to formatting the documentation.
 
+## Installing the Dependencies
+
+Before your run the documentation locally, make sure you install
+the dependencies. After you cloned the Gestalt project locally
+to your computer, run the following commands to install the 
+dependencies. 
+
+```
+bundle install
+```
+
 ## Running the Documentation Locally
 
-Once you have cloned the Gestalt project locally to your computer, 
+Once you have cloned the Gestalt project locally to your computer
+and [installed the dependencies](mydoc_documentation.html#installing-the-dependencies), 
 you can run the Gestalt documentation locally as well. We have 
 written a script to expedite the process. You can either run the 
 script `<gestalt directory>/docs/scripts/localrun.sh` or you can 
