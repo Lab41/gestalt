@@ -80,13 +80,16 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     
     // login
     .state("login", {
-        url: "/login",
+        url: "/login?:t",
         templateUrl: "templates/login.html",
-        controller: "loginCtrl"
+        controller: "loginCtrl",
+		params: {
+			t: theme_config.ui.start
+		}
     })
     
     .state("menu", {
-    	url: "/",
+    	url: "/?:t",
     	abstract: true,
     	template: "<ion-nav-view name='menu'></ion-nav-view>",
     	resolve: {
@@ -95,12 +98,15 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
 					return $q.reject("requires login");
 				};
 			}]
+		},
+		params: {
+			t: theme_config.ui.start
 		}
     })
     
     // main
     .state("app", {
-        url: "/{workspace}",
+        url: "/{workspace}?:t",
         abstract: true,
 		templateUrl: "templates/app.html",
 		controller: "appCtrl",
@@ -110,6 +116,9 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
 					return $q.reject("requires login");
 				};
 			}]
+		},
+		params: {
+			t: theme_config.ui.start
 		}
     })
     
@@ -123,29 +132,22 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     		}
     	}
     })
-    
-    // ideas
-    .state("app.ideas", {
-        url: "/ideas/:table",
-        views: {
-            "panel": {
-                templateUrl: "templates/ideas.html",
-                controller: "ideaCtrl"
-            }
-        }
-    })
-    
-    // story
-    .state("app.story", {
-    	url: "/detail/{id}",
-    	views: {
-    		"panel": {
-    			templateUrl: "templates/story.html",
-    			controller: "storyCtrl"
-    		}
-    	}
-    });
+	
+	// visual
+	.state("app.panel.visual", {
+		url: "/{grid}",
+		views: {
+			"visual": {
+				templateProvider: function($http, $stateParams) {
+                    return $http.get("templates/visual.html").then(function(template) {
+                        return template.data;
+                    });
+                },
+				controller: "vizCtrl"
+			}
+		}
+	});
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
 
 });

@@ -43,7 +43,6 @@ angular.module("group-nodes-directive", [])
 						function draw(data) {
 							
 							// get groups from data
-							console.log(data[0]);
 							
 							// coordinates for groups
 							var foci = { 

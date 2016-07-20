@@ -41,12 +41,12 @@
         <link rel="stylesheet" href="css/directives/tile-grid-map.css">
         
         <!-- maps -->
-        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.css' rel='stylesheet' />
-        <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+        <link ng-href="{{ css.gl }}" rel="stylesheet" />
+        <link ng-href="{{ css.raster }}" rel="stylesheet" />
                 
         <!-- app -->
 		<link rel="stylesheet" href="css/tablet.css">
-        <link rel="stylesheet" ng-href="css/{{theme.current}}.css">
+        <link rel="stylesheet" ng-href="css/{{ theme.current }}.css">
 
 		<!------------->
         <!-- SCRIPTS -->
@@ -71,14 +71,13 @@
 		<script src="js/controllers/login-controller.js"></script>
 		<script src="js/controllers/app-controller.js"></script>
 		<script src="js/controllers/panel-controller.js"></script>
-		<script src="js/controllers/story-controller.js"></script>
-        <script src="js/controllers/idea-controller.js"></script>
+		<script src="js/controllers/viz-controller.js"></script>
 
 		<!-- directives -->
         <script src="js/tablet.directives.js"></script>
         <script src="js/directives/panel-nav-directive.js"></script>
         <script src="js/directives/group-nodes-directive.js"></script>
-        <script src="js/directives/tile-grid-map.js"></script>
+        <script src="js/directives/tile-grid-map-directive.js"></script>
 			
 		<!-- services -->
         <script src="js/tablet.services.js"></script>

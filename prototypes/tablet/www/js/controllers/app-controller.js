@@ -85,7 +85,12 @@ angular.module("app-controller", [])
         authenticationService.clearCredentials();
                 
         // transition state
-        $state.go("login");
+        $state.go("login", {
+			t: $state.params.t
+		}, {
+			reload: false,
+			notify: true
+		});
         
     };
 	

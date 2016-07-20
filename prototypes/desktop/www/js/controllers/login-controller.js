@@ -27,9 +27,10 @@ angular.module("login-controller", [])
                 var workspace = data[0];
 
                 // transition to default workspace
-                $state.go("app.panel", {
+                $state.go("app.panel.visual", {
                     workspace: workspace.param,
-                    panel: workspace.default_panel
+                    panel: workspace.default_panel,
+					grid: visual_config.tilemap
                 });
 
             });

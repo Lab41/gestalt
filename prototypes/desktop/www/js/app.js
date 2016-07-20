@@ -68,14 +68,21 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 	
 	// login
     .state("login", {
-        url: "/login",
+        url: "/login?:t",
         templateUrl: "templates/login.html",
+<<<<<<< e58d967ef6da003ef306893692444750e594dec3
         controller: "loginCtrl"
+=======
+        controller: "loginCtrl",
+		params: {
+			t: theme_config.ui.start
+		}
+>>>>>>> desktop and tablet initial nodes viz idea implemented
     })
     
     // main
     .state("app", {
-        url: "/{workspace}",
+        url: "/{workspace}?:t",
         abstract: true,
         templateUrl: "templates/app.html",
 		controller: "appCtrl",
@@ -85,6 +92,9 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 					return $q.reject("requires login");
 				};
 			}]
+		},
+		params: {
+			t: theme_config.ui.start
 		}
     })
     
@@ -103,17 +113,21 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     	}
     })
 	
-	// story
-    .state("app.story", {
-    	url: "/detail/{id}",
+	// visual
+    .state("app.panel.visual", {
+    	url: "/{grid}",
     	views: {
-    		"panel": {
-    			templateUrl: "templates/story.html",
-    			controller: "storyCtrl"
-    		}
+    		"visual": {
+				templateProvider: function($http, $stateParams) {
+                    return $http.get("templates/visual.html").then(function(template) {
+                        return template.data;
+                    });
+                },
+				controller: "vizCtrl"
+			}
     	}
     });
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
 
 });

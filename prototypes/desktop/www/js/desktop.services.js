@@ -4,5 +4,7 @@ angular.module("desktop.services", [
 	"base64-service",
 	"content-service",
     "plotly-service",
-	"d3-service"
+	"d3-service",
+	"mapbox-service",
+	"agent-service"
 ]);

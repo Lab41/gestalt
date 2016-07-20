@@ -20,7 +20,7 @@ router.get(baseUrl + "/:persona", function(req, res) {
         var personaID = req.params.persona;
                 
         // SQL query
-        var query = client.query("select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics)and wk.persona = " + personaID + ";");
+        var query = client.query("select distinct on (s.id) s.id,s.name,s.param,v.name as directive from gestalt_workspace wk,gestalt_collection c,gestalt_story s left join gestalt_visual v on v.id = s.visual where c.topics && s.topics and c.id = any(wk.topics) and " + personaID + " = any(wk.persona);");
         
         // stream results back one row at a time
         query.on("row", function(row) {
@@ -54,7 +54,7 @@ router.get(baseUrl + "/:panel/persona/:persona", function(req, res) {
         var personaID = req.params.persona;
                 
         // SQL query
-        var query = client.query("select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics) and wk.persona = " + personaID + " and '" + panelParam + "' = c.param;");
+        var query = client.query("select distinct on (s.id) s.id,s.name,s.param,v.name as directive from gestalt_workspace wk,gestalt_collection c,gestalt_story s left join gestalt_visual v on v.id = s.visual where c.topics && s.topics and c.id = any(wk.topics) and " + personaID + " = any(wk.persona) and '" + panelParam + "' = c.param;");
         
         // stream results back one row at a time
         query.on("row", function(row) {

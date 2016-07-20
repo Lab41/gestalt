@@ -14,7 +14,7 @@
 /* --- !login
 /* --- !slide panel
 /* --- !group nodes
-/* --- !hex tile map
+/* --- !tile grid map
 
 /******************************* !IMPORTS *******************************/
 
@@ -169,13 +169,14 @@ group-nodes .node {
 	
 }
 
-/***********************/
-/**** !hex tile map ****/
-/***********************/
+/************************/
+/**** !tile grid map ****/
+/************************/
 
-hex-tile-map polygon {
-  
-    fill: #444b5a;
+/* empty tile */
+tile-grid-map path.default {
+    
+    fill: rgb(102, 112, 128);
     stroke: rgb(26,26,26);
-
+    
 }
