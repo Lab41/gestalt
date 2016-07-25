@@ -1,15 +1,18 @@
 import json
 import web
+
+import panel
 import persona
 import workspace
 import story
 
 urls = (
     
-    # rest API backend endpoints
-    "/api/workspace/", workspace.app_workspaces,
-    "/api/data/stories/", story.app_story,
-    "/api/persona/", persona.app_persona,
+    # rest API backend endpoints    
+    "/api/persona/", persona.app,
+    "/api/workspace/", workspace.app,
+    "/api/panel/", panel.app,
+    "/api/story/", story.app,
 
     # front-end routes to load angular app
     "/", "index",

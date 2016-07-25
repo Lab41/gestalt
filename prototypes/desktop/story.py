@@ -2,17 +2,19 @@ import json
 import psycopg2
 import psycopg2.extras
 import web
+import os
 
+# TOOD: update url
 urls = (
     
     # rest API backend endpoints
-    "(.*)/", "all_stories",
-    "(.*)/persona/(.*)/", "panel_stories"
+    "persona/(.*)/", "all_stories",
+    "(.*)/persona/(.*)/", "panel_stories",
     
 )
 
 class all_stories:
-    def GET(self, persona_id):
+    def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -33,7 +35,7 @@ class all_stories:
         return json.dumps(data)
 
 class all_panel_stories:
-    def GET(self, persona_id, panel_id):   
+    def GET(self, persona_id, panel_id, connection_string=os.environ['DATABASE_URL']):   
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
