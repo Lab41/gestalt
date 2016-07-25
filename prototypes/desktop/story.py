@@ -1,56 +1,58 @@
-import web
 import json
 import psycopg2
-from psycopg2.extras import RealDictCursor
+import psycopg2.extras
+import web
 
 urls = (
     
     # rest API backend endpoints
-    "(.*)/persona/(.*)/", "panel_stories",
-    "(.*)/", "all_stories"
+    "(.*)/", "all_stories",
+    "(.*)/persona/(.*)/", "panel_stories"
     
 )
 
-connection_string = ""
-
 class all_stories:
     def GET(self, persona_id):
-        
-        # connection string
-        con_string = psycopg2.connect(connection_string)
-        
-        # postgres connector
-        cursor = con_string.cursor(cursor_factory=RealDictCursor)
-        
-        # SQL query
-        cursor.execute("""
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
             SELECT DISTINCT ON (st.id, st.name, st.url_name) st.id, st.name, st.url_name 
             FROM story st
             RIGHT JOIN persona_panel_story pcs
-            ON st.id = pcs.story_id AND pcs.persona_id = """ + persona_id + """
+            ON st.id = pcs.story_id 
+            AND pcs.persona_id = """ + persona_id + """
             WHERE st.id IS NOT NULL
             ORDER BY st.id;
         """)        
-        # get rows
-        data = cursor.fetchall()
-        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
         return json.dumps(data)
-    
-class panel_stories:
-    def GET(self, panel_param, persona_id):
-        
-        # connection string
-        con_string = psycopg2.connect(connection_string)
-        
-        # postgres connector
-        cursor = con_string.cursor(cursor_factory=RealDictCursor)
-        
-        # SQL query
-        cursor.execute("""select distinct on (s.id) s.id,s.name,s.param from gestalt_story s,gestalt_collection c,gestalt_workspace wk where c.topics && s.topics and c.id = any(wk.topics) and wk.persona = """ + persona_id + """ and '""" + panel_param + """' = c.param;""")
-        
-        # get rows
-        data = cursor.fetchall()
-        
+
+class all_panel_stories:
+    def GET(self, persona_id, panel_id):   
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        # execute query
+        self.cursor.execute("""
+            SELECT DISTINCT ON (st.id, st.name, st.url_name) st.id, st.name, st.url_name
+            FROM story st
+            RIGHT JOIN persona_panel_story pcs
+            ON st.id = pcs.story_id 
+            AND pcs.persona_id = """ + persona_id + """
+            AND pcs.panel_id = """ + panel_id + """
+            WHERE st.id IS NOT NULL
+            ORDER BY st.id;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
         return json.dumps(data)
-    
-app_story = web.application(urls, locals())
+
+# instantiate the application
+app = web.application(urls, locals())
