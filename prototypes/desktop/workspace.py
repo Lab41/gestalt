@@ -77,7 +77,7 @@ class all_panels:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select *,'collection' as panel from gestalt_collection;""")
+        cursor.execute("""SELECT * FROM panel;""")
         
         # get rows
         data = cursor.fetchall()
