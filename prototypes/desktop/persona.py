@@ -22,7 +22,7 @@ class persona:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select * from gestalt_persona;""")
+        cursor.execute("""select * from persona;""")
         
         # get rows
         data = cursor.fetchall()
