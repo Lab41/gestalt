@@ -56,19 +56,6 @@ button {
     
 }
 
-/* TEMP section */
-ui-view[name="panel"] section {
-    
-    background: rgba(50,50,50,0.5);
-    
-}
-
-ui-view[name="panel"] section:nth-child(even) {
-    
-    background: rgba(50,50,50,0.8);
-    
-}
-
 /********************/
 /***** !active ******/
 /********************/

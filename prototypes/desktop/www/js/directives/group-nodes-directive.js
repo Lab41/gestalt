@@ -5,10 +5,11 @@ angular.module("group-nodes-directive", [])
 		restrict: "E",
 		scope: {
 			vizData: "=",
+			grouping: "=",
             canvasWidth: "=",
             canvasHeight: "="
 		},
-        template: "<button id='group'>group</button>",
+        template: "<div></div>",
 		link: function(scope, element, attrs) {
 			
 			// get d3 promise
@@ -35,15 +36,13 @@ angular.module("group-nodes-directive", [])
                     });
                 
                 // bind data
-                scope.$watch("vizData", function(newData, oldData) {
+                scope.$watchGroup(["vizData", "grouping"], function(newData, oldData) {
     
                     // async check
-                    if (newData !== undefined) {
+                    if (newData[0] !== undefined) {
 						
-						function draw(data) {
-							
-							// get groups from data
-							
+						function draw(data, groups) {
+														
 							// coordinates for groups
 							var foci = { 
 								group0: {x: center.x, y: center.y}, 
@@ -54,7 +53,15 @@ angular.module("group-nodes-directive", [])
 							};
                             
                             // attach event to button
-                            d3.select("#group")
+							d3.select(element.find("div")[0])
+								.selectAll(".country-group")
+								.data(groups)
+								.enter()
+								.append("button")
+								.attr({
+									type: "button"
+								})
+								.text(function(d) { return d.name; })
                                 .on("click", clusterNodes);
                             
                             // set nodes from data
@@ -129,7 +136,7 @@ angular.module("group-nodes-directive", [])
                         };
 
                         // update the viz
-                        draw(newData);
+                        draw(newData[0], newData[1]);
                         
                     };
                     

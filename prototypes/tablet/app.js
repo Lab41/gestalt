@@ -7,10 +7,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // backend API
-app.use(require("./routes/workspace"));
-app.use(require("./routes/story"));
-app.use(require("./routes/persona"));
-app.use(require("./routes/visualization"));
+app.use(require("./routes/workspace-1-get-all-workspaces"));
+app.use(require("./routes/workspace-2-get-single-workspace"));
+app.use(require("./routes/workspace-3-get-all-panels-single-workspace"));
+app.use(require("./routes/workspace-4-get-all-panels"));
+app.use(require("./routes/workspace-5-get-single-panel"));
+app.use(require("./routes/story-1-get-all-stories-single-persona"));
+app.use(require("./routes/story-2-get-all-stories-single-panel-persona"));
+app.use(require("./routes/persona-1-get-all-personas"));
+app.use(require("./routes/visualization-1-grouped-countries"));
+app.use(require("./routes/visualization-2-geojson-countries"));
 app.use(require("./routes/index"));
 
 // static front end

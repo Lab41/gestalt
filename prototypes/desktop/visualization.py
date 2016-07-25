@@ -7,6 +7,7 @@ from psycopg2.extras import RealDictCursor
 urls = (
     
     # rest API backend endpoints
+	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
     "(.*)/", "cdis"
     
@@ -31,7 +32,24 @@ class cdis:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select distinct on (gcdis.origin) gcdis.origin,gc.name,gc.groups,'group0' as cluster,row_to_json(r) as clustergroups from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin left join (select gt.name as cluster,gt.id from gestalt_group_type gt) r on r.id = any(gc.groups);""")
+        cursor.execute("""select distinct on (gcdis.origin) gcdis.origin,gc.name,gc.groups,'group0' as cluster,row_to_json(r) as clustergroups from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin left join (select gt.name as cluster,gt.id from gestalt_group_type gt) r on r.id = any(gc.groups) where gc.groups is not null;""")
+        
+        # get rows
+        data = cursor.fetchall()
+        
+        return json.dumps(data)
+	
+class node_groups:
+    def GET(self):
+        
+        # connection string
+        con_string = psycopg2.connect(connection_string)
+        
+        # postgres connector
+        cursor = con_string.cursor(cursor_factory=RealDictCursor)
+        
+        # SQL query
+        cursor.execute("""select * from gestalt_group_type;""")
         
         # get rows
         data = cursor.fetchall()
