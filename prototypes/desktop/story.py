@@ -26,7 +26,7 @@ class all_stories:
         cursor.execute("""
             SELECT DISTINCT ON (st.id, st.name, st.url_name) st.id, st.name, st.url_name 
             FROM story st
-            RIGHT JOIN persona_collection_story pcs
+            RIGHT JOIN persona_panel_story pcs
             ON st.id = pcs.story_id AND pcs.persona_id = """ + persona_id + """
             WHERE st.id IS NOT NULL
             ORDER BY st.id;
