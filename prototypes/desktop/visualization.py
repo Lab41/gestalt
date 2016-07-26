@@ -32,13 +32,13 @@ class cdis:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select distinct on (gcdis.origin) gcdis.origin,gc.name,gc.groups,'group0' as cluster,row_to_json(r) as clustergroups from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin left join (select gt.name as cluster,gt.id from gestalt_group_type gt) r on r.id = any(gc.groups) where gc.groups is not null;""")
+        cursor.execute("""select distinct on (gcdis.origin) gcdis.origin,gc.name,'default' as cluster,1 as subgroup from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;""")
         
         # get rows
         data = cursor.fetchall()
         
         return json.dumps(data)
-	
+    
 class node_groups:
     def GET(self):
         
@@ -49,7 +49,7 @@ class node_groups:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select * from gestalt_group_type;""")
+        cursor.execute("""select gt.*,array_agg(row_to_json(r)) as subgroups from gestalt_group_type gt left join (select g.*,array_agg(row_to_json(c)) as nodes from gestalt_group g left join (select gc.iso_alpha2code as id,gm.grouping as subgroup from gestalt_group_member gm left join gestalt_country gc on gc.id = gm.country_id where gc.iso_alpha2code is not null) c on c.subgroup = g.id group by g.id) r on r.type = gt.id group by gt.id;""")
         
         # get rows
         data = cursor.fetchall()
