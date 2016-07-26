@@ -15,6 +15,10 @@ urls = (
         
 class all_personas:
     """ Extract all the personas.
+    output:
+        * persona.id
+        * persona.name
+        * persona.description
     """
     def GET(self, connection_string=os.environ['DATABASE_URL']): 
         # connect to postgresql based on configuration in connection_string
@@ -32,6 +36,12 @@ class all_personas:
 
 class single_persona:
     """ Extract a persona with a specific id.
+    input:
+        * persona.id
+    output:
+        * persona.id
+        * persona.name
+        * persona.description
     """
     def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string

@@ -19,6 +19,10 @@ urls = (
 
 class all_stories:
     """ Extract all the stories.
+    output:
+        * story.id
+        * story.name
+        * story.url_name
     """
     def GET(self, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
@@ -36,6 +40,12 @@ class all_stories:
 
 class single_story:
     """ Extract a story with a specific id.
+    input:
+        * story.id
+    output:
+        * story.id
+        * story.name
+        * story.url_name
     """
     def GET(self, story_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
@@ -55,6 +65,12 @@ class single_story:
 
 class persona_stories:
     """ Extract all the stories for a particular persona.
+    input:
+        * persona.id
+    output:
+        * story.id
+        * story.name
+        * story.url_name
     """
     def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
@@ -63,7 +79,7 @@ class persona_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (st.id, st.name, st.url_name) st.id, st.name, st.url_name 
+            SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name 
             FROM story st
             RIGHT JOIN persona_panel_story pcs
             ON st.id = pcs.story_id 
@@ -78,6 +94,13 @@ class persona_stories:
 
 class persona_panel_stories:
     """ Extract all the stories from a specific panel with a particular persona.
+    input:
+        * persona.id
+        * panel.id
+    output:
+        * story.id
+        * story.name
+        * story.url_name
     """
     def GET(self, persona_id, panel_id, connection_string=os.environ['DATABASE_URL']):   
         # connect to postgresql based on configuration in connection_string
@@ -86,7 +109,7 @@ class persona_panel_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (st.id, st.name, st.url_name) st.id, st.name, st.url_name
+            SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
             FROM story st
             RIGHT JOIN persona_panel_story pcs
             ON st.id = pcs.story_id 

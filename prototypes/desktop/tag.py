@@ -10,17 +10,22 @@ urls = (
     "", "all_tags",
     # 127.0.0.1:8000/api/tag/#/, where # == tag.id
     "(\d+)/", "single_tag",
-    # 127.0.0.1:8000/api/tag/story/
-    "story/", "all_story_tags",
     # 127.0.0.1:8000/api/tag/story/#/, where # == story.id
     "story/(\d+)/", "single_story_tags",
     # 127.0.0.1:8000/api/tag/#/story/, where # == tag.id
-    "(\d+)/story/", "all_stories_with_tag"
+    "(\d+)/story/", "all_stories_with_tag",
+    # 127.0.0.1:8000/api/tag/panel/#/, where # == panel.id
+    "panel/(\d+)/", "single_panel_tags",
+    # 127.0.0.1:8000/api/tag/#/panel/, where # == tag.id
+    "(\d+)/panel/", "all_panels_with_tag"
 
 )
         
 class all_tags:
     """ Extract all the tags.
+    output:
+        * tag.id
+        * tag.name
     """
     def GET(self, connection_string=os.environ['DATABASE_URL']): 
         # connect to postgresql based on configuration in connection_string
@@ -38,6 +43,11 @@ class all_tags:
 
 class single_tag:
     """ Extract a tag with a specific id.
+    input:
+        * tag.id
+    output:
+        * tag.id
+        * tag.name
     """
     def GET(self, tag_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
@@ -55,25 +65,13 @@ class single_tag:
         # convert data to a string
         return json.dumps(data)
 
-class all_story_tags:
-    """ Extract all the tags from all the stories.
-    """
-    def GET(self, connection_string=os.environ['DATABASE_URL']):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
-        # execute query
-        self.cursor.execute("""
-            SELECT * FROM story_tag;
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data)
-
 class single_story_tags:
     """ Extract all the tags from a single story.
+    input: 
+        * story.id
+    output:
+        * tag.id
+        * tag.name
     """
     def GET(self, story_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
@@ -82,9 +80,13 @@ class single_story_tags:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT * 
-            FROM story_tag
-            WHERE story_tag.story_id = """ + story_id + """;
+            SELECT DISTINCT ON (tag.id) tag.id, tag.name
+            FROM tag
+            RIGHT JOIN story_tag
+            ON tag.id = story_tag.tag_id 
+            AND story_tag.story_id = """ + story_id + """
+            WHERE tag.id IS NOT NULL
+            ORDER BY tag.id;
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -93,6 +95,12 @@ class single_story_tags:
 
 class all_stories_with_tag:
     """ Extract all the stories with a particular tag.
+    input:
+        * tag.id
+    output:
+        * story.id
+        * story.name
+        * story.url_name
     """
     def GET(self, tag_id, connection_string=os.environ['DATABASE_URL']):
         # connect to postgresql based on configuration in connection_string
@@ -101,9 +109,70 @@ class all_stories_with_tag:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT * 
-            FROM story_tag
-            WHERE story_tag.tag_id = """ + tag_id + """;
+            SELECT DISTINCT ON (story.id) story.id, story.name, story.url_name
+            FROM story
+            RIGHT JOIN story_tag
+            ON story.id = story_tag.story_id 
+            AND story_tag.tag_id = """ + tag_id + """
+            WHERE story.id IS NOT NULL
+            ORDER BY story.id;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+class single_panel_tags:
+    """ Extract all the tags from a single story.
+    input:
+        * panel.id
+    output:
+        * tag.id
+        * tag.name
+    """
+    def GET(self, panel_id, connection_string=os.environ['DATABASE_URL']):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        # execute query
+        self.cursor.execute("""
+            SELECT DISTINCT ON (tag.id) tag.id, tag.name
+            FROM tag
+            RIGHT JOIN panel_tag
+            ON tag.id = panel_tag.tag_id 
+            AND panel_tag.panel_id = """ + panel_id + """
+            WHERE tag.id IS NOT NULL
+            ORDER BY tag.id;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+class all_panels_with_tag:
+    """ Extract all the panels with a particular tag.
+    input:
+        * tag.id
+    output:
+        * panel.id
+        * panel.name
+        * panel.url_name
+    """
+    def GET(self, tag_id, connection_string=os.environ['DATABASE_URL']):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        # execute query
+        self.cursor.execute("""
+            SELECT DISTINCT ON (panel.id) panel.id, panel.name, panel.url_name
+            FROM panel
+            RIGHT JOIN panel_tag
+            ON panel.id = panel_tag.panel_id 
+            AND panel_tag.tag_id = """ + tag_id + """
+            WHERE panel.id IS NOT NULL
+            ORDER BY panel.id;
         """)
         # obtain the data
         data = self.cursor.fetchall()

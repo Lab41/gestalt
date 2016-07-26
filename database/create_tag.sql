@@ -7,7 +7,7 @@ CREATE TABLE tag (
 INSERT INTO tag (name) 
     SELECT x FROM unnest(ARRAY[
         'contagion',
-        'vulnerability' 
+        'vulnerability',
         'visualization',
         'data science',
         'economics',
