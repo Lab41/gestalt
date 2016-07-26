@@ -22,8 +22,8 @@ INSERT INTO panel (name, url_name) VALUES
 
 CREATE TABLE persona_panel_story ( 
     id SERIAL PRIMARY KEY,
-    persona_id INTEGER,
-    panel_id INTEGER,
+    persona_id INTEGER NOT NULL,
+    panel_id INTEGER NOT NULL,
     story_id INTEGER NOT NULL,
     UNIQUE (persona_id, panel_id, story_id)
 );
