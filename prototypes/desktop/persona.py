@@ -5,14 +5,17 @@ import web
 import os
 
 urls = (
-    
-    # rest API backend endpoints
+
+    # 127.0.0.1:8000/api/persona/
     "", "all_personas",
+    # 127.0.0.1:8000/api/persona/#/, where # == persona.id
+    "(\d+)/", "single_persona",
     
 )
-
         
 class all_personas:
+    """ Extract all the personas.
+    """
     def GET(self, connection_string=os.environ['DATABASE_URL']): 
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
@@ -26,6 +29,26 @@ class all_personas:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
+
+class single_persona:
+    """ Extract a persona with a specific id.
+    """
+    def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        # execute query
+        self.cursor.execute("""
+            SELECT * 
+            FROM persona
+            WHERE persona.id = """ + persona_id + """;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
 
 # instantiate the application
 app = web.application(urls, locals())

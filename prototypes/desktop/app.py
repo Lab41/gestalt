@@ -3,16 +3,17 @@ import web
 
 import panel
 import persona
-import workspace
 import story
+import tag
+import workspace
 
 urls = (
-    
-    # rest API backend endpoints    
+
     "/api/persona/", persona.app,
     "/api/workspace/", workspace.app,
     "/api/panel/", panel.app,
     "/api/story/", story.app,
+    "/api/tag/", tag.app,
 
     # front-end routes to load angular app
     "/", "index",
