@@ -4,6 +4,8 @@ import psycopg2.extras
 import web
 import os
 
+import helper
+
 urls = (
     
     # 127.0.0.1:8000/api/story/
@@ -24,7 +26,7 @@ class all_stories:
         * story.name
         * story.url_name
     """
-    def GET(self, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -47,7 +49,7 @@ class single_story:
         * story.name
         * story.url_name
     """
-    def GET(self, story_id, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, story_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -72,7 +74,7 @@ class persona_stories:
         * story.name
         * story.url_name
     """
-    def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -102,7 +104,7 @@ class persona_panel_stories:
         * story.name
         * story.url_name
     """
-    def GET(self, persona_id, panel_id, connection_string=os.environ['DATABASE_URL']):   
+    def GET(self, persona_id, panel_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries

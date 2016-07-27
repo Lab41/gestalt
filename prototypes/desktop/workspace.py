@@ -4,6 +4,8 @@ import psycopg2.extras
 import web
 import os
 
+import helper
+
 urls = (
     
     # 127.0.0.1:8000/api/workspace/workspace_name
@@ -25,7 +27,7 @@ class all_workspace_names:
         * workspace_name.id
         * workspace_name.name
     """
-    def GET(self, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -47,7 +49,7 @@ class all_workspaces:
         * persona.name        
         * workspace.url_name
     """
-    def GET(self, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -78,7 +80,7 @@ class single_workspace:
         * persona.name        
         * workspace.url_name
     """
-    def GET(self, workspace_id, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, workspace_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -111,7 +113,7 @@ class persona_workspaces:
         * persona.name
         * workspace.url_name
     """
-    def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -142,7 +144,7 @@ class workspace_panels:
         * panel.name
         * panel.url_name
     """
-    def GET(self, workspace_id, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, workspace_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries

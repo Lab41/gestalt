@@ -4,6 +4,8 @@ import psycopg2.extras
 import web
 import os
 
+import helper
+
 urls = (
 
     # 127.0.0.1:8000/api/persona/
@@ -20,7 +22,7 @@ class all_personas:
         * persona.name
         * persona.description
     """
-    def GET(self, connection_string=os.environ['DATABASE_URL']): 
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -43,7 +45,7 @@ class single_persona:
         * persona.name
         * persona.description
     """
-    def GET(self, persona_id, connection_string=os.environ['DATABASE_URL']):
+    def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries

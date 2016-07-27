@@ -13,7 +13,7 @@ folder: mydoc
 Make sure you first set the following environment variable:
 
 ```
-export DATABASE_URL=postgresql://$DATABASE_USER@DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME
+export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
 ```
 
 Then, after retrieiving the project from GitHub, run the following command:
@@ -52,7 +52,7 @@ This development is currently being implemented in a separate
 Make sure you first set the following environment variable:
 
 ```
-export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD
+export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
 ```
 
 Then, after retrieving the project from GitHub, run the following command:
