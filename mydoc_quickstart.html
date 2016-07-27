@@ -502,7 +502,7 @@ $('#toc').on('click', 'a', function() {
 
 <p>Make sure you first set the following environment variable:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>export DATABASE_URL=postgresql://$DATABASE_USER@DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME
+<div class="highlighter-rouge"><pre class="highlight"><code>export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
 </code></pre>
 </div>
 
@@ -541,7 +541,7 @@ in the OpenStack Server.</p>
 
 <p>Make sure you first set the following environment variable:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD
+<div class="highlighter-rouge"><pre class="highlight"><code>export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
 </code></pre>
 </div>
 
