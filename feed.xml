@@ -5,9 +5,46 @@
         <description>Documentation for Gestalt</description>
         <link>/</link>
         <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Tue, 26 Jul 2016 19:21:37 -0700</pubDate>
-        <lastBuildDate>Tue, 26 Jul 2016 19:21:37 -0700</lastBuildDate>
+        <pubDate>Wed, 27 Jul 2016 11:04:25 -0700</pubDate>
+        <lastBuildDate>Wed, 27 Jul 2016 11:04:25 -0700</lastBuildDate>
         <generator>Jekyll v3.0.3</generator>
+        
+        <item>
+            <title>Visualization Update</title>
+            <description>&lt;p&gt;It will be useful to show groupings of affected regions as part of the 
+contagion storyline, so we have implemented to dynamically do so.&lt;/p&gt;
+
+&lt;p&gt;Image will be updated shortly.&lt;/p&gt;
+
+</description>
+            <pubDate>Wed, 27 Jul 2016 00:00:00 -0700</pubDate>
+            <link>/20160727_update_1.html</link>
+            <guid isPermaLink="true">/20160727_update_1.html</guid>
+            
+            <category>updates</category>
+            
+            <category>visualizations</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>Reading Group Update</title>
+            <description>&lt;p&gt;This week, we will be reading &lt;a href=&quot;https://www.computer.org/csdl/trans/tg/preprint/07192646.pdf&quot;&gt;Beyond Memorability: Visualization Recognition and Recall&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We shorten our reading from two papers to one so that we can focus more time on completing the project.&lt;/p&gt;
+
+</description>
+            <pubDate>Wed, 27 Jul 2016 00:00:00 -0700</pubDate>
+            <link>/20160727_update_2.html</link>
+            <guid isPermaLink="true">/20160727_update_2.html</guid>
+            
+            <category>updates</category>
+            
+            <category>reading_group</category>
+            
+            
+        </item>
         
         <item>
             <title>Database Update</title>
@@ -89,8 +126,9 @@ asynchronous tasks. We will then connect Celery to Spark to process the big data
 The data will then be fed from PostgreSQL database. This database will still reside
 in the OpenStack Server.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../images/20160721.jpg&quot; alt=&quot;app.html&quot; title=&quot;adp&quot; /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;img class=&quot;docimage&quot; src=&quot;images/20160721.jpg&quot; alt=&quot;adp&quot; /&gt;
 
+&lt;/figure&gt;
 </description>
             <pubDate>Thu, 21 Jul 2016 00:00:00 -0700</pubDate>
             <link>/20160721_update.html</link>
