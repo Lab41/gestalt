@@ -1,26 +1,27 @@
 // dependencies
 var express = require("express");
+var fs = require("fs"); // file system access
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
 var conString = process.env.DATABASE_URL ? process.env.DATABASE_URL.split(",")[0] + "://" + process.env.DATABASE_URL.split(",")[1] + ":" + process.env.DATABASE_URL.split(",")[3] + "@" + process.env.DATABASE_URL.split(",")[2] + "/" + process.env.DATABASE_URL.split(",")[0] : "";
-var baseUrl = "/api/workspace";
+var baseUrl = "/api/data/visualization";
 
 /*******************************/
 /************* GET *************/
 /*******************************/
 
-// all workspaces
-router.get(baseUrl + "/persona/:persona", function(req, res) {
+// cdis viz
+router.get(baseUrl + "/countries/groups/", function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
-        
-        var personaID = req.params.persona;
+		
+		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select wk.id,wk.param,wk.name,pa.name as persona,m.name as panel,t.param as default_panel,array_agg(row_to_json(r)) as panels from gestalt_workspace wk,gestalt_persona pa,gestalt_meta m,get_panels_by_id(wk.panel) t,get_panels_by_id(wk.panel) r where m.id = wk.panel and pa.id = any(wk.persona) and pa.id = " + personaID + " and t.id = wk.default_panel and r.id = any(wk.topics) group by wk.id,wk.param,wk.name,pa.name,m.name,t.param;");
+        var query = client.query("select gt.*,array_agg(row_to_json(r)) as subgroups from gestalt_group_type gt left join (select g.*,array_agg(row_to_json(c)) as nodes from gestalt_group g left join (select gc.iso_alpha2code as id,gm.grouping as subgroup from gestalt_group_member gm left join gestalt_country gc on gc.id = gm.country_id where gc.iso_alpha2code is not null) c on c.subgroup = g.id group by g.id) r on r.type = gt.id group by gt.id;");
         
         // stream results back one row at a time
         query.on("row", function(row) {

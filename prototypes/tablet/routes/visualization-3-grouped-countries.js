@@ -21,7 +21,7 @@ router.get(baseUrl + "/:table", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select gc.name,array_agg(row_to_json (r)) as groups from gestalt_country gc left join (select gt.name as grouptype from gestalt_group_member gm left join gestalt_group g on g.id = gm.grouping left join gestalt_group_type gt on gt.id = g.type group by gt.name) r on r.grouptype is not null where gc.name = 'Bolivia' group by gc.name;");
+        var query = client.query("select distinct on (gcdis.origin) gcdis.origin,gc.name,'default' as cluster,1 as subgroup from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
