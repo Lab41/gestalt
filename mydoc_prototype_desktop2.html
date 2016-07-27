@@ -141,11 +141,15 @@
                     <ul class="dropdown-menu">
                         
                         
+                        <li><a href="updates_index.html">Updates</a></li>
+                        
+                        
+                        
                         <li><a href="readings_index.html">Reading Group</a></li>
                         
                         
                         
-                        <li><a href="updates_index.html">Updates</a></li>
+                        <li><a href="https://github.com/tomjohnson1492/documentation-theme-jekyll" target="_blank">Jekyll Documentation Theme</a></li>
                         
                         
                     </ul>
@@ -246,6 +250,13 @@ window.location.href = uri;
             
             
             
+            <li><a href="updates_index.html">Updates</a></li>
+            
+            
+            
+            
+            
+            
             <li><a href="mydoc_team.html">About the team</a></li>
             
             
@@ -261,13 +272,6 @@ window.location.href = uri;
             
             
             <li><a href="mydoc_documentation.html">Documentation</a></li>
-            
-            
-            
-            
-            
-            
-            <li><a href="updates_index.html">Updates</a></li>
             
             
             
@@ -332,6 +336,12 @@ window.location.href = uri;
             <li class="subfolders">
                 <a href="#">Datasets and Tables</a>
                 <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_dataset_ui.html">UI</a></li>
+                    
+                    
                     
                     
                     
@@ -514,11 +524,61 @@ python app.py
 
 <p>Frontend files are available at <code class="highlighter-rouge">127.0.0.1:8000</code></p>
 
-<p>API is available at <code class="highlighter-rouge">127.0.0.1:8000/api/..</code></p>
+<p>API is available at <code class="highlighter-rouge">127.0.0.1:8000/api/..</code> The API will query the database if the
+endpoints existed.</p>
 
-<p><strong>Example endpoint</strong></p>
+<h2 id="list-of-endpoints">List of Endpoints</h2>
 
-<p><code class="highlighter-rouge">127.0.0.1:8000/api/data/app/</code> should resolve with metadata about the application.</p>
+<p>If you are unfamiliar what these endpoints supposed to represent, please checkout 
+the <a href="mydoc_schema_ui.html">UI schema</a> or the <a href="mydoc_dataset_ui.html">creation of the UI tables</a>
+for more information.</p>
+
+<h3 id="persona">Persona</h3>
+
+<ol>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/persona/</code> lists all the personas.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/persona/#/, where # == persona.id</code> extracts the persona with the specific persona’s id.</li>
+</ol>
+
+<h3 id="story">Story</h3>
+
+<ol>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/story/</code> lists all the stories.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/story/#/, where # == story.id</code> extracts the story with the specific story’s id.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/story/persona/#/, where # == persona.id</code> lists all the stories for a particular persona.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/story/persona/#/panel/#/, where first # == persona.id and second # == panel.id</code> lists  all the stories from a specific panel with a particular persona.</li>
+</ol>
+
+<h3 id="panel">Panel</h3>
+
+<ol>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/panel/</code> lists all the panels.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/panel/#/, where # == panel.id</code> extracts the panel with the specific panel’s id.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/panel/persona/#/, where # == persona.id</code> lists all the panels for a particular persona.</li>
+</ol>
+
+<h3 id="workspace">Workspace</h3>
+
+<ol>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/workspace/workspace_name</code> lists all the workspace’s names.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/workspace/</code> lists all the workspaces.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/workspace/#/, where # == workspace.id</code> extracts a single workspace with a specific workspace’s id.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/workspace/persona/#/, where # == persona.id</code> lists all the workspaces for a particular persona.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/workspace/#/panels/, where # == workspace.id</code> lists all the panels for a particular workspace.</li>
+</ol>
+
+<h3 id="tag">Tag</h3>
+
+<ol>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/</code> lists all the tags.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/#/, where # == tag.id</code> extracts a tag with a specific tag’s id.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/story/#/, where # == story.id</code> lists all from a specific story.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/#/story/, where # == tag.id</code> lists all the stories with a particular tag.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/panel/#/, where # == panel.id</code> lists all the tags from a single panel.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/#/panel/, where # == tag.id</code> lists all the panels with a particular tag.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/workspace/#/, where # == workspace.id</code> lists all the tags from a single workspace.</li>
+  <li><code class="highlighter-rouge">127.0.0.1:8000/api/tag/#/workspace/, where # == tag.id</code> lists all the workspaces with a particular tag.</li>
+</ol>
 
 
     <div class="tags">
@@ -543,7 +603,7 @@ python app.py
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2016 In-Q-Tel. All rights reserved. <br />
-<span>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 20, 2016 <br />
+<span>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 26, 2016 <br />
 <p><img style="PADDING-TOP:5px" src="images/company_logo.svg" alt="Company logo"/></p>
                 </div>
             </div>

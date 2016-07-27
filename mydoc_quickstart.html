@@ -141,11 +141,15 @@
                     <ul class="dropdown-menu">
                         
                         
+                        <li><a href="updates_index.html">Updates</a></li>
+                        
+                        
+                        
                         <li><a href="readings_index.html">Reading Group</a></li>
                         
                         
                         
-                        <li><a href="updates_index.html">Updates</a></li>
+                        <li><a href="https://github.com/tomjohnson1492/documentation-theme-jekyll" target="_blank">Jekyll Documentation Theme</a></li>
                         
                         
                     </ul>
@@ -246,6 +250,13 @@ window.location.href = uri;
             
             
             
+            <li><a href="updates_index.html">Updates</a></li>
+            
+            
+            
+            
+            
+            
             <li><a href="mydoc_team.html">About the team</a></li>
             
             
@@ -261,13 +272,6 @@ window.location.href = uri;
             
             
             <li><a href="mydoc_documentation.html">Documentation</a></li>
-            
-            
-            
-            
-            
-            
-            <li><a href="updates_index.html">Updates</a></li>
             
             
             
@@ -332,6 +336,12 @@ window.location.href = uri;
             <li class="subfolders">
                 <a href="#">Datasets and Tables</a>
                 <ul>
+                    
+                    
+                    
+                    <li><a href="mydoc_dataset_ui.html">UI</a></li>
+                    
+                    
                     
                     
                     
@@ -490,14 +500,63 @@ $('#toc').on('click', 'a', function() {
 
   <h2 id="desktop">Desktop</h2>
 
-<p>The desktop prototype is currently being implemented in a separate <a href="https://github.com/tiffanyj41/adp">repo</a>. Instructions will be updated after integration.</p>
+<p>Make sure you first set the following environment variable:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>export DATABASE_URL=postgresql://$DATABASE_USER@DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME
+</code></pre>
+</div>
+
+<p>Then, after retrieiving the project from GitHub, run the following command:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd gestalt/prototypes/desktop
+python app.js
+</code></pre>
+</div>
+
+<p>After running the following command, go to your browser and input 
+<code class="highlighter-rouge">127.0.0.1:8000</code> to play around with the desktop prototype.</p>
+
+<h3 id="current-build">Current Build</h3>
+
+<p>The current build utilizes Angular 1.0 as the frontend and webpy RESTful API as the backend. 
+It takes the data from PostgreSQL database which resides in the OpenStack Server.</p>
+
+<h3 id="future-build">Future Build</h3>
+
+<p>The future build will utilize Angular 1.0 as the frontend and Django as the backend. 
+Since we are going to ingest large numbers of data, processing these data will 
+consume a lot of time. For this reason, we need additional backend besides Django to 
+run our tasks asynchronously because Django cannot run very long processes.</p>
+
+<p>Our hope is that we can integrate Celery with Django since Celery is meant to handle
+asynchronous tasks. We will then connect Celery to Spark to process the big data.
+The data will then be fed from PostgreSQL database. The database will still reside
+in the OpenStack Server.</p>
+
+<p>This development is currently being implemented in a separate 
+<a href="https://github.com/tiffanyj41/adp">repo</a>. Instructions will be updated after integration.</p>
 
 <h2 id="tablet">Tablet</h2>
+
+<p>Make sure you first set the following environment variable:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD
+</code></pre>
+</div>
+
+<p>Then, after retrieving the project from GitHub, run the following command:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cd gestalt/prototypes/tablet
 node app.js
 </code></pre>
 </div>
+<p>After running the following command, go to your browser and input 
+<code class="highlighter-rouge">127.0.0.1:8001</code> to play around with the tablet prototype.</p>
+
+<h3 id="current-build-1">Current Build</h3>
+
+<p>The current build utilizes Angular 1.0 as the frontend and Node.js RESTful API as the backend. 
+It takes the data from PostgreSQL database which resides in the OpenStack Server.</p>
 
 
 
@@ -523,7 +582,7 @@ node app.js
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2016 In-Q-Tel. All rights reserved. <br />
-<span>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 20, 2016 <br />
+<span>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 26, 2016 <br />
 <p><img style="PADDING-TOP:5px" src="images/company_logo.svg" alt="Company logo"/></p>
                 </div>
             </div>

@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Provide an overview of the raw schema">
-<meta name="keywords" content="componentsdatasets,  gestalt, components, infrastructure, raw schema">
-<title>Raw Schema | Documentation for Gestalt</title>
+<meta name="description" content="">
+<meta name="keywords" content="database,  database">
+<title>UI Tables | Documentation for Gestalt</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -161,7 +161,7 @@
 <script>
 function SendLinkByMail(href) {
 var subject= "Documentation for Gestalt feedback";
-var body = "I have some feedback about the Raw Schema page: ";
+var body = "I have some feedback about the UI Tables page: ";
 body += window.location.href;
 body += "";
 var uri = "mailto:info@lab41.org?subject=";
@@ -188,7 +188,7 @@ window.location.href = uri;
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Raw Schema">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="UI Tables">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -293,7 +293,7 @@ window.location.href = uri;
             
             
             
-            <li class="active"><a href="mydoc_schema_raw.html">Raw schema</a></li>
+            <li><a href="mydoc_schema_raw.html">Raw schema</a></li>
             
             
             
@@ -339,7 +339,7 @@ window.location.href = uri;
                     
                     
                     
-                    <li><a href="mydoc_dataset_ui.html">UI</a></li>
+                    <li class="active"><a href="mydoc_dataset_ui.html">UI</a></li>
                     
                     
                     
@@ -455,15 +455,13 @@ window.location.href = uri;
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Raw Schema</h1>
+   <h1 class="post-title-main">UI Tables</h1>
 </div>
 
 
 
 <div class="post-content">
 
-   
-    <div class="summary">Provide an overview of the raw schema</div>
    
 
     
@@ -495,16 +493,60 @@ $('#toc').on('click', 'a', function() {
 
     
 
-    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages/mydoc/mydoc_schema_raw.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
+    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages/mydoc/mydoc_dataset_ui.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
     
 
     
 
-  <p>We are still in the process of developing a schema for the different types of datasets
-that we use. We accomplish this by figuring out the similar building blocks that construct
-a dataset.</p>
+  <p>The creation of the tables has to follow in the order below.</p>
 
-<p>For more details about each dataset, please see section “Handling data.”</p>
+<h2 id="persona">Persona</h2>
+
+<p>The persona table lists the types of users that we will encounter when building a data story. 
+You can find the creation of the persona’s tables under <code class="highlighter-rouge">gestalt/database/create_persona.sql</code>.</p>
+
+<h2 id="tag">Tag</h2>
+
+<p>The tag table lists all tags. Each tag is used to tag a story. Think of a tag as a metadata that you are attaching to the story. The benefit of a tag is to help other users discover the story.<br />
+You can find the creation of the tag’s tables under <code class="highlighter-rouge">gestalt/database/create_tag.sql</code>.</p>
+
+<h2 id="story">Story</h2>
+
+<p>The story table lists all the story webpages. Story is the smallest element of the UI framework. 
+You can find the creation of the story’s tables under <code class="highlighter-rouge">gestalt/database/create_story.sql</code>.</p>
+
+<p>In addition to the story table, there is:</p>
+
+<ul>
+  <li>story_tag: that lists the tags of each story</li>
+</ul>
+
+<h2 id="panel">Panel</h2>
+
+<p>The panel table lists all the panel webpages. Panel encapsulates a collection of stories. Think of a panel as the main topic that stories fall under.
+You can find the creation of the panel’s tables under <code class="highlighter-rouge">gestalt/database/create_panel.sql</code>.</p>
+
+<p>In addition to the panel table, there are:</p>
+
+<ul>
+  <li>persona_panel_story: that lists the relationship of how a particular story is linked to a particular panel and a particular persona</li>
+  <li>panel_tag: that lists the tags of each panel</li>
+</ul>
+
+<h2 id="workspace">Workspace</h2>
+
+<p>Workspaces are collections of stories. Workspace encapsulates multiple collections which in turn encapsulates multiple stories. 
+You can find the creation of the workspace’s tables under <code class="highlighter-rouge">gestalt/database/create_database.sql</code>.</p>
+
+<p>The structure of the workspace table is different than the panel and story tables because both the persona
+and the workspace are tied to the url. Panel’s and story’s url are not directly tied to the persona.</p>
+
+<p>In addition to the workspace table, there are:</p>
+
+<ul>
+  <li>workspace_panel: that lists the relationship of how a particular workspace is linked to a particular panel</li>
+  <li>workspace_tag: that lists the tags of each workspace</li>
+</ul>
 
 
 
@@ -514,11 +556,7 @@ a dataset.</p>
         
         
         
-        <a href="tag_components.html" class="btn btn-default navbar-btn cursorNorm" role="button">components</a>
-        
-        
-        
-        <a href="tag_datasets.html" class="btn btn-default navbar-btn cursorNorm" role="button">datasets</a>
+        <a href="tag_database.html" class="btn btn-default navbar-btn cursorNorm" role="button">database</a>
         
         
         

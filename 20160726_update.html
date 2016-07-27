@@ -3,9 +3,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Provide an overview of the raw schema">
-<meta name="keywords" content="componentsdatasets,  gestalt, components, infrastructure, raw schema">
-<title>Raw Schema | Documentation for Gestalt</title>
+<meta name="description" content="">
+<meta name="keywords" content="updatesdatabase,  ">
+<title>Database Update | Documentation for Gestalt</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -161,7 +161,7 @@
 <script>
 function SendLinkByMail(href) {
 var subject= "Documentation for Gestalt feedback";
-var body = "I have some feedback about the Raw Schema page: ";
+var body = "I have some feedback about the Database Update page: ";
 body += window.location.href;
 body += "";
 var uri = "mailto:info@lab41.org?subject=";
@@ -188,7 +188,7 @@ window.location.href = uri;
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Raw Schema">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Database Update">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -293,7 +293,7 @@ window.location.href = uri;
             
             
             
-            <li class="active"><a href="mydoc_schema_raw.html">Raw schema</a></li>
+            <li><a href="mydoc_schema_raw.html">Raw schema</a></li>
             
             
             
@@ -454,79 +454,52 @@ window.location.href = uri;
 
     <!-- Content Column -->
     <div class="col-md-9">
-        <div class="post-header">
-   <h1 class="post-title-main">Raw Schema</h1>
-</div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Database Update</h1>
+        <p class="post-meta"><time datetime="2016-07-26T00:00:00-07:00" itemprop="datePublished">Jul 26, 2016</time> /
+            
+            
+            
+            <a href="tag_updates.html">updates</a>, 
+            
+            
+            
+            <a href="tag_database.html">database</a>
+            
+            
+            
+
+        </p>
 
 
+    </header>
 
-<div class="post-content">
+    <div class="post-content" itemprop="articleBody">
 
-   
-    <div class="summary">Provide an overview of the raw schema</div>
-   
-
-    
-    
-<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
-<script>
-$( document ).ready(function() {
-  // Handler for .ready() called.
-
-$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
-
-/* this offset helps account for the space taken up by the floating toolbar. */
-$('#toc').on('click', 'a', function() {
-  var target = $(this.getAttribute('href'))
-    , scroll_target = target.offset().top
-
-  $(window).scrollTop(scroll_target - 10);
-  return false
-})
-  
-});
-</script>
-
-<div id="toc"></div>
-
-    
-
-    
-
-    
-
-    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages/mydoc/mydoc_schema_raw.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
-    
-
-    
-
-  <p>We are still in the process of developing a schema for the different types of datasets
-that we use. We accomplish this by figuring out the similar building blocks that construct
-a dataset.</p>
-
-<p>For more details about each dataset, please see section “Handling data.”</p>
-
-
-
-    <div class="tags">
         
-        <b>Tags: </b>
-        
-        
-        
-        <a href="tag_components.html" class="btn btn-default navbar-btn cursorNorm" role="button">components</a>
-        
-        
-        
-        <a href="tag_datasets.html" class="btn btn-default navbar-btn cursorNorm" role="button">datasets</a>
-        
-        
-        
+
+        <p>We understand the importance of structuring the database. For this reason, 
+we are happy to bring you the script to build the database’s tables. These 
+tables contain the data necessary for the layout of the UI. You can view 
+them under <code class="highlighter-rouge">gestalt/external/database</code>.</p>
+
+<p>In the future, we would like to script the entire setup because we want it 
+to be  an install-and-play for those who are interested. But for now, please 
+enjoy the script to build the database’s tables.</p>
+
+<p>Also, we have improved the backend for the desktop prototype. It extracts
+the data from the PostgreSQL database.</p>
+
+
     </div>
 
-    
 
-</div>
+
+</article>
+
+
 
 <hr class="shaded"/>
 
@@ -534,7 +507,7 @@ a dataset.</p>
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2016 In-Q-Tel. All rights reserved. <br />
-<span>Page last updated:</span> July 18, 2016<br/> Site last generated: Jul 26, 2016 <br />
+ Site last generated: Jul 26, 2016 <br />
 <p><img style="PADDING-TOP:5px" src="images/company_logo.svg" alt="Company logo"/></p>
                 </div>
             </div>

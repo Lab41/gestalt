@@ -5,23 +5,100 @@
         <description>Documentation for Gestalt</description>
         <link>/</link>
         <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Wed, 20 Jul 2016 14:59:31 -0700</pubDate>
-        <lastBuildDate>Wed, 20 Jul 2016 14:59:31 -0700</lastBuildDate>
+        <pubDate>Tue, 26 Jul 2016 18:35:27 -0700</pubDate>
+        <lastBuildDate>Tue, 26 Jul 2016 18:35:27 -0700</lastBuildDate>
         <generator>Jekyll v3.0.3</generator>
         
         <item>
-            <title>Visualization Updates</title>
-            <description>&lt;p&gt;Gestalt is in the process of building multiple different visualizations
-for the contagion dataset. More to come!&lt;/p&gt;
+            <title>Database Update</title>
+            <description>&lt;p&gt;We understand the importance of structuring the database. For this reason, 
+we are happy to bring you the script to build the database’s tables. These 
+tables contain the data necessary for the layout of the UI. You can view 
+them under &lt;code class=&quot;highlighter-rouge&quot;&gt;gestalt/external/database&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the future, we would like to script the entire setup because we want it 
+to be  an install-and-play for those who are interested. But for now, please 
+enjoy the script to build the database’s tables.&lt;/p&gt;
+
+&lt;p&gt;Also, we have improved the backend for the desktop prototype. It extracts
+the data from the PostgreSQL database.&lt;/p&gt;
 
 </description>
-            <pubDate>Mon, 18 Jul 2016 00:00:00 -0700</pubDate>
-            <link>/visualization_updates.html</link>
-            <guid isPermaLink="true">/visualization_updates.html</guid>
+            <pubDate>Tue, 26 Jul 2016 00:00:00 -0700</pubDate>
+            <link>/20160726_update.html</link>
+            <guid isPermaLink="true">/20160726_update.html</guid>
+            
+            <category>updates</category>
+            
+            <category>database</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>Visualization Update</title>
+            <description>&lt;p&gt;Gestalt is in the process of building multiple different visualizations
+for the contagion dataset. For those of you who are not familiar with 
+what a contagion dataset represents, think of the game Pandemic and 
+the likelihood of a certain event occuring based on a previous event.&lt;/p&gt;
+
+&lt;p&gt;We will approach this in a variety of ways. In a contagion dataset, you 
+want to determine the &lt;strong&gt;high degree nodes&lt;/strong&gt; (or the nodes with the highest
+number of connections). The reason why we want to know the high degree
+node is because it has the highest influence to be contagious. We will 
+visualize this via a &lt;em&gt;tile grid map&lt;/em&gt; and a &lt;em&gt;horizontal bar graph&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Another aspect that we would like to extract from a contagion dataset
+is &lt;strong&gt;directionality&lt;/strong&gt;. We will visualize this via a &lt;em&gt;line graph&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Lastly, what are the probability that a particular node will be 
+affected by the contagion? We will visualize &lt;strong&gt;contingent probability
+of a crisis&lt;/strong&gt; using the &lt;em&gt;lollipop graph&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;We hope you look forward to our future updates as much as we do. 
+We really can’t wait to see the result!&lt;/p&gt;
+
+</description>
+            <pubDate>Mon, 25 Jul 2016 00:00:00 -0700</pubDate>
+            <link>/20160725_update.html</link>
+            <guid isPermaLink="true">/20160725_update.html</guid>
             
             <category>updates</category>
             
             <category>visualizations</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>Desktop Prototype Update</title>
+            <description>&lt;p&gt;We are in the process of revising the desktop prototype. This development is 
+currently being implemented in a separate &lt;a href=&quot;https://github.com/tiffanyj41/adp&quot;&gt;repo&lt;/a&gt;.
+It will be integrated to the Gestalt repo after its completion.&lt;/p&gt;
+
+&lt;p&gt;The future build will utilize Angular 1.0 as the frontend and Django as the backend. 
+The reason why we decided to pursue Django and forego webpy is because Django has
+more features than webpy’s.&lt;/p&gt;
+
+&lt;p&gt;Since we are going to ingest large numbers of data, processing these data will 
+consume a lot of time. For this reason, we need additional backend besides Django to 
+run our tasks asynchronously because Django cannot run very long processes.&lt;/p&gt;
+
+&lt;p&gt;Our hope is that we can integrate Celery with Django since Celery is meant to handle
+asynchronous tasks. We will then connect Celery to Spark to process the big data.
+The data will then be fed from PostgreSQL database. This database will still reside
+in the OpenStack Server.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/20160721.jpg&quot; alt=&quot;app.html&quot; title=&quot;adp&quot; /&gt;&lt;/p&gt;
+
+</description>
+            <pubDate>Thu, 21 Jul 2016 00:00:00 -0700</pubDate>
+            <link>/20160721_update.html</link>
+            <guid isPermaLink="true">/20160721_update.html</guid>
+            
+            <category>updates</category>
+            
+            <category>prototypes</category>
             
             
         </item>

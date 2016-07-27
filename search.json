@@ -36,6 +36,16 @@
 
 
 {
+"title": "UI Tables",
+"tags": "database",
+"keywords": "database",
+"url": "mydoc_dataset_ui.html",
+"summary": ""
+},
+
+
+
+{
 "title": "Documentation",
 "tags": "documentations",
 "keywords": "documentation",
@@ -338,10 +348,30 @@
 
 
 {
-"title": "Visualization Updates",
+"title": "Database Update",
+"tags": "updatesdatabase",
+"keywords": "",
+"url": "/20160726_update.html",
+"summary": ""
+}
+,
+
+
+{
+"title": "Visualization Update",
 "tags": "updatesvisualizations",
 "keywords": "",
-"url": "/visualization_updates.html",
+"url": "/20160725_update.html",
+"summary": ""
+}
+,
+
+
+{
+"title": "Desktop Prototype Update",
+"tags": "updatesprototypes",
+"keywords": "",
+"url": "/20160721_update.html",
 "summary": ""
 }
 
