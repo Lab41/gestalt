@@ -11,14 +11,12 @@ folder: mydoc
 
 UI Schema breaks down the UI components that are needed to tell the story on a particular medium.
 
-* An **item** is the smallest component of a UI. 
-* A **component** is componsed of multiple items.
-* A **module** is composed of multiple components.
-* A **container** is composed of multiple modules.
-* A **workspace** is composed of multiple containers.
+* A **story** is the smallest component of a UI.
+* A **panel** is composed of multiple stories.
+* A **workspace** is composed of multiple panels.
 
 Therefore, it can be summarized as:
-{% include callout.html content="Workspace <- Container <- Module <- Component <- Item" type="primary" %}
+{% include callout.html content="Workspace <- Panel <- Story" type="primary" %}
 
 Our current goal is to tell the visual story to the user using the following mediums:
 

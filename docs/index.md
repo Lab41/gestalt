@@ -25,7 +25,7 @@ from technical considerations to user engagement.
 
 We will develop two prototypes: one for the [desktop](mydoc_prototype_desktop1.html) 
 and one for the [tablet](mydoc_prototype_tablet1.html). Please checkout our 
-[quick start page](mydoc_quickstart.md) to start running the prototypes locally on
+[quick start page](mydoc_quickstart.html) to start running the prototypes locally on
 your computer.
 
 ## Updates

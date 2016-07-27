@@ -20,7 +20,9 @@ topnav_dropdowns:
           external_url: https://lab41.github.io/gestalt
     - title: Additional Resources
       folderitems:
-        - title: Reading Group 
-          url: /readings_index.html
         - title: Updates
           url: /updates_index.html
+        - title: Reading Group 
+          url: /readings_index.html
+        - title: Jekyll Documentation Theme
+          external_url: https://github.com/tomjohnson1492/documentation-theme-jekyll

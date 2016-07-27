@@ -32,6 +32,10 @@ entries:
       url: /mydoc_quickstart.html
       output: web, pdf
 
+    - title: Updates
+      url: /updates_index.html
+      output: web, pdf      
+
     - title: About the team
       url: /mydoc_team.html
       output: web, pdf
@@ -43,12 +47,8 @@ entries:
     - title: Documentation
       url: /mydoc_documentation.html
       output: web, pdf          
-
-    - title: Updates
-      url: /updates_index.html
-      output: web, pdf                                                                                
-                                                   
-
+                                                                          
+                                                                          
   - title: Understanding components
     output: web, pdf
     folderitems:
@@ -86,6 +86,10 @@ entries:
       - title: Datasets and Tables
         output: web, pdf
         subfolderitems:
+
+        - title: UI
+          url: /mydoc_dataset_ui.html
+          output: web, pdf
 
         - title: Contagion
           url: /mydoc_dataset_contagion.html
