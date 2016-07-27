@@ -22,6 +22,5 @@ asynchronous tasks. We will then connect Celery to Spark to process the big data
 The data will then be fed from PostgreSQL database. This database will still reside
 in the OpenStack Server.
 
-![app.html](../images/20160721.jpg "adp")
 
-{% include links.html %}
+{% include image.html file="20160721.jpg" alt="adp" %}

@@ -1,7 +1,7 @@
 ---
 title:  "Visualization Update"
 categories: gestalt update
-permalink: 20160727_update.html
+permalink: 20160727_update_1.html
 tags: [updates, visualizations]
 ---
 

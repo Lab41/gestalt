@@ -8,9 +8,17 @@ permalink: readings_list.html
 folder: mydoc
 ---
 
-* [07/22/2016](readings_07152016.html)
+* [07/29/2016](readings_07292016.html)
+  * [Beyond Memorability: Visualization Recognition and Recall](https://www.computer.org/csdl/trans/tg/preprint/07192646.pdf)
+* [07/22/2016](readings_07222016.html)
+  * [Beyond Weber's Law](http://idl.cs.washington.edu/files/2015-BeyondWebersLaw-InfoVis.pdf)
+  * [When (ish) is My Bus? User-centered Visualizations of Uncertainty in Everyday, Mobile Predictive Systems](http://idl.cs.washington.edu/files/2016-WhenIsMyBus-CHI.pdf)
+* [07/15/2016](readings_07152016.html)
   * [What Makes a Visualization Memorable?](http://vcg.seas.harvard.edu/files/pfister/files/infovis_borkin-128-camera_ready_0.pdf)
   * [Data Comics: Sequential Art for Data-Driven Storytelling](http://hcil2.cs.umd.edu/trs/2015-15/2015-15.pdf)
+* [07/08/2016](readings_07082016.html)
+  * [Sizing the Horizon: The Effects of Chart Size and Layering on the Graphical Perception of Time Series Visualizations](http://vis.berkeley.edu/papers/horizon/2009-TimeSeries-CHI.pdf)
+  * [TimeLineCurator: Interactive Authoring of Visual Timelines from Unstructured Text](http://www.cs.ubc.ca/labs/imager/tr/2015/TimeLineCurator/)
 * [07/01/2016](readings_07012016.html)
   * [Useful Junk? The Effects of Visual Embellishment on Comprehension and Memorability of Charts](http://hci.usask.ca/uploads/173-pap0297-bateman.pdf)
   * [The Chartjunk Debate: A Close Examination of Recent Findings](http://www.perceptualedge.com/articles/visual_business_intelligence/the_chartjunk_debate.pdf)

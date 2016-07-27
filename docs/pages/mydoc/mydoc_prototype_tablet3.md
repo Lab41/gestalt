@@ -60,9 +60,7 @@ The reason this prototype is set up with the menu state as the highest-level sta
 </body>
 ```
 
-| Abstract Illustration | Implementation Example |
-|-------|--------|
-| ![index.html](../images/template-index.png "Index Template") | ![Index Template](../images/template-index-implement.png "Index Template") |
+{% include image.html file="template-index.png" alt="Abstract Illustration" caption="Abstract Illustration" %} {% include image.html file="template-index-implement.png" alt="Implementation Example" caption="Implementation Example" %}
 
 #### Controller: none
 
@@ -128,9 +126,8 @@ There is no overarching model for this view because currently no data needs to b
 
 The app is set up in a series of panels which are the highest-level organization of information. Panels usually simply organize smaller bits of content into a organized group.
 
-| Abstract Illustration | Implementation Example |
-| --- | --- |
-| ![app.html](../images/template-app.png "App Template") | ![app.html](../images/template-app-implement.png "App Template") |
+{% include image.html file="template-app.png" alt="Abstract Illustration" caption="Abstract Illustration" %} {% include image.html file="template-app-implement.png" alt="Implementation Example" caption="Implementation Example" %}
+
 
 #### Controller: appCtrl
 
@@ -254,9 +251,8 @@ Content may or may not make sense at a panel level inside this application. For 
 
 Each panel is set up as a series of stories. We may not need this level of abstraction but it allows us to group stories in logical collections like possibly "contagion stories", "gdp stories", etc.
 
-| Abstract Illustration | Implementation Example |
-| --- | --- |
-| ![panel.html](../images/template-panel.png "Panel Template") | ![panel.html](../images/template-panel-implement.png "Panel Template") |
+{% include image.html file="template-panel.png" alt="Abstract Illustration" caption="Abstract Illustration" %} {% include image.html file="template-panel-implement.png" alt="Implementation Example" caption="Implementation Example" %}
+
 
 #### Controller: panelCtrl
 
@@ -383,9 +379,7 @@ The `contentService` takes the panel param as returned by the `layoutService` an
 
 Each individual story will render in an entire panel view and not have a unique view alongside a panel view but will replace the panel of stories with the single story when the story state is activated.
 
-| Abstract Illustration | Implementation Example |
-| --- | --- |
-| ![story.html](../images/template-story.png "Story Template") | ![story.html](../images/template-story-implement.png "Story Template") |
+{% include image.html file="template-story.png" alt="Abstract Illustration" caption="Abstract Illustration" %} {% include image.html file="template-story-implement.png" alt="Implementation Example" caption="Implementation Example" %}
 
 #### Controller: storyCtrl
 
