@@ -79,9 +79,9 @@ class persona_panels:
         self.cursor.execute("""
             SELECT DISTINCT ON (pa.id) pa.id, pa.name, pa.url_name 
             FROM panel pa
-            RIGHT JOIN persona_panel_story pcs
-            ON pa.id = pcs.panel_id 
-            AND pcs.persona_id = """ + persona_id + """
+            RIGHT JOIN persona_panel_story pps
+            ON pa.id = pps.panel_id 
+            AND pps.persona_id = """ + persona_id + """
             WHERE pa.id IS NOT NULL
             ORDER BY pa.id;
         """)        

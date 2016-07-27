@@ -8,7 +8,7 @@ urls = (
     
     # 127.0.0.1:8000/api/story/
     "", "all_stories",
-    # 127.0.0.1:8000/api/persona/#/, where # == story.id
+    # 127.0.0.1:8000/api/story/#/, where # == story.id
     "(\d+)/", "single_story",
     # 127.0.0.1:8000/api/story/persona/#/, where # == persona.id
     "persona/(\d+)/", "persona_stories",
@@ -81,9 +81,9 @@ class persona_stories:
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name 
             FROM story st
-            RIGHT JOIN persona_panel_story pcs
-            ON st.id = pcs.story_id 
-            AND pcs.persona_id = """ + persona_id + """
+            RIGHT JOIN persona_panel_story pps
+            ON st.id = pps.story_id 
+            AND pps.persona_id = """ + persona_id + """
             WHERE st.id IS NOT NULL
             ORDER BY st.id;
         """)        
@@ -111,10 +111,10 @@ class persona_panel_stories:
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
             FROM story st
-            RIGHT JOIN persona_panel_story pcs
-            ON st.id = pcs.story_id 
-            AND pcs.persona_id = """ + persona_id + """
-            AND pcs.panel_id = """ + panel_id + """
+            RIGHT JOIN persona_panel_story pps
+            ON st.id = pps.story_id 
+            AND pps.persona_id = """ + persona_id + """
+            AND pps.panel_id = """ + panel_id + """
             WHERE st.id IS NOT NULL
             ORDER BY st.id;
         """)
