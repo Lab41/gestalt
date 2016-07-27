@@ -156,6 +156,13 @@ group-nodes .node {
 	
 }
 
+/* node label */
+group-nodes .node text {
+    
+    fill: rgb(244,244,244);
+    
+}
+
 /************************/
 /**** !tile grid map ****/
 /************************/

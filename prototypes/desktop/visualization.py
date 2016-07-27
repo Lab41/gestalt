@@ -32,7 +32,7 @@ class cdis:
         cursor = con_string.cursor(cursor_factory=RealDictCursor)
         
         # SQL query
-        cursor.execute("""select distinct on (gcdis.origin) gcdis.origin,gc.name,'default' as cluster,1 as subgroup from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;""")
+        cursor.execute("""select distinct on (gcdis.origin) gcdis.origin from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;""")
         
         # get rows
         data = cursor.fetchall()

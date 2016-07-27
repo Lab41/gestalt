@@ -6,6 +6,7 @@ angular.module("group-nodes-directive", [])
 		scope: {
 			vizData: "=",
 			grouping: "=",
+            startGroup: "=",
             canvasWidth: "=",
             canvasHeight: "="
 		},
@@ -19,14 +20,14 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 4;
+                var radius = 10;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
 				
 				var force = d3.layout.force()
-					.charge(-20)
-                    .linkDistance(50)
+					.charge(-50)
+                    .linkDistance(-10)
                     .size([(width - diameter), (height - diameter)]);
                 
                 var canvas = d3.select(element[0])
@@ -40,6 +41,8 @@ angular.module("group-nodes-directive", [])
     
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
+                        
+                        var startGroup = scope.startGroup;
 						
 						function draw(data, groups) {
                             
@@ -52,17 +55,17 @@ angular.module("group-nodes-directive", [])
                                 d3.range(nodes.length).map(function(i) {
 
                                     // current node
-                                    var curr_node = nodes[i];console.log(curr_node);
+                                    var curr_node = nodes[i];
                                     var group = groupType;
-                                    var subgroup = test_foci[groupType][curr_node.origin];
+                                    var subgroup = foci[groupType][curr_node.origin];
 
                                     // move into cluster group
                                     curr_node.cluster = group;
                                     curr_node.subgroup = subgroup;
 
                                     // set coords
-                                    curr_node.cx = test_foci[groupType][subgroup].x;
-                                    curr_node.cy = test_foci[groupType][subgroup].y;
+                                    curr_node.cx = foci[groupType][subgroup].x;
+                                    curr_node.cy = foci[groupType][subgroup].y;
 
                                 });
 
@@ -99,14 +102,14 @@ angular.module("group-nodes-directive", [])
                             function tick(e) {
                                 
                                 // force direction and shape of clusters
-                                var k = 0.25 * e.alpha;
+                                var k = 0.1 * e.alpha;
 
                                 // push nodes toward focus
                                 nodes.forEach(function(o, i) {
                                     
                                     // get focus x,y values
-                                    o.y += (test_foci[o.cluster][o.subgroup].y - o.y) * k;
-                                    o.x += (test_foci[o.cluster][o.subgroup].x - o.x) * k;
+                                    o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
+                                    o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
                                     
                                 });
                                 
@@ -123,19 +126,58 @@ angular.module("group-nodes-directive", [])
                             };
                             
                             // make foci objects for each group
-                            var test_foci = {};
+                            var foci = {};
                             groups.map(function(o) {
                                 
+                                // check for starting group
+                                if (o.name == startGroup) {
+                                    
+                                    // add x,y values
+                                    // assumes starting is a single group
+                                    // if we want to be able to start in a different grouping
+                                    // need to adjust logic to accomodate
+                                    o.subgroups[0].center_x = center.x;
+                                    o.subgroups[0].center_y = center.y;
+                                    
+                                    // update nodes with default group and subgroup
+                                    data.map(function(n) {
+
+                                        // add values from data
+                                        n["cluster"] = startGroup;
+                                        n["subgroup"] = o.subgroups[0].id;
+
+                                    });
+                                    
+                                };
+                                
                                 var subgroups = {};
+                                
+                                // track cursor for grided layouts
+                                var cellHeight = height / o.subgroups.length;
+                                var cursorY = cellHeight / 2;
                                 
                                 // add subgroups to obj
                                 o.subgroups.map(function(s) {
                                     
                                     // check for nulls and do math to figure out new coords
-                                    // nulls mean non-geographic groups
-                                    var coords = {};
-                                    coords["x"] = s.center_x;
-                                    coords["y"] = s.center_y;
+                                    if (s.center_x == null && s.center_y == null) {
+                                        
+                                        // set coords evenly in the available space
+                                        var coords = {};
+                                        
+                                        coords["x"] = width / 5;
+                                        coords["y"] = cursorY;
+                                        
+                                        cursorY += cellHeight;
+                                        
+                                    } else {
+                                    
+                                        // nulls mean non-geographic groups
+                                        var coords = {};
+                                        coords["x"] = s.center_x;
+                                        coords["y"] = s.center_y;
+                                        
+                                    };
                                     
                                     subgroups[s.id] = coords;
                                     
@@ -154,24 +196,10 @@ angular.module("group-nodes-directive", [])
                                     
                                 });
                                 
-                                test_foci[o.name] = subgroups;
-                                
-                                // add default values to foci for starting position
-                                var startCoords = {};
-                                startCoords["1"] = { x: center.x, y: center.y };
-                                
-                                test_foci["default"] = startCoords;
+                                foci[o.name] = subgroups;
                                 
                             });
-                            console.log(test_foci);                            
-							// coordinates for groups
-							var foci = { 
-								group0: {x: center.x, y: center.y}, 
-								trade: {x: (width * 0.1), y: center.y}, 
-								investment: {x: (width * 0.8), y: center.y},
-								region: {x: (width * 0.4), y: center.y},
-								export: {x: (width * 0.2), y: center.y}
-							};
+                            console.log(foci);                            
                             
                             // attach event to button
 							d3.select(element.find("div")[0])
@@ -187,7 +215,7 @@ angular.module("group-nodes-directive", [])
                             
                             // set nodes from data
                             var nodes = data;
-                            console.log(nodes);
+                            
                             // bind data to force layout
                             force
                                 .nodes(nodes)

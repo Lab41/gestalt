@@ -21,7 +21,7 @@ router.get(baseUrl + "/:table", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select distinct on (gcdis.origin) gcdis.origin,gc.name,'default' as cluster,1 as subgroup from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;");
+        var query = client.query("select distinct on (gcdis.origin) gcdis.origin from gestalt_cdis gcdis left join gestalt_country gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
