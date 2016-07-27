@@ -39,6 +39,18 @@ button {
 	
 }
 
+button:hover {
+    
+    background: rgb(200,200,200);
+    
+}
+
+button:active {
+    
+    background: rgb(240,240,240);
+    
+}
+
 /******************************* !CUSTOM *******************************/
 
 /* TEMP section */

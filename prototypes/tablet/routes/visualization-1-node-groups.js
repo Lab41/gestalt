@@ -21,7 +21,7 @@ router.get(baseUrl + "/countries/groups/", function(req, res) {
 		var table = req.params.table;
                 
         // SQL query
-        var query = client.query("select gt.*,array_agg(row_to_json(r)) as subgroups from gestalt_group_type gt left join (select g.*,array_agg(row_to_json(c)) as nodes from gestalt_group g left join (select gc.iso_alpha2code as id,gm.grouping as subgroup from gestalt_group_member gm left join gestalt_country gc on gc.id = gm.country_id where gc.iso_alpha2code is not null) c on c.subgroup = g.id group by g.id) r on r.type = gt.id group by gt.id;");
+        var query = client.query("select gt.*,array_agg(row_to_json(r)) as subgroups from gestalt_group_type gt left join (select g.*,array_agg(row_to_json(c)) as nodes from gestalt_group g left join (select gc.iso_alpha2code as id,gm.grouping as subgroup from gestalt_group_member gm left join gestalt_geography gc on gc.id = gm.country_id where gc.iso_alpha2code is not null) c on c.subgroup = g.id group by g.id) r on r.type = gt.id group by gt.id;");
         
         // stream results back one row at a time
         query.on("row", function(row) {

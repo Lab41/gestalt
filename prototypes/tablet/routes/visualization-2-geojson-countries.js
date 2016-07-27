@@ -21,7 +21,7 @@ router.get(baseUrl + "/geojson/:grid", function(req, res) {
 		var grid = req.params.grid;
                 
         // SQL query
-        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t,gestalt_country gc left join (select id,name,iso_alpha2code as iso,grid_id from gestalt_country) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc." + grid + "_polygon as coordinates from t,gestalt_country gcc) c on c.coordinates = gc." + grid + "_polygon where gc." + grid + "_polygon is not null and gc.grid_id is not null) r group by type;");
+        var query = client.query("select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t,gestalt_geography gc left join (select id,name,iso_alpha2code as iso,grid_id from gestalt_geography) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc." + grid + "_polygon as coordinates from t,gestalt_geography gcc) c on c.coordinates = gc." + grid + "_polygon where gc." + grid + "_polygon is not null and gc.grid_id is not null) r group by type;");
         
         // stream results back one row at a time
         query.on("row", function(row) {
