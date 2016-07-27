@@ -57,6 +57,9 @@ export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSW
 Then, after retrieving the project from GitHub, run the following command:
 
 ```
+npm install express
+npm install body-parser
+npm install pg
 cd gestalt/prototypes/tablet
 node app.js
 ```
