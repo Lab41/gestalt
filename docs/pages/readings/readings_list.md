@@ -8,6 +8,8 @@ permalink: readings_list.html
 folder: mydoc
 ---
 
+* [08/05/2016](readings_08052016.html)
+  * [How do People Make Sense of Unfamiliar Visualization?: A Grounded Model of Novice's Information Visualization Sensemaking](https://www.computer.org/csdl/trans/tg/preprint/07192668.pdf)
 * [07/29/2016](readings_07292016.html)
   * [Beyond Memorability: Visualization Recognition and Recall](https://www.computer.org/csdl/trans/tg/preprint/07192646.pdf)
 * [07/22/2016](readings_07222016.html)
