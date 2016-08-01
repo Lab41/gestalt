@@ -23,18 +23,18 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Introduction
+    - title: Updates
       url: /index.html
+      output: web, pdf    
+
+    - title: Introduction
+      url: /mydoc_introduction.html
       output: web, pdf
       type: homepage
 
     - title: Quick start
       url: /mydoc_quickstart.html
       output: web, pdf
-
-    - title: Updates
-      url: /updates_index.html
-      output: web, pdf      
 
     - title: About the team
       url: /mydoc_team.html

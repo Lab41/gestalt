@@ -37,7 +37,15 @@ entries:
       - title: Summaries
         output: web, pdf
         subfolderitems:
-          
+             
+        - title: 08/05/2016
+          url: /readings_08052016.html
+          output: web, pdf 
+                  
+        - title: 07/29/2016
+          url: /readings_07292016.html
+          output: web, pdf 
+
         - title: 07/22/2016
           url: /readings_07022016.html
           output: web, pdf 

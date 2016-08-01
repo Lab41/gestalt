@@ -21,7 +21,7 @@ task :deploy do
             rm -rf docs && \
             git add . && \
             git commit -m \"#{message}\""    
-    puts "Do NOT forget to push gh-pages to master\n"
+    puts "Do NOT forget to push gh-pages to Lab41 remote branch\n"
 end
 
 desc "Build and Deploy to GitHub Pages"

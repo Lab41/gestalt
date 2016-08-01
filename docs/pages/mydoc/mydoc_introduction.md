@@ -4,7 +4,7 @@ keywords: gestalt, homepage
 last_updated: July 18, 2016
 tags: [getting_started]
 sidebar: mydoc_sidebar
-permalink: index.html
+permalink: mydoc_introduction.html
 toc: false
 ---
 

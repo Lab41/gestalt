@@ -21,7 +21,7 @@ topnav_dropdowns:
     - title: Additional Resources
       folderitems:
         - title: Updates
-          url: /updates_index.html
+          url: /index.html
         - title: Reading Group 
           url: /readings_index.html
         - title: Jekyll Documentation Theme
