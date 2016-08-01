@@ -4,8 +4,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="keywords" content="database,  db, database">
-<title>Database | Documentation for Gestalt</title>
+<meta name="keywords" content="getting_started,  gestalt, homepage">
+<title>Introduction to Gestalt | Documentation for Gestalt</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -161,7 +161,7 @@
 <script>
 function SendLinkByMail(href) {
 var subject= "Documentation for Gestalt feedback";
-var body = "I have some feedback about the Database page: ";
+var body = "I have some feedback about the Introduction to Gestalt page: ";
 body += window.location.href;
 body += "";
 var uri = "mailto:info@lab41.org?subject=";
@@ -188,7 +188,7 @@ window.location.href = uri;
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Database">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Introduction to Gestalt">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -243,7 +243,7 @@ window.location.href = uri;
             
             
             
-            <li><a href="mydoc_introduction.html">Introduction</a></li>
+            <li class="active"><a href="mydoc_introduction.html">Introduction</a></li>
             
             
             
@@ -329,7 +329,7 @@ window.location.href = uri;
             
             
             
-            <li class="active"><a href="mydoc_database.html">Database</a></li>
+            <li><a href="mydoc_database.html">Database</a></li>
             
             
             
@@ -455,7 +455,7 @@ window.location.href = uri;
     <!-- Content Column -->
     <div class="col-md-9">
         <div class="post-header">
-   <h1 class="post-title-main">Database</h1>
+   <h1 class="post-title-main">Introduction to Gestalt</h1>
 </div>
 
 
@@ -465,44 +465,39 @@ window.location.href = uri;
    
 
     
-    
-<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
-<script>
-$( document ).ready(function() {
-  // Handler for .ready() called.
-
-$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
-
-/* this offset helps account for the space taken up by the floating toolbar. */
-$('#toc').on('click', 'a', function() {
-  var target = $(this.getAttribute('href'))
-    , scroll_target = target.offset().top
-
-  $(window).scrollTop(scroll_target - 10);
-  return false
-})
-  
-});
-</script>
-
-<div id="toc"></div>
 
     
 
     
 
+    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages//mydoc_introduction.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
     
 
-    <a target="_blank" href="https://github.com/Lab41/gestalt/blob/gh-pages/pages//_pages/mydoc/mydoc_database.html.md" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
     
 
-    
+  <h2 id="our-goal">Our Goal</h2>
 
-  <p>We decided to use PostgreSQL as our relational database management system.
-Installation instructions will be updated shortly.</p>
+<p><a href="https://www.lab41.org">Lab41</a> embarks on an open source project called Gestalt.
+Its goal is to tell a visual story from big data.</p>
 
-<p>The creation of tables for each dataset will be included in the documentation
-page of that dataset.</p>
+<p>We will employ various data visualization tools and user experience frameworks 
+to construct cohesive data stories focused on communicating ripple-effect 
+scenarios. Several event-based datasets from different disciplines will serve 
+as the basis for data story development. Lab41 will develop an optimal front-end 
+visualization development stack in which user experience is a driver. Our 
+ultimate goal is to create a roadmap for how to approach visual data stories 
+from technical considerations to user engagement.</p>
+
+<h2 id="products">Products</h2>
+
+<p>We will develop two prototypes: one for the <a href="mydoc_prototype_desktop1.html">desktop</a> 
+and one for the <a href="mydoc_prototype_tablet1.html">tablet</a>. Please checkout our 
+<a href="mydoc_quickstart.html">quick start page</a> to start running the prototypes locally on
+your computer.</p>
+
+<h2 id="updates">Updates</h2>
+
+<p>Please check our <a href="updates_index.html">updates page</a> for the latest news about Gestalt.</p>
 
 
 
@@ -512,7 +507,7 @@ page of that dataset.</p>
         
         
         
-        <a href="tag_database.html" class="btn btn-default navbar-btn cursorNorm" role="button">database</a>
+        <a href="tag_getting_started.html" class="btn btn-default navbar-btn cursorNorm" role="button">getting_started</a>
         
         
         

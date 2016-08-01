@@ -70,6 +70,12 @@
   
   
   <url>
+    <loc>/mydoc_introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>/mydoc_prototype_desktop1.html</loc>
   </url>
   
@@ -249,12 +255,6 @@
   
   <url>
     <loc>/updates_archive.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>/updates_index.html</loc>
   </url>
   
   

@@ -6,9 +6,9 @@
 
 
 {
-"title": "Introduction to Gestalt",
-"tags": "getting_started",
-"keywords": "gestalt, homepage",
+"title": "Updates",
+"tags": "",
+"keywords": "news, blog, updates, release notes, announcements",
 "url": "index.html",
 "summary": ""
 },
@@ -50,6 +50,16 @@
 "tags": "documentations",
 "keywords": "documentation",
 "url": "mydoc_documentation.html",
+"summary": ""
+},
+
+
+
+{
+"title": "Introduction to Gestalt",
+"tags": "getting_started",
+"keywords": "gestalt, homepage",
+"url": "mydoc_introduction.html",
 "summary": ""
 },
 
@@ -330,16 +340,6 @@
 "tags": "",
 "keywords": "news, blog, updates, release notes, announcements",
 "url": "updates_archive.html",
-"summary": ""
-},
-
-
-
-{
-"title": "Updates",
-"tags": "",
-"keywords": "news, blog, updates, release notes, announcements",
-"url": "updates_index.html",
 "summary": ""
 },
 
