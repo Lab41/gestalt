@@ -3,85 +3,33 @@ import os
 import psycopg2
 import psycopg2.extras
 import web
-import os
 
 import helper
 
 urls = (
     
-    # 127.0.0.1:8000/api/workspace/workspace_name
-    "workspace_name/", "all_workspace_names",
-    # 127.0.0.1:8000/api/workspace/
-    "", "all_workspaces",
-    # 127.0.0.1:8000/api/workspace/#/, where # == workspace.id
-    "(\d+)/", "single_workspace",
     # 127.0.0.1:8000/api/workspace/persona/#/, where # == persona.id
     "persona/(\d+)/", "persona_workspaces",
+    
     # 127.0.0.1:8000/api/workspace/#/panels/, where # == workspace.id
-    "(\d+)/panels/", "workspace_panels"
+    "(\d+)/panels/", "workspace_panels",
+    
+     # 127.0.0.1:8000/api/workspace/#/, where # == workspace.url_name
+    "(.*)/", "single_workspace"
     
 )
 
-class all_workspace_names:
-    """ Extract all the workspace's names.
-    output:
-        * workspace_name.id
-        * workspace_name.name
-    """
-    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-            SELECT * FROM workspace_name;
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data)
-
-class all_workspaces:
-    """ Extract all the workspaces.
-    output:
-        * workspace.id
-        * workspace.name
-        * persona.name        
-        * workspace.url_name
-    """
-    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-            SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name
-            FROM workspace w
-            LEFT JOIN workspace_name wn
-            ON w.workspace_name_id = wn.id
-            LEFT JOIN persona p
-            ON w.persona_id = p.id
-            WHERE w.id IS NOT NULL
-            ORDER BY w.id;        
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data)
-
 class single_workspace:
-    """ Extract a single workspace with a specific id.
+    """ Extract a single workspace with a specific url_name.
     input:
-        * workspace.id
+        * workspace.url_name
     output:
         * workspace.id
         * workspace.name
         * persona.name        
         * workspace.url_name
     """
-    def GET(self, workspace_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+    def GET(self, workspace_url_name, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -94,8 +42,8 @@ class single_workspace:
             ON w.workspace_name_id = wn.id
             LEFT JOIN persona p
             ON w.persona_id = p.id
-            WHERE w.id IS NOT NULL 
-            AND w.id = """ + workspace_id + """
+            WHERE w.url_name IS NOT NULL 
+            AND w.url_name = '""" + workspace_url_name + """'
             ORDER BY w.id;        
         """)
         # obtain the data
@@ -112,7 +60,9 @@ class persona_workspaces:
         * workspace.id
         * workspace.name
         * persona.name
-        * workspace.url_name
+        * workspace.url_name,
+        * panel.url_name,
+        * workspace.is_default
     """
     def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -121,15 +71,25 @@ class persona_workspaces:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name
+            SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.name AS persona_name, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels
             FROM workspace w
             LEFT JOIN workspace_name wn
             ON w.workspace_name_id = wn.id
+            LEFT JOIN workspace_panel wp
+            ON wp.workspace_id = w.id
             LEFT JOIN persona p
             ON w.persona_id = p.id
+            JOIN panel pl
+            ON pl.id = wp.panel_id
+            left join (
+            select *
+            from workspace_panel
+            ) r
+            on r.workspace_id = w.id
+            AND wp.is_default = true
             WHERE w.id IS NOT NULL 
             AND w.persona_id = """ + persona_id + """
-            ORDER BY w.id;        
+            group by w.id, wn.name, w.is_default, p.name, w.url_name, pl.url_name;         
         """)
         # obtain the data
         data = self.cursor.fetchall()

@@ -4,7 +4,7 @@ angular.module("app-controller", [])
     
     var workspaceParam = $stateParams.workspace;
     var panelID = $stateParams.panel;
-    var storyPanelTitle = "all stories";
+    var theme = $stateParams.t;
     
     // data objects
     $scope.panels;
@@ -16,55 +16,62 @@ angular.module("app-controller", [])
     $scope.leftVisible = false;
     $scope.rightVisible = false;
     
+    function setScope(user, workspaces, workspace) {
+        
+        // set scope
+        $scope.user = user;
+        $scope.workspaces = workspaces;
+        $scope.workspace = workspace;
+        
+        // set menu content
+        $scope.menu = {
+            user: user,
+            theme: theme,
+            workspaces: workspaces,
+            workspaceParam: workspaceParam
+        };
+        
+    };
+    
     // detect login
     $rootScope.$on("login", function(event, args) {
         
-        // scope
-        $scope.user = args.user;
-        $scope.workspaces = args.workspaces;
+        // get data passed from login
+        var user = args.user;
+        var workspaces = args.workspaces;
+        var workspace = args.workspace;
+        
+        // set scope and global menu values
+        setScope(user, workspaces, workspace);
         
     });
     
-    // get persona 
+    // if not entering state from login
+    // get credentials from local storage
     authenticationService.getCredentials().then(function(userData) {
         
         var user = userData;
-        
-        // set scope
-        $scope.user = userData;
+        var endpoint = "persona/" + user.id + "/";
+        var objs = { multi: "workspaces", single: "workspace" };
+        var check = { key: "url_name", value: workspaceParam};
+
+        // get workspaces
+        layoutService.getCurrent(endpoint, objs, check).then(function(allWorkspaces) {
             
-        // get workspaces for persona in local storage (i.e. user)
-        layoutService.getStructures("persona/" + user.id + "/", "workspaces").then(function(data) {
-    
-            // set scope
-            $scope.workspaces = data;
+            var workspaces = allWorkspaces;
             
-            // set menu content
-            $scope.menu = {
-                user: user,
-                theme: $scope.$parent.theme,
-                workspaces: data,
-                workspaceParam: workspaceParam
-            };
+            // get single workspace
+            layoutService.getStructure(workspaceParam, objs).then(function(singleWorkspace) {
+                
+                var workspace = singleWorkspace;
+                
+                // set scope
+                setScope(user, workspaces, workspace);
+                
+            });
 
         });
-        
-        // get single workspace
-        layoutService.getStructures(workspaceParam + "/persona/" + user.id + "/", "workspaces").then(function(data) {
 
-            var workspace = data[0];
-            
-            // set scope
-            $scope.workspace = workspace;
-            $scope.panels = workspace.panel == "story" ? [{name: storyPanelTitle}] : workspace.panels;
-
-        });
-        
-        // store panels for later
-        layoutService.getStructures("panel/", "panels").then(function(data) {
-            
-        });
-        
     });
     
     function _close() {

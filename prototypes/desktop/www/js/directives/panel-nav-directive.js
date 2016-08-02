@@ -54,6 +54,9 @@ angular.module("panel-nav-directive", [])
                     });
 
                 });
+                
+                // broadcast so panels know to update content
+                $rootScope.$broadcast("panelChange", { user: $scope.$parent.user, workspace: $scope.$parent.workspace });
 
             };
 	    	
