@@ -2,23 +2,25 @@
 var express = require("express");
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
-var conString = process.env.DATABASE_URL ? process.env.DATABASE_URL.split(",")[0] + "://" + process.env.DATABASE_URL.split(",")[1] + ":" + process.env.DATABASE_URL.split(",")[3] + "@" + process.env.DATABASE_URL.split(",")[2] + "/" + process.env.DATABASE_URL.split(",")[0] : "";
-var baseUrl = "/api/workspace";
+var config = require("./config");
+var conString = config.connectionString;
 
 /*******************************/
 /************* GET *************/
 /*******************************/
 
 // all panels
-router.get(baseUrl + "/panel", function(req, res) {
+router.get(config.workspace.allPanels.route, function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
         
+        var configQuery = config.workspace.allPanels.query;
+        
         // SQL query
-        var query = client.query("select *,'collection' as panel from gestalt_collection;");
+        var query = client.query(configQuery[0]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

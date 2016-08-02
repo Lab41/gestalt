@@ -1,27 +1,29 @@
 // dependencies
 var express = require("express");
-var fs = require("fs"); // file system access
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
-var conString = process.env.DATABASE_URL ? process.env.DATABASE_URL.split(",")[0] + "://" + process.env.DATABASE_URL.split(",")[1] + ":" + process.env.DATABASE_URL.split(",")[3] + "@" + process.env.DATABASE_URL.split(",")[2] + "/" + process.env.DATABASE_URL.split(",")[0] : "";
-var baseUrl = "/api/data/visualization";
+var config = require("./config");
+var conString = config.connectionString;
 
 /*******************************/
 /************* GET *************/
 /*******************************/
 
-// cdis viz
-router.get(baseUrl + "/:table", function(req, res) {
+// single panel
+router.get(config.workspace.singlePanel.route, function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
-		
-		var table = req.params.table;
-                
+        
+        var panelID = req.params.panel;
+        var panelType = req.params.type;
+        
+        var configQuery = config.workspace.singlePanel.query;
+        
         // SQL query
-        var query = client.query("select distinct on (gcdis.origin) gcdis.origin from gestalt_cdis gcdis left join gestalt_geography gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;");
+        var query = client.query(configQuery[0] + panelType + configQuery[1] + panelID + configQuery[2]);
         
         // stream results back one row at a time
         query.on("row", function(row) {
@@ -41,6 +43,6 @@ router.get(baseUrl + "/:table", function(req, res) {
         
     });
     
-});
+})
 
 module.exports = router;

@@ -1,8 +1,10 @@
-import web
 import json
-import os
 import psycopg2
-from psycopg2.extras import RealDictCursor
+import psycopg2.extras
+import web
+import os
+
+import helper
 
 urls = (
     
@@ -12,24 +14,15 @@ urls = (
     "(.*)/", "cdis"
     
 )
-
-if os.environ["DATABASE_URL"] is not "":
-	
-	# parse stored connection string
-	values = os.environ["DATABASE_URL"].split(",")
-	
-	connection_string = "dbname='" + values[0] + "' user='" + values[1] + "' host='" + values[2] + "' password='" + values[3] + "'"
-else:
-	connection_string = ""
  
 class cdis:
-    def GET(self, table):
+    def GET(self, table, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         
         # connection string
         con_string = psycopg2.connect(connection_string)
         
         # postgres connector
-        cursor = con_string.cursor(cursor_factory=RealDictCursor)
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         
         # SQL query
         cursor.execute("""select distinct on (gcdis.origin) gcdis.origin from gestalt_cdis gcdis left join gestalt_geography gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;""")
@@ -40,13 +33,13 @@ class cdis:
         return json.dumps(data)
     
 class node_groups:
-    def GET(self):
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         
         # connection string
         con_string = psycopg2.connect(connection_string)
         
         # postgres connector
-        cursor = con_string.cursor(cursor_factory=RealDictCursor)
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         
         # SQL query
         cursor.execute("""select gt.*,array_agg(row_to_json(r)) as subgroups from gestalt_group_type gt left join (select g.*,array_agg(row_to_json(c)) as nodes from gestalt_group g left join (select gc.iso_alpha2code as id,gm.grouping as subgroup from gestalt_group_member gm left join gestalt_geography gc on gc.id = gm.country_id where gc.iso_alpha2code is not null) c on c.subgroup = g.id group by g.id) r on r.type = gt.id group by gt.id;""")
@@ -57,13 +50,13 @@ class node_groups:
         return json.dumps(data)
 	
 class geojson:
-    def GET(self, grid):
+    def GET(self, grid, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         
         # connection string
         con_string = psycopg2.connect(connection_string)
         
         # postgres connector
-        cursor = con_string.cursor(cursor_factory=RealDictCursor)
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         
         # SQL query
         cursor.execute("""select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t,gestalt_geography gc left join (select id,name,iso_alpha2code as iso,grid_id from gestalt_geography) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc.""" + grid + """_polygon as coordinates from t,gestalt_geography gcc) c on c.coordinates = gc.""" + grid + """_polygon where gc.""" + grid + """_polygon is not null and gc.grid_id is not null) r group by type;""")
@@ -73,4 +66,5 @@ class geojson:
         
         return json.dumps(data)
     
-app_viz = web.application(urls, locals())
+# instantiate the application
+app = web.application(urls, locals())

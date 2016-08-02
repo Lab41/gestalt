@@ -70,14 +70,10 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     .state("login", {
         url: "/login?:t",
         templateUrl: "templates/login.html",
-<<<<<<< e58d967ef6da003ef306893692444750e594dec3
-        controller: "loginCtrl"
-=======
         controller: "loginCtrl",
 		params: {
 			t: theme_config.ui.start
 		}
->>>>>>> desktop and tablet initial nodes viz idea implemented
     })
     
     // main

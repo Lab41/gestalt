@@ -6,6 +6,7 @@ import persona
 import story
 import tag
 import workspace
+import visualization
 
 urls = (
 
@@ -14,7 +15,7 @@ urls = (
     "/api/panel/", panel.app,
     "/api/story/", story.app,
     "/api/tag/", tag.app,
-    "/api/data/visualization/", visualization.app_viz,
+    "/api/data/visualization/", visualization.app,
 
     # front-end routes to load angular app
     "/", "index",
