@@ -2,23 +2,27 @@
 var express = require("express");
 var router = express.Router(); // express middleware
 var pg = require("pg"); // postgres connector
-var conString = process.env.DATABASE_URL || "";
-var baseUrl = "/api/persona";
+var config = require("./config");
+var conString = config.connectionString;
 
 /*******************************/
 /************* GET *************/
 /*******************************/
 
-// all personas
-router.get(baseUrl, function(req, res) {
+// all workspaces
+router.get(config.workspace.singleWorkspace.route, function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
-                
+        
+        var workspaceParam = req.params.workspace;
+        
+        var configQuery = config.workspace.singleWorkspace.query;
+        
         // SQL query
-        var query = client.query("select * from gestalt_persona;");
+        var query = client.query(configQuery[0] + workspaceParam + configQuery[1]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

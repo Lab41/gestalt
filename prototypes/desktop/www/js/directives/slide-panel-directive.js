@@ -16,6 +16,9 @@ angular.module("slide-panel-directive", [])
 
                 // clear credentials
                 authenticationService.clearCredentials();
+                
+                // clear stored layout values
+                layoutService.clearValues(["workspaces", "workspace", "panels", "panel"]);
 
                 // transition state
                 $state.go("login");
@@ -23,23 +26,22 @@ angular.module("slide-panel-directive", [])
             };
             
             // change workspace
-            $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, panelType) {
+            $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, personaID) {
+                
+                // clear stored layout values
+                layoutService.clearValues(["workspace", "panels", "panel"]);
 
                 // set active workspace
                 $scope.$parent.workspaceParam = workspaceParam;
-
-                // get current workspace panels
-                layoutService.getStructures(workspaceID + "/panel/" + panelType + "/", "panels").then(function(data) {
-
-                    // set scope
-                    $scope.$parent.panels = panelType == "story" ? [{name: "all stories"}] : data;
+                
+                var endpoint = "persona/" + personaID + "/";
+                var objs = { multi: "workspaces", single: "workspace" };
+                var check = { key: "url_name", value: workspaceParam };
                         
-                     // transition state
-                    $state.go("app.panel", {
-                        workspace: workspaceParam,
-                        panel: panelParam
-                    });
-
+                // transition state
+                $state.go("app.panel", {
+                    workspace: workspaceParam,
+                    panel: panelParam
                 });
 
             };

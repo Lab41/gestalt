@@ -2,7 +2,7 @@ angular.module("panel-controller", [])
 
 .controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "$ionicLoading", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, $ionicLoading, authenticationService, $rootScope) {
     
-    var workspace = $stateParams.workspace;
+    var workspaceParam = $stateParams.workspace;
     var panelParam = $stateParams.panel;
 	
 	// data objects
@@ -14,44 +14,25 @@ angular.module("panel-controller", [])
     	template: "<ion-spinner icon='dots'></ion-spinner><p>Loading...</p>"
     });
     
-    // get persona 
-    authenticationService.getCredentials().then(function(userData) {
-        
-        var user = userData;
-        
-        layoutService.getStructure(panelParam, "panel", "panels").then(function(panelData) {
-                   
-            // check for stories
-            if (panelData.panel == "story") {
+    //function setPanel(panelParam, workspace, user) {
+    var objs = { multi: "panels", single: "panel" };
+    var endpoint = workspaceParam + "/panels/";
+    var check = { key: "url_name", value: panelParam };
 
-                // get all stories for persona
-                contentService.getData("stories/" + user.id).then(function(data) {
+    // pull panel from stored panels in service
+    layoutService.getStructure(panelParam, objs, endpoint, check).then(function(panelData) {
 
-                    // set scope
-                    $scope.content = data;
+        // get all stories for panel and persona
+        contentService.getData("story/persona/" + panelData.persona_id + "/panel/" + panelData.panel_id + "/").then(function(data) {
 
-                    // hide UI loading
-                    $ionicLoading.hide();
-
-                });
-
-            } else {
-
-                // get all stories for panel and persona
-                contentService.getData("stories/" + panelParam + "/persona/" + user.id).then(function(data) {
-
-                    // set scope
-                    $scope.content = data;
-
-                    // hide UI loading
-                    $ionicLoading.hide();
-
-                });
-
-            };
+            // set scope
+            $scope.content = data;
             
+            // hide UI loading
+            $ionicLoading.hide();
+
         });
-        
-    });
+
+    }); 
 	
 }]);

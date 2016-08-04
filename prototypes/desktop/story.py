@@ -1,8 +1,8 @@
 import json
+import os
 import psycopg2
 import psycopg2.extras
 import web
-import os
 
 import helper
 
@@ -33,7 +33,7 @@ class all_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT * FROM story;
+            SELECT * FROM """ + helper.table_prefix + """story;
         """)        
         # obtain the data
         data = self.cursor.fetchall()
@@ -57,7 +57,7 @@ class single_story:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM story
+            FROM """ + helper.table_prefix + """story
             WHERE story.id = """ + story_id + """;
         """)
         # obtain the data
@@ -82,8 +82,8 @@ class persona_stories:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name 
-            FROM story st
-            RIGHT JOIN persona_panel_story pps
+            FROM """ + helper.table_prefix + """story st
+            RIGHT JOIN """ + helper.table_prefix + """persona_panel_story pps
             ON st.id = pps.story_id 
             AND pps.persona_id = """ + persona_id + """
             WHERE st.id IS NOT NULL
@@ -112,8 +112,8 @@ class persona_panel_stories:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
-            FROM story st
-            RIGHT JOIN persona_panel_story pps
+            FROM """ + helper.table_prefix + """story st
+            RIGHT JOIN """ + helper.table_prefix + """persona_panel_story pps
             ON st.id = pps.story_id 
             AND pps.persona_id = """ + persona_id + """
             AND pps.panel_id = """ + panel_id + """

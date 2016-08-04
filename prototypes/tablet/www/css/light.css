@@ -12,6 +12,8 @@
 /* --- !active
 /* --- !menu
 /* --- !login
+/* --- !group nodes
+/* --- !tile grid map
 
 /******************************* !IMPORTS *******************************/
 
@@ -130,19 +132,6 @@ ion-item.item {
 	
 }
 
-/* TEMP section */
-ion-content section {
-    
-    background: rgba(220,220,220,0.5);
-    
-}
-
-ion-content section:nth-child(even) {
-    
-    background: rgba(220,220,220,0.8);
-    
-}
-
 /******************************* !CUSTOM *******************************/
 
 /********************/
@@ -200,5 +189,34 @@ ion-content section:nth-child(even) {
 .login section div:nth-child(4) {
     
     background: rgb(220,220,220);
+    
+}
+
+/**************************/
+/***** !group nodes ******/
+/**************************/
+
+group-nodes .node {
+	
+	fill: #667080;
+	
+}
+
+/* node label */
+group-nodes .node text {
+    
+    fill: rgb(244,244,244);
+    
+}
+
+/************************/
+/**** !tile grid map ****/
+/************************/
+
+/* empty tile */
+tile-grid-map path.default {
+    
+    fill: rgb(102, 112, 128);
+    stroke: rgb(244,244,244);
     
 }

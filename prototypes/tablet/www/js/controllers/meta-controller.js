@@ -1,8 +1,13 @@
 angular.module("meta-controller", [])
 
-.controller("metaCtrl", ["$scope", function($scope) {
+.controller("metaCtrl", ["$scope", "$state", function($scope, $state) {
 	    
     // data objects
+	$scope.css = {
+		gl: mapbox_config.cssGl,
+		raster: mapbox_config.css
+	};
+	
 	$scope.theme = {
 		current: theme_config.ui.start,
 		opposite: theme_config.ui.opposite
@@ -30,6 +35,14 @@ angular.module("meta-controller", [])
 			current: current,
 			opposite: opposite
 		};
+		
+		// transition URL to reflect state change
+		$state.go("app.panel", {
+			t: current
+		}, {
+			reload: false,
+			notify: false
+		});
 						
 	};
 	

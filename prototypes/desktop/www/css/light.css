@@ -11,6 +11,8 @@
 /* --- !menu
 /* --- !login
 /* --- !slide panel
+/* --- !group nodes
+/* --- !tile grid map
 
 /******************************* !IMPORTS *******************************/
 
@@ -37,6 +39,18 @@ button {
 	
 }
 
+button:hover {
+    
+    background: rgb(200,200,200);
+    
+}
+
+button:active {
+    
+    background: rgb(240,240,240);
+    
+}
+
 /******************************* !CUSTOM *******************************/
 
 /* TEMP section */
@@ -47,19 +61,6 @@ button {
 }
 
 .login section:nth-child(even) {
-    
-    background: rgba(220,220,220,0.8);
-    
-}
-
-/* TEMP section */
-ui-view[name="panel"] section {
-    
-    background: rgba(220,220,220,0.5);
-    
-}
-
-ui-view[name="panel"] section:nth-child(even) {
     
     background: rgba(220,220,220,0.8);
     
@@ -152,5 +153,34 @@ slide-panel section.left,
 slide-panel section.right {
   
     background: rgba(240,240,240,0.95);
+    
+}
+
+/**************************/
+/***** !group nodes ******/
+/**************************/
+
+group-nodes .node {
+	
+	fill: #667080;
+	
+}
+
+/* node label */
+group-nodes .node text {
+    
+    fill: rgb(244,244,244);
+    
+}
+
+/************************/
+/**** !tile grid map ****/
+/************************/
+
+/* empty tile */
+tile-grid-map path.default {
+    
+    fill: rgb(102, 112, 128);
+    stroke: rgb(244,244,244);
     
 }

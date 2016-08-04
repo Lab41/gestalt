@@ -1,8 +1,8 @@
 import json
+import os
 import psycopg2
 import psycopg2.extras
 import web
-import os
 
 import helper
 
@@ -29,7 +29,7 @@ class all_personas:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT * FROM persona;
+            SELECT * FROM """ + helper.table_prefix + """persona;
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -53,7 +53,7 @@ class single_persona:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM persona
+            FROM """ + helper.table_prefix + """persona
             WHERE persona.id = """ + persona_id + """;
         """)
         # obtain the data

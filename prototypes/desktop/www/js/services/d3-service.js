@@ -13,7 +13,7 @@ angular.module("d3-service", [])
 	var scriptTag = $document[0].createElement("script");
 	scriptTag.type = "text/javascript";
 	scriptTag.async = true;
-	scriptTag.src = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js";
+	scriptTag.src = "lib/d3.js";
 	scriptTag.onreadystatechange = function() {
 		
 		//check state
