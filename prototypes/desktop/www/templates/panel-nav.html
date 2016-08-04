@@ -1,9 +1,9 @@
 <nav role="navigation">
 	
     <a ng-repeat="panel in panels"
-       id="{{ panel.param }}"
-	   ui-sref="app.panel({ panel: panel.param })" 
-	   ng-class="{ 'active': panelParam == panel.param }"
+       id="{{ panel.url_name }}"
+	   ui-sref="app.panel({ panel: panel.url_name })" 
+	   ng-class="{ 'active': panelParam == panel.url_name }"
        ng-click="changePanel($event, $index);">{{ panel.name }}</a>
 
 </nav>

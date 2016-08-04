@@ -12,6 +12,8 @@
 /* --- !active
 /* --- !menu
 /* --- !login
+/* --- !group nodes
+/* --- !tile grid map
 
 /******************************* !IMPORTS *******************************/
 
@@ -201,5 +203,34 @@ ion-content section:nth-child(even) {
 .login section div:nth-child(4) {
     
     background: rgb(50,50,50);
+    
+}
+
+/**************************/
+/***** !group nodes ******/
+/**************************/
+
+group-nodes .node {
+	
+	fill: #444b5a;
+	
+}
+
+/* node label */
+group-nodes .node text {
+    
+    fill: rgb(244,244,244);
+    
+}
+
+/************************/
+/**** !tile grid map ****/
+/************************/
+
+/* empty tile */
+tile-grid-map path.default {
+    
+    fill: rgb(102, 112, 128);
+    stroke: rgb(26,26,26);
     
 }

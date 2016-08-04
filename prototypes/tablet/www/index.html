@@ -38,10 +38,16 @@
         <!-- directives -->
         <link rel="stylesheet" href="css/directives.css">
         <link rel="stylesheet" href="css/directives/panel-nav.css">
+        <link rel="stylesheet" href="css/directives/tile-grid-map.css">
+        <link rel="stylesheet" href="css/directives/group-nodes.css">
+        
+        <!-- maps -->
+        <link ng-href="{{ css.gl }}" rel="stylesheet" />
+        <link ng-href="{{ css.raster }}" rel="stylesheet" />
                 
         <!-- app -->
 		<link rel="stylesheet" href="css/tablet.css">
-        <link rel="stylesheet" ng-href="css/{{theme.current}}.css">
+        <link rel="stylesheet" ng-href="css/{{ theme.current }}.css">
 
 		<!------------->
         <!-- SCRIPTS -->
@@ -66,11 +72,13 @@
 		<script src="js/controllers/login-controller.js"></script>
 		<script src="js/controllers/app-controller.js"></script>
 		<script src="js/controllers/panel-controller.js"></script>
-		<script src="js/controllers/story-controller.js"></script>
+		<script src="js/controllers/viz-controller.js"></script>
 
 		<!-- directives -->
         <script src="js/tablet.directives.js"></script>
         <script src="js/directives/panel-nav-directive.js"></script>
+        <script src="js/directives/group-nodes-directive.js"></script>
+        <script src="js/directives/tile-grid-map-directive.js"></script>
 			
 		<!-- services -->
         <script src="js/tablet.services.js"></script>
@@ -78,6 +86,9 @@
 		<script src="js/services/authentication-service.js"></script>
 		<script src="js/services/base64-service.js"></script>
 		<script src="js/services/content-service.js"></script>
+        <script src="js/services/d3-service.js"></script>
+        <script src="js/services/agent-service.js"></script>
+        <script src="js/services/mapbox-service.js"></script>
 
 	</head>
 

@@ -1,0 +1,37 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** group-nodes directive STYLE ***************************************/
+
+/* group nodes directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* --- !group nodes
+/* !CUSTOM
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/*************************/
+/***** !group nodes ******/
+/*************************/
+
+/* node label */
+group-nodes .node text {
+    
+    font-size: 0.75em;
+    text-anchor: middle;
+    text-transform: uppercase;
+    
+}
+
+/* group label */
+group-nodes .group-label text {
+    
+    font-size: 1em;
+    text-anchor: middle;
+    
+}
