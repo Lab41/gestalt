@@ -2,8 +2,6 @@ angular.module("app-controller", [])
 
 .controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, layoutService, authenticationService, $rootScope) {
     
-    var workspaceParam = $stateParams.workspace;
-    var panelID = $stateParams.panel;
     var theme = $stateParams.t;
     
     // data objects
@@ -12,9 +10,11 @@ angular.module("app-controller", [])
     $scope.user;
     $scope.workspaces;
     $scope.workspace;
-    $scope.workspaceParam = workspaceParam;
     
     function setScope() {
+        
+        var workspaceParam = $state.params.workspace;
+        var panelID = $stateParams.panel;
 
         // get credentials from local storage
         authenticationService.getCredentials().then(function(userData) {
@@ -45,6 +45,7 @@ angular.module("app-controller", [])
                         $scope.workspaces = workspaces;
                         $scope.workspace = workspace;
                         $scope.panels = panels;
+                        $scope.workspaceParam = workspaceParam;
 
                         // set menu content
                         $scope.menu = {
@@ -75,10 +76,6 @@ angular.module("app-controller", [])
         // set active workspace
         $scope.workspaceParam = workspaceParam;
 
-        var endpoint = "persona/" + personaID + "/";
-        var objs = { multi: "workspaces", single: "workspace" };
-        var check = { key: "url_name", value: workspaceParam };
-
         // transition state
         $state.go("app.panel", {
             workspace: workspaceParam,
@@ -102,5 +99,13 @@ angular.module("app-controller", [])
         $state.go("login");
         
     };
+    
+    // detect login
+    $rootScope.$on("login", function(event, args) {
+        
+        // set scope and global menu values
+        setScope();
+        
+    });
 	
 }]);

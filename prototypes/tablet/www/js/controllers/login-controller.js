@@ -27,9 +27,16 @@ angular.module("login-controller", [])
 
                 // transition to default workspace
                 $state.go("app.panel.visual", {
+                    
                     workspace: workspace.url_name,
                     panel: workspace.default_panel,
                     grid: visual_config.tilemap
+                    
+                }).then(function() {
+                    
+                    // broadcast so menu text will update
+                    $rootScope.$broadcast("login", {});
+                    
                 });
 
             });

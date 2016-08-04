@@ -37,10 +37,10 @@ class single_workspace:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name
-            FROM workspace w
-            LEFT JOIN workspace_name wn
+            FROM """ + helper.table_prefix + """workspace w
+            LEFT JOIN """ + helper.table_prefix + """workspace_name wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN persona p
+            LEFT JOIN """ + helper.table_prefix + """persona p
             ON w.persona_id = p.id
             WHERE w.url_name IS NOT NULL 
             AND w.url_name = '""" + workspace_url_name + """'
@@ -72,21 +72,21 @@ class persona_workspaces:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels
-            FROM workspace w
-            LEFT JOIN workspace_name wn
+            FROM """ + helper.table_prefix + """workspace w
+            LEFT JOIN """ + helper.table_prefix + """workspace_name wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN workspace_panel wp
+            LEFT JOIN """ + helper.table_prefix + """workspace_panel wp
             ON wp.workspace_id = w.id
-            LEFT JOIN persona p
+            LEFT JOIN """ + helper.table_prefix + """persona p
             ON w.persona_id = p.id
-            JOIN panel pl
+            JOIN """ + helper.table_prefix + """panel pl
             ON pl.id = wp.panel_id
             left join (
             select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id
-            from workspace_panel wp
-            left join panel pl
+            from """ + helper.table_prefix + """workspace_panel wp
+            left join """ + helper.table_prefix + """panel pl
             on pl.id = wp.panel_id
-            left join workspace w
+            left join """ + helper.table_prefix + """workspace w
             on w.id = wp.workspace_id
             ) r
             on r.workspace_id = w.id
@@ -119,10 +119,10 @@ class workspace_panels:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (p.id) p.id as panel_id, p.name, p.url_name, w.url_name as workspace_url_name, w.persona_id
-            FROM panel p
-            RIGHT JOIN workspace_panel wp
+            FROM """ + helper.table_prefix + """panel p
+            RIGHT JOIN """ + helper.table_prefix + """workspace_panel wp
             ON wp.panel_id = p.id
-            right join workspace w
+            right join """ + helper.table_prefix + """workspace w
             on w.id = wp.workspace_id
             and w.url_name = '""" + workspace_url_name + """'
             WHERE p.id IS NOT NULL

@@ -27,20 +27,20 @@ config.workspace.allWorkspaces = {
     query: [
         "SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels\
             FROM " + tablePrefix + "workspace w\
-            LEFT JOIN workspace_name wn\
+            LEFT JOIN " + tablePrefix + "workspace_name wn\
             ON w.workspace_name_id = wn.id\
-            LEFT JOIN workspace_panel wp\
+            LEFT JOIN " + tablePrefix + "workspace_panel wp\
             ON wp.workspace_id = w.id\
-            LEFT JOIN persona p\
+            LEFT JOIN " + tablePrefix + "persona p\
             ON w.persona_id = p.id\
-            JOIN panel pl\
+            JOIN " + tablePrefix + "panel pl\
             ON pl.id = wp.panel_id\
             left join (\
             select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id\
             from " + tablePrefix + "workspace_panel wp\
-            left join panel pl\
+            left join " + tablePrefix + "panel pl\
             on pl.id = wp.panel_id\
-            left join workspace w\
+            left join " + tablePrefix + "workspace w\
             on w.id = wp.workspace_id\
             ) r\
             on r.workspace_id = w.id\
@@ -60,9 +60,9 @@ config.workspace.singleWorkspace = {
     query: [
         "SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name\
             FROM " + tablePrefix + "workspace w\
-            LEFT JOIN workspace_name wn\
+            LEFT JOIN " + tablePrefix + "workspace_name wn\
             ON w.workspace_name_id = wn.id\
-            LEFT JOIN persona p\
+            LEFT JOIN " + tablePrefix + "persona p\
             ON w.persona_id = p.id\
             WHERE w.url_name IS NOT NULL \
             AND w.url_name = '",
@@ -79,9 +79,9 @@ config.workspace.panelsSingleWorkspace = {
     query: [
         "SELECT DISTINCT ON (p.id) p.id as panel_id, p.name, p.url_name, w.url_name as workspace_url_name, w.persona_id\
             FROM " + tablePrefix + "panel p\
-            RIGHT JOIN workspace_panel wp\
+            RIGHT JOIN " + tablePrefix + "workspace_panel wp\
             ON wp.panel_id = p.id\
-            right join workspace w\
+            right join " + tablePrefix + "workspace w\
             on w.id = wp.workspace_id\
             and w.url_name = '",
         "' WHERE p.id IS NOT NULL\
@@ -106,7 +106,7 @@ config.story.allStoriesSinglePanelPersona = {
     query: [
         "SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name\
             FROM " + tablePrefix + "story st\
-            RIGHT JOIN persona_panel_story pps\
+            RIGHT JOIN " + tablePrefix + "persona_panel_story pps\
             ON st.id = pps.story_id \
             AND pps.persona_id = ",
         " AND pps.panel_id = ",
