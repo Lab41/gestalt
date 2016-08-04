@@ -18,12 +18,11 @@ router.get(config.workspace.singleWorkspace.route, function(req, res) {
     pg.connect(conString, function(err, client, done) {
         
         var workspaceParam = req.params.workspace;
-        var personaID = req.params.persona;
         
         var configQuery = config.workspace.singleWorkspace.query;
         
         // SQL query
-        var query = client.query(configQuery[0] + personaID + configQuery[1] + workspaceParam + configQuery[2]);
+        var query = client.query(configQuery[0] + workspaceParam + configQuery[1]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

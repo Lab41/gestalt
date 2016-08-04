@@ -9,18 +9,21 @@ var conString = config.connectionString;
 /************* GET *************/
 /*******************************/
 
-// all panels
-router.get(config.workspace.allPanels.route, function(req, res) {
+// all stories in a single panel for a single persona
+router.get(config.story.allStoriesSinglePanelPersona.route, function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
         
-        var configQuery = config.workspace.allPanels.query;
+        var panelID = req.params.panel;
+        var personaID = req.params.persona;
         
+        var configQuery = config.story.allStoriesSinglePanelPersona.query;
+                
         // SQL query
-        var query = client.query(configQuery[0]);
+        var query = client.query(configQuery[0] + personaID + configQuery[1] + panelID + configQuery[2]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

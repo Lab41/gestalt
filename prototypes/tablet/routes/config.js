@@ -25,8 +25,29 @@ config.workspace.allWorkspaces = {
     route: workspaceBase + "/persona/:persona",
     
     query: [
-        "select wk.id,wk.param,wk.name,pa.name as persona,m.name as panel,t.param as default_panel,array_agg(row_to_json(r)) as panels from " + tablePrefix + "workspace wk," + tablePrefix + "persona pa," + tablePrefix + "meta m,get_panels_by_id(wk.panel) t,get_panels_by_id(wk.panel) r where m.id = wk.panel and pa.id = any(wk.persona) and pa.id = ",
-        " and t.id = wk.default_panel and r.id = any(wk.topics) group by wk.id,wk.param,wk.name,pa.name,m.name,t.param;"
+        "SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels\
+            FROM " + tablePrefix + "workspace w\
+            LEFT JOIN workspace_name wn\
+            ON w.workspace_name_id = wn.id\
+            LEFT JOIN workspace_panel wp\
+            ON wp.workspace_id = w.id\
+            LEFT JOIN persona p\
+            ON w.persona_id = p.id\
+            JOIN panel pl\
+            ON pl.id = wp.panel_id\
+            left join (\
+            select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id\
+            from " + tablePrefix + "workspace_panel wp\
+            left join panel pl\
+            on pl.id = wp.panel_id\
+            left join workspace w\
+            on w.id = wp.workspace_id\
+            ) r\
+            on r.workspace_id = w.id\
+            AND wp.is_default = true\
+            WHERE w.id IS NOT NULL \
+            AND w.persona_id = ",
+        " group by w.id, wn.name, w.is_default, p.id, w.url_name, pl.url_name; "
     ]
     
 };
@@ -34,12 +55,18 @@ config.workspace.allWorkspaces = {
 // workspace-2-get-single-workspace.route.js
 config.workspace.singleWorkspace = {
     
-    route: workspaceBase + "/:workspace/persona/:persona",
+    route: workspaceBase + "/:workspace",
     
     query: [
-        "select wk.id,wk.param,wk.name,pa.name as persona,m.name as panel,t.param as default_panel,array_agg(row_to_json(r)) as panels from " + tablePrefix + "workspace wk," + tablePrefix + "persona pa," + tablePrefix + "meta m,get_panels_by_id(wk.panel) t,get_panels_by_id(wk.panel) r where m.id = wk.panel and pa.id = any(wk.persona) and pa.id = ",
-        " and t.id = wk.default_panel and r.id = any(wk.topics) and wk.param = '",
-        "' group by wk.id,wk.param,wk.name,pa.name,m.name,t.param order by wk.name asc;"
+        "SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name\
+            FROM " + tablePrefix + "workspace w\
+            LEFT JOIN workspace_name wn\
+            ON w.workspace_name_id = wn.id\
+            LEFT JOIN persona p\
+            ON w.persona_id = p.id\
+            WHERE w.url_name IS NOT NULL \
+            AND w.url_name = '",
+        "' ORDER BY w.id;"
     ]
     
 };
@@ -47,38 +74,18 @@ config.workspace.singleWorkspace = {
 // workspace-3-get-all-panels-single-workspace.route.js
 config.workspace.panelsSingleWorkspace = {
     
-    route: workspaceBase + "/:workspace/panel/:panel",
+    route: workspaceBase + "/:workspace/panels",
     
     query: [
-        "select t.*,'",
-        "' as panel from " + tablePrefix + "",
-        " t left join " + tablePrefix + "workspace wk on wk.id = ",
-        " where t.id = any(wk.topics) and wk.id = ",
-        ";"
-    ]
-    
-};
-
-// workspace-4-get-all-panels.route.js
-config.workspace.allPanels = {
-    
-    route: workspaceBase + "/panel",
-    
-    query: [
-        "select *,'collection' as panel from " + tablePrefix + "collection;"
-    ]
-    
-};
-
-// workspace-5-get-single-panel.route.js
-config.workspace.singlePanel = {
-    
-    route: workspaceBase + "/panel/:type/:panel",
-    
-    query: [
-        "select t.* from " + tablePrefix + "",
-        " t where t.param = ",
-        ";"
+        "SELECT DISTINCT ON (p.id) p.id as panel_id, p.name, p.url_name, w.url_name as workspace_url_name, w.persona_id\
+            FROM " + tablePrefix + "panel p\
+            RIGHT JOIN workspace_panel wp\
+            ON wp.panel_id = p.id\
+            right join workspace w\
+            on w.id = wp.workspace_id\
+            and w.url_name = '",
+        "' WHERE p.id IS NOT NULL\
+            ORDER BY p.id;"
     ]
     
 };
@@ -89,29 +96,22 @@ config.workspace.singlePanel = {
 ///// STORY /////
 /////////////////
 
-var storyBase = urlBase + "/data/stories";
+var storyBase = urlBase + "/data/story";
 
-// story-1-get-all-stories-single-persona.route.js
-config.story.allStoriesSinglePersona = {
-    
-    route: storyBase + "/:persona",
-    
-    query: [
-        "select distinct on (s.id) s.id,s.name,s.param,v.name as directive from " + tablePrefix + "workspace wk," + tablePrefix + "collection c," + tablePrefix + "story s left join " + tablePrefix + "visual v on v.id = s.visual where c.topics && s.topics and c.id = any(wk.topics) and ",
-        " = any(wk.persona);"
-    ]
-    
-};
-
-// story-2-get-all-stories-single-panel-persona.route.js
+// story-1-get-all-stories-single-panel-persona.route.js
 config.story.allStoriesSinglePanelPersona = {
     
-    route: storyBase + "/:panel/persona/:persona",
+    route: storyBase + "/persona/:persona/panel/:panel",
     
     query: [
-        "select distinct on (s.id) s.id,s.name,s.param,v.name as directive from " + tablePrefix + "workspace wk," + tablePrefix + "collection c," + tablePrefix + "story s left join " + tablePrefix + "visual v on v.id = s.visual where c.topics && s.topics and c.id = any(wk.topics) and ",
-        " = any(wk.persona) and '",
-        "' = c.param;"
+        "SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name\
+            FROM " + tablePrefix + "story st\
+            RIGHT JOIN persona_panel_story pps\
+            ON st.id = pps.story_id \
+            AND pps.persona_id = ",
+        " AND pps.panel_id = ",
+        " WHERE st.id IS NOT NULL \
+          ORDER BY st.id;"
     ]
     
 };

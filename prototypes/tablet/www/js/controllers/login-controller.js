@@ -12,25 +12,24 @@ angular.module("login-controller", [])
     // login with persona
     $scope.login = function(persona, personaID) {
         
-        // post credentials to local storage
+        // get credentials from local storage
         authenticationService.postCredentials(persona, personaID).then(function(personaData) {
-        
-            // TODO make smarter so a default workspace is defined
-            // vs. just taking the first one
+            
+            var user = personaData;
+            var endpoint = "persona/" + user.id + "/";
+            var objs = { multi: "workspaces", single: "workspace" };
+            var check = { key: "is_default", value: true };
+            
+            // get single workspace
+            layoutService.getStructure(true, objs, endpoint, check).then(function(singleWorkspace) {
 
-            // get workspaces
-            layoutService.getStructures("persona/" + personaID).then(function(data) {
-                
-                // broadcast so menu text will update
-                $rootScope.$broadcast("login", { user: personaData, workspaces: data });
-
-                var workspace = data[0];
+                var workspace = singleWorkspace;
 
                 // transition to default workspace
                 $state.go("app.panel.visual", {
-                    workspace: workspace.param,
+                    workspace: workspace.url_name,
                     panel: workspace.default_panel,
-					grid: visual_config.tilemap
+                    grid: visual_config.tilemap
                 });
 
             });
