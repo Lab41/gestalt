@@ -7,12 +7,12 @@ var api_config = {
 
 // mapbox development
 var mapbox_config = {
-	token: "pk.eyJ1Ijoic3Rvcm11IiwiYSI6ImNpbWN0YmVzYjAwMnl1aWtraHYwaGNyYmcifQ.gTNJf31kwAdljd9u7cRGyg",
+	token: "pk.eyJ1IjoibGFiNDF0ZWFtIiwiYSI6ImNpaTBrb3FtbzA0dnV0ZmtocjRjMmpncTAifQ.4Zv_-peSaPDbYFzrYP4Lnw",
 	style: {
 		// should have 1 style for each theme
 		// in the theme config below
-		light: "mapbox://styles/stormu/cip9bpsm7003jb8np969bh1fy",
-		dark: "mapbox://styles/stormu/cimcuz8rw00er9pm08vd7d0mw"
+		light: "mapbox://styles/lab41team/cii0neswf00z99nkpieam90mf",
+		dark: "mapbox://styles/lab41team/cii0neswf00z99nkpieam90mf"
 	},
 	raster: "https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js",
 	gl: "https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.js",
