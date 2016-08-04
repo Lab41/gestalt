@@ -16,57 +16,52 @@ angular.module("app-controller", [])
     $scope.leftVisible = false;
     $scope.rightVisible = false;
     
-    function setScope(user, workspaces, workspace) {
+    function setScope(user, workspaces, workspace, panels) {
         
         // set scope
         $scope.user = user;
         $scope.workspaces = workspaces;
         $scope.workspace = workspace;
+        $scope.panels = panels;
         
         // set menu content
         $scope.menu = {
             user: user,
-            theme: theme,
+            theme: $scope.$parent.theme,
             workspaces: workspaces,
             workspaceParam: workspaceParam
         };
         
     };
     
-    // detect login
-    $rootScope.$on("login", function(event, args) {
-        
-        // get data passed from login
-        var user = args.user;
-        var workspaces = args.workspaces;
-        var workspace = args.workspace;
-        
-        // set scope and global menu values
-        setScope(user, workspaces, workspace);
-        
-    });
-    
-    // if not entering state from login
     // get credentials from local storage
     authenticationService.getCredentials().then(function(userData) {
         
         var user = userData;
         var endpoint = "persona/" + user.id + "/";
         var objs = { multi: "workspaces", single: "workspace" };
-        var check = { key: "url_name", value: workspaceParam};
+        var check = { key: "url_name", value: workspaceParam };
 
         // get workspaces
-        layoutService.getCurrent(endpoint, objs, check).then(function(allWorkspaces) {
+        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
             
             var workspaces = allWorkspaces;
             
             // get single workspace
-            layoutService.getStructure(workspaceParam, objs).then(function(singleWorkspace) {
+            layoutService.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
                 
                 var workspace = singleWorkspace;
+                var objs = { multi: "panels", single: "panel" };
                 
-                // set scope
-                setScope(user, workspaces, workspace);
+                // get single workspace panels
+                layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
+                    
+                    var panels = workspacePanels;
+                    
+                    // set scope
+                    setScope(user, workspaces, workspace, panels);
+                    
+                });
                 
             });
 

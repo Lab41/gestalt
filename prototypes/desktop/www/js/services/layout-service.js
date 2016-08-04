@@ -35,10 +35,10 @@ angular.module("layout-service", [])
 			var apiUrl = path;
             
             // check for existing stored data
-            if (!this[obj]) {
+            if (!this[obj.multi]) {
                 
                  // make request
-                console.log("****** GET " + apiUrl + " ******");
+                //console.log("****** GET " + apiUrl + " ******");
                 this[obj.multi] = this.makeRequest(apiUrl);
                 
             };
@@ -49,7 +49,7 @@ angular.module("layout-service", [])
 		},
 		
 		// single structure
-		getStructure: function(param, obj) {
+		getStructure: function(param, obj, path, check) {
 			
 			// set service object so we can attach data to it
 			var service = this;
@@ -58,14 +58,21 @@ angular.module("layout-service", [])
             if (service[obj.multi] !== "") {
                 
                 // return structure obj as a promise to service
-                return this[obj.multi].then(function(data) {
+                return service[obj.multi].then(function(data) {
 
                     // get single structure from stored data
                     angular.forEach(data, function(value, key) {
 
-                        if (value.url_name == param) {
+                        if (value[check.key] == param) {
+                            
+                            // create deferred object
+                            var deferred = $q.defer();
 
-                            service[obj.single] = value;
+                            // create promise
+                            deferred.resolve(value);
+
+                            // expose the promise data
+                            service[obj.single] = deferred.promise;
 
                         };
 
@@ -74,6 +81,14 @@ angular.module("layout-service", [])
                     // return stored data
                     return service[obj.single];
 
+                });
+                
+            } else {
+                
+                return service.getStructures(path, obj).then(function(data) {
+                    
+                    return service.getStructure(param, obj, path, check);
+                    
                 });
                 
             };
@@ -88,47 +103,8 @@ angular.module("layout-service", [])
             angular.forEach(values, function(value, key) {
                 
                 // set to empty string
-                this[value] == "";
-                
-            });
-            console.log("done clearing");console.log(service);
-        },
-        
-        getCurrent: function(path, obj, check) {
-            
-            var service = this;
-            
-            // get all
-            return service.getStructures(path, obj).then(function(data) {
-                
-                // check against current selected
-                return angular.forEach(data, function(value, key) {
-
-                    // check for values
-                    if (value[check.key] == check.value) {
-
-                        // store single in service
-                        // create deferred object
-                        var deferred = $q.defer();
-
-                        // make $http request
-                        deferred.resolve(value);
-
-                        // expose the promise data
-                        service[obj.single] = deferred.promise;
-                        
-                    };
-                    
-                    // create deferred object
-                    var deferred = $q.defer();
-
-                    // make $http request
-                    deferred.resolve(value.panels);
-
-                    // expose the promise data
-                    service["panels"] = deferred.promise;
-
-                });
+                delete service[value];
+                service[value] = "";
                 
             });
             

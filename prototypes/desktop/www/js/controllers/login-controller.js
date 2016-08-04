@@ -14,36 +14,22 @@ angular.module("login-controller", [])
         
         // get credentials from local storage
         authenticationService.postCredentials(persona, personaID).then(function(personaData) {
+            
+            var user = personaData;
+            var endpoint = "persona/" + user.id + "/";
+            var objs = { multi: "workspaces", single: "workspace" };
+            var check = { key: "is_default", value: true };
+            
+            // get single workspace
+            layoutService.getStructure(true, objs, endpoint, check).then(function(singleWorkspace) {
 
-            // get workspaces
-            layoutService.getStructures("persona/" + personaID + "/", "workspaces").then(function(data) {
-                
-                // find default workspace to navigate to
-                angular.forEach(data, function(value, key) {
-                    
-                    // check for default
-                    if (value.is_default) {
-                        
-                        var workspace = value;
-                        
-                        // transition to default workspace
-                        $state.go("app.panel.visual", {
-                            
-                            workspace: workspace.url_name,
-                            panel: workspace.default_panel,
-                            grid: visual_config.tilemap
-                            
-                        // after state transition
-                        }).then(function() {
-                            
-                            // broadcast that workspace is defined for all other endpoint calls
-                            // broadcast so menu text will update
-                            $rootScope.$broadcast("login", { user: personaData, workspaces: data, workspace: workspace });
-                            
-                        });
-                        
-                    };
-                    
+                var workspace = singleWorkspace;
+
+                // transition to default workspace
+                $state.go("app.panel.visual", {
+                    workspace: workspace.url_name,
+                    panel: workspace.default_panel,
+                    grid: visual_config.tilemap
                 });
 
             });

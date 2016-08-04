@@ -13,15 +13,21 @@ angular.module("panel-nav-directive", [])
 	    	
 	    	// change the pane via navigation
             $scope.changePanel = function(event, idx) {
+                
+                var panelParam = event.target.id;
+                var workspaceParam = $state.params.workspace;
 
-				// set active panel
-				$scope.panelParam = event.target.id;
+				// set scope
+				$scope.panelParam = panelParam;
 				
 				var originUrl = $state.params.panel;
                 var destinationIdx = idx;
+                var objs = { multi: "panels", single: "panel" };
+                var endpoint = workspaceParam + "/panels/";
+                var check = { key: "url_name", value: panelParam };
                                 
-                // get panel from data stored in service
-                layoutService.getStructure(originUrl, "panel", "panels").then(function(data) {
+                // pull panel from stored panels in service
+                layoutService.getStructure(panelParam, objs, endpoint, check).then(function(data) {
 					
 					// origin panel
 					var origin = data;
@@ -55,9 +61,6 @@ angular.module("panel-nav-directive", [])
 
                 });
                 
-                // broadcast so panels know to update content
-                $rootScope.$broadcast("panelChange", { user: $scope.$parent.user, workspace: $scope.$parent.workspace });
-
             };
 	    	
 	    },
