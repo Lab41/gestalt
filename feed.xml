@@ -5,8 +5,8 @@
         <description>Documentation for Gestalt</description>
         <link>/</link>
         <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Thu, 11 Aug 2016 13:44:08 -0700</pubDate>
-        <lastBuildDate>Thu, 11 Aug 2016 13:44:08 -0700</lastBuildDate>
+        <pubDate>Thu, 11 Aug 2016 13:48:37 -0700</pubDate>
+        <lastBuildDate>Thu, 11 Aug 2016 13:48:37 -0700</lastBuildDate>
         <generator>Jekyll v3.0.3</generator>
         
         <item>
@@ -15,7 +15,7 @@
 Interaction Techniques for Time-Series Data&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Next week, we will be reading &lt;a href=&quot;https://www.computer.org/csdl/trans/tg/preprint/07015617.pdf&quot;&gt;An Efficient Framework for Generating
-Storyline Visualizations from Streaming Data&lt;/a&gt;&lt;/p&gt;
+Storyline Visualizations from Streaming Data&lt;/a&gt;.&lt;/p&gt;
 
 </description>
             <pubDate>Wed, 10 Aug 2016 00:00:00 -0700</pubDate>
