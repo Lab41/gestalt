@@ -19,6 +19,7 @@ task :deploy do
             cp -R _site/* ../ && \
             cd .. && \
             rm -rf docs && \
+            rm -rf gestalt_virtualenv lib bin node_modules && \
             git add . && \
             git commit -m \"#{message}\""    
     puts "Do NOT forget to push gh-pages to Lab41 remote branch\n"

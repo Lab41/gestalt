@@ -1,7 +1,7 @@
 ---
 title:  "Reading Group Update"
 categories: gestalt update
-permalink: 2016-08-01-reading_group_update.html
+permalink: 20160801-update.html
 tags: [updates, reading_group]
 ---
 

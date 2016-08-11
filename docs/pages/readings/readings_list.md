@@ -1,13 +1,17 @@
 ---
 title: Reading List
 keywords: reading group, list of readings
-last_updated: July 18, 2016
+last_updated: August 11, 2016
 tags: [reading_group]
 sidebar: readings_sidebar
 permalink: readings_list.html
 folder: mydoc
 ---
 
+* [08/19/2016](readings_08192016.html)
+  * [An Efficient Framework for Generating Storyline Visualizations from Streaming Data](https://www.computer.org/csdl/trans/tg/preprint/07015617.pdf)]
+* [08/12/2016](readings_08122016.html)
+  * [TimeNotes: A Study on Effective Chart Visualization and Interaction Techniques for Time-Series Data](https://www.computer.org/csdl/trans/tg/preprint/07192735.pdf). 
 * [08/05/2016](readings_08052016.html)
   * [How do People Make Sense of Unfamiliar Visualization?: A Grounded Model of Novice's Information Visualization Sensemaking](https://www.computer.org/csdl/trans/tg/preprint/07192668.pdf)
 * [07/29/2016](readings_07292016.html)
