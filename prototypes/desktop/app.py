@@ -25,7 +25,7 @@ urls = (
 class appConfig(web.application):
 	def run(self, port=8000, *middleware):
 		func = self.wsgifunc(*middleware)
-		return web.httpserver.runsimple(func, ("127.0.0.1", port))
+		return web.httpserver.runsimple(func, ("0.0.0.0", port))
 
 class www:
     def GET(self, filename):
