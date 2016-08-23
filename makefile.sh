@@ -9,20 +9,23 @@
 # >> source makefile.sh && build_all
 # 
 # 2. After running the entire build, run the tablet prototype with local postgresql.
-# source makefile.sh && run_local_tablet
+# >> source makefile.sh && run_local_tablet
 # 
 # 3. After running the entire build, run the desktop prototype with local postgresql.
-# source makefile.sh && run_local_desktop
+# >> source makefile.sh && run_local_desktop
 # 
 # 4. After running the entire build, run the tablet prototype with postgresql 
 # located in the server. Remember to set the environment variable DATABASE_URL.
-# export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
-# source makefile.sh && run_tablet
+# >> export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
+# >> source makefile.sh && run_tablet
 # 
 # 5. After running the entire build, run the desktop prototype with postgresql
 # located in the server. Remember to set the environment variable DATABASE_URL.
 # >> export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
 # >> source makefile.sh && run_desktop
+# 
+# 6. To clean cache, run
+# >> source makefile.sh && clean
 #
 # Additional run commands:
 # 1. Activate virtual environment gestalt_virtualenv
@@ -35,7 +38,7 @@
 # -----------------------------------------------------------------------------
 
 # assuming that makefile.sh is run where it is located
-BASE_DIR=$(dirname ${BASH_SOURCE[0]} && pwd)
+BASE_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 TABLET_DIR=${BASE_DIR}/prototypes/tablet
 DESKTOP_DIR=${BASE_DIR}/prototypes/desktop
 
@@ -105,6 +108,12 @@ function install_global_dependencies {
     echo ">> Upgrade npm" 
     npm install --global npm --save 
 
+    echo ">> Install psycopg2"
+    pip install psycopg2
+
+    echo ">> Install errno"
+    npm install --global errno
+
     echo ">> Install grunt" 
     echo ">> Install karma and grunt-karma for testing"
     # grunt and karma must be installed at the same time as grunt-karma or receive a warning
@@ -113,7 +122,7 @@ function install_global_dependencies {
     npm install --global grunt-contrib-imagemin --save-dev
 
     echo ">> Install yeoman" # used in scaffolding
-    echo ">> Ignore warning as the latest npm is installed"
+    echo ">> Ignore warning because the latest npm is already installed"
     npm install --global npm --save-dev
     npm install --global yo --save-dev
 
@@ -122,32 +131,27 @@ function install_global_dependencies {
 }
 
 function install_tablet_dependencies {
-
-    # install dependencies globally so you can specify installation at a particular directory
     
     echo ">> Install AngularJS 1.0" # as tablet prototype's front-end
-    cd ${TABLET_DIR} && npm install --global --prefix ${TABLET_DIR} angular --save 
+    cd ${TABLET_DIR} && npm install angular --save 
 
     echo ">> Install pg, postgreSQL client for node" 
-    cd ${TABLET_DIR} && npm install --global --prefix ${TABLET_DIR} pg --save
+    cd ${TABLET_DIR} && npm install pg --save
 
     echo ">> Install express" 
-    cd ${TABLET_DIR} && npm install --global --prefix ${TABLET_DIR} express --save
+    cd ${TABLET_DIR} && npm install express --save
 
     echo ">> Install body-parser" 
-    cd ${TABLET_DIR} && npm install --global --prefix ${TABLET_DIR} body-parser --save
+    cd ${TABLET_DIR} && npm install body-parser --save
 }
 
-
 function install_desktop_dependencies {
-
-    # install dependencies globally so you can specify installation at a particular directory
 
     echo ">> Install web.py" # as desktop prototype's back-end
     easy_install web.py
 
     echo ">> Install AngularJS 1.0" # as desktop prototype's front-end
-    cd ${DESKTOP_DIR} && npm install --global --prefix ${DESKTOP_DIR} angular --save 
+    cd ${DESKTOP_DIR} && npm install angular --save 
 }
 
 function is_envvar_set {
@@ -173,6 +177,9 @@ function build_all {
     install_global_dependencies
     install_tablet_dependencies
     install_desktop_dependencies
+
+    # return to base directory
+    cd ${BASE_DIR}
 }
 
 # Run: source makefile.sh && run_tablet
@@ -180,15 +187,28 @@ function run_tablet {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start tablet prototype"
-    cd ${TABLET_DIR} && node app.js
     echo ">> Please browse to http://127.0.0.1:8001"
+    cd ${TABLET_DIR} && node app.js
+
+    # return to base directory
+    cd ${BASE_DIR}
 
 }
 
+# Run: source makefile.sh && run_desktop
 function run_desktop {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start desktop prototype"
-    cd ${DESKTOP_DIR} && python app.py
     echo ">> Please browse to http://127.0.0.1:8000"
+    cd ${DESKTOP_DIR} && python ${DESKTOP_DIR}/app.py
+
+    # return to base directory
+    cd ${BASE_DIR}
+}
+
+# Run: source makefile.sh && clean
+function clean {
+    activate_virtualenv
+    npm cache clean
 }

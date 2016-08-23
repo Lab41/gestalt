@@ -42,3 +42,4 @@ Thumbs.db
 node_modules
 _site
 gestalt_virtualenv
+bin

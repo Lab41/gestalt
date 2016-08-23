@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Lab41/gestalt/issues"
   },
-  "homepage": "https://github.com/Lab41/gestalt#readme"
+  "homepage": "https://github.com/Lab41/gestalt#readme",
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
 }
