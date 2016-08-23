@@ -1,13 +1,8 @@
 {
-  "name": "tablet",
+  "name": "desktop",
   "version": "1.0.0",
-  "description": "Gestalt prototype for the tablet",
-  "main": "app.js",
-  "dependencies": {
-    "angular": "^1.5.8",
-    "express": "^4.13.4"
-  },
-  "devDependencies": {},
+  "description": "Gestalt prototype for the desktop",
+  "main": "app.py",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +12,7 @@
   },
   "keywords": [
     "gestalt",
-    "tablet"
+    "desktop"
   ],
   "author": "Lab41",
   "license": "SEE LICENSE IN ../../LICENSE",
