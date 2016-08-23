@@ -111,6 +111,11 @@ function install_global_dependencies {
     echo ">> Install psycopg2"
     pip install psycopg2
 
+    echo ">> Install openssl"
+    brew install openssl
+    ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib
+    ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib
+
     echo ">> Install errno"
     npm install --global errno
 
