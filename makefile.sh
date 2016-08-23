@@ -8,23 +8,13 @@
 # 1. For first time user, do the entire build.
 # >> source makefile.sh && build_all
 # 
-# 2. After running the entire build, run the tablet prototype with local postgresql.
-# >> source makefile.sh && run_local_tablet
-# 
-# 3. After running the entire build, run the desktop prototype with local postgresql.
-# >> source makefile.sh && run_local_desktop
-# 
-# 4. After running the entire build, run the tablet prototype with postgresql 
-# located in the server. Remember to set the environment variable DATABASE_URL.
-# >> export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
+# 2. After running the entire build, run the tablet prototype.
 # >> source makefile.sh && run_tablet
 # 
-# 5. After running the entire build, run the desktop prototype with postgresql
-# located in the server. Remember to set the environment variable DATABASE_URL.
-# >> export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT
+# 3. After running the entire build, run the desktop prototype.
 # >> source makefile.sh && run_desktop
 # 
-# 6. To clean cache, run
+# 4. To clean cache, run
 # >> source makefile.sh && clean
 #
 # Additional run commands:
@@ -32,6 +22,8 @@
 # >> activate
 # 2. Deactivate virtual environment gestalt_virtualenv
 # >> deactivate
+# 3. Access local database 
+# >> source makefile.sh && run_postgres
 
 # -----------------------------------------------------------------------------
 #   Directories
@@ -94,7 +86,6 @@ function activate_virtualenv {
 }
 
 function install_global_dependencies {
-
     # node installed here because every module requires npm
     node --version 
     if [[ $? != 0 ]]; then 
@@ -136,7 +127,6 @@ function install_global_dependencies {
 }
 
 function install_tablet_dependencies {
-    
     echo ">> Install AngularJS 1.0" # as tablet prototype's front-end
     cd ${TABLET_DIR} && npm install angular --save 
 
@@ -169,6 +159,124 @@ function is_envvar_set {
     fi
 }
 
+# There are two ways to start postgresql as a service: homebrew and manually.
+function start_service_postgres_with_homebrew {
+    echo ">> Note: cannot run inside tmux"
+    echo ">> Install homebrew's services"
+    brew tap homebrew/services
+
+    echo ">> Start postgreSQL as a background service"
+    brew services start postgresql
+
+    # stop: brew services stop postgresql
+    # restart: brew services restart postgresql
+}
+
+function start_service_postgres {
+    echo ">> Note: cannot run inside tmux"
+    echo ">> Configure postgreSQL to start automatically"
+    echo ">> 1. Create a LaunchAgents directory"
+    mkdir -p ~/Library/LaunchAgents
+    echo ">> 2. Create a symbolic link to postgreSQL's property list files"
+    ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+    echo ">> 3. Load the plist into the launch control service"
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+}
+
+function initialize_postgres_db {
+    echo ">> Initialize postgreSQL database at ${1}"
+    postgres -D ${1}
+}
+
+function install_postgresql {
+    postgres --version
+    if [[ $? != 0 ]]; then
+        echo ">> Install postgreSQL locally"
+        brew install postgres
+        start_service_postgres_with_homebrew
+        initialize_postgres_db '/usr/local/var/postgres'
+    else
+        echo ">> Upgrade postgreSQL"
+        brew upgrade postgres
+    fi
+
+    echo ">> Create default database called gestalt"
+    createdb gestalt
+
+    echo ">> Install admin pack in case you wanted to use PgAdmin's UI"
+    psql -d gestalt -c 'CREATE EXTENSION "adminpack";'
+}
+
+function populate_gestalt_db {
+    if psql -lqt | cut -d \| -f 1 | grep -qw gestalt; then
+        echo ">> Populate gestalt database"
+        psql -d gestalt -f database/create_persona.sql
+        psql -d gestalt -f database/create_tag.sql
+        psql -d gestalt -f database/create_story.sql
+        psql -d gestalt -f database/create_panel.sql
+        psql -d gestalt -f database/create_workspace.sql
+    else
+        echo ">> Gestalt database does not exist. \
+                 Please run 'createdb gestalt' or install_postgres first. EXITING!"
+        exit 1
+    fi
+}
+
+function run_postgres {
+    # assuming you have run install_postgresql first
+    psql -d gestalt -h localhost
+}
+
+function set_env_var_postgres {
+    if [ ${1} == "remote" ]; then
+        # remote
+        echo "What is the remote database's..."
+        read -p 'name (i.e. postgres)? ' db_name
+        read -p 'user (i.e. johndoe)? ' db_user
+        read -p 'host (i.e. 127.0.0.1)? ' db_host
+        read -p 'password? ' db_password
+        read -p 'post (i.e. 5432)? ' db_port
+    else
+        # local
+        db_name='gestalt'
+        db_user=`whoami`
+        db_host='localhost'
+        db_password='""'
+        db_port='5432'
+    fi
+
+    ">> Set the postgresql environment variable in bash_profile"
+    echo "export DATABASE_NAME=${db_name}" | tee -a ~/.bash_profile
+    echo "export DATABASE_USER=${db_user}" | tee -a ~/.bash_profile
+    echo "export DATABASE_HOST=${db_host}" | tee -a ~/.bash_profile
+    echo "export DATABASE_PASSWORD=${db_password}" | tee -a ~/.bash_profile
+    echo "export DATABASE_PORT=${db_port}" | tee -a ~/.bash_profile
+    echo 'export DATABASE_URL=$DATABASE_NAME,$DATABASE_USER,$DATABASE_HOST,$DATABASE_PASSWORD,$DATABASE_PORT' | tee -a ~/.bash_profile
+    source ~/.bash_profile
+
+}
+
+function setup_local_postgres {
+    install_postgresql
+    populate_gestalt_db
+    set_env_var_postgres "local"
+}
+
+function setup_remote_postgres {
+    set_env_var_postgres "remote"
+}
+
+function setup_db {
+    while true; do
+        read -p "Are you using local database? Yes for local. No for server. Default is local." yn
+        case $yn in
+            [Yy]* ) echo ">> Use local postgreSQL."; setup_local_postgres; break;;
+            [Nn]* ) echo ">> Use remote postgreSQL."; setup_remote_postgres; break;;
+            * ) echo ">> Default to use local postgreSQL."; setup_local_postgres; break;;
+        esac
+    done
+}
+
 # -----------------------------------------------------------------------------
 #   Start le installation!
 # -----------------------------------------------------------------------------
@@ -182,6 +290,7 @@ function build_all {
     install_global_dependencies
     install_tablet_dependencies
     install_desktop_dependencies
+    setup_db
 
     # return to base directory
     cd ${BASE_DIR}
@@ -197,7 +306,6 @@ function run_tablet {
 
     # return to base directory
     cd ${BASE_DIR}
-
 }
 
 # Run: source makefile.sh && run_desktop
