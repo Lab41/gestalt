@@ -236,7 +236,7 @@ function set_env_var_postgres {
         read -p 'host (i.e. 127.0.0.1)? ' db_host
         read -p 'password? ' db_password
         read -p 'post (i.e. 5432)? ' db_port
-    else
+    elsex
         # local
         db_name='gestalt'
         db_user=`whoami`
@@ -245,7 +245,7 @@ function set_env_var_postgres {
         db_port='5432'
     fi
 
-    ">> Set the postgresql environment variable in bash_profile"
+    echo ">> Set the postgresql environment variable in bash_profile"
     echo "export DATABASE_NAME=${db_name}" | tee -a ~/.bash_profile
     echo "export DATABASE_USER=${db_user}" | tee -a ~/.bash_profile
     echo "export DATABASE_HOST=${db_host}" | tee -a ~/.bash_profile
@@ -285,7 +285,7 @@ function setup_db {
 function build_all {
     setup_bash_profile
     install_homebrew
-    install_virtualen
+    install_virtualenv
     activate_virtualenv
     install_global_dependencies
     install_tablet_dependencies
@@ -301,7 +301,7 @@ function run_tablet {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start tablet prototype"
-    echo ">> Please browse to http://127.0.0.1:8001"
+    echo ">> Please browse to http://0.0.0.0:8001"
     cd ${TABLET_DIR} && node app.js
 
     # return to base directory
@@ -313,7 +313,7 @@ function run_desktop {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start desktop prototype"
-    echo ">> Please browse to http://127.0.0.1:8000"
+    echo ">> Please browse to http://0.0.0.0:8000"
     cd ${DESKTOP_DIR} && python ${DESKTOP_DIR}/app.py
 
     # return to base directory
