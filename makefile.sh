@@ -43,7 +43,7 @@ function setup_bash_profile {
     # ensure user-installed binaries take precedence
     echo 'export PATH=/usr/local/bin:$PATH' | tee -a ~/.bash_profile
     # pip should only run if there is a virtualenv currently activated
-    echo 'export PIP_REQUIRE_VIRTUALENV=true' | tee -a ~/.bash_profile
+    echo 'export PIP_REQUIRE_VIRTUALENV=false' | tee -a ~/.bash_profile
     source ~/.bash_profile
 }
 
@@ -203,8 +203,13 @@ function install_postgresql {
     echo ">> Create default database called gestalt"
     createdb gestalt
 
+    echo ">> Create default user with superuser privileges"
+    echo ">> user: gestalt_user"
+    echo ">> password: umami"
+    psql -d gestalt -c "CREATE USER gestalt_user WITH SUPERUSER LOGIN PASSWORD 'umami';"
+
     echo ">> Install admin pack in case you wanted to use PgAdmin's UI"
-    psql -d gestalt -c 'CREATE EXTENSION "adminpack";'
+    psql -d gestalt -c "CREATE EXTENSION 'adminpack';"
 }
 
 function populate_gestalt_db {
@@ -239,9 +244,9 @@ function set_env_var_postgres {
     else
         # local
         db_name='gestalt'
-        db_user=`whoami`
-        db_host='localhost'
-        db_password='""'
+        db_user='gestalt_user'
+        db_host='0.0.0.0'
+        db_password='umami'
         db_port='5432'
     fi
 
