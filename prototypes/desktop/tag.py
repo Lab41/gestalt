@@ -8,21 +8,21 @@ import helper
 
 urls = (
 
-    # 127.0.0.1:8000/api/tag/
+    # 0.0.0.0:8000/api/tag/
     "", "all_tags",
-    # 127.0.0.1:8000/api/tag/#/, where # == tag.id
+    # 0.0.0.0:8000/api/tag/#/, where # == tag.id
     "(\d+)/", "single_tag",
-    # 127.0.0.1:8000/api/tag/story/#/, where # == story.id
+    # 0.0.0.0:8000/api/tag/story/#/, where # == story.id
     "story/(\d+)/", "single_story_tags",
-    # 127.0.0.1:8000/api/tag/#/story/, where # == tag.id
+    # 0.0.0.0:8000/api/tag/#/story/, where # == tag.id
     "(\d+)/stories/", "all_stories_with_tag",
-    # 127.0.0.1:8000/api/tag/panel/#/, where # == panel.id
+    # 0.0.0.0:8000/api/tag/panel/#/, where # == panel.id
     "panel/(\d+)/", "single_panel_tags",
-    # 127.0.0.1:8000/api/tag/#/panel/, where # == tag.id
+    # 0.0.0.0:8000/api/tag/#/panel/, where # == tag.id
     "(\d+)/panels/", "all_panels_with_tag",
-    # 127.0.0.1:8000/api/tag/workspace/#/, where # == workspace.id
+    # 0.0.0.0:8000/api/tag/workspace/#/, where # == workspace.id
     "workspace/(\d+)/", "single_workspace_tags",
-    # 127.0.0.1:8000/api/tag/#/workspace/, where # == tag.id
+    # 0.0.0.0:8000/api/tag/#/workspace/, where # == tag.id
     "(\d+)/workspaces/", "all_workspaces_with_tag"
 
 )

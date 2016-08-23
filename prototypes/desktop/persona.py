@@ -8,9 +8,9 @@ import helper
 
 urls = (
 
-    # 127.0.0.1:8000/api/persona/
+    # 0.0.0.0:8000/api/persona/
     "", "all_personas",
-    # 127.0.0.1:8000/api/persona/#/, where # == persona.id
+    # 0.0.0.0:8000/api/persona/#/, where # == persona.id
     "(\d+)/", "single_persona",
     
 )
@@ -29,7 +29,7 @@ class all_personas:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT * FROM """ + helper.table_prefix + """persona;
+            SELECT * FROM persona;
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -53,7 +53,7 @@ class single_persona:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM """ + helper.table_prefix + """persona
+            FROM persona
             WHERE persona.id = """ + persona_id + """;
         """)
         # obtain the data

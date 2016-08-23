@@ -7,16 +7,14 @@ import web
 import helper
 
 urls = (
-    
-    # 127.0.0.1:8000/api/workspace/persona/#/, where # == persona.id
-    "persona/(\d+)/", "persona_workspaces",
-    
-    # 127.0.0.1:8000/api/workspace/#/panels/, where # == workspace.url_name
-    "(.*)/panels/", "workspace_panels",
-    
-    # 127.0.0.1:8000/api/workspace/#/, where # == workspace.url_name
+
+    # 0.0.0.0:8000/api/workspace/#/, where # == workspace.url_name
     "(.*)/", "single_workspace"
-    
+    # 0.0.0.0:8000/api/workspace/persona/#/, where # == persona.id
+    "persona/(\d+)/", "persona_workspaces",
+    # 0.0.0.0:8000/api/workspace/#/panels/, where # == workspace.url_name
+    "(.*)/panels/", "workspace_panels",
+
 )
 
 class single_workspace:
@@ -37,12 +35,12 @@ class single_workspace:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name
-            FROM """ + helper.table_prefix + """workspace w
-            LEFT JOIN """ + helper.table_prefix + """workspace_name wn
+            FROM workspace w
+            LEFT JOIN workspace_name wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN """ + helper.table_prefix + """persona p
+            LEFT JOIN persona p
             ON w.persona_id = p.id
-            WHERE w.url_name IS NOT NULL 
+            WHERE w.id IS NOT NULL 
             AND w.url_name = '""" + workspace_url_name + """'
             ORDER BY w.id;        
         """)
@@ -54,15 +52,24 @@ class single_workspace:
 
 class persona_workspaces:
     """ Extract all the workspaces for a particular persona.
+        The output includes each workspace's information, each workspace's default panel, and each workspace's panels.
     input:
         * persona.id
     output:
-        * workspace.id
-        * workspace.name
-        * persona.id
-        * workspace.url_name,
-        * panel.url_name,
-        * workspace.is_default
+        * workspace's information
+            * workspace.id
+            * workspace.name
+            * persona.id
+            * workspace.url_name
+            * workspace.is_default
+        * workspace's default panel
+            * panel.url_name
+        * workspace's panels
+            * ?
+            * ?
+            * ?
+            * ?
+            * ?
     """
     def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -71,29 +78,47 @@ class persona_workspaces:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels
-            FROM """ + helper.table_prefix + """workspace w
-            LEFT JOIN """ + helper.table_prefix + """workspace_name wn
+            SELECT w.id, wn.name, w.url_name, w.is_default,
+                   pl.url_name
+            FROM workspace w
+            LEFT JOIN workspace_name wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN """ + helper.table_prefix + """workspace_panel wp
-            ON wp.workspace_id = w.id
-            LEFT JOIN """ + helper.table_prefix + """persona p
-            ON w.persona_id = p.id
-            JOIN """ + helper.table_prefix + """panel pl
-            ON pl.id = wp.panel_id
-            left join (
-            select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id
-            from """ + helper.table_prefix + """workspace_panel wp
-            left join """ + helper.table_prefix + """panel pl
-            on pl.id = wp.panel_id
-            left join """ + helper.table_prefix + """workspace w
-            on w.id = wp.workspace_id
-            ) r
-            on r.workspace_id = w.id
-            AND wp.is_default = true
-            WHERE w.id IS NOT NULL 
-            AND w.persona_id = """ + persona_id + """
-            group by w.id, wn.name, w.is_default, p.id, w.url_name, pl.url_name;         
+            LEFT JOIN workspace_panel wp
+            ON w.id = wp.workspace_id
+            LEFT JOIN panel pl
+            ON wp.panel_id = pl.id
+            WHERE wp.is_default = 't'
+            AND w.persona_id = 1
+            ORDER BY w.id;
+
+            SELECT w.id, wn.name, w.url_name, w.is_default,
+                   pl.url_name,
+                   array_to_json(array_agg(row_to_json(row)))
+            FROM gestalt_workspace w
+
+            LEFT JOIN gestalt_workspace_name wn
+            ON w.workspace_name_id = wn.id
+
+            LEFT JOIN gestalt_workspace_panel wp
+            ON w.id = wp.workspace_id
+
+            LEFT JOIN gestalt_panel pl
+            ON wp.panel_id = pl.id
+
+            LEFT JOIN (
+                   select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id
+                   from gestalt_workspace_panel wp
+                   left join gestalt_panel pl
+                   on pl.id = wp.panel_id
+                   left join gestalt_workspace w
+                   on w.id = wp.workspace_id
+            ) row
+             ON w.id = row.workspace_id
+
+            WHERE wp.is_default = 't'
+            AND w.persona_id = 1
+
+            group by w.id, wn.name, w.is_default, w.persona_id, w.url_name, pl.url_name; 
         """)
         # obtain the data
         data = self.cursor.fetchall()

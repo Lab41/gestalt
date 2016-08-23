@@ -236,7 +236,7 @@ function set_env_var_postgres {
         read -p 'host (i.e. 127.0.0.1)? ' db_host
         read -p 'password? ' db_password
         read -p 'post (i.e. 5432)? ' db_port
-    elsex
+    else
         # local
         db_name='gestalt'
         db_user=`whoami`

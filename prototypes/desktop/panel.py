@@ -8,11 +8,11 @@ import helper
 
 urls = (
     
-    # 127.0.0.1:8000/api/panel/
+    # 0.0.0.0:8000/api/panel/
     "", "all_panels",
-    # 127.0.0.1:8000/api/panel/#/, where # == panel.id
+    # 0.0.0.0:8000/api/panel/#/, where # == panel.id
     "(\d+)/", "single_panel",
-    # 127.0.0.1:8000/api/panel/persona/#/, where # == persona.id
+    # 0.0.0.0:8000/api/panel/persona/#/, where # == persona.id
     "persona/(\d+)/", "persona_panels",
     
 )
@@ -79,13 +79,13 @@ class persona_panels:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (pa.id) pa.id, pa.name, pa.url_name 
-            FROM panel pa
+            SELECT DISTINCT ON (pl.id) pl.id, pl.name, pl.url_name 
+            FROM panel pl
             RIGHT JOIN persona_panel_story pps
-            ON pa.id = pps.panel_id 
+            ON pl.id = pps.panel_id 
             AND pps.persona_id = """ + persona_id + """
-            WHERE pa.id IS NOT NULL
-            ORDER BY pa.id;
+            WHERE pl.id IS NOT NULL
+            ORDER BY pl.id;
         """)        
         # obtain the data
         data = self.cursor.fetchall()
