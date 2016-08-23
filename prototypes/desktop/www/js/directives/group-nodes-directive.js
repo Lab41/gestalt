@@ -24,6 +24,9 @@ angular.module("group-nodes-directive", [])
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
+                var transition = {
+                time: 3000
+            };
 				
 				var force = d3.layout.force()
 					.charge(-10)
@@ -40,6 +43,10 @@ angular.module("group-nodes-directive", [])
                 scope.$watchGroup(["vizData", "grouping"], function(newData, oldData) {
                     
                     var startGroup = scope.startGroup;
+                    
+                    // track which group is currently filtered for
+                    var currentGroup = startGroup;
+                    var subgroups = [];
     
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
@@ -68,33 +75,28 @@ angular.module("group-nodes-directive", [])
                                     curr_node.cy = foci[groupType][subgroup].y;
 
                                 });
+                                
+                                // set new group
+                                currentGroup = groupType;
 
                                 // resume force layout
                                 force.resume();	
-
+                                
                             };
                             
                             // force layout started
                             function startForce(e) {
-                                
-                                // TODO get subgroups from ENDPOINT
-                                var subgroups = ["blah", "de", "da"];
-                                
-                                // add group label group
-                                canvas
-                                    .append("g")
-                                    .attr({
-                                        class: "group-label",
-                                        transform: function(d) { return "translate(" + center.x + "," + (center.y - 100) + ")"; }
-                                    })
+                                                    
+                                groups.forEach(function(d) {
                                     
-                                    .each(function(group) {
+                                    // check group name
+                                    if (d.name == currentGroup) {
+                                        
+                                        subgroups = d.subgroups;
+                                        
+                                    };
                                     
-                                        // label
-                                        d3.select(this)
-                                            .append("text")
-                                            .text("label");
-                                    });
+                                });
                                 
                             };
                             
@@ -179,6 +181,7 @@ angular.module("group-nodes-directive", [])
                                         
                                     };
                                     
+                                    // add values to use as lookups later
                                     subgroups[s.id] = coords;
                                     
                                     // add nodes as subgroups
@@ -198,8 +201,13 @@ angular.module("group-nodes-directive", [])
                                 
                                 foci[o.name] = subgroups;
                                 
+                                // this is so we can have nice titles without having 
+                                // to hard code the connection to the cluster name later
+                                // this allows the flexibility to have conscise button names
+                                // and different display titles if desired
+                                o.display = o.name;
+                                
                             });
-                            console.log(foci);
                             
                             // attach event to button
 							d3.select(element.find("div")[0])
@@ -225,7 +233,7 @@ angular.module("group-nodes-directive", [])
                                 .on("end", endForce)
                                 .start();
                             
-                            // draw node groups
+                            // NODE
                             var node = canvas
                                 .selectAll(".node")
                                 .data(nodes)
@@ -256,6 +264,42 @@ angular.module("group-nodes-directive", [])
                                         })
                                         .text(function(d) { return d.origin });
                                 });
+                            
+                            // GROUP LABEL
+                            var label = canvas
+                                .selectAll(".label")
+                                .data(subgroups);
+                            
+                            // update selection
+                            label
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "label",
+                                    x: function(d) { return d.center_x; },
+                                    y: function(d) { return d.center_y; }
+                                })
+                                .text(function(d) { return d.name; });
+                            
+                            // enter selection
+                            label
+                                .enter()
+                                .append("text")
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "label",
+                                    x: function(d) { console.log(foci); console.log(d); return d.name == startGroup ? 0: 0; },
+                                    y: function(d) { return d.center_y; }
+                                })
+                                .text(function(d) { return d.name; });
+                            
+                            // exit selection
+                            label
+                                .exit()
+                                .transition()
+                                .duration(transition.time)
+                                .remove();
                                 
                         };
 
