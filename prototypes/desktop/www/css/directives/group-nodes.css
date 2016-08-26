@@ -29,8 +29,9 @@ group-nodes .node text {
 }
 
 /* group label */
-group-nodes .group-label text {
+group-nodes .group-label {
     
+    fill: currentColor;
     font-size: 0.5em;
     text-anchor: middle;
     

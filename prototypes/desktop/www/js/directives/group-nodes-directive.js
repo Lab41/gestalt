@@ -15,6 +15,10 @@ angular.module("group-nodes-directive", [])
 			
 			// get d3 promise
 			d3Service.d3().then(function(d3) {
+                
+                ///////////////////////////////////////////////
+                /////////////// d3 SET-UP START ///////////////
+                ///////////////////////////////////////////////
                                 
                 // set sizes from attributes in html element
                 // if not attributes present - use default
@@ -25,8 +29,11 @@ angular.module("group-nodes-directive", [])
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
                 var transition = {
-                time: 3000
-            };
+                    time: 500
+                };
+                
+                // x-scale
+                var xScale = d3.scale.ordinal();
 				
 				var force = d3.layout.force()
 					.charge(-10)
@@ -39,6 +46,10 @@ angular.module("group-nodes-directive", [])
                         viewBox: "0 0 " + width + " " + height
                     });
                 
+                /////////////////////////////////////////////
+                /////////////// d3 SET-UP END ///////////////
+                /////////////////////////////////////////////
+                
                 // bind data
                 scope.$watchGroup(["vizData", "grouping"], function(newData, oldData) {
                     
@@ -47,11 +58,17 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
+                    
+                    var clusterXvalues = [];
     
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
 						
 						function draw(data, groups) {
+                            
+                            ///////////////////////////////////////////////
+                            /////////////// d3 RENDER START ///////////////
+                            ///////////////////////////////////////////////
                             
                             // update nodes based on cluster groups
                             function clusterNodes() {
@@ -75,28 +92,89 @@ angular.module("group-nodes-directive", [])
                                     curr_node.cy = foci[groupType][subgroup].y;
 
                                 });
-                                
-                                // set new group
-                                currentGroup = groupType;
 
                                 // resume force layout
                                 force.resume();	
+                                
+                                // update labels
+                                updateLabels(groupType);
                                 
                             };
                             
                             // force layout started
                             function startForce(e) {
-                                                    
+                                
+                                // update cluster labels
+                                updateLabels(currentGroup);
+                                
+                            };
+                            
+                            // update cluster labels
+                            function updateLabels(group) {
+                                
+                                // set new group
+                                currentGroup = group;
+                                
                                 groups.forEach(function(d) {
                                     
                                     // check group name
                                     if (d.name == currentGroup) {
                                         
+                                        // set new subgroup
                                         subgroups = d.subgroups;
+                                        
+                                        // add foci coords to object
+                                        subgroups.map(function(d) {
+                                            d.x = foci[group][d.id].x;
+                                            d.y = foci[group][d.id].y;
+                                        });
                                         
                                     };
                                     
                                 });
+                                
+                                // calc max/min scales
+                                var xDomain = subgroups.map(function(d) { return d.name; });
+                                
+                                // add data to x-scale layout algorithm
+                                xScale.domain(xDomain);
+                                xScale.rangePoints([0, width]);
+                                
+                                // GROUP LABEL
+                                var label = canvas
+                                    .selectAll(".group-label")
+                                    .data(subgroups);
+
+                                // update selection
+                                label
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        class: "group-label",
+                                        dx: function(d) { return xScale(d.name) },
+                                        dy: function(d) { return d.y; }
+                                    })
+                                    .text(function(d) { return d.name; });
+
+                                // enter selection
+                                label
+                                    .enter()
+                                    .append("text")
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        class: "group-label",
+                                        dx: function(d) { return xScale(d.name); },
+                                        dy: function(d) { return d.y; }
+                                    })
+                                    .text(function(d) { return d.name; });
+
+                                // exit selection
+                                label
+                                    .exit()
+                                    .transition()
+                                    .duration(transition.time)
+                                    .remove();
                                 
                             };
                             
@@ -106,25 +184,38 @@ angular.module("group-nodes-directive", [])
                                 // force direction and shape of clusters
                                 var k = 0.1 * e.alpha;
 
-                                // push nodes toward focus
+                                // set new node location
                                 nodes.forEach(function(o, i) {
                                     
                                     // get focus x,y values
                                     o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
                                     o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
-                                    
+                                                                    
                                 });
                                 
+                                // push nodes toward focus
                                 node
                                     .attr({
-                                    transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
+                                        transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
+                                    });
+                                
+                                node.each(function() {
+                                    
+                                    var group = d3.select(this);
+                                    //console.log(group.select("circle").node().getBBox());
+                                    //var x = parseFloat(group.attr("transform").split(",")[0].split("(")[1]);
+                                    //console.log(x);
+                                    //clusterXvalues.push(x);
                                 });
-
+                                //console.log(clusterXvalues);
+                                // get max node x value
+                                var minMax = d3.extent(clusterXvalues, function(d) { return d; });
+                                //console.log(minMax);
                             };
                             
                             // force layout done
                             function endForce(e) {
-                                console.log("do something when layout complete");
+                                console.log("do something when layout complete");                                
                             };
                             
                             // make foci objects for each group
@@ -264,47 +355,15 @@ angular.module("group-nodes-directive", [])
                                         })
                                         .text(function(d) { return d.origin });
                                 });
-                            
-                            // GROUP LABEL
-                            var label = canvas
-                                .selectAll(".label")
-                                .data(subgroups);
-                            
-                            // update selection
-                            label
-                                .transition()
-                                .duration(transition.time)
-                                .attr({
-                                    class: "label",
-                                    x: function(d) { return d.center_x; },
-                                    y: function(d) { return d.center_y; }
-                                })
-                                .text(function(d) { return d.name; });
-                            
-                            // enter selection
-                            label
-                                .enter()
-                                .append("text")
-                                .transition()
-                                .duration(transition.time)
-                                .attr({
-                                    class: "label",
-                                    x: function(d) { console.log(foci); console.log(d); return d.name == startGroup ? 0: 0; },
-                                    y: function(d) { return d.center_y; }
-                                })
-                                .text(function(d) { return d.name; });
-                            
-                            // exit selection
-                            label
-                                .exit()
-                                .transition()
-                                .duration(transition.time)
-                                .remove();
                                 
                         };
 
                         // update the viz
                         draw(newData[0], newData[1]);
+                        
+                        /////////////////////////////////////////////
+                        /////////////// d3 RENDER END ///////////////
+                        /////////////////////////////////////////////
                         
                     };
                     
