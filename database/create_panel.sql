@@ -29,55 +29,55 @@ CREATE TABLE persona_panel_story (
 );
  
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '1', '1');
+    (1, 1, 1);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '1', '2');
+    (1, 1, 2);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '1', '4');
+    (1, 1, 4);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '2', '5');
+    (1, 2, 5);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '2', '9');
+    (1, 2, 9);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '3', '6');
+    (1, 3, 6);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '3', '9');
+    (1, 3, 9);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '4', '3');
+    (1, 4, 3);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '5', '10');
+    (1, 5, 10);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '5', '11');
+    (1, 5, 11);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '5', '12');
+    (1, 5, 12);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '5', '13');
+    (1, 5, 13);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '6', '12');
+    (1, 6, 12);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '6', '14');
+    (1, 6, 14);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '7', '12');
+    (1, 7, 12);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('1', '7', '14');
+    (1, 7, 14);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('2', '1', '1');
+    (2, 1, 1);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('2', '1', '2');
+    (2, 1, 2);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('2', '1', '4');
+    (2, 1, 4);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('3', '1', '1');
+    (3, 1, 1);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('3', '1', '2');
+    (3, 1, 2);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('3', '1', '4');
+    (3, 1, 4);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('4', '1', '1');
+    (4, 1, 1);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('4', '1', '2');
+    (4, 1, 2);
 INSERT INTO persona_panel_story (persona_id, panel_id, story_id) VALUES
-    ('4', '1', '4');
+    (4, 1, 4);
  
 CREATE TABLE panel_tag (
     panel_id INTEGER,

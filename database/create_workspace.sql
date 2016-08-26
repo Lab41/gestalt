@@ -20,17 +20,17 @@ CREATE TABLE workspace (
 );
 
 INSERT INTO workspace (workspace_name_id, persona_id, url_name) VALUES 
-    ('1', '1', '30bb1f348edf70cead2426e5762bc015');
+    (1, 1, '30bb1f348edf70cead2426e5762bc015');
 INSERT INTO workspace (workspace_name_id, persona_id, url_name) VALUES 
-    ('2', '1', 'd7352676dcfc563ba04e6bc1de6236a2');
+    (2, 1, 'd7352676dcfc563ba04e6bc1de6236a2');
 INSERT INTO workspace (workspace_name_id, persona_id, url_name) VALUES 
-    ('3', '1', 'a3c90460cd127a4df22fb8a7b792651c');
+    (3, 1, 'a3c90460cd127a4df22fb8a7b792651c');
 INSERT INTO workspace (workspace_name_id, persona_id, url_name) VALUES 
-    ('2', '2', 'd8711880b39a55baf7f4b4fb29f031c6');
+    (2, 2, 'd8711880b39a55baf7f4b4fb29f031c6');
 INSERT INTO workspace (workspace_name_id, persona_id, url_name) VALUES 
-    ('2', '3', '9ca944d898c7b5a1952110d66df48d0e');
+    (2, 3, '9ca944d898c7b5a1952110d66df48d0e');
 INSERT INTO workspace (workspace_name_id, persona_id, url_name) VALUES 
-    ('2', '4', '7d483e685f8adaa808ed064c3abebafe');
+    (2, 4, '7d483e685f8adaa808ed064c3abebafe');
 
 
 CREATE TABLE workspace_panel (
@@ -42,21 +42,21 @@ CREATE TABLE workspace_panel (
 );
 
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('1', '1', FALSE);
+    (1, 1, FALSE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('1', '2', TRUE);
+    (1, 2, TRUE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('2', '1', TRUE);
+    (2, 1, TRUE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('3', '1', FALSE);
+    (3, 1, FALSE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('3', '5', TRUE);
+    (3, 5, TRUE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('4', '1', TRUE);
+    (4, 1, TRUE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('5', '1', TRUE);
+    (5, 1, TRUE);
 INSERT INTO workspace_panel(workspace_id, panel_id, is_default) VALUES
-    ('6', '1', TRUE);
+    (6, 1, TRUE);
 
 CREATE TABLE workspace_tag (
     workspace_id INTEGER,
