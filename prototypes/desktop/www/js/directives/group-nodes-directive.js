@@ -43,8 +43,11 @@ angular.module("group-nodes-directive", [])
                 // circle scale
                 var cScale = d3.scale.linear();
                 var transition = {
-                time: 3000
-            };
+                    time: 500
+                };
+                
+                // x-scale
+                var xScale = d3.scale.ordinal();
 				
                 // set up force layout algorithm
 				var force = d3.layout.force()
@@ -62,8 +65,6 @@ angular.module("group-nodes-directive", [])
                         viewBox: "0 0 " + width + " " + height
                     });
                 
-				var links = [{source: 0, target: 20}];
-				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
                 /////////////////////////////////////////////
@@ -76,7 +77,7 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
-
+    
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
 						
@@ -194,9 +195,6 @@ angular.module("group-nodes-directive", [])
                                     curr_node.cy = foci[groupType][subgroup].y;
 
                                 });
-                                
-                                // set new group
-                                currentGroup = groupType;
 
                                 // resume force layout
                                 force.resume();	
@@ -233,6 +231,7 @@ angular.module("group-nodes-directive", [])
                                         subgroups.map(function(d) {
                                             d.x = foci[group][d.id].x;
                                             d.y = foci[group][d.id].y * 0.2;
+                                            d.y = foci[group][d.id].y;
                                         });
                                         
                                     };
@@ -253,6 +252,7 @@ angular.module("group-nodes-directive", [])
                                     subgroups = [];
                                     
                                 };
+                                xScale.rangePoints([0, width]);
                                 
                                 // GROUP LABEL
                                 var label = canvas
@@ -267,6 +267,8 @@ angular.module("group-nodes-directive", [])
                                         class: "group-label",
                                         dx: function(d) { return d.x },
                                         dy: function(d) { return d.y }
+                                        dx: function(d) { return xScale(d.name) },
+                                        dy: function(d) { return d.y; }
                                     })
                                     .text(function(d) { return d.name; });
 
@@ -280,6 +282,8 @@ angular.module("group-nodes-directive", [])
                                         class: "group-label",
                                         dx: function(d) { return d.x; },
                                         dy: function(d) { return d.y }
+                                        dx: function(d) { return xScale(d.name); },
+                                        dy: function(d) { return d.y; }
                                     })
                                     .text(function(d) { return d.name; });
 
@@ -289,7 +293,6 @@ angular.module("group-nodes-directive", [])
                                     .transition()
                                     .duration(transition.time)
                                     .remove();
-                                        
                                     
                                 });
                                 
@@ -318,6 +321,9 @@ angular.module("group-nodes-directive", [])
 										y2: function(d) { return d.target.y; }
 									});
 								                                
+                                                                    
+                                });
+                                
                                 // push nodes toward focus
                                 node
                                     .attr({
@@ -326,6 +332,19 @@ angular.module("group-nodes-directive", [])
 								
 								
 								
+                                
+                                node.each(function() {
+                                    
+                                    var group = d3.select(this);
+                                    //console.log(group.select("circle").node().getBBox());
+                                    //var x = parseFloat(group.attr("transform").split(",")[0].split("(")[1]);
+                                    //console.log(x);
+                                    //clusterXvalues.push(x);
+                                });
+                                //console.log(clusterXvalues);
+                                // get max node x value
+                                var minMax = d3.extent(clusterXvalues, function(d) { return d; });
+                                //console.log(minMax);
                             };
                             
                             // force layout done
@@ -523,42 +542,6 @@ angular.module("group-nodes-directive", [])
 								.on("click", drawFlows);
                                         .text(function(d) { return d.origin });
                                 });
-                            
-                            // GROUP LABEL
-                            var label = canvas
-                                .selectAll(".label")
-                                .data(subgroups);
-                            
-                            // update selection
-                            label
-                                .transition()
-                                .duration(transition.time)
-                                .attr({
-                                    class: "label",
-                                    x: function(d) { return d.center_x; },
-                                    y: function(d) { return d.center_y; }
-                                })
-                                .text(function(d) { return d.name; });
-                            
-                            // enter selection
-                            label
-                                .enter()
-                                .append("text")
-                                .transition()
-                                .duration(transition.time)
-                                .attr({
-                                    class: "label",
-                                    x: function(d) { console.log(foci); console.log(d); return d.name == startGroup ? 0: 0; },
-                                    y: function(d) { return d.center_y; }
-                                })
-                                .text(function(d) { return d.name; });
-                            
-                            // exit selection
-                            label
-                                .exit()
-                                .transition()
-                                .duration(transition.time)
-                                .remove();
                                 
                         };
 
