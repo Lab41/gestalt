@@ -215,11 +215,11 @@ function install_postgresql {
 function populate_gestalt_db {
     if psql -lqt | cut -d \| -f 1 | grep -qw gestalt; then
         echo ">> Populate gestalt database"
-        psql -d gestalt -f database/create_persona.sql
-        psql -d gestalt -f database/create_tag.sql
-        psql -d gestalt -f database/create_story.sql
-        psql -d gestalt -f database/create_panel.sql
-        psql -d gestalt -f database/create_workspace.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_persona.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_tag.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_story.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_panel.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_workspace.sql
     else
         echo ">> Gestalt database does not exist. \
                  Please run 'createdb gestalt' or install_postgres first. EXITING!"
