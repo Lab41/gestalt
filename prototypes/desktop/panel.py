@@ -31,7 +31,7 @@ class all_panels:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT * FROM panel;
+            SELECT * FROM gestalt_panel;
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -55,7 +55,7 @@ class single_panel:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM panel
+            FROM gestalt_panel AS panel
             WHERE panel.id = """ + panel_id + """;
         """)
         # obtain the data
@@ -80,8 +80,8 @@ class persona_panels:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (pl.id) pl.id, pl.name, pl.url_name 
-            FROM panel pl
-            RIGHT JOIN persona_panel_story pps
+            FROM gestalt_panel AS pl
+            RIGHT JOIN gestalt_persona_panel_story AS pps
             ON pl.id = pps.panel_id 
             AND pps.persona_id = """ + persona_id + """
             WHERE pl.id IS NOT NULL

@@ -33,7 +33,7 @@ class all_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT * FROM story;
+            SELECT * FROM gestalt_story;
         """)        
         # obtain the data
         data = self.cursor.fetchall()
@@ -57,7 +57,7 @@ class single_story:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM story
+            FROM gestalt_story AS story
             WHERE story.id = """ + story_id + """;
         """)
         # obtain the data
@@ -82,8 +82,8 @@ class persona_stories:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name 
-            FROM story st
-            RIGHT JOIN persona_panel_story pps
+            FROM gestalt_story AS st
+            RIGHT JOIN gestalt_persona_panel_story AS pps
             ON st.id = pps.story_id 
             AND pps.persona_id = """ + persona_id + """
             WHERE st.id IS NOT NULL
@@ -112,8 +112,8 @@ class persona_panel_stories:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
-            FROM story st
-            RIGHT JOIN persona_panel_story pps
+            FROM gestalt_story AS st
+            RIGHT JOIN gestalt_persona_panel_story AS pps
             ON st.id = pps.story_id 
             AND pps.persona_id = """ + persona_id + """
             AND pps.panel_id = """ + panel_id + """

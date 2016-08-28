@@ -8,8 +8,10 @@ import helper
 
 urls = (
 
+    "workspace_name/", "all_workspace_names",
+    "", "all_workspaces",
     # 0.0.0.0:8000/api/workspace/#/, where # == workspace.url_name
-    "(.*)/", "single_workspace"
+    "([a-fA-F\d]{32})/", "single_workspace",
     # 0.0.0.0:8000/api/workspace/persona/#/, where # == persona.id
     "persona/(\d+)/", "persona_workspaces",
     # 0.0.0.0:8000/api/workspace/#/panels/, where # == workspace.url_name
@@ -35,10 +37,10 @@ class single_workspace:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name
-            FROM workspace w
-            LEFT JOIN workspace_name wn
+            FROM gestalt_workspace AS w
+            LEFT JOIN gestalt_workspace_name AS wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN persona p
+            LEFT JOIN gestalt_persona AS p
             ON w.persona_id = p.id
             WHERE w.id IS NOT NULL 
             AND w.url_name = '""" + workspace_url_name + """'
@@ -71,6 +73,19 @@ class persona_workspaces:
             * ?
             * ?
     """
+    """
+        SELECT w.id, wn.name, w.url_name, w.is_default, pl.url_name
+        FROM workspace w
+        LEFT JOIN workspace_name wn
+        ON w.workspace_name_id = wn.id
+        LEFT JOIN workspace_panel wp
+        ON w.id = wp.workspace_id
+        LEFT JOIN panel pl
+        ON wp.panel_id = pl.id
+        WHERE wp.is_default = 't'
+        AND w.persona_id = 1
+        ORDER BY w.id;
+    """
     def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
@@ -78,47 +93,29 @@ class persona_workspaces:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT w.id, wn.name, w.url_name, w.is_default,
-                   pl.url_name
-            FROM workspace w
-            LEFT JOIN workspace_name wn
-            ON w.workspace_name_id = wn.id
-            LEFT JOIN workspace_panel wp
-            ON w.id = wp.workspace_id
-            LEFT JOIN panel pl
-            ON wp.panel_id = pl.id
-            WHERE wp.is_default = 't'
-            AND w.persona_id = 1
-            ORDER BY w.id;
-
-            SELECT w.id, wn.name, w.url_name, w.is_default,
-                   pl.url_name,
-                   array_to_json(array_agg(row_to_json(row)))
+            SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels
             FROM gestalt_workspace w
-
             LEFT JOIN gestalt_workspace_name wn
             ON w.workspace_name_id = wn.id
-
             LEFT JOIN gestalt_workspace_panel wp
-            ON w.id = wp.workspace_id
-
-            LEFT JOIN gestalt_panel pl
-            ON wp.panel_id = pl.id
-
-            LEFT JOIN (
-                   select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id
-                   from gestalt_workspace_panel wp
-                   left join gestalt_panel pl
-                   on pl.id = wp.panel_id
-                   left join gestalt_workspace w
-                   on w.id = wp.workspace_id
-            ) row
-             ON w.id = row.workspace_id
-
-            WHERE wp.is_default = 't'
-            AND w.persona_id = 1
-
-            group by w.id, wn.name, w.is_default, w.persona_id, w.url_name, pl.url_name; 
+            ON wp.workspace_id = w.id
+            LEFT JOIN gestalt_persona p
+            ON w.persona_id = p.id
+            JOIN gestalt_panel pl
+            ON pl.id = wp.panel_id
+            left join (
+            select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id
+            from gestalt_workspace_panel wp
+            left join gestalt_panel pl
+            on pl.id = wp.panel_id
+            left join gestalt_workspace w
+            on w.id = wp.workspace_id
+            ) r
+            on r.workspace_id = w.id
+            AND wp.is_default = true
+            WHERE w.id IS NOT NULL 
+            AND w.persona_id = """ + persona_id + """
+            group by w.id, wn.name, w.is_default, p.id, w.url_name, pl.url_name;   
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -136,6 +133,15 @@ class workspace_panels:
         * workspace.url_name
         * workspace.persona_id
     """
+    """
+        SELECT DISTINCT ON (p.id) p.id, p.name, p.url_name 
+        FROM panel p
+        RIGHT JOIN workspace_panel wp
+        ON wp.panel_id = p.id
+        AND wp.workspace_id = 
+        WHERE p.id IS NOT NULL
+        ORDER BY p.id;
+    """
     def GET(self, workspace_url_name, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
@@ -144,8 +150,8 @@ class workspace_panels:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (p.id) p.id as panel_id, p.name, p.url_name, w.url_name as workspace_url_name, w.persona_id
-            FROM """ + helper.table_prefix + """panel p
-            RIGHT JOIN """ + helper.table_prefix + """workspace_panel wp
+            FROM gestalt_panel AS p
+            RIGHT JOIN gestalt_workspace_panel AS wp
             ON wp.panel_id = p.id
             right join """ + helper.table_prefix + """workspace w
             on w.id = wp.workspace_id

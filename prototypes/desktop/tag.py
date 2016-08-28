@@ -14,11 +14,11 @@ urls = (
     "(\d+)/", "single_tag",
     # 0.0.0.0:8000/api/tag/story/#/, where # == story.id
     "story/(\d+)/", "single_story_tags",
-    # 0.0.0.0:8000/api/tag/#/story/, where # == tag.id
+    # 0.0.0.0:8000/api/tag/#/stories/, where # == tag.id
     "(\d+)/stories/", "all_stories_with_tag",
     # 0.0.0.0:8000/api/tag/panel/#/, where # == panel.id
     "panel/(\d+)/", "single_panel_tags",
-    # 0.0.0.0:8000/api/tag/#/panel/, where # == tag.id
+    # 0.0.0.0:8000/api/tag/#/panels/, where # == tag.id
     "(\d+)/panels/", "all_panels_with_tag",
     # 0.0.0.0:8000/api/tag/workspace/#/, where # == workspace.id
     "workspace/(\d+)/", "single_workspace_tags",
@@ -40,7 +40,7 @@ class all_tags:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT * FROM tag;
+            SELECT * FROM gestalt_tag;
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -63,7 +63,7 @@ class single_tag:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM tag
+            FROM gestalt_tag AS tag
             WHERE tag.id = """ + tag_id + """;
         """)
         # obtain the data
@@ -87,8 +87,8 @@ class single_story_tags:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (tag.id) tag.id, tag.name
-            FROM tag
-            RIGHT JOIN story_tag
+            FROM gestalt_tag AS tag
+            RIGHT JOIN gestalt_story_tag AS story_tag
             ON tag.id = story_tag.tag_id 
             AND story_tag.story_id = """ + story_id + """
             WHERE tag.id IS NOT NULL
@@ -116,8 +116,8 @@ class all_stories_with_tag:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (story.id) story.id, story.name, story.url_name
-            FROM story
-            RIGHT JOIN story_tag
+            FROM gestalt_story AS story
+            RIGHT JOIN gestalt_story_tag AS story_tag
             ON story.id = story_tag.story_id 
             AND story_tag.tag_id = """ + tag_id + """
             WHERE story.id IS NOT NULL
@@ -144,8 +144,8 @@ class single_panel_tags:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (tag.id) tag.id, tag.name
-            FROM tag
-            RIGHT JOIN panel_tag
+            FROM gestalt_tag AS tag
+            RIGHT JOIN gestalt_panel_tag AS panel_tag
             ON tag.id = panel_tag.tag_id 
             AND panel_tag.panel_id = """ + panel_id + """
             WHERE tag.id IS NOT NULL
@@ -173,8 +173,8 @@ class all_panels_with_tag:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (panel.id) panel.id, panel.name, panel.url_name
-            FROM panel
-            RIGHT JOIN panel_tag
+            FROM gestalt_panel AS panel
+            RIGHT JOIN gestalt_panel_tag AS panel_tag
             ON panel.id = panel_tag.panel_id 
             AND panel_tag.tag_id = """ + tag_id + """
             WHERE panel.id IS NOT NULL
@@ -201,8 +201,8 @@ class single_workspace_tags:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (tag.id) tag.id, tag.name
-            FROM tag
-            RIGHT JOIN workspace_tag
+            FROM gestalt_tag AS tag
+            RIGHT JOIN gestalt_workspace_tag AS workspace_tag
             ON tag.id = workspace_tag.tag_id 
             AND workspace_tag.workspace_id = """ + workspace_id + """
             WHERE tag.id IS NOT NULL
@@ -231,12 +231,12 @@ class all_workspaces_with_tag:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name
-            FROM workspace w
-            LEFT JOIN workspace_name wn
+            FROM gestalt_workspace AS w
+            LEFT JOIN gestalt_workspace_name AS wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN persona p
+            LEFT JOIN gestalt_persona AS p
             ON w.persona_id = p.id
-            RIGHT JOIN workspace_tag wt
+            RIGHT JOIN gestalt_workspace_tag AS wt
             ON w.id = wt.workspace_id 
             AND wt.tag_id = """ + tag_id + """
             WHERE w.id IS NOT NULL
