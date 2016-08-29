@@ -71,7 +71,8 @@ angular.module("tile-grid-map-directive", [])
                             // add pop up
                             layer.bindPopup(content, popUpOptions);
 							
-							var polygonLabel = L.marker(layer.getBounds().getCenter(), {
+							// add polygon label
+							L.marker(layer.getBounds().getCenter(), {
 								icon: L.divIcon({
 									html: "<p>" + feature.properties.iso + "</p>",
 									iconSize: [20,20]
