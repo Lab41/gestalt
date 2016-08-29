@@ -2,10 +2,20 @@ angular.module("app-controller", [])
 
 .controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, layoutService, authenticationService, $rootScope) {
     
+    console.log("now i am in app controller");
+
     var workspaceParam = $stateParams.workspace;
     var panelID = $stateParams.panel;
     var theme = $stateParams.t;
     
+    console.log("workspaceParam = " + workspaceParam);
+    console.log("panelId = " + panelID);
+    console.log("theme = " + theme);
+
+    for (var i in stateParams) {
+        console.log("stateParam " + i + " - " + stateParams[i]);
+    }
+
     // data objects
     $scope.panels;
     $scope.panel;
@@ -44,9 +54,15 @@ angular.module("app-controller", [])
 
         // get workspaces
         layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
-            
+        
             var workspaces = allWorkspaces;
             
+            for (var i in workspaces) {
+                for (var j in workspaces[i]) {
+                    console.log("in app, " + i + ", " + j + " - " + workspaces[i][j]);
+                }
+            }
+
             // get single workspace
             layoutService.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
                 

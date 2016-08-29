@@ -281,7 +281,7 @@ INSERT INTO gestalt_vis_code_attr (vis_id) VALUES
 
 CREATE TABLE gestalt_vis_do_attr (
     vis_id INTEGER PRIMARY KEY,
-    do_value TEXT NOT NULL CHECK (do_value <> '')
+    do_value TEXT NOT NULL CHECK (do_value <> ''),
     UNIQUE (vis_id, do_value)
 );
 
@@ -308,7 +308,7 @@ INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
 
 CREATE TABLE gestalt_vis_dont_attr (
     vis_id INTEGER PRIMARY KEY,
-    dont_value TEXT NOT NULL CHECK (dont_value <> '')
+    dont_value TEXT NOT NULL CHECK (dont_value <> ''),
     UNIQUE (vis_id, dont_value)
 );
 

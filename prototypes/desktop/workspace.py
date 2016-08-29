@@ -73,19 +73,6 @@ class persona_workspaces:
             * ?
             * ?
     """
-    """
-        SELECT w.id, wn.name, w.url_name, w.is_default, pl.url_name
-        FROM workspace w
-        LEFT JOIN workspace_name wn
-        ON w.workspace_name_id = wn.id
-        LEFT JOIN workspace_panel wp
-        ON w.id = wp.workspace_id
-        LEFT JOIN panel pl
-        ON wp.panel_id = pl.id
-        WHERE wp.is_default = 't'
-        AND w.persona_id = 1
-        ORDER BY w.id;
-    """
     def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
@@ -93,29 +80,17 @@ class persona_workspaces:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels
-            FROM gestalt_workspace w
-            LEFT JOIN gestalt_workspace_name wn
+            SELECT w.id, wn.name, w.url_name, wp.is_default, pl.url_name
+            FROM gestalt_workspace AS w
+            LEFT JOIN gestalt_workspace_name AS wn
             ON w.workspace_name_id = wn.id
-            LEFT JOIN gestalt_workspace_panel wp
-            ON wp.workspace_id = w.id
-            LEFT JOIN gestalt_persona p
-            ON w.persona_id = p.id
-            JOIN gestalt_panel pl
-            ON pl.id = wp.panel_id
-            left join (
-            select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id
-            from gestalt_workspace_panel wp
-            left join gestalt_panel pl
-            on pl.id = wp.panel_id
-            left join gestalt_workspace w
-            on w.id = wp.workspace_id
-            ) r
-            on r.workspace_id = w.id
-            AND wp.is_default = true
-            WHERE w.id IS NOT NULL 
-            AND w.persona_id = """ + persona_id + """
-            group by w.id, wn.name, w.is_default, p.id, w.url_name, pl.url_name;   
+            LEFT JOIN gestalt_workspace_panel AS wp
+            ON w.id = wp.workspace_id
+            LEFT JOIN gestalt_panel AS pl
+            ON wp.panel_id = pl.id
+            WHERE wp.is_default = 't'
+            AND w.persona_id = 1
+            ORDER BY w.id; 
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -153,7 +128,7 @@ class workspace_panels:
             FROM gestalt_panel AS p
             RIGHT JOIN gestalt_workspace_panel AS wp
             ON wp.panel_id = p.id
-            right join """ + helper.table_prefix + """workspace w
+            right join gestalt_workspace AS w
             on w.id = wp.workspace_id
             and w.url_name = '""" + workspace_url_name + """'
             WHERE p.id IS NOT NULL

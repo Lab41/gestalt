@@ -2,42 +2,42 @@ angular.module("authentication-service", [])
 
 .factory("authenticationService", ["$http", "$q", "$timeout", function ($http, $q, $timeout) {
 
-    var urlBase = api_config.authentication_service_uri;
+    var backendBaseUrl = api_config.authentication_service_uri;
     var loginKey = "gestaltUser";
     
     return {
 		
 		// data storage
-		content: "",
-        user: "",
-		
+        persona: "",
+        content: "",
+
 		// single http request stored in a promise
-		makeRequest: function(url) {
-			
-            console.log("url: " + url);
+		makeRequest: function(backendUrl) {
+			console.log("authentication-service's makeRequest");
 
 			// create deferred object
 			var deferred = $q.defer();
 			
 			// make $http request
-			$http.get(urlBase + url).then(function(response) {
+			$http.get(backendBaseUrl + backendUrl).then(function(response) {
 				deferred.resolve(response.data);
 			});
-			
+
 			// expose the promise data
 			return deferred.promise;
 			
 		},
 		
 		// unique data requests
-		getData: function(backend_url) {
-			
+		getData: function(backendUrl) {
+			console.log("authentication-service's getData");
+
             // check for existing stored data
             if (!this.content) {
 			
                 // make request
-                console.log("****** GET " + backend_url + " ******");
-                this.content = this.makeRequest(backend_url);
+                console.log("****** GET " + backendUrl + " ******");
+                this.content = this.makeRequest(backendUrl);
                 
             };
 
@@ -47,26 +47,27 @@ angular.module("authentication-service", [])
 		},
         
         // post credentials
-        postCredentials: function(user, id) {
+        postCredentials: function(personaId, personaName) {
+            console.log("authentication-service's postCredentials");
             
-            var userObj = {
-                user: user,
-                id: id
-            };
-            
+            var persona = {
+                id: personaId,
+                name: personaName
+            }
+
             // set up promise
             var localDeferred = $q.defer();
             
             $timeout(function() {
                 
                 // store in local storage
-                localStorage.setItem(loginKey, JSON.stringify(userObj));
+                localStorage.setItem(loginKey, JSON.stringify(persona));
                 
                 // put in promise for app session
-                this.user = userObj;
+                this.persona = persona;
                 
                 // resolve the promise to return immediately
-                localDeferred.resolve(userObj);
+                localDeferred.resolve(persona);
                 
             });
             
@@ -76,9 +77,10 @@ angular.module("authentication-service", [])
         
         // get credentials
         getCredentials: function() {
-            
+            console.log("authentication-service's getCredentials");
+
             // check for existing stored data
-            if (!this.user) {
+            if (!this.personaId) {
             
                 // set up promise
                 var localDeferred = $q.defer();
@@ -101,7 +103,8 @@ angular.module("authentication-service", [])
         
         // clear login
         clearCredentials: function() {
-            
+            console.log("authentication-service's clearCredentials");
+
             // remove info from storage
             localStorage.removeItem(loginKey);
             
