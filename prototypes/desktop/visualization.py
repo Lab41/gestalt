@@ -48,8 +48,11 @@ class node_groups:
             from gestalt_group_type gt 
             left join (
             select g.*,
+            gc.center_x,
+            gc.center_y,
             array_agg(row_to_json(c)) as nodes 
             from gestalt_group g 
+            left join gestalt_geography gc on gc.name = g.name
             left join (
             select gc.iso_alpha2code as id,
             gm.grouping as subgroup 
@@ -59,7 +62,9 @@ class node_groups:
             where gc.iso_alpha2code is not null
             ) c 
             on c.subgroup = g.id 
-            group by g.id
+            group by g.id,
+            gc.center_x,
+            gc.center_y
             ) r 
             on r.type = gt.id 
             group by gt.id;
