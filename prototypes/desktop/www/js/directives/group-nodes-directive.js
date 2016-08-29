@@ -64,6 +64,17 @@ angular.module("group-nodes-directive", [])
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
+				
+				canvas.append("rect")
+					.attr({
+					x: 0,
+					y: 0,
+					width: width,
+					height: height
+				})
+				.style({
+					fill: "lightgrey"
+				});
                 
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -77,7 +88,6 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
-    
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
 						
@@ -267,8 +277,6 @@ angular.module("group-nodes-directive", [])
                                         class: "group-label",
                                         dx: function(d) { return d.x },
                                         dy: function(d) { return d.y }
-                                        dx: function(d) { return xScale(d.name) },
-                                        dy: function(d) { return d.y; }
                                     })
                                     .text(function(d) { return d.name; });
 
@@ -282,8 +290,6 @@ angular.module("group-nodes-directive", [])
                                         class: "group-label",
                                         dx: function(d) { return d.x; },
                                         dy: function(d) { return d.y }
-                                        dx: function(d) { return xScale(d.name); },
-                                        dy: function(d) { return d.y; }
                                     })
                                     .text(function(d) { return d.name; });
 
@@ -295,6 +301,52 @@ angular.module("group-nodes-directive", [])
                                     .remove();
                                     
                                 });
+								
+								// GROUP LABEL
+                                /*var bkgrnd = canvas
+                                    .selectAll(".group-bkgrnd")
+                                    .data(subgroups);
+
+                                // update selection
+                                bkgrnd
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        class: "group-bkgrnd",
+                                        x: function(d, i) { return (width / subgroups.length) * i; },
+                                        y: 0,
+										width: width / subgroups.length,
+										height: height
+                                    })
+									.style({
+									fill: "red",
+									opacity: function(d, i) { return i * .1; }
+								});
+
+                                // enter selection
+                                bkgrnd
+                                    .enter()
+                                    .append("rect")
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        class: "group-bkgrnd",
+                                        x: function(d, i) { return (width / subgroups.length) * i; },
+                                        y: 0,
+									width: width / subgroups.length,
+									height: height
+                                    })
+									.style({
+									fill: "red",
+									opacity: function(d, i) { return i * .1; }
+								});
+
+                                // exit selection
+                                bkgrnd
+                                    .exit()
+                                    .transition()
+                                    .duration(transition.time)
+                                    .remove();*/
                                 
                             };
                             
@@ -329,22 +381,7 @@ angular.module("group-nodes-directive", [])
                                     .attr({
                                         transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                     });
-								
-								
-								
                                 
-                                node.each(function() {
-                                    
-                                    var group = d3.select(this);
-                                    //console.log(group.select("circle").node().getBBox());
-                                    //var x = parseFloat(group.attr("transform").split(",")[0].split("(")[1]);
-                                    //console.log(x);
-                                    //clusterXvalues.push(x);
-                                });
-                                //console.log(clusterXvalues);
-                                // get max node x value
-                                var minMax = d3.extent(clusterXvalues, function(d) { return d; });
-                                //console.log(minMax);
                             };
                             
                             // force layout done
@@ -435,12 +472,6 @@ angular.module("group-nodes-directive", [])
                                 });
                                 
                                 foci[o.name] = subgroups;
-                                
-                                // this is so we can have nice titles without having 
-                                // to hard code the connection to the cluster name later
-                                // this allows the flexibility to have conscise button names
-                                // and different display titles if desired
-                                o.display = o.name;
                                 
                             });
                             

@@ -183,8 +183,6 @@ left join (
 ) s on s.group_id = g.id
 
 group by g.id
-
-
         """)
         # obtain the data
         data = self.cursor.fetchall()
