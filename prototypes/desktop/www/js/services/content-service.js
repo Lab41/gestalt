@@ -2,7 +2,7 @@ angular.module("content-service", [])
 
 .factory("contentService", ["$http", "$q", function($http, $q) {
 	
-	var urlBase = api_config.content_service_uri;
+	var backendBaseUrl = api_config.content_service_uri;
 	
 	return {
 		
@@ -10,13 +10,13 @@ angular.module("content-service", [])
 		content: "",
 		
 		// single http request stored in a promise
-		makeRequest: function(url) {
+		makeRequest: function(backendUrl) {
 			
 			// create deferred object
 			var deferred = $q.defer();
 			
 			// make $http request
-			$http.get(urlBase + url).then(function(response) {
+			$http.get(backendBaseUrl + backendUrl).then(function(response) {
 				deferred.resolve(response.data);
 			});
 			
@@ -26,13 +26,11 @@ angular.module("content-service", [])
 		},
 		
 		// unique data requests
-		getData: function(name) {
-				
-			var apiUrl = name;
-			
+		getData: function(backendUrl) {
+							
 			// make request
-			console.log("****** GET " + apiUrl + " ******");
-			this.content = this.makeRequest(apiUrl);
+			console.log("****** GET " + backendUrl + " ******");
+			this.content = this.makeRequest(backendUrl);
 			
 			// return stored data
 			return this.content;

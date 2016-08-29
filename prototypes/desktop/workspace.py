@@ -73,20 +73,6 @@ class persona_workspaces:
             * ?
             * ?
     """
-    """
-
-            SELECT w.id, wn.name, w.url_name, wp.is_default, pl.url_name
-            FROM """ + helper.table_prefix + """workspace AS w
-            LEFT JOIN """ + helper.table_prefix + """workspace_name AS wn
-            ON w.workspace_name_id = wn.id
-            LEFT JOIN """ + helper.table_prefix + """workspace_panel AS wp
-            ON w.id = wp.workspace_id
-            LEFT JOIN """ + helper.table_prefix + """panel AS pl
-            ON wp.panel_id = pl.id
-            WHERE wp.is_default = 't'
-            AND w.persona_id = 1
-            ORDER BY w.id; 
-    """
     def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)

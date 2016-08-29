@@ -2,6 +2,8 @@ angular.module("panel-controller", [])
 
 .controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, authenticationService, $rootScope) {
     
+    console.log("in panel-controller");
+
     var workspaceParam = $stateParams.workspace;
     var panelParam = $stateParams.panel;
 	
