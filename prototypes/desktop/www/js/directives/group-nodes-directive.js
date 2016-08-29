@@ -36,8 +36,8 @@ angular.module("group-nodes-directive", [])
                 var xScale = d3.scale.ordinal();
 				
 				var force = d3.layout.force()
-					.charge(-10)
-                    .linkDistance(10)
+					.charge(-50)
+                    //.linkDistance(50)
                     .size([(width - diameter), (height - diameter)]);
                 
                 var canvas = d3.select(element[0])
@@ -45,6 +45,17 @@ angular.module("group-nodes-directive", [])
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
+				
+				canvas.append("rect")
+					.attr({
+					x: 0,
+					y: 0,
+					width: width,
+					height: height
+				})
+				.style({
+					fill: "lightgrey"
+				});
                 
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -58,9 +69,7 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
-                    
-                    var clusterXvalues = [];
-    
+                        
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
 						
@@ -138,7 +147,7 @@ angular.module("group-nodes-directive", [])
                                 
                                 // add data to x-scale layout algorithm
                                 xScale.domain(xDomain);
-                                xScale.rangePoints([0, width]);
+                                xScale.rangePoints([radius, width - radius]);
                                 
                                 // GROUP LABEL
                                 var label = canvas
@@ -151,8 +160,8 @@ angular.module("group-nodes-directive", [])
                                     .duration(transition.time)
                                     .attr({
                                         class: "group-label",
-                                        dx: function(d) { return xScale(d.name) },
-                                        dy: function(d) { return d.y; }
+                                        dx: function(d) { return d.x },
+                                        dy: function(d) { return d.y }
                                     })
                                     .text(function(d) { return d.name; });
 
@@ -164,8 +173,8 @@ angular.module("group-nodes-directive", [])
                                     .duration(transition.time)
                                     .attr({
                                         class: "group-label",
-                                        dx: function(d) { return xScale(d.name); },
-                                        dy: function(d) { return d.y; }
+                                        dx: function(d) { return d.x; },
+                                        dy: function(d) { return d.y }
                                     })
                                     .text(function(d) { return d.name; });
 
@@ -175,6 +184,52 @@ angular.module("group-nodes-directive", [])
                                     .transition()
                                     .duration(transition.time)
                                     .remove();
+								
+								// GROUP LABEL
+                                /*var bkgrnd = canvas
+                                    .selectAll(".group-bkgrnd")
+                                    .data(subgroups);
+
+                                // update selection
+                                bkgrnd
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        class: "group-bkgrnd",
+                                        x: function(d, i) { return (width / subgroups.length) * i; },
+                                        y: 0,
+										width: width / subgroups.length,
+										height: height
+                                    })
+									.style({
+									fill: "red",
+									opacity: function(d, i) { return i * .1; }
+								});
+
+                                // enter selection
+                                bkgrnd
+                                    .enter()
+                                    .append("rect")
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        class: "group-bkgrnd",
+                                        x: function(d, i) { return (width / subgroups.length) * i; },
+                                        y: 0,
+									width: width / subgroups.length,
+									height: height
+                                    })
+									.style({
+									fill: "red",
+									opacity: function(d, i) { return i * .1; }
+								});
+
+                                // exit selection
+                                bkgrnd
+                                    .exit()
+                                    .transition()
+                                    .duration(transition.time)
+                                    .remove();*/
                                 
                             };
                             
@@ -182,15 +237,15 @@ angular.module("group-nodes-directive", [])
                             function tick(e) {
                                 
                                 // force direction and shape of clusters
-                                var k = 0.1 * e.alpha;
+                                var k = e.alpha;
 
                                 // set new node location
                                 nodes.forEach(function(o, i) {
-                                    
+									
                                     // get focus x,y values
                                     o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
                                     o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
-                                                                    
+                                                                 
                                 });
                                 
                                 // push nodes toward focus
@@ -198,19 +253,7 @@ angular.module("group-nodes-directive", [])
                                     .attr({
                                         transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                     });
-                                
-                                node.each(function() {
-                                    
-                                    var group = d3.select(this);
-                                    //console.log(group.select("circle").node().getBBox());
-                                    //var x = parseFloat(group.attr("transform").split(",")[0].split("(")[1]);
-                                    //console.log(x);
-                                    //clusterXvalues.push(x);
-                                });
-                                //console.log(clusterXvalues);
-                                // get max node x value
-                                var minMax = d3.extent(clusterXvalues, function(d) { return d; });
-                                //console.log(minMax);
+
                             };
                             
                             // force layout done
@@ -247,10 +290,11 @@ angular.module("group-nodes-directive", [])
                                 
                                 // track cursor for grided layouts
                                 var cellWidth = width / o.subgroups.length;
-                                var cursorX = cellWidth / 2;
+								var halfCell = cellWidth / 2;
+                                var cursorX = halfCell;
                                 
                                 // add subgroups to obj
-                                o.subgroups.map(function(s) {
+                                o.subgroups.map(function(s) {//console.log(s)
                                     
                                     // check for nulls and do math to figure out new coords
                                     if (s.center_x == null && s.center_y == null) {
@@ -259,16 +303,18 @@ angular.module("group-nodes-directive", [])
                                         var coords = {};
                                         
                                         coords["x"] = cursorX;
-                                        coords["y"] = height * 0.25;
+                                        coords["y"] = height / 2;
                                         
                                         cursorX += cellWidth;
                                         
+									// default group
                                     } else {
                                     
                                         // nulls mean non-geographic groups
                                         var coords = {};
                                         coords["x"] = s.center_x;
                                         coords["y"] = s.center_y;
+                                        
                                         
                                     };
                                     
@@ -291,12 +337,6 @@ angular.module("group-nodes-directive", [])
                                 });
                                 
                                 foci[o.name] = subgroups;
-                                
-                                // this is so we can have nice titles without having 
-                                // to hard code the connection to the cluster name later
-                                // this allows the flexibility to have conscise button names
-                                // and different display titles if desired
-                                o.display = o.name;
                                 
                             });
                             
