@@ -34,7 +34,7 @@ angular.module("tile-grid-map-directive", [])
 				// use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
                 
-                function draw(data, map, interactive, styleUrl) {
+                function draw(data, map, interactive, styleUrl) {console.log(data);
 					
 					// style url
 					var style = mapbox_config.style[styleUrl];

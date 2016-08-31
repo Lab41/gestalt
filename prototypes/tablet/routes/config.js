@@ -149,7 +149,7 @@ config.visualization.nodeGroups = {
     route: visualizationBase + "/countries/groups",
     
     query: [
-        "select gt.*,array_agg(row_to_json(r)) as subgroups from " + tablePrefix + "group_type gt left join (select g.*,array_agg(row_to_json(c)) as nodes from " + tablePrefix + "group g left join (select gc.iso_alpha2code as id,gm.grouping as subgroup from " + tablePrefix + "group_member gm left join " + tablePrefix + "geography gc on gc.id = gm.country_id where gc.iso_alpha2code is not null) c on c.subgroup = g.id group by g.id) r on r.type = gt.id group by gt.id;"
+        "select g.*,array_agg(row_to_json(s)) as subgroups from " + tablePrefix + "group g left join (select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id, case when gt.id = 1 then gn.name else sgn.name end as name,case when gt.id = 1 then gt.id || '_' || gn.id else gt.id || '_' || sgn.id end as id,geo.hexagon_center_x as center_x,geo.hexagon_center_y as center_y,array_agg(row_to_json(n)) as nodes from " + tablePrefix + "subgroup sg left join " + tablePrefix + "geography_name gn on gn.id = sg.name_id left join " + tablePrefix + "subgroup_name sgn on sgn.id = sg.name_id left join " + tablePrefix + "group g on g.id = sg.group_id left join " + tablePrefix + "group_type gt on gt.id = g.type_id left join " + tablePrefix + "geography geo on geo.name_id = sg.name_id and gt.id = 1 left join (select gn.name,gcy.id, gcy.iso2code as iso from " + tablePrefix + "country gcy left join " + tablePrefix + "geography_name gn on gn.id = gcy.name_id) n on n.id = sg.country_id group by sg.name_id,sg.group_id,gn.name,sgn.name,geo.hexagon_center_x,geo.hexagon_center_y,gt.id,g.id,gn.id,sgn.id) s on s.group_id = g.id group by g.id;"
     ]
     
 };
@@ -160,10 +160,7 @@ config.visualization.geojson = {
     route: visualizationBase + "/geojson/:grid",
     
     query: [
-        "select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t," + tablePrefix + "geography gc left join (select id,name,iso_alpha2code as iso,grid_id from " + tablePrefix + "geography) f on f.id = gc.id left join (with t as (select 'Polygon'::text) select t.text as type,gcc.",
-        "_polygon as coordinates from t," + tablePrefix + "geography gcc) c on c.coordinates = gc.",
-        "_polygon where gc.",
-        "_polygon is not null and gc.grid_id is not null) r group by type;"
+        "select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t," + tablePrefix + "geography geo left join (select geo.id,gn.name,cy.iso2code as iso from " + tablePrefix + "geography geo left join " + tablePrefix + "geography_name gn on gn.id = geo.name_id left join " + tablePrefix + "country cy on cy.id = geo.name_id) f on f.id = geo.id left join (with t as (select 'Polygon'::text) select t.text as type,geo.hexagon_polygon as coordinates from t," + tablePrefix + "geography geo) c on c.coordinates = geo.hexagon_polygon where geo.hexagon_polygon is not null ) r group by type;"
     ]
     
 };
@@ -174,7 +171,7 @@ config.visualization.groupedCountries = {
     route: visualizationBase + "/:table",
     
     query: [
-        "select distinct on (gcdis.origin) gcdis.origin from " + tablePrefix + "cdis gcdis left join " + tablePrefix + "geography gc on gc.iso_alpha2code = gcdis.origin where origin != '__' and gc.name is not null;"
+        "select distinct on (gn.name) gn.name,cy.iso2code as id from " + tablePrefix + "country cy left join " + tablePrefix + "geography_name gn on gn.id = cy.name_id left join " + tablePrefix + "geography geo on geo.name_id = cy.name_id where geo.hexagon_center_x is not null;"
     ]
     
 };

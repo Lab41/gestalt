@@ -8,6 +8,7 @@ angular.module("viz-controller", [])
 	$scope.nodes;
 	$scope.nodeGroups;
 	$scope.geojson;
+    $scope.healthMetrics;
     
     // country nodes
 	contentService.getData("visualization/cdis/").then(function(data) {
@@ -30,6 +31,14 @@ angular.module("viz-controller", [])
 		
 		// set scope
 		$scope.geojson = data[0];
+		
+	});
+    
+    // network health
+    contentService.getData("visualization/network/health/").then(function(data) {
+		
+		// set scope
+		$scope.healthMetrics = data;
 		
 	});
     

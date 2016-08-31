@@ -19,6 +19,13 @@
 /***** !group nodes ******/
 /*************************/
 
+/* node */
+group-nodes .node circle {
+    
+    stroke-width: 0.5px;
+    
+}
+
 /* node label */
 group-nodes .node text {
     
@@ -32,7 +39,7 @@ group-nodes .node text {
 group-nodes .group-label {
     
     fill: currentColor;
-    font-size: 0.5em;
+    font-size: 0.35em;
     text-anchor: middle;
     
 }
