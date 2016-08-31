@@ -1,115 +1,54 @@
-angular.module("authentication-service", [])
+// wrap in Immediately Invoked Function Expression to avoid global scope 
+(function() {
+    'use strict';
 
-.factory("authenticationService", ["$http", "$q", "$timeout", function ($http, $q, $timeout) {
+    // set authentication-service and register its service
+    angular
+        .module("authentication-service", [])
+        .factory("authenticationService", authenticationService);
 
-    var backendBaseUrl = api_config.authentication_service_uri;
-    var loginKey = "gestaltUser";
-    
-    return {
-		
-		// data storage
-        persona: "",
-        content: "",
+    // add additional services to be used within the service
+    authenticationService.$inject = ["$http", "$log", "$rootScope", "$window"];
 
-		// single http request stored in a promise
-		makeRequest: function(backendUrl) {
-			console.log("authentication-service's makeRequest");
+    // define the service
+    function authenticationService ($http, $log, $rootScope, $window) {
+        // for backend
+        var backendBaseUrl = api_config.authentication_service_uri; 
 
-			// create deferred object
-			var deferred = $q.defer();
-			
-			// make $http request
-			$http.get(backendBaseUrl + backendUrl).then(function(response) {
-				deferred.resolve(response.data);
-			});
-
-			// expose the promise data
-			return deferred.promise;
-			
-		},
-		
-		// unique data requests
-		getData: function(backendUrl) {
-			console.log("authentication-service's getData");
-
-            // check for existing stored data
-            if (!this.content) {
-			
-                // make request
-                console.log("****** GET " + backendUrl + " ******");
-                this.content = this.makeRequest(backendUrl);
-                
-            };
-
-			// return stored data
-			return this.content;
-			
-		},
-        
-        // post credentials
-        postCredentials: function(personaId, personaName) {
-            console.log("authentication-service's postCredentials");
-            
-            var persona = {
-                id: personaId,
-                name: personaName
+        // for local storage
+        var currentPersonaId = "currentGestaltPersona";
+        // ensure that view is the same when application is opened in multiple tabs
+        angular.element($window).on("storage", function(event) {
+            if(event.key === currentPersonaId) {
+                $rootScope.$apply();
             }
-
-            // set up promise
-            var localDeferred = $q.defer();
-            
-            $timeout(function() {
-                
-                // store in local storage
-                localStorage.setItem(loginKey, JSON.stringify(persona));
-                
-                // put in promise for app session
-                this.persona = persona;
-                
-                // resolve the promise to return immediately
-                localDeferred.resolve(persona);
-                
-            });
-            
-            return localDeferred.promise;
-
-        },
+        });                            
         
-        // get credentials
-        getCredentials: function() {
-            console.log("authentication-service's getCredentials");
-
-            // check for existing stored data
-            if (!this.personaId) {
-            
-                // set up promise
-                var localDeferred = $q.defer();
-            
-                $timeout(function() {
-
-                    // retrieve from local storage
-                    var data = JSON.parse(localStorage.getItem(loginKey));
-
-                    // resolve the promise
-                    localDeferred.resolve(data);
-
-                });
-
-                return localDeferred.promise;
-                
-            };
+        // return an authenticationService instance
+        return {
                         
-        },
-        
-        // clear login
-        clearCredentials: function() {
-            console.log("authentication-service's clearCredentials");
-
-            // remove info from storage
-            localStorage.removeItem(loginKey);
+            callBackend: function(backendUrl = "") {
+                var backendAbsoluteUrl = backendBaseUrl + backendUrl;
+                $log.log("****** GET " + backendAbsoluteUrl + " ******");
+                return $http.get(backendAbsoluteUrl)
+                            .then(function(backendResponse) { return backendResponse.data; });
+            },
             
-        }
-		
-	};
+            setPersonaId: function(personaId) {
+                $window.localStorage && $window.localStorage.setItem(currentPersonaId, personaId);
+            },
 
-}]);
+            getPersonaId: function() {
+                return $window.localStorage && $window.localStorage.getItem(currentPersonaId);
+            },
+
+            unsetPersonaId: function() {
+                $window.localStorage && $window.localStorage.removeItem(currentPersonaId);
+            },            
+            
+        };
+
+    }
+
+})();
+

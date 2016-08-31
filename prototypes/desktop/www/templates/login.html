@@ -9,8 +9,8 @@
         <section>
             
             <!-- PERSONA -->
-            <div ng-repeat="persona in content"
-                 ng-click="login(persona.id, persona.name);">
+            <div ng-repeat="persona in listOfPersonas"
+                 ng-click="login(persona.id);">
                 <p>{{ persona.name }}</p>
                 <p>{{ persona.description }}</p>
             </div>

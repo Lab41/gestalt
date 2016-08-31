@@ -70,8 +70,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     .state("login", {
         url: "/login?:t",
         templateUrl: "templates/login.html",
-        controller: "loginCtrl",
-        controllerAs: 'ctrl',
+        controller: "loginController",
 		params: {
 			t: theme_config.ui.start
 		}
