@@ -20,13 +20,6 @@
 /*************************/
 
 /* node */
-group-nodes .node {
-	
-	cursor: pointer;
-	pointer-events: all;
-	
-}
-
 group-nodes .node circle {
     
     stroke-width: 0.5px;

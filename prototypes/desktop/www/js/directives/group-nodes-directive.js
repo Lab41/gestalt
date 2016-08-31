@@ -24,8 +24,7 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 6;
-				var maxRadius = height * 0.5;
+                var radius = 3;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
@@ -42,12 +41,17 @@ angular.module("group-nodes-directive", [])
                 
                 // circle scale
                 var cScale = d3.scale.linear();
+                    geo: -8
+                };
                 var transition = {
                     time: 500
                 };
                 
                 // x-scale
                 var xScale = d3.scale.ordinal();
+                
+                // circle scale
+                var cScale = d3.scale.linear();
 				
                 // set up force layout algorithm
 				var force = d3.layout.force()
@@ -64,17 +68,6 @@ angular.module("group-nodes-directive", [])
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
-				
-				canvas.append("rect")
-					.attr({
-					x: 0,
-					y: 0,
-					width: width,
-					height: height
-				})
-				.style({
-					fill: "lightgrey"
-				});
                 
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -240,7 +233,6 @@ angular.module("group-nodes-directive", [])
                                         // add foci coords to object
                                         subgroups.map(function(d) {
                                             d.x = foci[group][d.id].x;
-                                            d.y = foci[group][d.id].y * 0.2;
                                             d.y = foci[group][d.id].y;
                                         });
                                         
@@ -262,7 +254,6 @@ angular.module("group-nodes-directive", [])
                                     subgroups = [];
                                     
                                 };
-                                xScale.rangePoints([0, width]);
                                 
                                 // GROUP LABEL
                                 var label = canvas
@@ -557,7 +548,6 @@ angular.module("group-nodes-directive", [])
                                         .append("circle")
                                         .attr({
 											r: radius
-                                            //r: function(d) { return cScale(calcRadius(d.count)); }
                                         });
                                     
                                     // label
