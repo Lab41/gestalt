@@ -8,7 +8,7 @@ import tag
 import workspace
 import visualization
 
-urls = (
+baseUrls = (
 
     "/api/persona/", persona.app,
     "/api/workspace/", workspace.app,
@@ -46,5 +46,5 @@ class index:
             web.notfound()
             
 if __name__ == "__main__":
-    app = appConfig(urls, globals())
+    app = appConfig(baseUrls, globals())
     app.run()
