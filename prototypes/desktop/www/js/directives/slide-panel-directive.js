@@ -15,7 +15,7 @@ angular.module("slide-panel-directive", [])
             $scope.logout = function() {
 
                 // clear credentials
-                authenticationService.clearCredentials();
+                authenticationService.unsetPersonaId();
                 
                 // clear stored layout values
                 layoutService.clearValues(["workspaces", "workspace", "panels", "panel"]);

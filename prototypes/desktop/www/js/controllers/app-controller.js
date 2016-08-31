@@ -2,20 +2,10 @@ angular.module("app-controller", [])
 
 .controller("appCtrl", ["$scope", "$stateParams", "$state", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, layoutService, authenticationService, $rootScope) {
     
-    console.log("now i am in app controller");
-
     var workspaceParam = $stateParams.workspace;
     var panelID = $stateParams.panel;
     var theme = $stateParams.t;
     
-    console.log("workspaceParam = " + workspaceParam);
-    console.log("panelId = " + panelID);
-    console.log("theme = " + theme);
-
-    for (var i in stateParams) {
-        console.log("stateParam " + i + " - " + stateParams[i]);
-    }
-
     // data objects
     $scope.panels;
     $scope.panel;
@@ -26,17 +16,17 @@ angular.module("app-controller", [])
     $scope.leftVisible = false;
     $scope.rightVisible = false;
     
-    function setScope(user, workspaces, workspace, panels) {
+    function setScope(personaId, workspaces, workspace, panels) {
         
         // set scope
-        $scope.user = user;
+        $scope.personaId = personaId;
         $scope.workspaces = workspaces;
         $scope.workspace = workspace;
         $scope.panels = panels;
         
         // set menu content
         $scope.menu = {
-            user: user,
+            personaId: personaId,
             theme: $scope.$parent.theme,
             workspaces: workspaces,
             workspaceParam: workspaceParam
@@ -45,45 +35,37 @@ angular.module("app-controller", [])
     };
     
     // get credentials from local storage
-    authenticationService.getCredentials().then(function(userData) {
+    var personaId = authenticationService.getPersonaId();
         
-        var user = userData;
-        var endpoint = "persona/" + user.id + "/";
-        var objs = { multi: "workspaces", single: "workspace" };
-        var check = { key: "url_name", value: workspaceParam };
+    var endpoint = "persona/" + personaId + "/";
+    var objs = { multi: "workspaces", single: "workspace" };
+    var check = { key: "url_name", value: workspaceParam };
 
-        // get workspaces
-        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
+    // get workspaces
+    layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
         
-            var workspaces = allWorkspaces;
+        var workspaces = allWorkspaces;
+        
+        // get single workspace
+        layoutService.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
             
-            for (var i in workspaces) {
-                for (var j in workspaces[i]) {
-                    console.log("in app, " + i + ", " + j + " - " + workspaces[i][j]);
-                }
-            }
-
-            // get single workspace
-            layoutService.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
+            var workspace = singleWorkspace;
+            var objs = { multi: "panels", single: "panel" };
+            
+            // get single workspace panels
+            layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
                 
-                var workspace = singleWorkspace;
-                var objs = { multi: "panels", single: "panel" };
+                var panels = workspacePanels;
                 
-                // get single workspace panels
-                layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
-                    
-                    var panels = workspacePanels;
-                    
-                    // set scope
-                    setScope(user, workspaces, workspace, panels);
-                    
-                });
+                // set scope
+                setScope(personaId, workspaces, workspace, panels);
                 
             });
-
+            
         });
 
     });
+
     
     function _close() {
         $scope.$apply(function() {
@@ -108,5 +90,5 @@ angular.module("app-controller", [])
 
     $rootScope.$on("documentClicked", _close);
     $rootScope.$on("escapedPressed", _close);
-	
+    
 }]);
