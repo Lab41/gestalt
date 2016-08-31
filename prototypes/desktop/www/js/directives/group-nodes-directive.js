@@ -1,6 +1,6 @@
 angular.module("group-nodes-directive", [])
 
-.directive("groupNodes", ["d3Service", function(d3Service) {
+.directive("groupNodes", ["d3Service", "contentService", function(d3Service, contentService) {
 	return {
 		restrict: "E",
 		scope: {
@@ -24,38 +24,36 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 4;
+                var radius = 3;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
+                var charge = {
+                    default: -50,
+                    geo: -8
+                };
                 var transition = {
                     time: 500
                 };
                 
                 // x-scale
                 var xScale = d3.scale.ordinal();
+                
+                // circle scale
+                var cScale = d3.scale.linear();
 				
+                // set up force layout algorithm
 				var force = d3.layout.force()
-					.charge(-50)
+					.charge(charge.default)
                     //.linkDistance(50)
                     .size([(width - diameter), (height - diameter)]);
                 
+                // set up svg canvas
                 var canvas = d3.select(element[0])
                     .append("svg")
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
-				
-				canvas.append("rect")
-					.attr({
-					x: 0,
-					y: 0,
-					width: width,
-					height: height
-				})
-				.style({
-					fill: "lightgrey"
-				});
                 
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -78,11 +76,38 @@ angular.module("group-nodes-directive", [])
                             ///////////////////////////////////////////////
                             /////////////// d3 RENDER START ///////////////
                             ///////////////////////////////////////////////
+                                                   
+                            // map data to c-scale
+                            cScale.domain(d3.extent(data, function(d) { return d.count; }));
+                            cScale.range([radius, height * 0.5]);
                             
                             // update nodes based on cluster groups
                             function clusterNodes() {
                                 
+                                // network health
+                                contentService.getData("visualization/network/health/").then(function(data) {
+
+                                    // set scope
+                                    scope.$parent.healthMetrics = data;
+
+                                });
+                                
                                 var groupType = this.innerHTML;
+                                
+                                // check group type
+                                if (groupType == "country") {
+                                    
+                                    // reset force charge so layout is more accurate
+                                    force.charge(charge.geo);
+                                    
+                                } else {
+                                    
+                                    // reset force to default
+                                    force.charge(charge.default);
+                                    
+                                };
+                                
+                                force.start();
                                     
                                 // non-region specific grouping
                                 d3.range(nodes.length).map(function(i) {
@@ -90,7 +115,7 @@ angular.module("group-nodes-directive", [])
                                     // current node
                                     var curr_node = nodes[i];
                                     var group = groupType;
-                                    var subgroup = foci[groupType][curr_node.origin];
+                                    var subgroup = foci[groupType][curr_node.id];
 
                                     // move into cluster group
                                     curr_node.cluster = group;
@@ -135,7 +160,7 @@ angular.module("group-nodes-directive", [])
                                         // add foci coords to object
                                         subgroups.map(function(d) {
                                             d.x = foci[group][d.id].x;
-                                            d.y = foci[group][d.id].y;
+                                            d.y = foci[group][d.id].y * 0.2;
                                         });
                                         
                                     };
@@ -148,6 +173,14 @@ angular.module("group-nodes-directive", [])
                                 // add data to x-scale layout algorithm
                                 xScale.domain(xDomain);
                                 xScale.rangePoints([radius, width - radius]);
+                                
+                                // check for group type
+                                if (currentGroup == "country") {
+                                    
+                                    // hide labels so viz is legible
+                                    subgroups = [];
+                                    
+                                };
                                 
                                 // GROUP LABEL
                                 var label = canvas
@@ -184,52 +217,6 @@ angular.module("group-nodes-directive", [])
                                     .transition()
                                     .duration(transition.time)
                                     .remove();
-								
-								// GROUP LABEL
-                                /*var bkgrnd = canvas
-                                    .selectAll(".group-bkgrnd")
-                                    .data(subgroups);
-
-                                // update selection
-                                bkgrnd
-                                    .transition()
-                                    .duration(transition.time)
-                                    .attr({
-                                        class: "group-bkgrnd",
-                                        x: function(d, i) { return (width / subgroups.length) * i; },
-                                        y: 0,
-										width: width / subgroups.length,
-										height: height
-                                    })
-									.style({
-									fill: "red",
-									opacity: function(d, i) { return i * .1; }
-								});
-
-                                // enter selection
-                                bkgrnd
-                                    .enter()
-                                    .append("rect")
-                                    .transition()
-                                    .duration(transition.time)
-                                    .attr({
-                                        class: "group-bkgrnd",
-                                        x: function(d, i) { return (width / subgroups.length) * i; },
-                                        y: 0,
-									width: width / subgroups.length,
-									height: height
-                                    })
-									.style({
-									fill: "red",
-									opacity: function(d, i) { return i * .1; }
-								});
-
-                                // exit selection
-                                bkgrnd
-                                    .exit()
-                                    .transition()
-                                    .duration(transition.time)
-                                    .remove();*/
                                 
                             };
                             
@@ -259,6 +246,13 @@ angular.module("group-nodes-directive", [])
                             // force layout done
                             function endForce(e) {
                                 console.log("do something when layout complete");                                
+                            };
+                                                     
+                            // calc circle radius when area is mapped to count
+                            function calcRadius(value) {
+                                
+                                return Math.sqrt(value / Math.PI);
+                                
                             };
                             
                             // make foci objects for each group
@@ -328,7 +322,7 @@ angular.module("group-nodes-directive", [])
                                         // TODO see if endponit can expose empty array vs. null array
                                         if (n !== null) {
 
-                                            subgroups[n.id] = n.subgroup;
+                                            subgroups[n.iso] = s.id;
                                             
                                         };
                                         
@@ -383,7 +377,7 @@ angular.module("group-nodes-directive", [])
                                     currentGroup
                                         .append("circle")
                                         .attr({
-                                            r: radius
+                                            r: function(d) { return cScale(calcRadius(d.count)); }
                                         });
                                     
                                     // label
@@ -393,7 +387,7 @@ angular.module("group-nodes-directive", [])
                                             dx: 0,
                                             dy: "0.35em"
                                         })
-                                        .text(function(d) { return d.origin });
+                                        .text(function(d) { return d.id });
                                 });
                                 
                         };
