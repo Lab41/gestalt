@@ -25,12 +25,13 @@ angular.module("group-nodes-directive", [])
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
                 var radius = 3;
+				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
                 var charge = {
                     default: -50,
-                    geo: -8
+                    geo: -20
                 };
                 var transition = {
                     time: 500
@@ -67,6 +68,7 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
+					var links = [{source: 0, target: 0}];
                         
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
@@ -79,7 +81,64 @@ angular.module("group-nodes-directive", [])
                                                    
                             // map data to c-scale
                             cScale.domain(d3.extent(data, function(d) { return d.count; }));
-                            cScale.range([radius, height * 0.5]);
+                            cScale.range([radius, maxRadius]);
+							
+							// draw flows between nodes
+							function drawFlows() {
+								
+								// network health
+                                contentService.getData("visualization/flows/unique_targets/46/").then(function(data) {
+
+                                    // map raw links to d3 index-specific objects for layout algorithm
+									// 3rd param is the connector key in the raw data that connects nodes
+									function mapLinks(links, nodes, key) {
+
+										var data = [];
+
+										links.forEach(function(l) {
+
+											// set up the source node
+											var source = nodes.filter(function(o, i) {
+
+												// add index to obj
+												// note: d3 replaces any "index" key
+												o.i = i;
+
+												return o[key] === l.source;
+
+											})[0].i;
+
+											// set up target node
+											var target = nodes.filter(function(o, i) {
+
+												// add index to obj
+												// note: d3 replaces any "index" key
+												o.i = i;
+
+												return o[key] === l.target;
+
+											})[0].i;
+
+											// push to new array
+											data.push({
+												source: source,
+												target: target
+											});
+
+										});
+
+										return data;
+
+									};
+									console.log(data);
+									//links = mapLinks(data, nodes, "id"); // remap links b/c d3 wants use an index to connect nodes
+									links = data;
+									
+									force.start();
+
+                                });
+								
+							};
                             
                             // update nodes based on cluster groups
                             function clusterNodes() {
@@ -234,6 +293,14 @@ angular.module("group-nodes-directive", [])
                                     o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
                                                                  
                                 });
+								
+								link
+									.attr({
+										x1: function(d) { return d.source.x; },
+										y1: function(d) { return d.source.y; },
+										x2: function(d) { return d.target.x; },
+										y2: function(d) { return d.target.y; }
+									});
                                 
                                 // push nodes toward focus
                                 node
@@ -352,11 +419,41 @@ angular.module("group-nodes-directive", [])
                             // bind data to force layout
                             force
                                 .nodes(nodes)
-                                //.links()
+								.links(links)
                                 .on("start", startForce)
                                 .on("tick", tick)
                                 .on("end", endForce)
                                 .start();
+							
+							// LINK
+							var link = canvas
+								.selectAll(".link")
+								.data(links);
+							
+							// update selection
+							link
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "link"
+								});
+							
+							// enter selection
+							link
+								.enter()
+								.append("line")
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "link"
+								});
+							
+							// exit selection
+							link
+								.exit()
+								.transition()
+								.duration(transition.time)
+								.remove();
                             
                             // NODE
                             var node = canvas
@@ -388,7 +485,8 @@ angular.module("group-nodes-directive", [])
                                             dy: "0.35em"
                                         })
                                         .text(function(d) { return d.id });
-                                });
+                                })
+								.on("click", drawFlows);
                                 
                         };
 

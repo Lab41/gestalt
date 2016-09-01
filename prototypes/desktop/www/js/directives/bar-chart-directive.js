@@ -91,7 +91,7 @@ angular.module("bar-chart-directive", [])
                                 // add data to y-scale layout algorithm
                                 yScale.domain(data.map(function(d) { return d.name; }));
                                 yScale.range([height, 0])
-                                yScale.rangeRoundBands([height, 0], gutter);
+                                yScale.rangeRoundBands([height, 0], 0.5);
                                 
                             } else {
                                 
@@ -107,11 +107,14 @@ angular.module("bar-chart-directive", [])
                             };
                             
                             // STACK
-                            canvas
+                            var barSet = canvas
                                 .selectAll("g")
-                                .data(data)
-                                .enter()
-                                .append("g")
+                                .data(data);
+							
+							// update selection
+							barSet
+								.transition()
+								.duration(transition.time)
                             
                                 // each group
                                 .each(function(d) {
@@ -189,6 +192,97 @@ angular.module("bar-chart-directive", [])
                                         .remove();
 
                                 });
+							
+							// enter selection
+							barSet
+								.enter()
+								.append("g")
+								.transition()
+								.duration(transition.time)
+								
+								// each group
+								.each(function(d) {
+                                
+                                    var group = d3.select(this);
+                                
+                                    // LABEL
+
+                                    // set selection
+                                    var label = group
+                                        .selectAll("text")
+                                        .data([d]);
+
+                                    // update selection
+                                    label
+                                        .transition()
+                                        .duration(transition.time)
+                                        .text(function(d) { return d.name });
+
+                                    // enter selection
+                                    label
+                                        .enter()
+                                        .append("text")
+                                        .attr({
+                                            x: horzOrientation ? gutter * 100 : xScale(d.name),
+                                            y: horzOrientation ? yScale(d.name) + (yScale.rangeBand() / 2) : height,
+                                            dx: horzOrientation ? 0 : "2.5em",
+                                            dy: horzOrientation ? "0.3em" : 0
+                                        })
+                                        .text(d.name);
+
+                                    // exit selection
+                                    label
+                                        .exit()
+                                        .transition()
+                                        .duration(transition.time)
+                                        .remove();
+                                
+                                    // BAR
+                                
+                                    // set selection
+                                    var bar = group
+                                        .selectAll("rect")
+                                        .data([d]);
+                                
+                                    // update selection
+                                    bar
+                                        .transition()
+                                        .duration(transition.time)
+                                        .attr({
+                                            x: horzOrientation ? xScaleMin : xScale(d.name),
+                                            y: horzOrientation ? yScale(d.name) : yScale(d[valueKey]),
+                                            width: horzOrientation ? xScale(d[valueKey]) : xScale.rangeBand(),
+                                            height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(d[valueKey])
+                                        });
+                                
+                                    // enter selection
+                                    bar
+                                        .enter()
+                                        .append("rect")
+                                        .transition()
+                                        .duration(transition.time)
+                                        .attr({
+                                            x: horzOrientation ? xScaleMin : xScale(d.name),
+                                            y: horzOrientation ? yScale(d.name) : yScale(d[valueKey]),
+                                            width: horzOrientation ? xScale(d[valueKey]) : xScale.rangeBand(),
+                                            height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(d[valueKey])
+                                        });
+                                
+                                    // exit selection
+                                    bar
+                                        .exit()
+                                        .transition()
+                                        .duration(transition.time)
+                                        .remove();
+
+                                });
+							
+							// exit selection
+							barSet
+								.exit()
+								.transition()
+								.duration(transition.time)
+								.remove();
 							
                         };
                         
