@@ -20,10 +20,25 @@
 /*************************/
 
 /* node */
+group-nodes .node {
+	
+	cursor: pointer;
+	pointer-events: all;
+	
+}
+
 group-nodes .node circle {
     
     stroke-width: 0.5px;
     
+}
+
+/* link */
+group-nodes .link {
+	
+	stroke: currentColor;
+	stroke-width: 2px;
+	
 }
 
 /* node label */
