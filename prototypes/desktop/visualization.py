@@ -22,22 +22,41 @@ urls = (
 class flows:
     def GET(self, source_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
+        #connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        #self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
-        self.cursor.execute("""
-        select cdis.source_id,
-        count(distinct cdis.target_id) as count
-        from gestalt_cdis cdis
-        where source_id = """ + source_id + """
-        group by cdis.source_id
-        order by cdis.source_id asc;
-        """)
+        #self.cursor.execute("""
+        #select gn.name as source_name,
+		#cy.iso2code as source,
+		#gnt.name as target_name,
+		#cyt.iso2code as target,
+		#count(cdis.target_id) as value
+		#from gestalt_cdis cdis
+		#left join gestalt_geography_name gn on gn.id = cdis.source_id
+		#left join gestalt_geography_name gnt on gnt.id = cdis.target_id
+		#left join gestalt_country cy on cy.id = cdis.source_id
+		#left join gestalt_country cyt on cyt.id = cdis.target_id
+		#where source_id = """ + source_id + """
+		#group by gn.name,
+		#cy.iso2code,
+		#gnt.name,
+		#cyt.iso2code
+        #""")
         # obtain the data
-        data = self.cursor.fetchall()
+        #data = self.cursor.fetchall()
+		data = []
+		
+		for i in range(50):
+			
+			obj = {}
+			obj["source"] = randint(0,166)
+			obj["target"] = randint(0,166)
+			
+			data.append(obj)
+			
         # convert data to a string
-        return json.dumps(data)
+		return json.dumps(data)
     
 class network_health:
     def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
@@ -82,16 +101,16 @@ class nodes:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-        select distinct on (gn.name) gn.name,
-        cy.iso2code as id,
-        count(distinct cdis.target_id) as count
-        from gestalt_country cy 
-        left join gestalt_geography_name gn on gn.id = cy.name_id
-        left join gestalt_geography geo on geo.name_id = cy.name_id
-        left join gestalt_cdis cdis on source_id = cy.id
-        where geo.hexagon_center_x is not null
-        group by gn.name,
-        cy.iso2code
+		select distinct on (gn.name) gn.name,
+		cy.iso2code as id,
+		count(distinct cdis.target_id) as count
+		from gestalt_country cy 
+		left join gestalt_geography_name gn on gn.id = cy.name_id
+		left join gestalt_geography geo on geo.name_id = cy.name_id
+		left join gestalt_cdis cdis on source_id = cy.id
+		where geo.hexagon_center_x is not null
+		group by gn.name,
+		cy.iso2code
         """)
         # obtain the data
         data = self.cursor.fetchall()

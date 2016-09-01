@@ -91,7 +91,7 @@ angular.module("bar-chart-directive", [])
                                 // add data to y-scale layout algorithm
                                 yScale.domain(data.map(function(d) { return d.name; }));
                                 yScale.range([height, 0])
-                                yScale.rangeRoundBands([height, 0], gutter);
+                                yScale.rangeRoundBands([height, 0], 0.5);
                                 
                             } else {
                                 

@@ -25,6 +25,7 @@ angular.module("group-nodes-directive", [])
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
                 var radius = 3;
+				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
@@ -363,9 +364,6 @@ angular.module("group-nodes-directive", [])
 										x2: function(d) { return d.target.x; },
 										y2: function(d) { return d.target.y; }
 									});
-								                                
-                                                                    
-                                });
                                 
                                 // push nodes toward focus
                                 node
@@ -493,7 +491,7 @@ angular.module("group-nodes-directive", [])
 							// LINK
 							var link = canvas
 								.selectAll(".link")
-								.data(force.links());
+								.data(links);
 							
 							// update selection
 							link
@@ -559,10 +557,6 @@ angular.module("group-nodes-directive", [])
                                         })
                                         .text(function(d) { return d.id });
                                 })
-								.call(force.drag)
-								.on("click", drawFlows);
-                                        .text(function(d) { return d.origin });
-                                });
                                 
                         };
 
