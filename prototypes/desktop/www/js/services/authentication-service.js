@@ -14,6 +14,8 @@ angular.module("authentication-service", [])
 		// single http request stored in a promise
 		makeRequest: function(url) {
 			
+            console.log("url: " + url);
+
 			// create deferred object
 			var deferred = $q.defer();
 			
@@ -28,19 +30,17 @@ angular.module("authentication-service", [])
 		},
 		
 		// unique data requests
-		getData: function(path) {
-				
-			var apiUrl = path;
-            
+		getData: function(backend_url) {
+			
             // check for existing stored data
             if (!this.content) {
 			
                 // make request
-                console.log("****** GET " + apiUrl + " ******");
-                this.content = this.makeRequest(apiUrl);
+                console.log("****** GET " + backend_url + " ******");
+                this.content = this.makeRequest(backend_url);
                 
             };
-			
+
 			// return stored data
 			return this.content;
 			

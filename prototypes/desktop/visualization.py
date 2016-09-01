@@ -8,7 +8,7 @@ import helper
 
 urls = (
     
-    # rest API backend endpoints
+    # 0.0.0.0:8000/api/data/visualization/countries/groups/
 	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
     "(.*)/", "cdis"

@@ -9,5 +9,3 @@ def get_connection_string(database_url):
     DATABASE_PORT = list_db_cfg[4]
     connection_string = "host=" + DATABASE_HOST + " user=" + DATABASE_USER + " password=" + list_db_cfg[3] + " dbname=" + DATABASE_NAME
     return connection_string
-
-table_prefix = "gestalt_"
