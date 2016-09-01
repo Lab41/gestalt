@@ -306,7 +306,7 @@ function run_tablet {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start tablet prototype"
-    echo ">> Please browse to http://0.0.0.0:8001"
+    echo ">> Please browse to http://0.0.0.0:8000"
     cd ${TABLET_DIR} && node app.js
 
     # return to base directory
