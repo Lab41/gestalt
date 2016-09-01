@@ -11,7 +11,7 @@
     authenticationService.$inject = ["$http", "$log", "$rootScope", "$window"];
 
     // define the service
-    function authenticationService ($http, $log, $rootScope, $window) {
+    function authenticationService($http, $log, $rootScope, $window) {
         // for backend
         var backendBaseUrl = api_config.authentication_service_uri; 
 
