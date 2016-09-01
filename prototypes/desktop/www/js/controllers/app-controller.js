@@ -8,10 +8,10 @@
         .controller("appController", appController);
 
     // add additional services to be used within the controller
-    appController.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "authenticationService", "layoutService"];
+    appController.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "authenticationFactory", "layoutFactory"];
 
     // define the controller
-    function appController($rootScope, $scope, $state, $stateParams, authenticationService, layoutService) {
+    function appController($rootScope, $scope, $state, $stateParams, authenticationFactory, layoutFactory) {
     
         var workspaceParam = $stateParams.workspace;
         var panelID = $stateParams.panel;
@@ -46,25 +46,25 @@
         };
         
         // get credentials from local storage
-        var personaId = authenticationService.getPersonaId();
+        var personaId = authenticationFactory.getPersonaId();
             
         var endpoint = "persona/" + personaId + "/";
         var objs = { multi: "workspaces", single: "workspace" };
         var check = { key: "url_name", value: workspaceParam };
 
         // get workspaces
-        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
+        layoutFactory.getStructures(endpoint, objs).then(function(allWorkspaces) {
             
             var workspaces = allWorkspaces;
             
             // get single workspace
-            layoutService.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
+            layoutFactory.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
                 
                 var workspace = singleWorkspace;
                 var objs = { multi: "panels", single: "panel" };
                 
                 // get single workspace panels
-                layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
+                layoutFactory.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
                     
                     var panels = workspacePanels;
                     

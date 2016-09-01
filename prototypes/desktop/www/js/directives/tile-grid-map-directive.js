@@ -1,6 +1,6 @@
 angular.module("tile-grid-map-directive", [])
 
-.directive("tileGridMap", ["mapboxService", function(mapboxService) {
+.directive("tileGridMap", ["mapboxFactory", function(mapboxFactory) {
 	return {
 		restrict: "E",
 		scope: {
@@ -18,7 +18,7 @@ angular.module("tile-grid-map-directive", [])
             var interactivity = true;
 					
             // get mapbox promise
-            mapboxService.L().then(function(L) {
+            mapboxFactory.L().then(function(L) {
 
                 var circleMarker = {
                     radius: 5,

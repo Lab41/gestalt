@@ -8,10 +8,10 @@
         .controller("panelController", panelController);
 
     // add additional services to be used within the controller
-    panelController.$inject = ["$rootScope", "$scope",  "$state", "$stateParams", "authenticationService", "contentService", "layoutService"];
+    panelController.$inject = ["$rootScope", "$scope",  "$state", "$stateParams", "authenticationFactory", "contentFactory", "layoutFactory"];
 
     // define the controller
-    function panelController($rootScope, $scope, $state, $stateParams, authenticationService, contentService, layoutService) {
+    function panelController($rootScope, $scope, $state, $stateParams, authenticationFactory, contentFactory, layoutFactory) {
         
         console.log("in panel-controller");
 
@@ -27,10 +27,10 @@
         var check = { key: "url_name", value: panelParam };
 
         // pull panel from stored panels in service
-        layoutService.getStructure(panelParam, objs, endpoint, check).then(function(panelData) {
+        layoutFactory.getStructure(panelParam, objs, endpoint, check).then(function(panelData) {
 
             // get all stories for panel and persona
-            contentService.getData("story/persona/" + panelData.persona_id + "/panel/" + panelData.panel_id + "/").then(function(data) {
+            contentFactory.getData("story/persona/" + panelData.persona_id + "/panel/" + panelData.panel_id + "/").then(function(data) {
 
                 // set scope
                 $scope.content = data;

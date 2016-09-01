@@ -1,6 +1,6 @@
 angular.module("slide-panel-directive", [])
 
-.directive("slidePanel", ["$state", "authenticationService", "layoutService", "$rootScope", function($state, authenticationService, layoutService, $rootScope) {
+.directive("slidePanel", ["$state", "authenticationFactory", "layoutFactory", "$rootScope", function($state, authenticationFactory, layoutFactory, $rootScope) {
 	return {
 		restrict: "E",
         template: "<section ng-class='{ show: visible, left: alignment === \"left\", right: alignment === \"right\" }'><ui-view name='slide'></ui-view></section>",
@@ -15,10 +15,10 @@ angular.module("slide-panel-directive", [])
             $scope.logout = function() {
 
                 // clear credentials
-                authenticationService.unsetPersonaId();
+                authenticationFactory.unsetPersonaId();
                 
                 // clear stored layout values
-                layoutService.clearValues(["workspaces", "workspace", "panels", "panel"]);
+                layoutFactory.clearValues(["workspaces", "workspace", "panels", "panel"]);
 
                 // transition state
                 $state.go("login");
@@ -29,7 +29,7 @@ angular.module("slide-panel-directive", [])
             $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, personaID, visualParam) {
                 
                 // clear stored layout values
-                layoutService.clearValues(["workspace", "panels", "panel"]);
+                layoutFactory.clearValues(["workspace", "panels", "panel"]);
 
                 // set active workspace
                 $scope.$parent.workspaceParam = workspaceParam;

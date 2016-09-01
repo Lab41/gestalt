@@ -2,18 +2,18 @@
 (function() {
     'use strict';
 
-    // set authentication-service application and register its service
+    // set authentication-factory application and register its factory
     angular
-        .module("authentication-service", [])
-        .factory("authenticationService", authenticationService);
+        .module("authentication-factory", [])
+        .factory("authenticationFactory", authenticationFactory);
 
-    // add additional services to be used within the service
-    authenticationService.$inject = ["$http", "$log", "$rootScope", "$window"];
+    // add additional services to be used within the factory
+    authenticationFactory.$inject = ["$http", "$log", "$rootScope", "$window"];
 
-    // define the service
-    function authenticationService($http, $log, $rootScope, $window) {
+    // define the factory
+    function authenticationFactory($http, $log, $rootScope, $window) {
         // for backend
-        var backendBaseUrl = api_config.authentication_service_uri; 
+        var backendBaseUrl = api_config.authentication_uri; 
 
         // for local storage
         var currentPersonaId = "currentGestaltPersona";
@@ -24,7 +24,7 @@
             }
         });                            
         
-        // return an authenticationService instance
+        // return an authenticationFactory instance
         return {
                         
             callBackend: function(backendUrl = "") {
@@ -33,7 +33,8 @@
                 return $http.get(backendAbsoluteUrl)
                             .then(function(backendResponse) { return backendResponse.data; });
             },
-            
+
+            // in our case, the credential is the personaId which will tell us who the current persona is
             setPersonaId: function(personaId) {
                 $window.localStorage && $window.localStorage.setItem(currentPersonaId, personaId);
             },

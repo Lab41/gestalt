@@ -1,6 +1,7 @@
 angular.module("group-nodes-directive", [])
 
-.directive("groupNodes", ["d3Service", "contentService", "$rootScope", function(d3Service, contentService, $rootScope) {
+.directive("groupNodes", ["d3Factory", "contentService", "$rootScope", function(d3Factory, contentService, $rootScope) {
+
 	return {
 		restrict: "E",
 		scope: {
@@ -18,6 +19,7 @@ angular.module("group-nodes-directive", [])
                 ///////////////////////////////////////////////
                 /////////////// d3 SET-UP START ///////////////
                 ///////////////////////////////////////////////
+
                                 
                 // set sizes from attributes in html element
                 // if not attributes present - use default

@@ -2,20 +2,20 @@
 (function() {
     'use strict';
 
-    // set layout-service application and register its service
+    // set layout-factory application and register its factory
     angular
-        .module("layout-service", [])
-        .factory("layoutService", layoutService);
+        .module("layout-factory", [])
+        .factory("layoutFactory", layoutFactory);
 
-    // add additional services to be used within the service
-    layoutService.$inject = ["$http", "$log", "$q"];
+    // add additional services to be used within the factory
+    layoutFactory.$inject = ["$http", "$log", "$q"];
 
-    // define the service
-    function layoutService($http, $log, $q) {
+    // define the factory
+    function layoutFactory($http, $log, $q) {
         // for backend
-        var backendBaseUrl = api_config.layout_service_uri; 
+        var backendBaseUrl = api_config.layout_uri; 
         
-        // return a layoutService instance
+        // return a layoutFactory instance
         return {
             
             // data storage
@@ -31,6 +31,11 @@
                             .then(function(backendResponse) { return backendResponse.data; });
             },
             
+
+            getDefaultWorkspace: function (personaId) {
+                return this.callBackend("default/persona/" + personaId + "/");
+            },
+
             // all structures
             getStructures: function(path, obj) {
                 

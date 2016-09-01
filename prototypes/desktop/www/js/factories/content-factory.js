@@ -2,20 +2,20 @@
 (function() {
     'use strict';
 
-    // set content-service application and register its service
+    // set content-factory application and register its factory
     angular
-        .module("content-service", [])
-        .factory("contentService", contentService);
+        .module("content-factory", [])
+        .factory("contentFactory", contentFactory);
 
-    // add additional services to be used within the service
-    contentService.$inject = ["$http", "$q"];
+    // add additional services to be used within the factory
+    contentFactory.$inject = ["$http", "$q"];
 
-    // define the service
-    function contentService($http, $q) {
+    // define the factory
+    function contentFactory($http, $q) {
 		
-		var urlBase = api_config.content_service_uri;
+		var urlBase = api_config.content_uri;
 		
-		// return a contentService instance
+		// return a contentFactory instance
 		return {
 			
 			// data storage

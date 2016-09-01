@@ -3,7 +3,7 @@ var app = angular.module("app", [
 	"angularMoment",
     "desktop.controllers",
     "desktop.directives",
-    "desktop.services"
+    "desktop.factories"
 ]);
 
 /***********************/

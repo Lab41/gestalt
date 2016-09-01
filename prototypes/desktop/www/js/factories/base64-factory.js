@@ -2,19 +2,19 @@
 (function() {
     'use strict';
 
-    // set base64-service application and register its service
+    // set base64-factory application and register its factory
     angular
-        .module("base64-service", [])
-        .factory("base64", base64);
+        .module("base64-factory", [])
+        .factory("base64Factory", base64Factory);
 
-    // define the service
-    function base64() {
+    // define the factory
+    function base64Factory() {
 
         /* jshint ignore:start */
 
         var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
-        // return a base64 service instance
+        // return a base64 factory instance
         return {
             encode: function (input) {
                 var output = "";

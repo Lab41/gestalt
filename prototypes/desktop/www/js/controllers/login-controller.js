@@ -8,10 +8,11 @@
         .controller("loginController", loginController);
 
     // add additional services to be used within the controller
-    loginController.$inject = ["$scope", "$state", "authenticationService", "layoutService"];
+    loginController.$inject = ["$scope", "$state", "authenticationFactory", "layoutFactory"];
 
     // define the controller
-    function loginController($scope, $state, authenticationService, layoutService) {
+    function loginController($scope, $state, authenticationFactory, layoutFactory) {
+        // define bindable members
         $scope.listOfPersonas;
         $scope.login = login;
 
@@ -20,27 +21,37 @@
 
         // define functions
         function getListOfPersonas() {
-            authenticationService.callBackend()
+            authenticationFactory.callBackend()
                 .then(function(listOfPersonas){ 
                     $scope.listOfPersonas = listOfPersonas; 
                 });
         }
 
         function login(personaId) {
-            // TODO: need to clean this function more
-            authenticationService.setPersonaId(personaId);
-            var endpoint = "persona/" + personaId + "/";
+            authenticationFactory.setPersonaId(personaId);
+
+            /*
+            var defaultWorkspace = layoutFactory.getDefaultWorkspace(personaId);
+            var defaultPanel = layoutFactory.getDefaultPanel(defaultWorkspaceId);
+
+            console.log("defaultWorkspace: " + defaultWorkspace);
+
+            // transition to default workspace
+            $state.go("app.panel.visual", {
+                workspace: defaultWorkspace.id,
+                panel: defaultPanel.id,
+                grid: visual_config.tilemap
+            });
+            */
+           
+            var endpoint = "persona/" + personaId +  "/";
             var objs = { multi: "workspaces", single: "workspace" };
             var check = { key: "is_default", value: true };
             
-            layoutService.getStructure(true, objs, endpoint, check).then(function(singleWorkspace) {
+            // get single workspace
+            layoutFactory.getStructure(true, objs, endpoint, check).then(function(singleWorkspace) {
 
                 var workspace = singleWorkspace;
-
-                for(var i in workspace) {
-                    console.log("workspace[" + i + "]: " + workspace[i]);
-                }
-
 
                 // transition to default workspace
                 $state.go("app.panel.visual", {

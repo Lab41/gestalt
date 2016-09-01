@@ -127,7 +127,7 @@ class node_groups:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
-	
+    
 class geojson:
     def GET(self, grid, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string

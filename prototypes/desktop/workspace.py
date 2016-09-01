@@ -8,7 +8,8 @@ import helper
 
 urls = (
 
-    # 0.0.0.0:8000/api/workspace
+    # 0.0.0.0:8000/api/workspace/default/persona/#/, where # == persona.id
+    "default/persona/(\d+)/", "persona_default_workspace",
 
     # TODO: fix this mess
     # 0.0.0.0:8000/api/workspace/#/, where # == workspace.url_name
@@ -20,6 +21,39 @@ urls = (
 
 )
 
+class persona_default_workspace:
+    """ Extract default workspace for a particular persona.
+    input:
+        * persona.id
+    output:
+        * workspace.id
+        * workspace.name
+        * workspace.url_name
+    """
+    def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT DISTINCT ON (w.id) w.id, wn.name, w.url_name
+            FROM gestalt_workspace AS w
+            LEFT JOIN gestalt_workspace_name AS wn
+            ON w.workspace_name_id = wn.id
+            WHERE w.id IS NOT NULL 
+            AND w.persona_id = """ + persona_id + """ 
+            AND w.is_default IS TRUE
+            ORDER BY w.id;        
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+
+
+# TODO: fix this mess
 class single_workspace:
     """ Extract a single workspace with a specific url_name.
     input:
@@ -52,6 +86,7 @@ class single_workspace:
         # convert data to a string
         return json.dumps(data)
 
+# TODO: fix this mess
 class persona_workspaces:
     """ Extract all the workspaces for a particular persona.
         The output includes each workspace's information, each workspace's default panel, and each workspace's panels.
@@ -122,6 +157,7 @@ class persona_workspaces:
         # convert data to a string
         return json.dumps(data)
 
+# TODO: fix this mess
 class workspace_panels:
     """ Extract all the panels for a particular workspace.
     input:
