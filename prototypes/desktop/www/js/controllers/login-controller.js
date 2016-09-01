@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 
-    // set login-controller and register its controller
+    // set login-controller application and register its controller
     angular
         .module("login-controller", [])
         .controller("loginController", loginController);
@@ -12,7 +12,6 @@
 
     // define the controller
     function loginController($scope, $state, authenticationService, layoutService) {
-
         // define bindable members
         $scope.listOfPersonas;
         $scope.login = login;

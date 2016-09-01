@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 
-    // set authentication-service and register its service
+    // set authentication-service application and register its service
     angular
         .module("authentication-service", [])
         .factory("authenticationService", authenticationService);
