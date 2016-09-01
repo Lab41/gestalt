@@ -37,6 +37,11 @@
 
                 var workspace = singleWorkspace;
 
+                for(var i in workspace) {
+                    console.log("workspace[" + i + "]: " + workspace[i]);
+                }
+
+
                 // transition to default workspace
                 $state.go("app.panel.visual", {
                     workspace: workspace.url_name,

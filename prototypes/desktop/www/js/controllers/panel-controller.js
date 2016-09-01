@@ -1,36 +1,44 @@
-angular.module("panel-controller", [])
+// wrap in Immediately Invoked Function Expression to avoid global scope 
+(function() {
+    'use strict';
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, authenticationService, $rootScope) {
-    
-    console.log("in panel-controller");
+    // set panel-controller application and register its controller
+    angular
+        .module("panel-controller", [])
+        .controller("panelController", panelController);
 
-    var workspaceParam = $stateParams.workspace;
-    var panelParam = $stateParams.panel;
-	
-	// data objects
-	$scope.content;
-    
-	// get credentials from local storage
-    authenticationService.getCredentials().then(function(userData) {
+    // add additional services to be used within the controller
+    panelController.$inject = ["$rootScope", "$scope",  "$state", "$stateParams", "authenticationService", "contentService", "layoutService"];
+
+    // define the controller
+    function panelController($rootScope, $scope, $state, $stateParams, authenticationService, contentService, layoutService) {
         
-        var user = userData;
-		var objs = { multi: "panels", single: "panel" };
-		var endpoint = workspaceParam + "/panels/" + user.id + "/";
-		var check = { key: "url_name", value: panelParam };
+        console.log("in panel-controller");
 
-		// pull panel from stored panels in service
-		layoutService.getStructure(panelParam, objs, endpoint, check).then(function(panelData) {
+        var workspaceParam = $stateParams.workspace;
+        var panelParam = $stateParams.panel;
+    	
+    	// data objects
+    	$scope.content;
+        
+        //function setPanel(panelParam, workspace, user) {
+        var objs = { multi: "panels", single: "panel" };
+        var endpoint = workspaceParam + "/panels/";
+        var check = { key: "url_name", value: panelParam };
 
-			// get all stories for panel and persona
-			contentService.getData("story/persona/" + panelData.persona_id + "/panel/" + panelData.panel_id + "/").then(function(data) {
+        // pull panel from stored panels in service
+        layoutService.getStructure(panelParam, objs, endpoint, check).then(function(panelData) {
 
-				// set scope
-				$scope.content = data;
+            // get all stories for panel and persona
+            contentService.getData("story/persona/" + panelData.persona_id + "/panel/" + panelData.panel_id + "/").then(function(data) {
 
-			});
+                // set scope
+                $scope.content = data;
 
-		});
-		
-	});
-	
-}]);
+            });
+
+        }); 
+    	
+    }
+
+})();

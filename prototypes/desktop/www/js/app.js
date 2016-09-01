@@ -81,7 +81,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         url: "/{workspace}?:t",
         abstract: true,
         templateUrl: "templates/app.html",
-		controller: "appCtrl",
+		controller: "appController",
         resolve: {
 			authorized: ["$q", function($q) {
 				if(localStorage.getItem("gestaltUser") === null) {
@@ -99,12 +99,8 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         url: "/{panel}",
         views: {
     		"panel": {
-    			templateProvider: function($http, $stateParams) {
-                    return $http.get("templates/panels/" + $stateParams.panel + ".html").then(function(template) {
-                        return template.data;
-                    });
-                },
-    			controller: "panelCtrl"
+    			templateUrl: "templates/panel.html",
+    			controller: "panelController"
     		},
             "slide": {
                 templateUrl: "templates/slide-panel.html"
@@ -122,7 +118,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
                         return template.data;
                     });
                 },
-				controller: "vizCtrl"
+				controller: "vizController"
 			}
     	}
     });
