@@ -24,7 +24,7 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 3;
+                var radius = 6;
 				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
@@ -70,6 +70,8 @@ angular.module("group-nodes-directive", [])
                         viewBox: "0 0 " + width + " " + height
                     });
                 
+				var links = [{source: 0, target: 20}];
+				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
                 /////////////////////////////////////////////
@@ -82,6 +84,7 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
+                        
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
 						
@@ -364,13 +367,13 @@ angular.module("group-nodes-directive", [])
 										x2: function(d) { return d.target.x; },
 										y2: function(d) { return d.target.y; }
 									});
-                                
+								                                
                                 // push nodes toward focus
                                 node
                                     .attr({
                                         transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                     });
-                                
+								
                             };
                             
                             // force layout done
@@ -491,7 +494,7 @@ angular.module("group-nodes-directive", [])
 							// LINK
 							var link = canvas
 								.selectAll(".link")
-								.data(links);
+								.data(force.links());
 							
 							// update selection
 							link
