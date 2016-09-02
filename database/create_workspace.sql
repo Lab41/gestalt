@@ -38,7 +38,7 @@ CREATE TABLE gestalt_workspace_panel (
     id SERIAL PRIMARY KEY,
     workspace_id INTEGER NOT NULL,
     panel_id INTEGER NOT NULL,
-    is_default BOOLEAN FALSE,
+    is_default BOOLEAN DEFAULT FALSE,
     UNIQUE (workspace_id, panel_id)
 );
 
