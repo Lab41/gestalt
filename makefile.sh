@@ -209,7 +209,7 @@ function install_postgresql {
     psql -d gestalt -c "CREATE USER gestalt_user WITH SUPERUSER LOGIN PASSWORD 'umami';"
 
     echo ">> Install admin pack in case you wanted to use PgAdmin's UI"
-    psql -d gestalt -c "CREATE EXTENSION 'adminpack';"
+    psql -d gestalt -c 'CREATE EXTENSION "adminpack";'
 }
 
 function populate_gestalt_db {
