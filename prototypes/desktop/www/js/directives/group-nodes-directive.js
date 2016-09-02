@@ -24,13 +24,13 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 6;
+                var radius = 4;
 				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
-				var color = ["orange", "teal", "grey", "#5ba819"];
                 var	center = { "x": (width / 2), "y": (height/ 2) };
+                var nodePadding = 1;
                 var charge = {
-                    default: -50,
+                    default: 0,
                     geo: -20
                 };
                 var transition = {
@@ -46,6 +46,7 @@ angular.module("group-nodes-directive", [])
                 // set up force layout algorithm
 				var force = d3.layout.force()
 					.charge(charge.default)
+                    //.charge(function(d, i) {return i ? 0 : -2000;})
 					//.charge(function(d, i) { return i==0 ? -10000 : -500; }) // for central node with links
 					.gravity(0)
 					.friction(0.1)
@@ -200,6 +201,18 @@ angular.module("group-nodes-directive", [])
                                 
                             };
                             
+                            // change node attributes based on storyline
+                            function storyChange() {
+                                
+                                // set nodes from data
+                                // map radius value so collision detection can evaluate nodes
+                                nodes = data.map(function(o) {
+                                    o.radius = cScale(calcRadius(o.count))
+                                    return o;
+                                });
+                                
+                            };
+                            
                             // force layout started
                             function startForce(e) {
                                 
@@ -310,11 +323,10 @@ angular.module("group-nodes-directive", [])
 								                                
                                 // push nodes toward focus
                                 node
+                                    .each(collide(0.5))
                                     .attr({
                                         transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                     });
-								
-								
 								
                             };
                             
@@ -329,6 +341,55 @@ angular.module("group-nodes-directive", [])
                                 return Math.sqrt(value / Math.PI);
                                 
                             };
+                            
+                            function collide(alpha) {
+                                
+                                var quadtree = d3.geom.quadtree(nodes);
+                                
+                                return function(d) {
+                                    
+                                    // select node DOM elements
+                                    var nodeGroup = canvas
+                                        .select("#node-" + d.id).node();
+
+                                    // get size of the group element
+                                    var groupSize = nodeGroup.getBBox().height + nodePadding;
+
+                                    // get coordinate values
+                                    var r = groupSize / 2 + nodePadding;
+                                    var nx1 = d.x - r;
+                                    var nx2 = d.x + r;
+                                    var ny1 = d.y - r;
+                                    var ny2 = d.y + r;
+                                    
+                                    quadtree.visit(function(quad, x1, y1, x2, y2) {
+                                        
+                                        if (quad.point && (quad.point !== d)) {
+                                
+                                            var x = d.x - quad.point.x;
+                                            var y = d.y - quad.point.y;
+                                            var l = Math.sqrt(x * x + y * y);
+                                            var r = groupSize / 2 + quad.point.radius;
+
+                                            // check if location against radius
+                                            if (l < r) {
+
+                                                l = (l - r) / l * 0.5;
+                                                d.x -= x *= l;
+                                                d.y -= y *= l;
+                                                quad.point.x += x;
+                                                quad.point.y += y;
+
+                                            };
+
+                                        };
+                                        
+                                         return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                                        
+                                    })
+                                    
+                                }
+                            }
                             
                             // make foci objects for each group
                             var foci = {};
@@ -421,13 +482,31 @@ angular.module("group-nodes-directive", [])
 								.text(function(d) { return d.name; })
                                 .on("click", clusterNodes);
                             
+                            var storyButtons = ["high centrality"]
+                            
+                            // temp buttons while we build more transition options
+                            d3.select(element.find("div")[0])
+                                .selectAll(".temp")
+                                .data(storyButtons)
+                                .enter()
+                                .append("button")
+                                .attr({
+                                    type: "button"
+                                })
+                                .text(function(d) { return d; })
+                                .on("click", storyChange);
+                            
                             // set nodes from data
-                            var nodes = data;
+                            // map radius value so collision detection can evaluate nodes
+                            var nodes = data.map(function(o) {
+                                o.radius = radius;
+                                return o;
+                            });
                             
                             // bind data to force layout
                             force
                                 .nodes(nodes)
-								.links(links)
+								//.links(links)
                                 .on("start", startForce)
                                 .on("tick", tick)
                                 .on("end", endForce)
@@ -479,6 +558,7 @@ angular.module("group-nodes-directive", [])
                                 .append("g")
                                 .attr({
                                     class: "node",
+                                    id: function(d) { return "node-" + d.id; },
                                     transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                 })
                             
@@ -490,8 +570,7 @@ angular.module("group-nodes-directive", [])
                                     currentGroup
                                         .append("circle")
                                         .attr({
-											r: radius
-                                            //r: function(d) { return cScale(calcRadius(d.count)); }
+                                            r: function(d) { return d.radius; }
                                         });
                                     
                                     // label
@@ -503,8 +582,8 @@ angular.module("group-nodes-directive", [])
                                         })
                                         .text(function(d) { return d.id });
                                 })
-								.call(force.drag)
-								.on("click", drawFlows);
+								//.call(force.drag)
+								//.on("click", drawFlows);
                                 
                         };
 
@@ -518,7 +597,7 @@ angular.module("group-nodes-directive", [])
                     };
                     
                 });
-				
+                
 			});
 			
 		}

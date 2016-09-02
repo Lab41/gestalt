@@ -27,17 +27,10 @@ group-nodes .node {
 	
 }
 
-group-nodes .node circle {
-    
-    stroke-width: 0.5px;
-    
-}
-
 /* link */
 group-nodes .link {
 	
 	stroke: currentColor;
-	stroke-width: 2px;
 	
 }
 
