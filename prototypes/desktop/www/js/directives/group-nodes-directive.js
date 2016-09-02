@@ -24,7 +24,7 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 3;
+                var radius = 6;
 				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
 				var color = ["orange", "teal", "grey", "#5ba819"];
@@ -46,6 +46,9 @@ angular.module("group-nodes-directive", [])
                 // set up force layout algorithm
 				var force = d3.layout.force()
 					.charge(charge.default)
+					//.charge(function(d, i) { return i==0 ? -10000 : -500; }) // for central node with links
+					.gravity(0)
+					.friction(0.1)
                     //.linkDistance(50)
                     .size([(width - diameter), (height - diameter)]);
                 
@@ -56,6 +59,8 @@ angular.module("group-nodes-directive", [])
                         viewBox: "0 0 " + width + " " + height
                     });
                 
+				var links = [{source: 0, target: 20}];
+				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
                 /////////////////////////////////////////////
@@ -68,7 +73,6 @@ angular.module("group-nodes-directive", [])
                     // track which group is currently filtered for
                     var currentGroup = startGroup;
                     var subgroups = [];
-					var links = [{source: 0, target: 0}];
                         
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
@@ -134,6 +138,8 @@ angular.module("group-nodes-directive", [])
 									//links = mapLinks(data, nodes, "id"); // remap links b/c d3 wants use an index to connect nodes
 									links = data;
 									
+									force.nodes(nodes)
+									force.links(links)
 									force.start();
 
                                 });
@@ -301,13 +307,15 @@ angular.module("group-nodes-directive", [])
 										x2: function(d) { return d.target.x; },
 										y2: function(d) { return d.target.y; }
 									});
-                                
+								                                
                                 // push nodes toward focus
                                 node
                                     .attr({
                                         transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                     });
-
+								
+								
+								
                             };
                             
                             // force layout done
@@ -428,14 +436,18 @@ angular.module("group-nodes-directive", [])
 							// LINK
 							var link = canvas
 								.selectAll(".link")
-								.data(links);
+								.data(force.links());
 							
 							// update selection
 							link
 								.transition()
 								.duration(transition.time)
 								.attr({
-									class: "link"
+									class: "link",
+									x1: function(d) { return d.source.x; },
+									y1: function(d) { return d.source.y; },
+									x2: function(d) { return d.target.x; },
+									y2: function(d) { return d.target.y; }
 								});
 							
 							// enter selection
@@ -445,7 +457,11 @@ angular.module("group-nodes-directive", [])
 								.transition()
 								.duration(transition.time)
 								.attr({
-									class: "link"
+									class: "link",
+									x1: function(d) { return d.source.x; },
+									y1: function(d) { return d.source.y; },
+									x2: function(d) { return d.target.x; },
+									y2: function(d) { return d.target.y; }
 								});
 							
 							// exit selection
@@ -474,7 +490,8 @@ angular.module("group-nodes-directive", [])
                                     currentGroup
                                         .append("circle")
                                         .attr({
-                                            r: function(d) { return cScale(calcRadius(d.count)); }
+											r: radius
+                                            //r: function(d) { return cScale(calcRadius(d.count)); }
                                         });
                                     
                                     // label
@@ -486,6 +503,7 @@ angular.module("group-nodes-directive", [])
                                         })
                                         .text(function(d) { return d.id });
                                 })
+								.call(force.drag)
 								.on("click", drawFlows);
                                 
                         };
