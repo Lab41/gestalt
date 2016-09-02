@@ -25,7 +25,7 @@ INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_defau
 INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
     (2, 1, 'd7352676dcfc563ba04e6bc1de6236a2', FALSE);
 INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (3, 1, 'a3c90460cd127a4df22fb8a7b792651c', FALSE;
+    (3, 1, 'a3c90460cd127a4df22fb8a7b792651c', FALSE);
 INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
     (2, 2, 'd8711880b39a55baf7f4b4fb29f031c6', FALSE);
 INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
