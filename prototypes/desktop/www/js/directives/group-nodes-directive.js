@@ -56,13 +56,20 @@ angular.module("group-nodes-directive", [])
 				
                 // set up force layout algorithm
 				var force = d3.layout.force()
-					.charge(charge.default)
+					//.charge(charge.default)
                     //.charge(function(d, i) {return i ? 0 : -2000;})
 					//.charge(function(d, i) { return i==0 ? -10000 : -500; }) // for central node with links
-					.gravity(0)
-					.friction(0.1)
+					.charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
+					.gravity(-0.01)
+  					.friction(0.9)
                     //.linkDistance(50)
                     .size([(width - diameter), (height - diameter)]);
+				
+				// set up pack layout algorithm
+				var pack = d3.layout.pack()
+					.size([(width - diameter), (height - diameter)])
+					.padding(1.5)
+					.value(function(d) { return /*d.count*/1; });
                 
                 // set up svg canvas
                 var canvas = d3.select(element[0])
@@ -362,7 +369,7 @@ angular.module("group-nodes-directive", [])
                             function tick(e) {
                                 
                                 // force direction and shape of clusters
-                                var k = e.alpha;
+                                var k = e.alpha * 0.102;
 
                                 // set new node location
                                 nodes.forEach(function(o, i) {
@@ -402,6 +409,7 @@ angular.module("group-nodes-directive", [])
                                 
                             };
                             
+							// managae collision detection between nodes
                             function collide(alpha) {
                                 
                                 var quadtree = d3.geom.quadtree(nodes);
@@ -429,7 +437,7 @@ angular.module("group-nodes-directive", [])
                                             var x = d.x - quad.point.x;
                                             var y = d.y - quad.point.y;
                                             var l = Math.sqrt(x * x + y * y);
-                                            var r = groupSize / 2 + quad.point.radius;
+                                            var r = groupSize / 2 + quad.point.r;
 
                                             // check if location against radius
                                             if (l < r) {
@@ -449,7 +457,7 @@ angular.module("group-nodes-directive", [])
                                     })
                                     
                                 }
-                            }
+                            };
                             
                             // make foci objects for each group
                             var foci = {};
@@ -558,10 +566,14 @@ angular.module("group-nodes-directive", [])
                             
                             // set nodes from data
                             // map radius value so collision detection can evaluate nodes
-                            var nodes = data.map(function(o) {
-                                o.radius = radius;
+                            var data = data.map(function(o) {
+                                o.r = radius;
                                 return o;
                             });
+														
+							// bind data to pack layout
+							//var nodes = pack.nodes({children:data}).filter(function(d) { return !d.children; });
+							var nodes = data;
                             
                             // bind data to force layout
                             force
@@ -630,7 +642,7 @@ angular.module("group-nodes-directive", [])
                                     currentGroup
                                         .append("circle")
                                         .attr({
-                                            r: function(d) { return d.radius; }
+                                            r: function(d) { return d.r; }
                                         });
                                     
                                     // label
