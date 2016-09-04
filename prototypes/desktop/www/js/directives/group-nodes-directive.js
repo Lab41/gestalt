@@ -159,7 +159,9 @@ angular.module("group-nodes-directive", [])
 									
 									force.nodes(nodes)
 									force.links(links)
-									force.start();
+									
+									// update viz
+									updateLinks();
 
                                 });
 								
@@ -177,6 +179,11 @@ angular.module("group-nodes-directive", [])
                                 });
                                 
                                 var groupType = this.innerHTML;
+								
+								force
+									.charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
+									.gravity(-0.01)
+									.friction(0.9);
                                 
                                 // check group type
                                 if (groupType == "country") {
@@ -220,15 +227,43 @@ angular.module("group-nodes-directive", [])
                             };
                             
                             // change node attributes based on storyline
-                            function storyChange() {
+                            function storyChange(e) {
+								
+								if (e == "equal") {
+									
+									// all nodes equal size
+									nodes = data.map(function(o) {
+										o.r = radius;
+										return o;
+									});
+									
+								} else if (e == "high degree") {
+
+									// set nodes from data
+									// map radius value so collision detection can evaluate nodes
+									nodes = data.map(function(o) {
+										o.r = cScale(calcRadius(o.count))
+										return o;
+									});
+
+								} else if (e == "high centrality") {
+									
+									// set nodes from data
+									nodes = data.map(function(o) {
+										o.r = cScale(calcRadius(o.index))
+										return o;
+									});
+
+								};
+								
+								// update force settings
+								force
+									.friction(0)
+									.charge(0);
                                 
-                                // set nodes from data
-                                // map radius value so collision detection can evaluate nodes
-                                nodes = data.map(function(o) {
-                                    o.radius = cScale(calcRadius(o.count))
-                                    return o;
-                                });
-                                
+								// update visualization
+								updateVis();
+								
                             };
                             
                             // force layout started
@@ -458,6 +493,193 @@ angular.module("group-nodes-directive", [])
                                     
                                 }
                             };
+							
+							// enter/update/exit node groups
+							function updateVis() {
+								
+								// NODE
+								
+								// set selection
+								node = node.data(nodes, function(d) { return d.id; });
+								
+								// update selection
+								node
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "node",
+										id: function(d) { return "node-" + d.id; }
+									})
+									.each(function(d) {
+
+										updateGroupContent(d3.select(this), [d]);
+									
+									});
+								
+								// enter selection
+								node
+									.enter()
+									.append("g")
+									.attr({
+										class: "node",
+										id: function(d) { return "node-" + d.id; }
+									})
+									.each(function(d) {
+
+										var currentGroup = d3.select(this);
+
+										// circle
+										currentGroup
+											.append("circle")
+											.attr({
+												class: "shape",
+												r: function(d) { return d.r; }
+											});
+
+										// label
+										currentGroup
+											.append("text")
+											.attr({
+												class: "label",
+												dx: 0,
+												dy: "0.35em"
+											})
+											.text(function(d) { return d.id });
+									})
+									.on("click", drawFlows);
+								
+								// exit selection
+								node
+									.exit()
+									.transition()
+									.duration(transition.time)
+									.remove();
+								
+								// start force
+								force.start();
+								
+							};
+							
+							// update/enter/exit content of groups
+							function updateGroupContent(group, data) {
+								
+								// SHAPE
+									
+								// set selection
+								var shape = group
+									.selectAll(".shape")
+									.data(data);
+
+								// update selection
+								shape
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "shape",
+										r: function(d) { return d.r; }
+									});
+
+								// enter selection
+								shape
+									.append("circle")
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "shape",
+										r: function(d) { return d.r; }
+									});
+
+								// exit selection
+								shape
+									.exit()
+									.transition()
+									.duration(transition.time)
+									.remove();
+
+								// LABEL
+								
+								// set selection
+								var label = group
+									.selectAll(".label")
+									.data(data);
+								
+								// update selection
+								label
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "label",
+										dx: 0,
+										dy: "0.35em"
+									})
+									.text(function(d) { return d.id });
+								
+								// enter selection
+								label
+									.enter()
+									.append("text")
+									.attr({
+										class: "label",
+										dx: 0,
+										dy: "0.35em"
+									})
+									.text(function(d) { return d.id });
+								
+								// exit selection
+								label
+									.exit()
+									.transition()
+									.duration(transition.time)
+									.remove();
+								
+							};
+							
+							// enter/update/exit links
+							function updateLinks() {
+								
+								// LINK
+								
+								// set selection
+								link = link.data(force.links(), function(d) { return d.id; });
+								
+								// update selection
+								link
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "link",
+										x1: function(d) { return d.source.x; },
+										y1: function(d) { return d.source.y; },
+										x2: function(d) { return d.target.x; },
+										y2: function(d) { return d.target.y; }
+									});
+									
+								
+								// enter selection
+								link
+									.enter()
+									.append("line")
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "link",
+										x1: function(d) { return d.source.x; },
+										y1: function(d) { return d.source.y; },
+										x2: function(d) { return d.target.x; },
+										y2: function(d) { return d.target.y; }
+									});
+								
+								// exit selection
+								link
+									.exit()
+									.transition()
+									.duration(transition.time)
+									.remove();
+								
+								// start force
+								force.resume();
+								
+							};
                             
                             // make foci objects for each group
                             var foci = {};
@@ -550,7 +772,7 @@ angular.module("group-nodes-directive", [])
 								.text(function(d) { return d.name; })
                                 .on("click", clusterNodes);
                             
-                            var storyButtons = ["high centrality"]
+                            var storyButtons = ["equal", "high degree", "high centrality"]
                             
                             // temp buttons while we build more transition options
                             d3.select(element.find("div")[0])
@@ -578,84 +800,16 @@ angular.module("group-nodes-directive", [])
                             // bind data to force layout
                             force
                                 .nodes(nodes)
-								//.links(links)
                                 .on("start", startForce)
                                 .on("tick", tick)
-                                .on("end", endForce)
-                                .start();
+                                .on("end", endForce);
 							
-							// LINK
-							var link = canvas
-								.selectAll(".link")
-								.data(force.links());
+							// set up selections
+							var node = canvas.selectAll(".node");
+							var link = canvas.selectAll(".link");
 							
-							// update selection
-							link
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "link",
-									x1: function(d) { return d.source.x; },
-									y1: function(d) { return d.source.y; },
-									x2: function(d) { return d.target.x; },
-									y2: function(d) { return d.target.y; }
-								});
-							
-							// enter selection
-							link
-								.enter()
-								.append("line")
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "link",
-									x1: function(d) { return d.source.x; },
-									y1: function(d) { return d.source.y; },
-									x2: function(d) { return d.target.x; },
-									y2: function(d) { return d.target.y; }
-								});
-							
-							// exit selection
-							link
-								.exit()
-								.transition()
-								.duration(transition.time)
-								.remove();
-                            
-                            // NODE
-                            var node = canvas
-                                .selectAll(".node")
-                                .data(nodes)
-                                .enter()
-                                .append("g")
-                                .attr({
-                                    class: "node",
-                                    id: function(d) { return "node-" + d.id; },
-                                    transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
-                                })
-                            
-                                .each(function(group) {
-                                    
-                                    var currentGroup = d3.select(this);
-                                    
-                                    // circle
-                                    currentGroup
-                                        .append("circle")
-                                        .attr({
-                                            r: function(d) { return d.r; }
-                                        });
-                                    
-                                    // label
-                                    currentGroup
-                                        .append("text")
-                                        .attr({
-                                            dx: 0,
-                                            dy: "0.35em"
-                                        })
-                                        .text(function(d) { return d.id });
-                                })
-								//.call(force.drag)
-								//.on("click", drawFlows);
+							// run visualization
+							updateVis();
                                 
                         };
 
