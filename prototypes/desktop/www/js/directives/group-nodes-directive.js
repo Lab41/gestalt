@@ -27,7 +27,8 @@ angular.module("group-nodes-directive", [])
                 var radius = 4;
 				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
-                var	center = { "x": (width / 2), "y": (height/ 2) };
+                var	center = { x: (width / 2), y: (height/ 2) };
+				var bottomRight = { x: width * 0.9, y: height * 0.9 };
                 var nodePadding = 1;
                 var charge = {
                     default: 0,
@@ -66,8 +67,13 @@ angular.module("group-nodes-directive", [])
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
+				
+				// add groups for nodes and links
+				// this ensures links are always behind nodes
+				var linksGroup = canvas.append("g");
+				var nodesGroup = canvas.append("g");
                 
-				var links = [{source: 0, target: 20}];
+				var links = [];
 				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -96,10 +102,10 @@ angular.module("group-nodes-directive", [])
                             cScale.range([radius, maxRadius]);
 							
 							// draw flows between nodes
-							function drawFlows() {
+							function drawFlows(d) {
 								
 								// network health
-                                contentService.getData("visualization/flows/unique_targets/46/").then(function(data) {
+                                contentService.getData("visualization/flows/unique_targets/" + d.id + "/").then(function(data) {
 
                                     // map raw links to d3 index-specific objects for layout algorithm
 									// 3rd param is the connector key in the raw data that connects nodes
@@ -142,12 +148,13 @@ angular.module("group-nodes-directive", [])
 										return data;
 
 									};
-									console.log(data);
-									//links = mapLinks(data, nodes, "id"); // remap links b/c d3 wants use an index to connect nodes
-									links = data;
 									
-									force.nodes(nodes)
+									links = mapLinks(data, nodes, "iso"); // remap links b/c d3 wants use an index to connect nodes
+
 									force.links(links)
+										.charge(-10)
+										.friction(0.9)
+										.linkDistance(10);
 									
 									// update viz
 									updateLinks();
@@ -193,9 +200,9 @@ angular.module("group-nodes-directive", [])
                                 d3.range(nodes.length).map(function(i) {
 
                                     // current node
-                                    var curr_node = nodes[i];
+                                    var curr_node = nodes[i];console.log(curr_node);
                                     var group = groupType;
-                                    var subgroup = foci[groupType][curr_node.id];
+                                    var subgroup = foci[groupType][curr_node.iso];
 
                                     // move into cluster group
                                     curr_node.cluster = group;
@@ -216,9 +223,9 @@ angular.module("group-nodes-directive", [])
                             };
                             
                             // change node attributes based on storyline
-                            function storyChange(e) {
+                            function storyChange(d) {
 								
-								if (e == "equal") {
+								if (d == "equal") {
 									
 									// all nodes equal size
 									nodes = data.map(function(o) {
@@ -226,7 +233,7 @@ angular.module("group-nodes-directive", [])
 										return o;
 									});
 									
-								} else if (e == "high degree") {
+								} else if (d == "high degree") {
 
 									// set nodes from data
 									// map radius value so collision detection can evaluate nodes
@@ -235,7 +242,7 @@ angular.module("group-nodes-directive", [])
 										return o;
 									});
 
-								} else if (e == "high centrality") {
+								} else if (d == "high centrality") {
 									
 									// set nodes from data
 									nodes = data.map(function(o) {
@@ -243,6 +250,12 @@ angular.module("group-nodes-directive", [])
 										return o;
 									});
 
+								} else if (d == "no links") {
+									
+									force.links([]);
+									
+									updateLinks();
+									
 								};
 								
 								// update force settings
@@ -484,7 +497,7 @@ angular.module("group-nodes-directive", [])
 												dx: 0,
 												dy: "0.35em"
 											})
-											.text(function(d) { return d.id });
+											.text(function(d) { return d.iso });
 									})
 									.on("click", drawFlows);
 								
@@ -552,7 +565,7 @@ angular.module("group-nodes-directive", [])
 										dx: 0,
 										dy: "0.35em"
 									})
-									.text(function(d) { return d.id });
+									.text(function(d) { return d.iso });
 								
 								// enter selection
 								label
@@ -563,7 +576,7 @@ angular.module("group-nodes-directive", [])
 										dx: 0,
 										dy: "0.35em"
 									})
-									.text(function(d) { return d.id });
+									.text(function(d) { return d.iso });
 								
 								// exit selection
 								label
@@ -580,7 +593,7 @@ angular.module("group-nodes-directive", [])
 								// LINK
 								
 								// set selection
-								link = link.data(force.links(), function(d) { return d.id; });
+								link = link.data(force.links());
 								
 								// update selection
 								link
@@ -617,7 +630,7 @@ angular.module("group-nodes-directive", [])
 									.remove();
 								
 								// start force
-								force.resume();
+								force.start();
 								
 							};
                             
@@ -712,7 +725,7 @@ angular.module("group-nodes-directive", [])
 								.text(function(d) { return d.name; })
                                 .on("click", clusterNodes);
                             
-                            var storyButtons = ["equal", "high degree", "high centrality"]
+                            var storyButtons = ["equal", "high degree", "high centrality", "no links"];
                             
                             // temp buttons while we build more transition options
                             d3.select(element.find("div")[0])
@@ -740,13 +753,14 @@ angular.module("group-nodes-directive", [])
                             // bind data to force layout
                             force
                                 .nodes(nodes)
+								.links(links)
                                 .on("start", startForce)
                                 .on("tick", tick)
                                 .on("end", endForce);
 							
 							// set up selections
-							var node = canvas.selectAll(".node");
-							var link = canvas.selectAll(".link");
+							var node = nodesGroup.selectAll(".node");
+							var link = linksGroup.selectAll(".link");
 							
 							// run visualization
 							updateVis();
