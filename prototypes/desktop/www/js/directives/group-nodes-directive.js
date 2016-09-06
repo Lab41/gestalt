@@ -32,14 +32,18 @@ angular.module("group-nodes-directive", [])
                 var nodePadding = 1;
                 var charge = {
                     default: 0,
-                    geo: -20
+                    geo: 0
                 };
                 var transition = {
                     time: 500
                 };
                 
                 // x-scale
-                var xScale = d3.scale.ordinal();
+                var xScaleOrd = d3.scale.ordinal();
+				var xScaleLin = d3.scale.linear();
+				
+				// y-scale
+				var yScale = d3.scale.linear();
                 
                 // circle scale
                 var cScale = d3.scale.linear();
@@ -186,21 +190,28 @@ angular.module("group-nodes-directive", [])
                                     
                                     // reset force charge so layout is more accurate
                                     force.charge(charge.geo);
+									
+									// bind data to scales
+									xScaleLin.domain([0, 360]);
+									xScaleLin.range([radius, width - radius]);
+									
+									yScale.domain([0, 180]);
+									yScale.range([height, 0]);
                                     
                                 } else {
                                     
                                     // reset force to default
                                     force.charge(charge.default);
+									
+									force.start();
                                     
                                 };
-                                
-                                force.start();
                                     
-                                // non-region specific grouping
+                                // set grouping
                                 d3.range(nodes.length).map(function(i) {
 
                                     // current node
-                                    var curr_node = nodes[i];console.log(curr_node);
+                                    var curr_node = nodes[i];
                                     var group = groupType;
                                     var subgroup = foci[groupType][curr_node.iso];
 
@@ -208,14 +219,42 @@ angular.module("group-nodes-directive", [])
                                     curr_node.cluster = group;
                                     curr_node.subgroup = subgroup;
 
-                                    // set coords
-                                    curr_node.cx = foci[groupType][subgroup].x;
-                                    curr_node.cy = foci[groupType][subgroup].y;
-
                                 });
+								
+								// check group type
+								if (groupType == "country") {
+																		
+									// set new node location
+									nodes.forEach(function(o, i) {
 
-                                // resume force layout
-                                force.resume();	
+										// get focus x,y values
+										o.y = height - yScale(foci[o.cluster][o.subgroup].y);
+										o.x = xScaleLin(foci[o.cluster][o.subgroup].x);
+
+									});
+
+									/*link
+										.attr({
+											x1: function(d) { return d.source.x; },
+											y1: function(d) { return d.source.y; },
+											x2: function(d) { return d.target.x; },
+											y2: function(d) { return d.target.y; }
+										});*/
+
+									// push nodes toward focus
+									node
+										.transition()
+										.duration(transition.time)
+										.attr({
+											transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
+										});
+									
+								} else {
+									
+									// resume force layout
+                                	force.resume();	
+									
+								};
                                 
                                 // update labels
                                 updateLabels(groupType);
@@ -304,8 +343,8 @@ angular.module("group-nodes-directive", [])
                                 var xDomain = subgroups.map(function(d) { return d.name; });
                                 
                                 // add data to x-scale layout algorithm
-                                xScale.domain(xDomain);
-                                xScale.rangePoints([radius, width - radius]);
+                                xScaleOrd.domain(xDomain);
+                                xScaleOrd.rangePoints([radius, width - radius]);
                                 
                                 // check for group type
                                 if (currentGroup == "country") {
@@ -362,9 +401,9 @@ angular.module("group-nodes-directive", [])
                                 // set new node location
                                 nodes.forEach(function(o, i) {
 									
-                                    // get focus x,y values
-                                    o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
-                                    o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
+									// get focus x,y values
+									o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
+									o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
                                                                  
                                 });
 								

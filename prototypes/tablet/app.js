@@ -15,6 +15,7 @@ app.use(require("./routes/persona-1-get-all-personas.route"));
 app.use(require("./routes/visualization-1-node-groups.route"));
 app.use(require("./routes/visualization-2-geojson-countries.route"));
 app.use(require("./routes/visualization-3-grouped-countries.route"));
+app.use(require("./routes/visualization-4-node-flows.route"));
 
 // static front end
 app.use("/", express.static(__dirname + "/www"));
