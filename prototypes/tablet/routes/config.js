@@ -149,7 +149,7 @@ config.visualization.nodeGroups = {
     route: visualizationBase + "/countries/groups",
     
     query: [
-        "select g.*,array_agg(row_to_json(s)) as subgroups from " + tablePrefix + "group g left join (select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id, case when gt.id = 1 then gn.name else sgn.name end as name,case when gt.id = 1 then gt.id || '_' || gn.id else gt.id || '_' || sgn.id end as id,geo.hexagon_center_x as center_x,geo.hexagon_center_y as center_y,array_agg(row_to_json(n)) as nodes from " + tablePrefix + "subgroup sg left join " + tablePrefix + "geography_name gn on gn.id = sg.name_id left join " + tablePrefix + "subgroup_name sgn on sgn.id = sg.name_id left join " + tablePrefix + "group g on g.id = sg.group_id left join " + tablePrefix + "group_type gt on gt.id = g.type_id left join " + tablePrefix + "geography geo on geo.name_id = sg.name_id and gt.id = 1 left join (select gn.name,gcy.id, gcy.iso2code as iso from " + tablePrefix + "country gcy left join " + tablePrefix + "geography_name gn on gn.id = gcy.name_id) n on n.id = sg.country_id group by sg.name_id,sg.group_id,gn.name,sgn.name,geo.hexagon_center_x,geo.hexagon_center_y,gt.id,g.id,gn.id,sgn.id) s on s.group_id = g.id group by g.id;"
+        "select g.*,array_agg(row_to_json(s)) as subgroups from gestalt_group g left join (select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id,case when gt.id = 1 then gn.name else sgn.name end as name,case when gt.id = 1 then gt.id || '_' || gn.id else gt.id || '_' || sgn.id end as id,geo.hexagon_center_x as center_x,geo.hexagon_center_y as center_y,array_agg(row_to_json(n)) as nodes from gestalt_subgroup sg left join gestalt_geography_name gn on gn.id = sg.name_id left join gestalt_subgroup_name sgn on sgn.id = sg.name_id left join gestalt_group g on g.id = sg.group_id left join gestalt_group_type gt on gt.id = g.type_id left join gestalt_geography geo on geo.name_id = sg.name_id and gt.id = 1 left join (select gn.name,gcy.id,gcy.iso2code as iso from gestalt_country gcy left join gestalt_geography_name gn on gn.id = gcy.name_id) n on n.id = sg.country_id group by sg.name_id,sg.group_id,gn.name,sgn.name,geo.hexagon_center_x,geo.hexagon_center_y,gt.id,g.id,gn.id,sgn.id) s on s.group_id = g.id group by g.id"
     ]
     
 };
@@ -171,7 +171,19 @@ config.visualization.groupedCountries = {
     route: visualizationBase + "/:table",
     
     query: [
-        "select distinct on (gn.name) gn.name,cy.iso2code as id from " + tablePrefix + "country cy left join " + tablePrefix + "geography_name gn on gn.id = cy.name_id left join " + tablePrefix + "geography geo on geo.name_id = cy.name_id where geo.hexagon_center_x is not null;"
+        "select distinct on (gn.name) gn.name,cy.iso2code as iso,cy.id,count(distinct cdis.target_id) as count from gestalt_country cy left join gestalt_geography_name gn on gn.id = cy.name_id left join gestalt_geography geo on geo.name_id = cy.name_id left join gestalt_cdis cdis on source_id = cy.id group by gn.name,cy.iso2code,cy.id"
+    ]
+    
+};
+
+// visualization-4-node-flows.route.js
+config.visualization.nodeFlows = {
+    
+    route: visualizationBase + "/flows/unique_targets/:sourceId",
+    
+    query: [
+        "select gn.name as source_name,cy.iso2code as source,gnt.name as target_name,cyt.iso2code as target,count(cdis.target_id) as value from gestalt_cdis cdis left join gestalt_geography_name gn on gn.id = cdis.source_id left join gestalt_geography_name gnt on gnt.id = cdis.target_id left join gestalt_country cy on cy.id = cdis.source_id left join gestalt_country cyt on cyt.id = cdis.target_id where source_id = ",
+		" and cyt.iso2code is not null group by gn.name,cy.iso2code,gnt.name,cyt.iso2code"
     ]
     
 };

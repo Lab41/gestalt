@@ -19,6 +19,21 @@
 /***** !group nodes ******/
 /*************************/
 
+/* node */
+group-nodes .node {
+	
+	cursor: pointer;
+	pointer-events: all;
+	
+}
+
+/* link */
+group-nodes .link {
+	
+	stroke: currentColor;
+	
+}
+
 /* node label */
 group-nodes .node text {
     
@@ -32,7 +47,7 @@ group-nodes .node text {
 group-nodes .group-label {
     
     fill: currentColor;
-    font-size: 0.75em;
+    font-size: 0.35em;
     text-anchor: middle;
     
 }
