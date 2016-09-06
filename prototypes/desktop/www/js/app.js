@@ -110,7 +110,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 	
 	// visual
     .state("app.panel.visual", {
-    	url: "/{grid}",
+    	url: "/{group}/{grid}",
     	views: {
     		"visual": {
 				templateProvider: function($http, $stateParams) {

@@ -135,7 +135,7 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
 	
 	// visual
 	.state("app.panel.visual", {
-		url: "/{grid}",
+		url: "/{group}/{grid}",
 		views: {
 			"visual": {
 				templateProvider: function($http, $stateParams) {

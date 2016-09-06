@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** bar-chart directive STYLE ***************************************/
+
+/* bar chart directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !bar chart
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/***********************/
+/***** !bar chart ******/
+/***********************/
+
+/* bar */
+bar-chart rect {
+    
+    fill: currentColor;
+    
+}
+
+/* label */
+
+bar-chart text {
+    
+    fill: currentColor;
+    
+}
+
+/* vertical labels */
+bar-chart svg[data-orientation="vertical"] text {
+    
+    text-anchor: middle;
+    
+}

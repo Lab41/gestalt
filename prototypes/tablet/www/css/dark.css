@@ -210,14 +210,22 @@ ion-content section:nth-child(even) {
 /***** !group nodes ******/
 /**************************/
 
-group-nodes .node {
+/* node */
+group-nodes .node .shape {
 	
 	fill: #444b5a;
 	
 }
 
+/* link */
+group-nodes .link {
+    
+    stroke: #444b5a;
+    
+}
+
 /* node label */
-group-nodes .node text {
+group-nodes .node .label {
     
     fill: rgb(244,244,244);
     

@@ -12,8 +12,8 @@ urls = (
     
     # rest API backend endpoints
     "flows/unique_targets/(.*)/", "flows",
+    "network/metrics/(.*)/", "metrics",
 	"countries/groups/", "node_groups",
-    "network/health/", "network_health",
 	"geojson/(.*)/", "geojson",
     "(.*)/", "nodes"
     
@@ -27,19 +27,21 @@ class flows:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-		select gn.name as source_name,
+        select gn.name as source_name,
 		cy.iso2code as source,
 		gnt.name as target_name,
 		cyt.iso2code as target,
+		cy.id as source_id,
 		count(cdis.target_id) as value
-		from gestalt_cdis cdis
-		left join gestalt_geography_name gn on gn.id = cdis.source_id
-		left join gestalt_geography_name gnt on gnt.id = cdis.target_id
-		left join gestalt_country cy on cy.id = cdis.source_id
-		left join gestalt_country cyt on cyt.id = cdis.target_id
+		from """ + helper.table_prefix + """cdis cdis
+		left join """ + helper.table_prefix + """geography_name gn on gn.id = cdis.source_id
+		left join """ + helper.table_prefix + """geography_name gnt on gnt.id = cdis.target_id
+		left join """ + helper.table_prefix + """country cy on cy.id = cdis.source_id
+		left join """ + helper.table_prefix + """country cyt on cyt.id = cdis.target_id
 		where source_id = """ + source_id + """ and cyt.iso2code is not null
 		group by gn.name,
 		cy.iso2code,
+		cy.id,
 		gnt.name,
 		cyt.iso2code
         """)
@@ -48,39 +50,28 @@ class flows:
         # convert data to a string
         return json.dumps(data)
     
-class network_health:
-    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        
-		data = {}
-		metrics_list = []
-		sentences_list = get_sentences(5)
-        
-		for i in range(4):
-            
-			obj = {}
-			obj["name"] = "attribute " + str(i)
-			obj["value"] = randint(0,500) 
-            
-			metrics_list.append(obj)
-		
-		sentences_list.insert(0, "Would like to use Narrative Science here.")
-		data["metrics"] = metrics_list
-		data["text"] = sentences_list
-        
-		return json.dumps(data)
+class metrics:
+    def GET(self, group_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
-        #connection = psycopg2.connect(connection_string)
+        connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
-        #self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
-        #self.cursor.execute("""
-        #select *
-        #from gestalt_network_health;
-        #""")
-        ## obtain the data
-        #data = self.cursor.fetchall()
+        self.cursor.execute("""
+        select nm.*,
+        array_agg(row_to_json(m)) as metrics
+        from """ + helper.table_prefix + """network_metrics nm
+        left join (
+        select m.*
+        from """ + helper.table_prefix + """network_metrics_values m
+        ) m on m.group_id = nm.group_id
+        where nm.group_id = """ + group_id + """ 
+        group by nm.id;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
         # convert data to a string
-        #return json.dumps(data)
+        return json.dumps(data)
  
 class nodes:
     def GET(self, table, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
@@ -94,10 +85,10 @@ class nodes:
 		cy.iso2code as iso,
 		cy.id,
 		count(distinct cdis.target_id) as count
-		from gestalt_country cy 
-		left join gestalt_geography_name gn on gn.id = cy.name_id
-		left join gestalt_geography geo on geo.name_id = cy.name_id
-		left join gestalt_cdis cdis on source_id = cy.id
+		from """ + helper.table_prefix + """country cy 
+		left join """ + helper.table_prefix + """geography_name gn on gn.id = cy.name_id
+		left join """ + helper.table_prefix + """geography geo on geo.name_id = cy.name_id
+		left join """ + helper.table_prefix + """cdis cdis on source_id = cy.id
 		group by gn.name,
 		cy.iso2code,
 		cy.id
@@ -118,7 +109,7 @@ class node_groups:
 select g.*,
 	array_agg(row_to_json(s)) as subgroups
 
-from gestalt_group g
+from """ + helper.table_prefix + """group g
 
 left join (
 
@@ -136,17 +127,17 @@ left join (
 	geo.hexagon_center_y as center_y,
 	array_agg(row_to_json(n)) as nodes
 
-	from gestalt_subgroup sg
+	from """ + helper.table_prefix + """subgroup sg
 
-	left join gestalt_geography_name gn on gn.id = sg.name_id
+	left join """ + helper.table_prefix + """geography_name gn on gn.id = sg.name_id
 
-	left join gestalt_subgroup_name sgn on sgn.id = sg.name_id
+	left join """ + helper.table_prefix + """subgroup_name sgn on sgn.id = sg.name_id
 
-	left join gestalt_group g on g.id = sg.group_id
+	left join """ + helper.table_prefix + """group g on g.id = sg.group_id
 
-	left join gestalt_group_type gt on gt.id = g.type_id
+	left join """ + helper.table_prefix + """group_type gt on gt.id = g.type_id
 
-	left join gestalt_geography geo on geo.name_id = sg.name_id and gt.id = 1
+	left join """ + helper.table_prefix + """geography geo on geo.name_id = sg.name_id and gt.id = 1
 
 	left join (
 
@@ -154,9 +145,9 @@ left join (
 			gcy.id,
 			gcy.iso2code as iso
 
-		from gestalt_country gcy
+		from """ + helper.table_prefix + """country gcy
 
-		left join gestalt_geography_name gn on gn.id = gcy.name_id
+		left join """ + helper.table_prefix + """geography_name gn on gn.id = gcy.name_id
 
 	) n on n.id = sg.country_id
 
@@ -202,18 +193,18 @@ from (
 	row_to_json(c) as geometry 
 	
 	from t,
-		gestalt_geography geo 
+		""" + helper.table_prefix + """geography geo 
 	
 	left join (
 		select geo.id,
 gn.name,
 cy.iso2code as iso
 
-from gestalt_geography geo
+from """ + helper.table_prefix + """geography geo
 
-left join gestalt_geography_name gn on gn.id = geo.name_id
+left join """ + helper.table_prefix + """geography_name gn on gn.id = geo.name_id
 
-left join gestalt_country cy on cy.id = geo.name_id
+left join """ + helper.table_prefix + """country cy on cy.id = geo.name_id
 		
 		) f on f.id = geo.id 
 		
@@ -227,7 +218,7 @@ left join gestalt_country cy on cy.id = geo.name_id
 	geo.hexagon_polygon as coordinates 
 	
 	from t,
-	gestalt_geography geo
+	""" + helper.table_prefix + """geography geo
 	
 	) c on c.coordinates = geo.hexagon_polygon 
 

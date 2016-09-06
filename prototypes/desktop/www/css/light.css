@@ -149,14 +149,21 @@ slide-panel section.right {
 /**************************/
 
 /* node */
-group-nodes .node circle {
+group-nodes .node .shape {
 	
 	fill: #667080;
 	
 }
 
+/* link */
+group-nodes .link {
+    
+    stroke: #667080;
+    
+}
+
 /* node label */
-group-nodes .node text {
+group-nodes .node .label {
     
     fill: rgb(244,244,244);
     
