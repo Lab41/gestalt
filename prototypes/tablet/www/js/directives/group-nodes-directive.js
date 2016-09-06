@@ -52,7 +52,6 @@ angular.module("group-nodes-directive", [])
 				var force = d3.layout.force()
 					//.charge(charge.default)
                     //.charge(function(d, i) {return i ? 0 : -2000;})
-					//.charge(function(d, i) { return i==0 ? -10000 : -500; }) // for central node with links
 					.charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
 					.gravity(-0.01)
   					.friction(0.9)
@@ -110,6 +109,8 @@ angular.module("group-nodes-directive", [])
 								
 								// network health
                                 contentService.getData("visualization/flows/unique_targets/" + d.id + "/").then(function(data) {
+                                    
+                                    var sourceId = d.id;
 
                                     // map raw links to d3 index-specific objects for layout algorithm
 									// 3rd param is the connector key in the raw data that connects nodes
@@ -154,11 +155,13 @@ angular.module("group-nodes-directive", [])
 									};
 									
 									links = mapLinks(data, nodes, "iso"); // remap links b/c d3 wants use an index to connect nodes
-
-									force.links(links)
-										.charge(-10)
+                                    
+									force
+                                        .nodes(nodes)
+                                        .links(links)
+										.charge(function(d, i) { return d.id == sourceId ? -150 : -50; }) // for central node with links
 										.friction(0.9)
-										.linkDistance(10);
+										.linkDistance(20);
 									
 									// update viz
 									updateLinks();
@@ -171,7 +174,7 @@ angular.module("group-nodes-directive", [])
                             function clusterNodes() {
                                 
                                 // network health
-                                contentService.getData("visualization/network/health/").then(function(data) {
+                                contentService.getData("visualization/network/metrics/").then(function(data) {
 
                                     // set scope
                                     scope.$parent.healthMetrics = data;
@@ -499,7 +502,7 @@ angular.module("group-nodes-directive", [])
 									.transition()
 									.duration(transition.time)
 									.attr({
-										class: "node",
+										class: function(d) { return d.count == 0 ? "node inactive" : "node" },
 										id: function(d) { return "node-" + d.id; }
 									})
 									.each(function(d) {
@@ -513,7 +516,7 @@ angular.module("group-nodes-directive", [])
 									.enter()
 									.append("g")
 									.attr({
-										class: "node",
+										class: function(d) { return d.count == 0 ? "node inactive" : "node" },
 										id: function(d) { return "node-" + d.id; }
 									})
 									.each(function(d) {

@@ -3,12 +3,13 @@ angular.module("viz-controller", [])
 .controller("vizCtrl", ["$scope", "contentService", "$state", function($scope, contentService, $state) {
 	
 	var grid = $state.params.grid;
+    var groupId = $state.params.group;
         
 	// data objects
 	$scope.nodes;
 	$scope.nodeGroups;
 	$scope.geojson;
-    $scope.healthMetrics;
+    $scope.networkMetrics;
     
     // country nodes
 	contentService.getData("visualization/cdis/").then(function(data) {
@@ -35,10 +36,10 @@ angular.module("viz-controller", [])
 	});
     
     // network health
-    contentService.getData("visualization/network/health/").then(function(data) {
+    contentService.getData("visualization/network/metrics/" + groupId + "/").then(function(data) {
 		
 		// set scope
-		$scope.healthMetrics = data;
+		$scope.networkMetrics = data[0];
 		
 	});
     
