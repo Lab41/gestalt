@@ -236,8 +236,8 @@ CREATE TABLE gestalt_story_vis (
 
 CREATE TABLE gestalt_vis_code_attr (
     vis_id INTEGER PRIMARY KEY,
-    viz_data TEXT DEFAULT NULL,
-    is_viz_data_required BOOLEAN DEFAULT FALSE,
+    vis_data TEXT DEFAULT NULL,
+    is_vis_data_required BOOLEAN DEFAULT FALSE,
     canvas_width TEXT DEFAULT NULL,
     is_canvas_width_required BOOLEAN DEFAULT FALSE,
     canvas_height TEXT DEFAULT NULL,

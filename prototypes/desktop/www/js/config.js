@@ -1,7 +1,8 @@
 // configure development API
 var api_config = {
 	content_uri : "api/data/",
-    layout_uri : "api/workspace/",
+    layout_workspace_uri : "api/workspace/",
+    layout_panel_uri: "api/panel/",
     authentication_uri : "api/persona/"
 }; 
 

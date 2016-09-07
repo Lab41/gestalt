@@ -12,3 +12,11 @@ DROP TABLE gestalt_workspace_tag;
 DROP TABLE gestalt_vis;
 DROP TABLE gestalt_vis_code_attr;
 DROP TABLE gestalt_dataset_type;
+
+DROP TABLE gestalt_cdis;
+DROP TABLE gestalt_cpis;
+DROP TABLE gestalt_geography;
+DROP TABLE gestalt_geography_type;
+DROP TABLE gestalt_group;
+DROP TABLE gestalt_group_member;
+DROP TABLE gestalt_group_type;

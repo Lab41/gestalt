@@ -8,14 +8,14 @@ import helper
 
 urls = (
 
-    # 0.0.0.0:8000/api/persona/
-    "", "all_personas",
-    # 0.0.0.0:8000/api/persona/#/, where # == persona.id
-    "(\d+)/", "single_persona",
+    # 0.0.0.0:8000/api/persona/getAllPersonas
+    "getAllPersonas", "getAllPersonas",
+    # 0.0.0.0:8000/api/persona/getSinglePersona/#, where # == persona.id
+    "getSinglePersona/(\d+)", "getSinglePersona",
     
 )
         
-class all_personas:
+class getAllPersonas:
     """ Extract all the personas.
     output:
         * persona.id
@@ -36,7 +36,7 @@ class all_personas:
         # convert data to a string
         return json.dumps(data)
 
-class single_persona:
+class getSinglePersona:
     """ Extract a persona with a specific id.
     input:
         * persona.id

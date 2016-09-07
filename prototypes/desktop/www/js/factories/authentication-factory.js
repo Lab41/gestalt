@@ -12,10 +12,14 @@
 
     // define the factory
     function authenticationFactory($http, $log, $rootScope, $window) {
-        // for backend
-        var backendBaseUrl = api_config.authentication_uri; 
+        // --------------------------------------------------------------------
+        // for backend 
+        var backendBaseUrl = api_config.authentication_uri;
+        var getAllPersonasUrl = backendBaseUrl + "getAllPersonas";
+        var getSinglePersonaUrl = backendBaseUrl + "getSinglePersona"
 
-        // for local storage
+        // --------------------------------------------------------------------
+        // for local storage 
         var currentPersonaId = "currentGestaltPersona";
         // ensure that view is the same when application is opened in multiple tabs
         angular.element($window).on("storage", function(event) {
@@ -23,31 +27,45 @@
                 $rootScope.$apply();
             }
         });                            
-        
+
+        // --------------------------------------------------------------------
         // return an authenticationFactory instance
-        return {
-                        
-            callBackend: function(backendUrl = "") {
-                var backendAbsoluteUrl = backendBaseUrl + backendUrl;
-                $log.log("****** GET " + backendAbsoluteUrl + " ******");
-                return $http.get(backendAbsoluteUrl)
-                            .then(function(backendResponse) { return backendResponse.data; });
-            },
+        var authenticationFactory = {
+            getListOfPersonas: getListOfPersonas,
+            setPersonaId: setPersonaId,
+            getPersonaId: getPersonaId,
+            unsetPersonaId: unsetPersonaId
+        }
+        return authenticationFactory;
 
-            // in our case, the credential is the personaId which will tell us who the current persona is
-            setPersonaId: function(personaId) {
-                $window.localStorage && $window.localStorage.setItem(currentPersonaId, personaId);
-            },
+        // --------------------------------------------------------------------
+        // function definition used in factory instance
+        function callBackend(backendUrl) {
+            $log.log("****** GET " + backendUrl + " ******");
+            return $http.get(backendUrl)
+                        .then(function(backendResponse) { return backendResponse.data; });
+        }
 
-            getPersonaId: function() {
-                return $window.localStorage && $window.localStorage.getItem(currentPersonaId);
-            },
+        function getListOfPersonas() {
+            return callBackend(getAllPersonasUrl);
+        }
 
-            unsetPersonaId: function() {
-                $window.localStorage && $window.localStorage.removeItem(currentPersonaId);
-            },            
-            
-        };
+        function getPersona(personaId) {
+            return callBackend(getSinglePersonaUrl + "/" + personaId);
+        }
+
+        // in our case, the credential is the personaId which will tell us who the current persona is
+        function setPersonaId(personaId) {
+            $window.localStorage && $window.localStorage.setItem(currentPersonaId, personaId);
+        }
+
+        function getPersonaId() {
+            return $window.localStorage && $window.localStorage.getItem(currentPersonaId);
+        }
+
+        function unsetPersonaId() {
+            $window.localStorage && $window.localStorage.removeItem(currentPersonaId);
+        }
 
     }
 

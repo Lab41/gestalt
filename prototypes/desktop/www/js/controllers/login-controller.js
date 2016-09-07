@@ -12,56 +12,61 @@
 
     // define the controller
     function loginController($scope, $state, authenticationFactory, layoutFactory) {
+        // --------------------------------------------------------------------
         // define bindable members
-        $scope.listOfPersonas;
+        $scope.listOfPersonas = [];
         $scope.login = login;
-
+        
+        // --------------------------------------------------------------------
         // call functions
-        getListOfPersonas();
+        activate(); 
 
+        // --------------------------------------------------------------------
         // define functions
-        function getListOfPersonas() {
-            authenticationFactory.callBackend()
-                .then(function(listOfPersonas){ 
-                    $scope.listOfPersonas = listOfPersonas; 
-                });
+        function activate() {
+            // get list of personas to be displayed
+            authenticationFactory.getListOfPersonas()
+                                 .then(function(listOfPersonas) { 
+                                    $scope.listOfPersonas = listOfPersonas; 
+                                 });
+
         }
 
         function login(personaId) {
-            authenticationFactory.setPersonaId(personaId);
-
-            /*
-            var defaultWorkspace = layoutFactory.getDefaultWorkspace(personaId);
-            var defaultPanel = layoutFactory.getDefaultPanel(defaultWorkspaceId);
-
-            console.log("defaultWorkspace: " + defaultWorkspace);
-
-            // transition to default workspace
-            $state.go("app.panel.visual", {
-                workspace: defaultWorkspace.id,
-                panel: defaultPanel.id,
-                grid: visual_config.tilemap
-            });
-            */
-           
-            var endpoint = "persona/" + personaId +  "/";
-            var objs = { multi: "workspaces", single: "workspace" };
-            var check = { key: "is_default", value: true };
-            
-            // get single workspace
-            layoutFactory.getStructure(true, objs, endpoint, check).then(function(singleWorkspace) {
-
-                var workspace = singleWorkspace;
-
-                // transition to default workspace
+            var getDefaultWorkspace = function(personaId) {
+                // get the persona's default workspace to be passed in to the transition function
+                return layoutFactory.getDefaultWorkspace(personaId) 
+                                    .then(function(defaultWorkspace) {
+                                        return defaultWorkspace.id;
+                                    });
+            };
+            var getDefaultPanel = function(workspaceId) {
+                console.log("getDefaultPanel");
+                // get the workspace's default panel to be passed in to the transition function
+                return layoutFactory.getDefaultPanel(workspaceId) 
+                                    .then(function(defaultPanel) {
+                                        console.log("workspaceId: " + workspaceId);
+                                        console.log("defaultPanel.id: " + defaultPanel.id);
+                                        return workspaceId, defaultPanel.id;
+                                    });
+            };
+            var transition = function(defaultWorkspaceId, defaultPanelId) {
+                console.log("transition");
+                // transition to the persona's default workspace and the workspace's default panel
                 $state.go("app.panel.visual", {
-                    workspace: workspace.url_name,
-                    panel: workspace.default_panel,
+                    workspace: defaultWorkspaceId,
+                    panel: defaultPanelId,
                     grid: visual_config.tilemap
                 });
 
-            });
-                
+            };
+
+            //identify the current persona by setting its id
+            authenticationFactory.setPersonaId(personaId);
+            getDefaultWorkspace(personaId)
+                .then(getDefaultPanel)
+                .then(transition);
+        
         }
 
     }
