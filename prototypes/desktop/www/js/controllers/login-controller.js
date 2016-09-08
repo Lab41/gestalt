@@ -12,27 +12,30 @@
 
     // define the controller
     function loginController($scope, $state, authenticationFactory, layoutFactory) {
+        console.log("")
+
         // --------------------------------------------------------------------
         // define bindable members
         $scope.listOfPersonas = [];
         $scope.login = login;
-        
-        // --------------------------------------------------------------------
+
+        // ----------------------------- F---------------------------------------
         // call functions
         activate(); 
 
         // --------------------------------------------------------------------
         // define functions
         function activate() {
-            // get list of personas to be displayed
-            authenticationFactory.getListOfPersonas()
+            // get a list of all personas to be displayed
+            authenticationFactory.getAllPersonas()
                                  .then(function(listOfPersonas) { 
                                     $scope.listOfPersonas = listOfPersonas; 
                                  });
 
         }
 
-        function login(personaId) {
+        function login(personaId, personaName) {
+            // TODO: refactor this because the functionality is similar to slide-panel-directive's changeWorkspace function         
             var getDefaultWorkspace = function(personaId) {
                 // get the persona's default workspace to be passed in to the transition function
                 return layoutFactory.getDefaultWorkspace(personaId) 
@@ -41,28 +44,31 @@
                                     });
             };
             var getDefaultPanel = function(workspaceId) {
-                console.log("getDefaultPanel");
                 // get the workspace's default panel to be passed in to the transition function
                 return layoutFactory.getDefaultPanel(workspaceId) 
                                     .then(function(defaultPanel) {
-                                        console.log("workspaceId: " + workspaceId);
-                                        console.log("defaultPanel.id: " + defaultPanel.id);
                                         return workspaceId, defaultPanel.id;
                                     });
             };
-            var transition = function(defaultWorkspaceId, defaultPanelId) {
-                console.log("transition");
+            var transition = function(workspaceId, panelId) {
+                // set current persona
+                authenticationFactory.setCurrentPersona(personaId, personaName);
+                // set current workspace
+                layoutFactory.setCurrentWorkspaceId(workspaceId);
+                // set current panel
+                layoutFactory.setCurrentPanelId(panelId);
+
                 // transition to the persona's default workspace and the workspace's default panel
                 $state.go("app.panel.visual", {
-                    workspace: defaultWorkspaceId,
-                    panel: defaultPanelId,
+                    workspace: workspaceId,
+                    panel: panelId,
                     grid: visual_config.tilemap
                 });
 
             };
 
-            //identify the current persona by setting its id
-            authenticationFactory.setPersonaId(personaId);
+            // get the persona's default workspace and the workspace's default panel 
+            // in order to transition
             getDefaultWorkspace(personaId)
                 .then(getDefaultPanel)
                 .then(transition);

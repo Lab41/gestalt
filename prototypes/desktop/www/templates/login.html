@@ -10,7 +10,7 @@
             
             <!-- PERSONA -->
             <div ng-repeat="persona in listOfPersonas"
-                 ng-click="login(persona.id);">
+                 ng-click="login(persona.id, persona.name);">
                 <p>{{ persona.name }}</p>
                 <p>{{ persona.description }}</p>
             </div>

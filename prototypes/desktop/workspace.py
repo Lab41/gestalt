@@ -8,8 +8,10 @@ import helper
 
 urls = (
 
-    # 0.0.0.0:8000/api/workspace/getDefaultWorkspace/#, where # == persona.id
+    # 0.0.0.0:8000/api/workspace/getDefaultWorkspaceByPersona/#, where # == persona.id
     "getDefaultWorkspaceByPersona/(\d+)", "getDefaultWorkspaceByPersona",
+    # 0.0.0.0:8000/api/workspace/getAllWorkspacesByPersona/#, where # == persona.id
+    "getAllWorkspacesByPersona/(\d+)", "getAllWorkspacesByPersona", 
 
 )
 
@@ -39,6 +41,36 @@ class getDefaultWorkspaceByPersona:
             AND w.persona_id = """ + persona_id + """ 
             AND w.is_default IS TRUE
             ORDER BY w.id;        
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+
+class getAllWorkspacesByPersona:
+    """ Extract all workspaces for a particular persona.
+    input:
+        * persona.id
+    output:
+        * workspace.id
+        * workspace.name
+        * workspace.url_name
+    """
+    def GET(self, persona_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT w.id, wn.name, w.url_name
+            FROM gestalt_workspace AS w
+            LEFT JOIN gestalt_workspace_name AS wn
+            ON w.workspace_name_id = wn.id
+            WHERE w.id IS NOT NULL 
+            AND w.persona_id = """ + persona_id + """ 
+            ORDER BY wn.name;        
         """)
         # obtain the data
         data = self.cursor.fetchall()

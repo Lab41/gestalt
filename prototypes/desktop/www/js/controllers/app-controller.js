@@ -8,100 +8,97 @@
         .controller("appController", appController);
 
     // add additional services to be used within the controller
-    appController.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "authenticationFactory", "layoutFactory"];
+    appController.$inject = ["$rootScope", "$scope", "$stateParams", "authenticationFactory", "layoutFactory"];
 
     // define the controller
-    function appController($rootScope, $scope, $state, $stateParams, authenticationFactory, layoutFactory) {
-    
-        var workspaceParam = $stateParams.workspace;
-        var panelID = $stateParams.panel;
-        var theme = $stateParams.t;
-        
-        // data objects
-        $scope.panels;
-        $scope.panel;
-        $scope.user;
-        $scope.workspaces;
-        $scope.workspace;
-        $scope.workspaceParam = workspaceParam;
+    function appController($rootScope, $scope, $stateParams, authenticationFactory, layoutFactory) {
+        // --------------------------------------------------------------------
+        // define bindable members
+        // * slide panel
         $scope.leftVisible = false;
         $scope.rightVisible = false;
-        
-        function setScope(personaId, workspaces, workspace, panels) {
-            
-            // set scope
-            $scope.personaId = personaId;
-            $scope.workspaces = workspaces;
-            $scope.workspace = workspace;
-            $scope.panels = panels;
-            
-            // set menu content
-            $scope.menu = {
-                personaId: personaId,
-                theme: $scope.$parent.theme,
-                workspaces: workspaces,
-                workspaceParam: workspaceParam
-            };
-            
-        };
-        
-        // get credentials from local storage
-        var personaId = authenticationFactory.getPersonaId();
-            
-        var endpoint = "persona/" + personaId + "/";
-        var objs = { multi: "workspaces", single: "workspace" };
-        var check = { key: "url_name", value: workspaceParam };
+        $scope.showLeft = showLeft;
+        $scope.showRight = showRight;
+        $scope.close = close;
+        $scope.slidePanelContent = {};
 
-        // get workspaces
-        layoutFactory.getStructures(endpoint, objs).then(function(allWorkspaces) {
-            
-            var workspaces = allWorkspaces;
-            
-            // get single workspace
-            layoutFactory.getStructure(workspaceParam, objs, workspaceParam + "/", check).then(function(singleWorkspace) {
-                
-                var workspace = singleWorkspace;
-                var objs = { multi: "panels", single: "panel" };
-                
-                // get single workspace panels
-                layoutFactory.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
-                    
-                    var panels = workspacePanels;
-                    
-                    // set scope
-                    setScope(personaId, workspaces, workspace, panels);
-                    
-                });
-                
-            });
+        // --------------------------------------------------------------------
+        // call functions
+        activate(); 
 
-        });
+        // --------------------------------------------------------------------
+        // define functions
+        function activate() {
+            addInteractivityToSlidePanel();
+            addSlidePanelContent();   
+        }
 
-        
-        function _close() {
-            $scope.$apply(function() {
-                $scope.closePanel(); 
-            });
-        };
-
-        $scope.closePanel = function() {
-            $scope.leftVisible = false;
-            $scope.rightVisible = false;
-        };
-
-        $scope.showLeft = function(event) {
+        // * slide panel
+        function showLeft(event) {
             $scope.leftVisible = true;
             event.stopPropagation();
-        };
+        }
 
-        $scope.showRight = function(event) {
+        function showRight(event) {
             $scope.rightVisible = true;
             event.stopPropagation();
-        };
+        }
 
-        $rootScope.$on("documentClicked", _close);
-        $rootScope.$on("escapedPressed", _close);
-    
+        function closePanel() {
+            $scope.leftVisible = false;
+            $scope.rightVisible = false;
+        }
+
+        function addInteractivityToSlidePanel() {
+
+            function _close() {
+                $scope.$apply(function() {
+                    closePanel();
+                });
+            }
+
+            $rootScope.$on("documentClicked", _close);
+            $rootScope.$on("escapedPressed", _close);
+
+        }
+
+        function addSlidePanelContent() {
+            /**
+             * Slide panel requires the following information:
+             * - current persona's name
+             * - current theme
+             * - current workspace
+             * - workspaces associated with current persona
+             */
+            var getListOfWorkspaces = function() {
+                return layoutFactory.getAllWorkspaces(currentPersona.id)
+                                    .then(function(listOfWorkspaces) {
+                                        return listOfWorkspaces
+                                    });
+
+            };
+            var setSlidePanelContent = function(listOfWorkspaces) {
+                $scope.slidePanelContent = {
+                    currentPersona: currentPersona.name,
+                    theme: $scope.$parent.theme,
+                    currentWorkspaceId: layoutFactory.getCurrentWorkspaceId(),
+                    listOfWorkspaces: listOfWorkspaces
+                };
+
+            };
+
+            // get all workspaces associated with the current persona 
+            // in order to fill the content of the slide panel 
+            var currentPersona = authenticationFactory.getCurrentPersona();
+            getListOfWorkspaces()         
+                .then(setSlidePanelContent);
+
+
+        }
+
+
+
+
     }
 
 })();

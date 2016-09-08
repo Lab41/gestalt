@@ -15,6 +15,7 @@
         
         console.log("in panel-controller");
 
+        /*
         var workspaceParam = $stateParams.workspace;
         var panelParam = $stateParams.panel;
     	
@@ -38,6 +39,7 @@
             });
 
         }); 
+        */
     	
     }
 

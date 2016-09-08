@@ -14,16 +14,28 @@
     function layoutFactory($http, $log) {
         // --------------------------------------------------------------------
         // for backend
+        // -- workspace
         var workspaceBackendBaseUrl = api_config.layout_workspace_uri;
-        var panelBackendBaseUrl = api_config.layout_panel_uri;
         var getDefaultWorkspaceUrl = workspaceBackendBaseUrl + "getDefaultWorkspaceByPersona";
+        var getAllWorkspacesUrl = workspaceBackendBaseUrl + "getAllWorkspacesByPersona";
+        // -- panel
+        var panelBackendBaseUrl = api_config.layout_panel_uri;
         var getDefaultPanelUrl = panelBackendBaseUrl + "getDefaultPanelByWorkspace";
-        
+        // -- storage (TODO: figure out a better way to handle this)
+        var currentWorkspaceId;
+        var currentPanelId;
+
         // --------------------------------------------------------------------
         // return a layoutFactory instance
         var layoutFactory = {
             getDefaultWorkspace: getDefaultWorkspace,
-            getDefaultPanel: getDefaultPanel
+            getDefaultPanel: getDefaultPanel,
+            getAllWorkspaces: getAllWorkspaces,
+            setCurrentWorkspaceId: setCurrentWorkspaceId,
+            getCurrentWorkspaceId: getCurrentWorkspaceId,
+            setCurrentPanelId: setCurrentPanelId,
+            getCurrentPanelId: getCurrentPanelId,
+            cleanup: cleanup
         }
         return layoutFactory;
 
@@ -36,19 +48,52 @@
         }
 
         function getDefaultWorkspace(personaId) {
-            // TODO: verify first that there is only one default workspace
+            // TODO: verify first that there is only one default workspace and handle it if there's none
             return callBackend(getDefaultWorkspaceUrl + "/" + personaId).then(function(listOfDefaultWorkspaces){
                 return listOfDefaultWorkspaces[0];
             });
         }
 
         function getDefaultPanel(workspaceId) {
-            // TODO: verify first that there is only one default panel
+            // TODO: verify first that there is only one default panel and handle it if there's none
             return callBackend(getDefaultPanelUrl + "/" + workspaceId).then(function(listOfDefaultPanels){
                 return listOfDefaultPanels[0];
             });
         }
-        
+
+        function getAllWorkspaces(personaId) {
+            return callBackend(getAllWorkspacesUrl + "/" + personaId);
+        }
+
+        function setCurrentWorkspaceId(workspaceId) {
+            currentWorkspaceId = workspaceId;
+        }
+
+        function getCurrentWorkspaceId() {
+            return currentWorkspaceId;
+        }
+
+        function unsetCurrentWorkspaceId() {
+            currentWorkspaceId = null;
+        }
+
+        function setCurrentPanelId(panelId) {
+            currentPanelId = panelId;
+        }
+
+        function getCurrentPanelId() {
+            return currentPanelId;
+        }
+
+        function unsetCurrentPanelId() {
+            currentPanelId = null;
+        }
+
+        function cleanup() {
+            unsetCurrentWorkspace();
+            unsetCurrentPanel();
+        }
+
     }
 
 })();

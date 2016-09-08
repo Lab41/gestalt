@@ -16,14 +16,14 @@
         // for backend 
         var backendBaseUrl = api_config.authentication_uri;
         var getAllPersonasUrl = backendBaseUrl + "getAllPersonas";
-        var getSinglePersonaUrl = backendBaseUrl + "getSinglePersona"
+        var getSinglePersonaUrl = backendBaseUrl + "getSinglePersona";
 
         // --------------------------------------------------------------------
         // for local storage 
-        var currentPersonaId = "currentGestaltPersona";
+        var currentPersonaInLocalStorage = "currentGestaltPersona";
         // ensure that view is the same when application is opened in multiple tabs
         angular.element($window).on("storage", function(event) {
-            if(event.key === currentPersonaId) {
+            if(event.key === currentPersonaInLocalStorage) {
                 $rootScope.$apply();
             }
         });                            
@@ -31,10 +31,11 @@
         // --------------------------------------------------------------------
         // return an authenticationFactory instance
         var authenticationFactory = {
-            getListOfPersonas: getListOfPersonas,
-            setPersonaId: setPersonaId,
-            getPersonaId: getPersonaId,
-            unsetPersonaId: unsetPersonaId
+            getAllPersonas: getAllPersonas,
+            setCurrentPersona: setCurrentPersona,
+            getCurrentPersona: getCurrentPersona,
+            unsetCurrentPersona: unsetCurrentPersona,
+            cleanup: cleanup
         }
         return authenticationFactory;
 
@@ -46,25 +47,33 @@
                         .then(function(backendResponse) { return backendResponse.data; });
         }
 
-        function getListOfPersonas() {
+        function getAllPersonas() {
             return callBackend(getAllPersonasUrl);
         }
 
         function getPersona(personaId) {
+            // available but NOT USED 
             return callBackend(getSinglePersonaUrl + "/" + personaId);
         }
 
-        // in our case, the credential is the personaId which will tell us who the current persona is
-        function setPersonaId(personaId) {
-            $window.localStorage && $window.localStorage.setItem(currentPersonaId, personaId);
+        function setCurrentPersona(personaId, personaName) {
+            var currentPersona = {
+                id: personaId,
+                name: personaName
+            };
+            $window.localStorage && $window.localStorage.setItem(currentPersonaInLocalStorage, JSON.stringify(currentPersona));
         }
 
-        function getPersonaId() {
-            return $window.localStorage && $window.localStorage.getItem(currentPersonaId);
+        function getCurrentPersona() {
+            return JSON.parse($window.localStorage && $window.localStorage.getItem(currentPersonaInLocalStorage));
         }
 
-        function unsetPersonaId() {
-            $window.localStorage && $window.localStorage.removeItem(currentPersonaId);
+        function unsetCurrentPersona() {
+            $window.localStorage && $window.localStorage.removeItem(currentPersonaInLocalStorage);
+        }
+
+        function cleanup() {
+            unsetCurrentPersona();
         }
 
     }

@@ -7,7 +7,7 @@
     
 <!-- USER PERSONA -->
 <p class="user">
-    <span>{{ content.user.user }}</span>
+    <span>{{ content.currentPersona }}</span>
     <span ng-click="logout();">Logout</span>
 </p>
 
@@ -26,7 +26,7 @@
 <!-- WORKSPACES -->
 <div class="item item-divider">Explore</div>
 
-<div ng-repeat="workspace in content.workspaces"
+<div ng-repeat="workspace in content.listOfWorkspaces"
           class="item menu-item"
-          ng-class="{ 'active': content.workspaceParam == workspace.url_name }"
-          ng-click="changeWorkspace(workspace.id, workspace.url_name, workspace.default_panel, workspace.persona_id, workspace.default_vis);">{{ workspace.name }}</div>
+          ng-class="{ 'active': content.currentWorkspaceId == workspace.id }"
+          ng-click="changeWorkspace(workspace.id);">{{ workspace.name }}</div>
