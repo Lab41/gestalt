@@ -29,4 +29,4 @@
 <div ng-repeat="workspace in content.listOfWorkspaces"
           class="item menu-item"
           ng-class="{ 'active': content.currentWorkspaceId == workspace.id }"
-          ng-click="changeWorkspace(workspace.id);">{{ workspace.name }}</div>
+          ng-click="changeWorkspace(workspace.id, workspace.url_name);">{{ workspace.name }}</div>

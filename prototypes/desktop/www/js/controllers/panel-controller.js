@@ -8,38 +8,36 @@
         .controller("panelController", panelController);
 
     // add additional services to be used within the controller
-    panelController.$inject = ["$rootScope", "$scope",  "$state", "$stateParams", "authenticationFactory", "contentFactory", "layoutFactory"];
+    panelController.$inject = ["$scope", "$stateParams", "authenticationFactory", "contentFactory", "layoutFactory"];
 
     // define the controller
-    function panelController($rootScope, $scope, $state, $stateParams, authenticationFactory, contentFactory, layoutFactory) {
-        
-        console.log("in panel-controller");
+    function panelController($scope, $stateParams, authenticationFactory, contentFactory, layoutFactory) {
+        // --------------------------------------------------------------------
+        // define bindable members
+        $scope.listOfStories = [];
 
-        /*
-        var workspaceParam = $stateParams.workspace;
-        var panelParam = $stateParams.panel;
-    	
-    	// data objects
-    	$scope.content;
-        
-        //function setPanel(panelParam, workspace, user) {
-        var objs = { multi: "panels", single: "panel" };
-        var endpoint = workspaceParam + "/panels/";
-        var check = { key: "url_name", value: panelParam };
+        // --------------------------------------------------------------------
+        // call functions   
+        activate();
 
-        // pull panel from stored panels in service
-        layoutFactory.getStructure(panelParam, objs, endpoint, check).then(function(panelData) {
+        // --------------------------------------------------------------------
+        // define functions    
+        function activate() {
+            var currentPersonaId = authenticationFactory.getCurrentPersona().id;
+            var currentPanelId = layoutFactory.getCurrentPanel().id;
+            
+            // get all stories from a panel
+            getListOfStories(currentPersonaId, currentPanelId);
 
-            // get all stories for panel and persona
-            contentFactory.getData("story/persona/" + panelData.persona_id + "/panel/" + panelData.panel_id + "/").then(function(data) {
+        }
 
-                // set scope
-                $scope.content = data;
-
-            });
-
-        }); 
-        */
+        function getListOfStories(personaId, panelId) {
+            contentFactory.getListOfStories(personaId, panelId)
+                          .then(function(listOfStories) {
+                                $scope.listOfStories = listOfStories;
+                          });
+                          
+        }
     	
     }
 

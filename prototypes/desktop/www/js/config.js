@@ -1,9 +1,10 @@
 // configure development API
 var api_config = {
-	content_uri : "api/data/",
+    authentication_uri : "api/persona/",
     layout_workspace_uri : "api/workspace/",
     layout_panel_uri: "api/panel/",
-    authentication_uri : "api/persona/"
+    content_story_uri : "api/story/",
+    content_vis_uri: "api/vis/"
 }; 
 
 // mapbox development

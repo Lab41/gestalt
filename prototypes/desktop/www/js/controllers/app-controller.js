@@ -8,10 +8,10 @@
         .controller("appController", appController);
 
     // add additional services to be used within the controller
-    appController.$inject = ["$rootScope", "$scope", "$stateParams", "authenticationFactory", "layoutFactory"];
+    appController.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "authenticationFactory", "layoutFactory"];
 
     // define the controller
-    function appController($rootScope, $scope, $stateParams, authenticationFactory, layoutFactory) {
+    function appController($rootScope, $scope, $state, $stateParams, authenticationFactory, layoutFactory) {
         // --------------------------------------------------------------------
         // define bindable members
         // * slide panel
@@ -81,7 +81,7 @@
                 $scope.slidePanelContent = {
                     currentPersona: currentPersona.name,
                     theme: $scope.$parent.theme,
-                    currentWorkspaceId: layoutFactory.getCurrentWorkspaceId(),
+                    currentWorkspaceId: layoutFactory.getCurrentWorkspace().id,
                     listOfWorkspaces: listOfWorkspaces
                 };
 
@@ -95,9 +95,6 @@
 
 
         }
-
-
-
 
     }
 

@@ -13,9 +13,9 @@ baseUrls = (
     "/api/persona/", persona.app,
     "/api/workspace/", workspace.app,
     "/api/panel/", panel.app,
-    "/api/data/story/", story.app,
+    "/api/story/", story.app,
     "/api/tag/", tag.app,
-    "/api/data/visualization/", visualization.app,
+    "/api/vis/", visualization.app,
 
     # front-end routes to load angular app
     "/", "index",

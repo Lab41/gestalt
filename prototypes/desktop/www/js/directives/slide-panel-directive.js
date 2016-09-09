@@ -28,7 +28,6 @@
 
 
     function slidePanelController($rootScope, $scope, $state, authenticationFactory, layoutFactory) { 
-        console.log("slidePanelController");
         // --------------------------------------------------------------------
         // define bindable members  
         $scope.logout = logout;
@@ -40,8 +39,6 @@
         // --------------------------------------------------------------------
         // define functions
         function activate() {
-            console.log("in slidePanelController");
-
             // handle theme change
             $rootScope.$on("themeChange", function(event, args) {
                 var oldContent = $scope.content;
@@ -64,32 +61,32 @@
             $state.go("login");
         }
 
-        function changeWorkspace(newWorkspaceId) {   
+        function changeWorkspace(newWorkspaceId, newWorkspaceUrlName) {   
             // TODO: refactor this because the functionality is similar to login-controller's login function         
-            var getDefaultPanel = function(workspaceId) {
+            var getDefaultPanel = function(workspaceId, workspaceUrlName) {
                 // get the workspace's default panel to be passed in to the transition function
                 return layoutFactory.getDefaultPanel(workspaceId) 
                                     .then(function(defaultPanel) {
-                                        return workspaceId, defaultPanel.id;
+                                        // set current panel
+                                        layoutFactory.setCurrentPanel(defaultPanel.id, defaultPanel.url_name);
+                                        return defaultPanel.id;
                                     });
             };
-            var transition = function(workspaceId, panelId) {      
-                // set current workspace
-                layoutFactory.setCurrentWorkspaceId(workspaceId);
-                // set current panel
-                layoutFactory.setCurrentPanelId(panelId);
-
+            var transition = function() {      
                 // transition to the new workspace and its respective default panel
                 $state.go("app.panel.visual", {
-                    workspace: workspaceId,
-                    panel: panelId,
+                    workspace: layoutFactory.getCurrentWorkspace().url_name,
+                    panel: layoutFactory.getCurrentPanel().url_name,
                 });
 
             };
 
+            // set current workspace
+            layoutFactory.setCurrentWorkspace(newWorkspaceId, newWorkspaceUrlName);
+
             // get the workspace's default panel 
             // in order to transition
-            getDefaultPanel(newWorkspaceId)
+            getDefaultPanel(newWorkspaceId, newWorkspaceUrlName)
                 .then(transition);
       
         }

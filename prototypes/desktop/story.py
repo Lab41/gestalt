@@ -8,20 +8,21 @@ import helper
 
 urls = (
     
-    # 0.0.0.0:8000/api/data/story/
-    "", "all_stories",
-    # 0.0.0.0:8000/api/data/story/#/, where # == story.id
-    "(\d+)/", "single_story",
-	# /api/data/story/idea/metric/#/, where # == storyidea.id
-	"idea/(\d+)/metric/(\d+)/", "story_idea_metrics",
-    # 0.0.0.0:8000/api/data/story/persona/#/, where # == persona.id
-    "persona/(\d+)/", "persona_stories",
-    # 0.0.0.0:8000/api/data/story/persona/#/panel/#/, where first # == persona.id and second # == panel.id
-    "persona/(\d+)/panel/(\d+)/", "persona_panel_stories",
+    # 0.0.0.0:8000/api/story/getAllStories
+    "getAllStories", "getAllStories",
+    # 0.0.0.0:8000/api/story/getSingleStory/#
+    #   where # == story.id
+    "getSingleStory/(\d+)", "getSingleStory",
+    # 0.0.0.0:8000/api/story/getAllStoriesByPersona/#
+    #   where # == persona.id
+    "getAllStoriesByPersona/(\d+)", "getAllStoriesByPersona",
+    # 0.0.0.0:8000/api/story/getAllStoriesByPersonaAndPanel/persona/#/panel/#
+    #   where first # == persona.id and second # == panel.id
+    "getAllStoriesByPersonaAndPanel/persona/(\d+)/panel/(\d+)", "getAllStoriesByPersonaAndPanel",
     
 )
 
-class all_stories:
+class getAllStories:
     """ Extract all the stories.
     output:
         * story.id
@@ -42,7 +43,7 @@ class all_stories:
         # convert data to a string
         return json.dumps(data)
 
-class single_story:
+class getSingleStory:
     """ Extract a story with a specific id.
     input:
         * story.id
@@ -67,7 +68,7 @@ class single_story:
         # convert data to a string
         return json.dumps(data)
 
-class persona_stories:
+class getAllStoriesByPersona:
     """ Extract all the stories for a particular persona.
     input:
         * persona.id
@@ -96,7 +97,7 @@ class persona_stories:
         # convert data to a string
         return json.dumps(data)
 
-class persona_panel_stories:
+class getAllStoriesByPersonaAndPanel:
     """ Extract all the stories from a specific panel with a particular persona.
     input:
         * persona.id

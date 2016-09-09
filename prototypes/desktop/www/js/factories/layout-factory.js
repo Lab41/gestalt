@@ -22,8 +22,8 @@
         var panelBackendBaseUrl = api_config.layout_panel_uri;
         var getDefaultPanelUrl = panelBackendBaseUrl + "getDefaultPanelByWorkspace";
         // -- storage (TODO: figure out a better way to handle this)
-        var currentWorkspaceId;
-        var currentPanelId;
+        var currentWorkspace;
+        var currentPanel;
 
         // --------------------------------------------------------------------
         // return a layoutFactory instance
@@ -31,12 +31,12 @@
             getDefaultWorkspace: getDefaultWorkspace,
             getDefaultPanel: getDefaultPanel,
             getAllWorkspaces: getAllWorkspaces,
-            setCurrentWorkspaceId: setCurrentWorkspaceId,
-            getCurrentWorkspaceId: getCurrentWorkspaceId,
-            setCurrentPanelId: setCurrentPanelId,
-            getCurrentPanelId: getCurrentPanelId,
+            setCurrentWorkspace: setCurrentWorkspace,
+            getCurrentWorkspace: getCurrentWorkspace,
+            setCurrentPanel: setCurrentPanel,
+            getCurrentPanel: getCurrentPanel,
             cleanup: cleanup
-        }
+        };
         return layoutFactory;
 
         // --------------------------------------------------------------------
@@ -65,34 +65,43 @@
             return callBackend(getAllWorkspacesUrl + "/" + personaId);
         }
 
-        function setCurrentWorkspaceId(workspaceId) {
-            currentWorkspaceId = workspaceId;
+        function setCurrentWorkspace(workspaceId, workspaceUrlName) {
+            var workspace = {
+                id: workspaceId,
+                url_name: workspaceUrlName
+            };
+            currentWorkspace = workspace;
         }
 
-        function getCurrentWorkspaceId() {
-            return currentWorkspaceId;
+        function getCurrentWorkspace() {
+            return currentWorkspace;
         }
 
-        function unsetCurrentWorkspaceId() {
-            currentWorkspaceId = null;
+        function unsetCurrentWorkspace() {
+            currentWorkspace = null;
         }
 
-        function setCurrentPanelId(panelId) {
-            currentPanelId = panelId;
+        function setCurrentPanel(panelId, panelUrlName) {
+            var panel = {
+                id: panelId,
+                url_name: panelUrlName
+            }
+            currentPanel = panel;
         }
 
-        function getCurrentPanelId() {
-            return currentPanelId;
+        function getCurrentPanel() {
+            return currentPanel;
         }
 
-        function unsetCurrentPanelId() {
-            currentPanelId = null;
+        function unsetCurrentPanel() {
+            currentPanel = null;
         }
 
         function cleanup() {
             unsetCurrentWorkspace();
             unsetCurrentPanel();
         }
+
 
     }
 

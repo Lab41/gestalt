@@ -8,50 +8,37 @@
         .factory("contentFactory", contentFactory);
 
     // add additional services to be used within the factory
-    contentFactory.$inject = ["$http", "$q"];
+    contentFactory.$inject = ["$http", "$log"];
 
     // define the factory
-    function contentFactory($http, $q) {
-		
-		var urlBase = api_config.content_uri;
-		
+    function contentFactory($http, $log) {
+        // --------------------------------------------------------------------
+        // for backend
+        // -- story
+		var storyBackendBaseUrl = api_config.content_story_uri;
+        var getAllStoriesUrl = storyBackendBaseUrl + "getAllStoriesByPersonaAndPanel";
+        // -- vis
+        var visBackendBaseUrl = api_config.content_vis_uri;
+
+        // --------------------------------------------------------------------		
 		// return a contentFactory instance
-		return {
-			
-			// data storage
-			content: "",
-			
-			// single http request stored in a promise
-			makeRequest: function(url) {
-				
-				// create deferred object
-				var deferred = $q.defer();
-				
-				// make $http request
-				$http.get(urlBase + url).then(function(response) {
-					deferred.resolve(response.data);
-				});
-				
-				// expose the promise data
-				return deferred.promise;
-				
-			},
-			
-			// unique data requests
-			getData: function(name) {
-					
-				var apiUrl = name;
-				
-				// make request
-				console.log("****** GET " + apiUrl + " ******");
-				this.content = this.makeRequest(apiUrl);
-				
-				// return stored data
-				return this.content;
-				
-			}
-		
-    	}	
+        var contentFactory = {
+            getListOfStories: getListOfStories
+        };
+		return contentFactory;
+
+
+        // --------------------------------------------------------------------
+        // function definition used in factory instance
+        function callBackend(backendUrl) {
+            $log.log("****** GET " + backendUrl + " ******");
+            return $http.get(backendUrl)
+                        .then(function(backendResponse) { return backendResponse.data; });
+        }
+
+        function getListOfStories(personaId, panelId) {
+            return callBackend(getAllStoriesUrl + "/persona/" + personaId + "/panel/" + panelId);
+        }
 
     }
 
