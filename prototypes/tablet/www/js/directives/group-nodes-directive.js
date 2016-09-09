@@ -1,6 +1,6 @@
 angular.module("group-nodes-directive", [])
 
-.directive("groupNodes", ["d3Service", "contentService", function(d3Service, contentService) {
+.directive("groupNodes", ["d3Service", "contentService", "$rootScope", function(d3Service, contentService, $rootScope) {
 	return {
 		restrict: "E",
 		scope: {
@@ -10,7 +10,6 @@ angular.module("group-nodes-directive", [])
             canvasWidth: "=",
             canvasHeight: "="
 		},
-        template: "<div></div>",
 		link: function(scope, element, attrs) {
 			
 			// get d3 promise
@@ -50,12 +49,9 @@ angular.module("group-nodes-directive", [])
 				
                 // set up force layout algorithm
 				var force = d3.layout.force()
-					//.charge(charge.default)
-                    //.charge(function(d, i) {return i ? 0 : -2000;})
 					.charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
 					.gravity(-0.01)
   					.friction(0.9)
-                    //.linkDistance(50)
                     .size([(width - diameter), (height - diameter)]);
 				
 				// set up pack layout algorithm
@@ -76,7 +72,13 @@ angular.module("group-nodes-directive", [])
 				var linksGroup = canvas.append("g");
 				var nodesGroup = canvas.append("g");
                 
-				var links = [];
+                // define needed variables
+				var links = []; // links between nodes
+                var nodes = []; // nodes
+                var node; // each node
+                var link; // each link
+                var foci = {}; // layout focus coordinates mapped to node id
+                var geoGroup = "country"; // group name that needs specific geographic x,y coords
 				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -93,16 +95,15 @@ angular.module("group-nodes-directive", [])
                         
                     // async check
                     if (newData[0] !== undefined && newData[1] !== undefined) {
+                        
+                        var data = newData[0];
+                        var groups = newData[1];
 						
 						function draw(data, groups) {
                             
                             ///////////////////////////////////////////////
                             /////////////// d3 RENDER START ///////////////
                             ///////////////////////////////////////////////
-                                                   
-                            // map data to c-scale
-                            cScale.domain(d3.extent(data, function(d) { return d.count; }));
-                            cScale.range([radius, maxRadius]);
 							
 							// draw flows between nodes
 							function drawFlows(d) {
@@ -170,100 +171,6 @@ angular.module("group-nodes-directive", [])
 								
 							};
                             
-                            // update nodes based on cluster groups
-                            function clusterNodes() {
-                                
-                                // network health
-                                contentService.getData("visualization/network/metrics/").then(function(data) {
-
-                                    // set scope
-                                    scope.$parent.healthMetrics = data;
-
-                                });
-                                
-                                var groupType = this.innerHTML;
-								
-								force
-									.charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
-									.gravity(-0.01)
-									.friction(0.9);
-                                
-                                // check group type
-                                if (groupType == "country") {
-                                    
-                                    // reset force charge so layout is more accurate
-                                    force.charge(charge.geo);
-									
-									// bind data to scales
-									xScaleLin.domain([0, 360]);
-									xScaleLin.range([radius, width - radius]);
-									
-									yScale.domain([0, 180]);
-									yScale.range([height, 0]);
-                                    
-                                } else {
-                                    
-                                    // reset force to default
-                                    force.charge(charge.default);
-									
-									force.start();
-                                    
-                                };
-                                    
-                                // set grouping
-                                d3.range(nodes.length).map(function(i) {
-
-                                    // current node
-                                    var curr_node = nodes[i];
-                                    var group = groupType;
-                                    var subgroup = foci[groupType][curr_node.iso];
-
-                                    // move into cluster group
-                                    curr_node.cluster = group;
-                                    curr_node.subgroup = subgroup;
-
-                                });
-								
-								// check group type
-								if (groupType == "country") {
-																		
-									// set new node location
-									nodes.forEach(function(o, i) {
-
-										// get focus x,y values
-										o.y = height - yScale(foci[o.cluster][o.subgroup].y);
-										o.x = xScaleLin(foci[o.cluster][o.subgroup].x);
-
-									});
-
-									/*link
-										.attr({
-											x1: function(d) { return d.source.x; },
-											y1: function(d) { return d.source.y; },
-											x2: function(d) { return d.target.x; },
-											y2: function(d) { return d.target.y; }
-										});*/
-
-									// push nodes toward focus
-									node
-										.transition()
-										.duration(transition.time)
-										.attr({
-											transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
-										});
-									
-								} else {
-									
-									// resume force layout
-                                	force.resume();	
-									
-								};
-                                
-                                // update labels
-                                updateLabels(groupType);
-                                
-                            };
-                            
                             // change node attributes based on storyline
                             function storyChange(d) {
 								
@@ -314,84 +221,7 @@ angular.module("group-nodes-directive", [])
                             function startForce(e) {
                                 
                                 // update cluster labels
-                                updateLabels(currentGroup);
-                                
-                            };
-                            
-                            // update cluster labels
-                            function updateLabels(group) {
-                                
-                                // set new group
-                                currentGroup = group;
-                                
-                                groups.forEach(function(d) {
-                                    
-                                    // check group name
-                                    if (d.name == currentGroup) {
-                                        
-                                        // set new subgroup
-                                        subgroups = d.subgroups;
-                                        
-                                        // add foci coords to object
-                                        subgroups.map(function(d) {
-                                            d.x = foci[group][d.id].x;
-                                            d.y = foci[group][d.id].y * 0.2;
-                                        });
-                                        
-                                    };
-                                    
-                                });
-                                
-                                // calc max/min scales
-                                var xDomain = subgroups.map(function(d) { return d.name; });
-                                
-                                // add data to x-scale layout algorithm
-                                xScaleOrd.domain(xDomain);
-                                xScaleOrd.rangePoints([radius, width - radius]);
-                                
-                                // check for group type
-                                if (currentGroup == "country") {
-                                    
-                                    // hide labels so viz is legible
-                                    subgroups = [];
-                                    
-                                };
-                                
-                                // GROUP LABEL
-                                var label = canvas
-                                    .selectAll(".group-label")
-                                    .data(subgroups);
-
-                                // update selection
-                                label
-                                    .transition()
-                                    .duration(transition.time)
-                                    .attr({
-                                        class: "group-label",
-                                        dx: function(d) { return d.x },
-                                        dy: function(d) { return d.y }
-                                    })
-                                    .text(function(d) { return d.name; });
-
-                                // enter selection
-                                label
-                                    .enter()
-                                    .append("text")
-                                    .transition()
-                                    .duration(transition.time)
-                                    .attr({
-                                        class: "group-label",
-                                        dx: function(d) { return d.x; },
-                                        dy: function(d) { return d.y }
-                                    })
-                                    .text(function(d) { return d.name; });
-
-                                // exit selection
-                                label
-                                    .exit()
-                                    .transition()
-                                    .duration(transition.time)
-                                    .remove();
+                                updateLabels(currentGroup, groups);
                                 
                             };
                             
@@ -676,98 +506,96 @@ angular.module("group-nodes-directive", [])
 								
 							};
                             
-                            // make foci objects for each group
-                            var foci = {};
-                            groups.map(function(o) {
+                            // create foci lookups
+                            function createFoci(groups) {
                                 
-                                // check for starting group
-                                if (o.name == startGroup) {
-                                    
-                                    // add x,y values
-                                    // assumes starting is a single group
-                                    // if we want to be able to start in a different grouping
-                                    // need to adjust logic to accomodate
-                                    o.subgroups[0].center_x = center.x;
-                                    o.subgroups[0].center_y = center.y;
-                                    
-                                    // update nodes with default group and subgroup
-                                    data.map(function(n) {
+                                groups.map(function(o) {
 
-                                        // add values from data
-                                        n["cluster"] = startGroup;
-                                        n["subgroup"] = o.subgroups[0].id;
+                                    // check for starting group
+                                    if (o.name == startGroup) {
 
-                                    });
-                                    
-                                };
-                                
-                                var subgroups = {};
-                                
-                                // track cursor for grided layouts
-                                var cellWidth = width / o.subgroups.length;
-								var halfCell = cellWidth / 2;
-                                var cursorX = halfCell;
-                                
-                                // add subgroups to obj
-                                o.subgroups.map(function(s) {//console.log(s)
-                                    
-                                    // check for nulls and do math to figure out new coords
-                                    if (s.center_x == null && s.center_y == null) {
-                                        
-                                        // set coords evenly in the available space
-                                        var coords = {};
-                                        
-                                        coords["x"] = cursorX;
-                                        coords["y"] = height / 2;
-                                        
-                                        cursorX += cellWidth;
-                                        
-									// default group
-                                    } else {
-                                    
-                                        // nulls mean non-geographic groups
-                                        var coords = {};
-                                        coords["x"] = s.center_x;
-                                        coords["y"] = s.center_y;
-                                        
-                                        
+                                        // add x,y values
+                                        // assumes starting is a single group
+                                        // if we want to be able to start in a different grouping
+                                        // need to adjust logic to accomodate
+                                        o.subgroups[0].center_x = center.x;
+                                        o.subgroups[0].center_y = center.y;
+
+                                        // update nodes with default group and subgroup
+                                        data.map(function(n) {
+
+                                            // add values from data
+                                            n["cluster"] = startGroup;
+                                            n["subgroup"] = o.subgroups[0].id;
+
+                                        });
+
                                     };
-                                    
-                                    // add values to use as lookups later
-                                    subgroups[s.id] = coords;
-                                    
-                                    // add nodes as subgroups
-                                    s.nodes.map(function(n) {
-                                        
-                                        // check for null node arrays
-                                        // TODO see if endponit can expose empty array vs. null array
-                                        if (n !== null) {
 
-                                            subgroups[n.iso] = s.id;
-                                            
+                                    var subgroups = {};
+
+                                    // track cursor for grided layouts
+                                    var cellWidth = width / o.subgroups.length;
+                                    var halfCell = cellWidth / 2;
+                                    var cursorX = halfCell;
+
+                                    // add subgroups to obj
+                                    o.subgroups.map(function(s) {
+
+                                        // check for nulls and do math to figure out new coords
+                                        if (s.center_x == null && s.center_y == null) {
+
+                                            // set coords evenly in the available space
+                                            var coords = {};
+
+                                            coords["x"] = cursorX;
+                                            coords["y"] = height / 2;
+
+                                            cursorX += cellWidth;
+
+                                        // default group
+                                        } else {
+
+                                            // nulls mean non-geographic groups
+                                            var coords = {};
+                                            coords["x"] = s.center_x;
+                                            coords["y"] = s.center_y;
+
+
                                         };
-                                        
+
+                                        // add values to use as lookups later
+                                        subgroups[s.id] = coords;
+
+                                        // add nodes as subgroups
+                                        s.nodes.map(function(n) {
+
+                                            // check for null node arrays
+                                            // TODO see if endponit can expose empty array vs. null array
+                                            if (n !== null) {
+
+                                                subgroups[n.iso] = s.id;
+
+                                            };
+
+                                        });
+
                                     });
-                                    
+
+                                    foci[o.name] = subgroups;
+
                                 });
                                 
-                                foci[o.name] = subgroups;
-                                
-                            });
+                            };
                             
-                            // attach event to button
-							d3.select(element.find("div")[0])
-								.selectAll(".country-group")
-								.data(groups)
-								.enter()
-								.append("button")
-								.attr({
-									type: "button"
-								})
-								.text(function(d) { return d.name; })
-                                .on("click", clusterNodes);
+                            // map data to c-scale
+                            cScale.domain(d3.extent(data, function(d) { return d.count; }));
+                            cScale.range([radius, maxRadius]);
                             
-                            var storyButtons = ["equal", "high degree", "high centrality", "no links"];
+                            // generate foci lookup object
+                            createFoci(groups);
+                            
+                            /*var storyButtons = ["equal", "high degree", "high centrality", "no links"];
                             
                             // temp buttons while we build more transition options
                             d3.select(element.find("div")[0])
@@ -779,7 +607,7 @@ angular.module("group-nodes-directive", [])
                                     type: "button"
                                 })
                                 .text(function(d) { return d; })
-                                .on("click", storyChange);
+                                .on("click", storyChange);*/
                             
                             // set nodes from data
                             // map radius value so collision detection can evaluate nodes
@@ -790,7 +618,7 @@ angular.module("group-nodes-directive", [])
 														
 							// bind data to pack layout
 							//var nodes = pack.nodes({children:data}).filter(function(d) { return !d.children; });
-							var nodes = data;
+							nodes = data;
                             
                             // bind data to force layout
                             force
@@ -801,20 +629,189 @@ angular.module("group-nodes-directive", [])
                                 .on("end", endForce);
 							
 							// set up selections
-							var node = nodesGroup.selectAll(".node");
-							var link = linksGroup.selectAll(".link");
+							node = nodesGroup.selectAll(".node");
+							link = linksGroup.selectAll(".link");
 							
 							// run visualization
 							updateVis();
                                 
                         };
+                        
+                        // update cluster labels
+                        function updateLabels(groupName, groups) {
+
+                            groups.forEach(function(d) {
+
+                                // check group name
+                                if (d.name == groupName) {
+
+                                    // set new subgroup
+                                    subgroups = d.subgroups;
+
+                                    // add foci coords to object
+                                    subgroups.map(function(d) {
+                                        d.x = foci[groupName][d.id].x;
+                                        d.y = foci[groupName][d.id].y * 0.2;
+                                    });
+
+                                };
+
+                            });
+
+                            // calc max/min scales
+                            var xDomain = subgroups.map(function(d) { return d.name; });
+
+                            // add data to x-scale layout algorithm
+                            xScaleOrd.domain(xDomain);
+                            xScaleOrd.rangePoints([radius, width - radius]);
+
+                            // check for group type
+                            if (groupName == geoGroup) {
+
+                                // hide labels so viz is legible
+                                subgroups = [];
+
+                            };
+
+                            // GROUP LABEL
+                            var label = canvas
+                                .selectAll(".group-label")
+                                .data(subgroups);
+
+                            // update selection
+                            label
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "group-label",
+                                    dx: function(d) { return d.x },
+                                    dy: function(d) { return d.y }
+                                })
+                                .text(function(d) { return d.name; });
+
+                            // enter selection
+                            label
+                                .enter()
+                                .append("text")
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "group-label",
+                                    dx: function(d) { return d.x; },
+                                    dy: function(d) { return d.y }
+                                })
+                                .text(function(d) { return d.name; });
+
+                            // exit selection
+                            label
+                                .exit()
+                                .transition()
+                                .duration(transition.time)
+                                .remove();
+
+                        };
+                        
+                        // update nodes based on cluster groups
+                        function clusterNodes(groupType, groups) {
+
+                            // update force settings
+                            force
+                                .charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
+                                .gravity(-0.01)
+                                .friction(0.9);
+
+                            // check group type
+                            if (groupType == geoGroup) {
+
+                                // reset force charge so layout is more accurate
+                                force.charge(charge.geo);
+
+                                // bind data to scales
+                                xScaleLin.domain([0, 360]);
+                                xScaleLin.range([radius, width - radius]);
+
+                                yScale.domain([0, 180]);
+                                yScale.range([height, 0]);
+
+                            } else {
+
+                                // reset force to default
+                                force.charge(charge.default);
+
+                            };
+
+                            // set grouping
+                            d3.range(nodes.length).map(function(i) {
+
+                                // current node
+                                var curr_node = nodes[i];
+                                var group = groupType;
+                                var subgroup = foci[groupType][curr_node.iso];
+
+                                // move into cluster group
+                                curr_node.cluster = group;
+                                curr_node.subgroup = subgroup;
+
+                            });
+
+                            // check group type
+                            if (groupType == geoGroup) {
+
+                                // set new node location
+                                nodes.forEach(function(o, i) {
+
+                                    // get focus x,y values
+                                    o.y = height - yScale(foci[o.cluster][o.subgroup].y);
+                                    o.x = xScaleLin(foci[o.cluster][o.subgroup].x);
+
+                                });
+
+                                // push nodes toward focus
+                                node
+                                    .transition()
+                                    .duration(transition.time)
+                                    .attr({
+                                        transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
+                                    });
+
+                            } else {
+
+                                // resume force layout
+                                force.resume();	
+
+                            };
+
+                        };
 
                         // update the viz
-                        draw(newData[0], newData[1]);
+                        draw(data, groups);
                         
                         /////////////////////////////////////////////
                         /////////////// d3 RENDER END ///////////////
                         /////////////////////////////////////////////
+                        
+                        ////////////////////////////////////////////////////
+                        /////////////// ANGULAR EVENTS START ///////////////
+                        ////////////////////////////////////////////////////
+                        
+                        // watch for story idea changes
+                        $rootScope.$on("storyIdeaChange", function(event, args) {
+                            
+                            // TODO could abstract make less dependent on specific nomenclature
+                            // could use unique ID but then dev has to know what the ID corresponds to
+                            var groupName = args.val.group_name;
+
+                            // cluster nodes into selected group
+                            clusterNodes(groupName, groups);
+                            
+                            // update labels
+                            updateLabels(groupName, groups);
+
+                        });
+                        
+                        //////////////////////////////////////////////////
+                        /////////////// ANGULAR EVENTS END ///////////////
+                        //////////////////////////////////////////////////
                         
                     };
                     

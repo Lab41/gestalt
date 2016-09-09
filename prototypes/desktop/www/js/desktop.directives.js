@@ -3,5 +3,6 @@ var app = angular.module("desktop.directives", [
     "slide-panel-directive",
 	"group-nodes-directive",
     "tile-grid-map-directive",
-    "bar-chart-directive"
+    "bar-chart-directive",
+    "story-controls-directive"
 ]);

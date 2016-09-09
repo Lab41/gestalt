@@ -1,6 +1,6 @@
 angular.module("viz-controller", [])
 
-.controller("vizCtrl", ["$scope", "contentService", "$state", function($scope, contentService, $state) {
+.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", function($scope, contentService, $state, $rootScope) {
 	
 	var grid = $state.params.grid;
     var groupId = $state.params.group;
@@ -27,20 +27,20 @@ angular.module("viz-controller", [])
 		
 	});
     
-    // geojson
-    contentService.getData("visualization/geojson/" + grid).then(function(data) {
-		
-		// set scope
-		$scope.geojson = data[0];
-		
-	});
-    
-    // network health
+    // network metric
     contentService.getData("visualization/network/metrics/" + groupId).then(function(data) {
 		
 		// set scope
 		$scope.networkMetrics = data[0];
 		
 	});
+    
+    // watch for story idea changes
+    $rootScope.$on("storyIdeaChange", function(event, args) {
+        
+        // set scope
+        $scope.networkMetrics = args.val;
+
+    });
     
 }]);
