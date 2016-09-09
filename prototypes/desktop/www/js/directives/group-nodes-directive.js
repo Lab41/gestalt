@@ -90,6 +90,7 @@ angular.module("group-nodes-directive", [])
                 var link; // each link
                 var foci = {}; // layout focus coordinates mapped to node id
                 var geoGroup = "country"; // group name that needs specific geographic x,y coords
+                var ideaType = "cluster"; // idea type that needs specific functionality
 				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -936,12 +937,18 @@ angular.module("group-nodes-directive", [])
                             // TODO could abstract make less dependent on specific nomenclature
                             // could use unique ID but then dev has to know what the ID corresponds to
                             var groupName = args.val.group_name;
+                            var actionName = args.val.action_name;
+                            console.log(args.val);
+                            // check idea name
+                            if (actionName == ideaType) {
 
-                            // cluster nodes into selected group
-                            clusterNodes(groupName, groups);
-                            
-                            // update labels
-                            updateLabels(groupName, groups);
+                                // cluster nodes into selected group
+                                clusterNodes(groupName, groups);
+
+                                // update labels
+                                updateLabels(groupName, groups);
+                                
+                            };
 
                         });
                         

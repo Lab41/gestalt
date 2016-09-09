@@ -3,7 +3,7 @@ angular.module("story-controls-directive", [])
 .directive("storyControls", ["contentService", "$rootScope", "$state", function(contentService, $rootScope, $state) {
 	return {
 		restrict: "E",
-        template: "<div><button ng-repeat='control in controls' type='button' ng-click='changeIdea(control.id)'>{{ control.name }}</button></div>",
+        template: "<div><button ng-repeat='control in controls' type='button' ng-click='changeIdea(control.name_id)'>{{ control.name }}</button></div>",
 		scope: {
             controls: "="
         },
