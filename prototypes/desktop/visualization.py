@@ -59,20 +59,26 @@ class metrics:
         # execute query
         self.cursor.execute("""
         select nm.*,
+        gt.name as group_type,
+        g.name as group_name,
         array_agg(row_to_json(m)) as metrics
         from """ + helper.table_prefix + """network_metrics nm
+        left join """ + helper.table_prefix + """group_type gt on gt.id = nm.group_id
+        left join """ + helper.table_prefix + """group g on g.id = nm.group_id
         left join (
         select m.*
         from """ + helper.table_prefix + """network_metrics_values m
         ) m on m.group_id = nm.group_id
-        where nm.group_id = """ + group_id + """ 
-        group by nm.id;
+        where nm.group_id = """ + group_id + """
+        group by nm.id,
+        gt.name,
+        g.name;
         """)
         # obtain the data
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
- 
+
 class nodes:
     def GET(self, table, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -106,52 +112,37 @@ class node_groups:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-select g.*,
-	array_agg(row_to_json(s)) as subgroups
-
-from """ + helper.table_prefix + """group g
-
-left join (
-
-	select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id,
-	case
+        select g.*,
+        array_agg(row_to_json(s)) as subgroups
+        from """ + helper.table_prefix + """group g
+        left join (
+        select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id,
+        case
 		when gt.id = 1 then gn.name
 		else sgn.name
-	end
-	as name,
-	case
+        end
+        as name,
+        case
 		when gt.id = 1 then gt.id || '_' || gn.id
 		else gt.id || '_' || sgn.id
-	end as id,
-	geo.hexagon_center_x as center_x,
-	geo.hexagon_center_y as center_y,
-	array_agg(row_to_json(n)) as nodes
-
-	from """ + helper.table_prefix + """subgroup sg
-
-	left join """ + helper.table_prefix + """geography_name gn on gn.id = sg.name_id
-
-	left join """ + helper.table_prefix + """subgroup_name sgn on sgn.id = sg.name_id
-
-	left join """ + helper.table_prefix + """group g on g.id = sg.group_id
-
-	left join """ + helper.table_prefix + """group_type gt on gt.id = g.type_id
-
-	left join """ + helper.table_prefix + """geography geo on geo.name_id = sg.name_id and gt.id = 1
-
-	left join (
-
-		select gn.name,
-			gcy.id,
-			gcy.iso2code as iso
-
-		from """ + helper.table_prefix + """country gcy
-
-		left join """ + helper.table_prefix + """geography_name gn on gn.id = gcy.name_id
-
-	) n on n.id = sg.country_id
-
-	group by sg.name_id,
+        end as id,
+        geo.hexagon_center_x as center_x,
+        geo.hexagon_center_y as center_y,
+        array_agg(row_to_json(n)) as nodes
+        from """ + helper.table_prefix + """subgroup sg
+        left join """ + helper.table_prefix + """geography_name gn on gn.id = sg.name_id
+        left join """ + helper.table_prefix + """subgroup_name sgn on sgn.id = sg.name_id
+        left join """ + helper.table_prefix + """group g on g.id = sg.group_id
+        left join """ + helper.table_prefix + """group_type gt on gt.id = g.type_id
+        left join """ + helper.table_prefix + """geography geo on geo.name_id = sg.name_id and gt.id = 1
+        left join (
+        select gn.name,
+        gcy.id,
+        gcy.iso2code as iso
+        from """ + helper.table_prefix + """country gcy
+        left join """ + helper.table_prefix + """geography_name gn on gn.id = gcy.name_id
+        ) n on n.id = sg.country_id
+        group by sg.name_id,
 		sg.group_id,
 		gn.name,
 		sgn.name,
@@ -161,12 +152,8 @@ left join (
 		g.id,
 		gn.id,
 		sgn.id
-
-) s on s.group_id = g.id
-
-group by g.id
-
-
+        ) s on s.group_id = g.id
+        group by g.id
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -181,52 +168,37 @@ class geojson:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-select 'FeatureCollection' as type,
-	array_agg(row_to_json(r)) as features 
-
-from (
-	with t as (
-	select 'Feature'::text
-	) 
-	select t.text as type,
-	row_to_json(f) as properties,
-	row_to_json(c) as geometry 
-	
-	from t,
+        select 'FeatureCollection' as type,
+        array_agg(row_to_json(r)) as features 
+        from (
+        with t as (
+        select 'Feature'::text
+        ) 
+        select t.text as type,
+        row_to_json(f) as properties,
+        row_to_json(c) as geometry 
+        from t,
 		""" + helper.table_prefix + """geography geo 
-	
-	left join (
+        left join (
 		select geo.id,
-gn.name,
-cy.iso2code as iso
-
-from """ + helper.table_prefix + """geography geo
-
-left join """ + helper.table_prefix + """geography_name gn on gn.id = geo.name_id
-
-left join """ + helper.table_prefix + """country cy on cy.id = geo.name_id
-		
+        gn.name,
+        cy.iso2code as iso
+        from """ + helper.table_prefix + """geography geo
+        left join """ + helper.table_prefix + """geography_name gn on gn.id = geo.name_id
+        left join """ + helper.table_prefix + """country cy on cy.id = geo.name_id
 		) f on f.id = geo.id 
-		
-	left join (
+		left join (
 		with t as (
 		select 'Polygon'::text
 		) 
-		
-	select t.text as type,
-	
-	geo.hexagon_polygon as coordinates 
-	
-	from t,
-	""" + helper.table_prefix + """geography geo
-	
-	) c on c.coordinates = geo.hexagon_polygon 
-
-	where geo.hexagon_polygon is not null 
-	
-) r 
-
-group by type;
+		select t.text as type,
+        geo.hexagon_polygon as coordinates 
+        from t,
+        """ + helper.table_prefix + """geography geo
+        ) c on c.coordinates = geo.hexagon_polygon 
+        where geo.hexagon_polygon is not null 
+        ) r 
+        group by type;
         """)
         # obtain the data
         data = self.cursor.fetchall()

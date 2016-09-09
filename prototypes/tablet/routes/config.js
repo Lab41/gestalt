@@ -194,8 +194,8 @@ config.visualization.networkMetrics = {
     route: visualizationBase + "/network/metrics/:groupId",
     
     query: [
-        "select nm.*,array_agg(row_to_json(m)) as metrics from " + tablePrefix + "network_metrics nm left join (select m.* from " + tablePrefix + "network_metrics_values m) m on m.group_id = nm.group_id where nm.group_id = ",
-        " group by nm.id;"
+        "select nm.*,gt.name as group_type,g.name as group_name,array_agg(row_to_json(m)) as metrics from " + tablePrefix + "network_metrics nm left join " + tablePrefix + "group_type gt on gt.id = nm.group_id left join " + tablePrefix + "group g on g.id = nm.group_id left join (select m.* from " + tablePrefix + "network_metrics_values m) m on m.group_id = nm.group_id where nm.group_id = ",
+        " group by nm.id,gt.name,g.name;"
     ]
     
 };
