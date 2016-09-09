@@ -103,6 +103,7 @@ class persona_panel_stories:
         * story.id
         * story.name
         * story.url_name
+        * story_ideas
     """
     def GET(self, persona_id, panel_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -111,13 +112,29 @@ class persona_panel_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
+            SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name, array_agg(row_to_json(si)) as ideas
             FROM gestalt_story AS st
-            RIGHT JOIN gestalt_persona_panel_story AS pps
-            ON st.id = pps.story_id 
+            RIGHT JOIN gestalt_persona_panel_story AS pps ON st.id = pps.story_id 
+            right join (
+            select si.*,
+            array_agg(row_to_json(sc)) as controls
+            from gestalt_story_idea si
+            left join (
+            select sac.id,
+            sac.story_action_id,
+            g.name as name,
+            g.id as name_id
+            from gestalt_story_action_control sac
+            left join gestalt_group g on g.id = sac.name_id
+            ) sc on sc.story_action_id = si.id
+            group by si.id
+            ) si on si.story_id = st.id
             AND pps.persona_id = """ + persona_id + """
             AND pps.panel_id = """ + panel_id + """
             WHERE st.id IS NOT NULL
+            group by st.id,
+            st.name,
+            st.url_name
             ORDER BY st.id;
         """)
         # obtain the data

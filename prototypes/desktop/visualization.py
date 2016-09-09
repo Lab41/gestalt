@@ -59,19 +59,16 @@ class metrics:
         # execute query
         self.cursor.execute("""
         select nm.*,
-        gt.name as group_type,
         g.name as group_name,
         array_agg(row_to_json(m)) as metrics
         from """ + helper.table_prefix + """network_metrics nm
-        left join """ + helper.table_prefix + """group_type gt on gt.id = nm.group_id
-        left join """ + helper.table_prefix + """group g on g.id = nm.group_id
+        left join """ + helper.table_prefix + """group g on g.id = nm.story_idea_id
         left join (
         select m.*
         from """ + helper.table_prefix + """network_metrics_values m
-        ) m on m.group_id = nm.group_id
-        where nm.group_id = """ + group_id + """
+        ) m on m.story_idea_id = nm.story_idea_id
+        where nm.story_idea_id = """ + group_id + """
         group by nm.id,
-        gt.name,
         g.name;
         """)
         # obtain the data

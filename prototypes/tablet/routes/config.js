@@ -104,14 +104,9 @@ config.story.allStoriesSinglePanelPersona = {
     route: storyBase + "/persona/:persona/panel/:panel",
     
     query: [
-        "SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name\
-            FROM " + tablePrefix + "story st\
-            RIGHT JOIN " + tablePrefix + "persona_panel_story pps\
-            ON st.id = pps.story_id \
-            AND pps.persona_id = ",
+        "SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name, array_agg(row_to_json(si)) as ideas FROM " + tablePrefix + "story AS st RIGHT JOIN " + tablePrefix + "persona_panel_story AS pps ON st.id = pps.story_id right join (select * from " + tablePrefix + "story_idea) si on si.story_id = st.id AND pps.persona_id = ",
         " AND pps.panel_id = ",
-        " WHERE st.id IS NOT NULL \
-          ORDER BY st.id;"
+        " WHERE st.id IS NOT NULL group by st.id,st.name,st.url_name ORDER BY st.id;"
     ]
     
 };
