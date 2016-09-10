@@ -25,29 +25,8 @@ config.workspace.allWorkspaces = {
     route: workspaceBase + "/persona/:persona",
     
     query: [
-        "SELECT DISTINCT ON (w.id) w.id, wn.name, w.is_default, p.id AS persona_id, w.url_name, pl.url_name AS default_panel, array_agg(row_to_json(r)) as panels\
-            FROM " + tablePrefix + "workspace w\
-            LEFT JOIN " + tablePrefix + "workspace_name wn\
-            ON w.workspace_name_id = wn.id\
-            LEFT JOIN " + tablePrefix + "workspace_panel wp\
-            ON wp.workspace_id = w.id\
-            LEFT JOIN " + tablePrefix + "persona p\
-            ON w.persona_id = p.id\
-            JOIN " + tablePrefix + "panel pl\
-            ON pl.id = wp.panel_id\
-            left join (\
-            select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id\
-            from " + tablePrefix + "workspace_panel wp\
-            left join " + tablePrefix + "panel pl\
-            on pl.id = wp.panel_id\
-            left join " + tablePrefix + "workspace w\
-            on w.id = wp.workspace_id\
-            ) r\
-            on r.workspace_id = w.id\
-            AND wp.is_default = true\
-            WHERE w.id IS NOT NULL \
-            AND w.persona_id = ",
-        " group by w.id, wn.name, w.is_default, p.id, w.url_name, pl.url_name; "
+        "select w.id,w.persona_id,w.url_name,w.is_default,wn.name,p.url_name as default_panel,array_agg(row_to_json(pl)) as panels from " + tablePrefix + "workspace w left join " + tablePrefix + "workspace_name wn on wn.id = w.workspace_name_id left join " + tablePrefix + "workspace_panel wp on wp.workspace_id = w.id left join " + tablePrefix + "panel p on p.id = wp.panel_id left join (select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id from " + tablePrefix + "workspace_panel wp left join " + tablePrefix + "panel pl on pl.id = wp.panel_id left join " + tablePrefix + "workspace w on w.id = wp.workspace_id) pl on pl.workspace_id = w.id where w.persona_id = ",
+		" and wp.is_default = true group by w.id,w.persona_id,w.url_name,w.url_name,wn.name,p.url_name order by wn.name asc;"
     ]
     
 };
@@ -104,9 +83,9 @@ config.story.allStoriesSinglePanelPersona = {
     route: storyBase + "/persona/:persona/panel/:panel",
     
     query: [
-        "SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name, array_agg(row_to_json(si)) as ideas FROM " + tablePrefix + "story AS st RIGHT JOIN " + tablePrefix + "persona_panel_story AS pps ON st.id = pps.story_id right join (select * from " + tablePrefix + "story_idea) si on si.story_id = st.id AND pps.persona_id = ",
-        " AND pps.panel_id = ",
-        " WHERE st.id IS NOT NULL group by st.id,st.name,st.url_name ORDER BY st.id;"
+        "select pps.*,s.name,s.url_name,array_agg(row_to_json(si)) as ideas from " + tablePrefix + "persona_panel_story pps left join " + tablePrefix + "story s on s.id = pps.story_id left join (select sti.*,array_agg(row_to_json(c)) as controls from " + tablePrefix + "story_idea sti left join (select sac.*,g.name from " + tablePrefix + "story_action_control sac left join " + tablePrefix + "group g on g.id = sac.name_id) c on c.story_action_id = sti.action_id group by sti.id) si on si.story_id = pps.story_id where pps.persona_id = ",
+		" and pps.panel_id = ",
+		" group by pps.id,s.name,s.url_name;"
     ]
     
 };
