@@ -33,7 +33,7 @@ class all_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT * FROM gestalt_story;
+            SELECT * FROM """ + helper.table_prefix + """story;
         """)        
         # obtain the data
         data = self.cursor.fetchall()
@@ -57,7 +57,7 @@ class single_story:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM gestalt_story AS story
+            FROM """ + helper.table_prefix + """story AS story
             WHERE story.id = """ + story_id + """;
         """)
         # obtain the data
@@ -82,8 +82,8 @@ class persona_stories:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name 
-            FROM gestalt_story AS st
-            RIGHT JOIN gestalt_persona_panel_story AS pps
+            FROM """ + helper.table_prefix + """story AS st
+            RIGHT JOIN """ + helper.table_prefix + """persona_panel_story AS pps
             ON st.id = pps.story_id 
             AND pps.persona_id = """ + persona_id + """
             WHERE st.id IS NOT NULL
@@ -112,30 +112,35 @@ class persona_panel_stories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name, array_agg(row_to_json(si)) as ideas
-            FROM gestalt_story AS st
-            RIGHT JOIN gestalt_persona_panel_story AS pps ON st.id = pps.story_id 
-            right join (
-            select si.*,
-            array_agg(row_to_json(sc)) as controls
-            from gestalt_story_idea si
-            left join (
-            select sac.id,
-            sac.story_action_id,
-            g.name as name,
-            g.id as name_id
-            from gestalt_story_action_control sac
-            left join gestalt_group g on g.id = sac.name_id
-            ) sc on sc.story_action_id = si.id
-            group by si.id
-            ) si on si.story_id = st.id
-            AND pps.persona_id = """ + persona_id + """
-            AND pps.panel_id = """ + panel_id + """
-            WHERE st.id IS NOT NULL
-            group by st.id,
-            st.name,
-            st.url_name
-            ORDER BY st.id;
+		select pps.*,
+		s.name,
+		s.url_name,
+		array_agg(row_to_json(si)) as ideas
+		from """ + helper.table_prefix + """persona_panel_story pps
+		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
+		left join (
+		select sti.*,
+		array_agg(row_to_json(c)) as controls
+		from """ + helper.table_prefix + """story_idea sti
+		left join (
+		select sac.*,
+		case
+		when sac.story_action_id = 1 then g.name
+		when sac.story_action_id = 2 then v.name
+		else f.name
+		end
+		as name
+		from """ + helper.table_prefix + """story_action_control sac
+		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
+		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
+		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
+		) c on c.story_action_id = sti.action_id
+		group by sti.id
+		) si on si.story_id = pps.story_id
+		where pps.persona_id = """ + persona_id + """ and pps.panel_id = """ + panel_id + """
+		group by pps.id,
+		s.name,
+		s.url_name;
         """)
         # obtain the data
         data = self.cursor.fetchall()
