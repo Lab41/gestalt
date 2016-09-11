@@ -29,4 +29,4 @@
 <div ng-repeat="workspace in content.workspaces"
           class="item menu-item"
           ng-class="{ 'active': content.workspaceParam == workspace.url_name }"
-          ng-click="changeWorkspace(workspace.id, workspace.url_name, workspace.default_panel, workspace.persona_id);">{{ workspace.name }}</div>
+          ng-click="changeWorkspace(workspace.id, workspace.url_name, workspace.default_panel, workspace.persona_id, workspace.default_vis);">{{ workspace.name }}</div>

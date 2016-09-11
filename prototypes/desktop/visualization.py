@@ -13,6 +13,7 @@ urls = (
     # rest API backend endpoints
     "flows/unique_targets/(.*)/", "flows",
     "network/metrics/(.*)/", "metrics",
+	"angular/directives/(.*)/", "ng_directives",
 	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
     "(.*)/", "nodes"
@@ -194,6 +195,23 @@ class geojson:
         where geo.hexagon_polygon is not null 
         ) r 
         group by type;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+	
+class ng_directives:
+    def GET(self, vis_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+        select *
+		from gestalt_vis
+		where id = """ + vis_id + """;
         """)
         # obtain the data
         data = self.cursor.fetchall()

@@ -26,7 +26,7 @@ angular.module("slide-panel-directive", [])
             };
             
             // change workspace
-            $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, personaID) {
+            $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, personaID, visualParam) {
                 
                 // clear stored layout values
                 layoutService.clearValues(["workspace", "panels", "panel"]);
@@ -39,9 +39,10 @@ angular.module("slide-panel-directive", [])
                 var check = { key: "url_name", value: workspaceParam };
                         
                 // transition state
-                $state.go("app.panel", {
+                $state.go("app.panel.visual", {
                     workspace: workspaceParam,
-                    panel: panelParam
+                    panel: panelParam,
+					visual: visualParam
                 });
 
             };

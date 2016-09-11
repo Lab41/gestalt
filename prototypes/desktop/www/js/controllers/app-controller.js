@@ -52,9 +52,10 @@ angular.module("app-controller", [])
                 
                 var workspace = singleWorkspace;
                 var objs = { multi: "panels", single: "panel" };
+				var panelEndpoint = workspaceParam + "/panels/" + user.id + "/";
                 
                 // get single workspace panels
-                layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
+                layoutService.getStructures(panelEndpoint, objs).then(function(workspacePanels) {
                     
                     var panels = workspacePanels;
                     
