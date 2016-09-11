@@ -34,6 +34,16 @@ angular.module("viz-controller", [])
 		$scope.networkMetrics = data[0];
 		
 	});
+	
+	$scope.dummyData = [{"name": "blah", "value": 5}, {"name": "de", "value": 2}, {"name": "da", "value": 1}];
+	
+	// dynamic directives
+    contentService.getData("visualization/angular/directives/1/").then(function(data) {
+		
+		// set scope
+		$scope.dynamicDirectives = data;
+		
+	});
     
     // watch for story idea changes
     $rootScope.$on("storyIdeaChange", function(event, args) {
