@@ -83,45 +83,45 @@ class node_groups:
         # execute query
         self.cursor.execute("""
         select g.*,
-        array_agg(row_to_json(s)) as subgroups
-        from """ + helper.table_prefix + """group g
+        array_agg(row_to_json(s)) as subgroups 
+        from """ + helper.table_prefix + """group g 
         left join (
-        select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id,
-        case
-		when gt.id = 1 then gn.name
-		else sgn.name
-        end
-        as name,
-        case
-		when gt.id = 1 then gt.id || '_' || gn.id
-		else gt.id || '_' || sgn.id
+        select distinct on (sg.name_id, sg.group_id) sg.name_id, 
+        sg.group_id,
+        case 
+        when gt.id = 1 then gn.name 
+        else sgn.name 
+        end as name,
+        case when gt.id = 1 then gt.id || '_' || gn.id 
+        else gt.id || '_' || sgn.id 
         end as id,
         geo.hexagon_center_x as center_x,
         geo.hexagon_center_y as center_y,
-        array_agg(row_to_json(n)) as nodes
-        from """ + helper.table_prefix + """subgroup sg
-        left join """ + helper.table_prefix + """geography_name gn on gn.id = sg.name_id
-        left join """ + helper.table_prefix + """subgroup_name sgn on sgn.id = sg.name_id
-        left join """ + helper.table_prefix + """group g on g.id = sg.group_id
-        left join """ + helper.table_prefix + """group_type gt on gt.id = g.type_id
-        left join """ + helper.table_prefix + """geography geo on geo.name_id = sg.name_id and gt.id = 1
+        array_agg(row_to_json(n)) as nodes 
+        from """ + helper.table_prefix + """subgroup sg 
+        left join """ + helper.table_prefix + """geography_name gn on gn.id = sg.name_id 
+        left join """ + helper.table_prefix + """subgroup_name sgn on sgn.id = sg.name_id 
+        left join """ + helper.table_prefix + """group g on g.id = sg.group_id 
+        left join """ + helper.table_prefix + """group_type gt on gt.id = g.type_id 
+        left join """ + helper.table_prefix + """geography geo on geo.name_id = sg.name_id and gt.id = 1 
         left join (
         select gn.name,
         gcy.id,
-        gcy.iso2code as iso
-        from """ + helper.table_prefix + """country gcy
+        gcy.iso2code as iso 
+        from """ + helper.table_prefix + """country gcy 
         left join """ + helper.table_prefix + """geography_name gn on gn.id = gcy.name_id
-        ) n on n.id = sg.country_id
+        ) n on n.id = sg.country_id 
         group by sg.name_id,
-		sg.group_id,
-		gn.name,
-		sgn.name,
-		geo.hexagon_center_x,
-		geo.hexagon_center_y,
-		gt.id,
-		g.id,
-		gn.id,
-		sgn.id
+        sg.group_id,
+        gn.name,
+        sgn.name,
+        geo.hexagon_center_x,
+        geo.hexagon_center_y,
+        gt.id,
+        g.id,
+        gn.id,
+        sgn.id
+        ) s on s.group_id = g.id group by g.id;
         """)
         # obtain the data
         data = self.cursor.fetchall()
