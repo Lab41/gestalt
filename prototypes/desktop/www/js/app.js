@@ -114,7 +114,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 	
 	// visual
     .state("app.panel.visual", {
-    	url: "/{visual}",
+    	url: "/{visual}?:si?:sc",
     	views: {
     		"visual": {
 				templateProvider: function($http, $stateParams) {

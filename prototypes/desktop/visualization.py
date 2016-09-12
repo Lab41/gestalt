@@ -12,7 +12,7 @@ urls = (
     
     # rest API backend endpoints
     "flows/unique_targets/(.*)/", "flows",
-    "network/metrics/(.*)/", "metrics",
+    "story/metric/(\d+)/", "metrics",
 	"angular/directives/(.*)/", "ng_directives",
 	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
@@ -51,32 +51,6 @@ class flows:
         # convert data to a string
         return json.dumps(data)
     
-class metrics:
-    def GET(self, group_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-        select nm.*,
-        g.name as group_name,
-        array_agg(row_to_json(m)) as metrics
-        from """ + helper.table_prefix + """network_metrics nm
-        left join """ + helper.table_prefix + """group g on g.id = nm.story_idea_id
-        left join (
-        select m.*
-        from """ + helper.table_prefix + """network_metrics_values m
-        ) m on m.story_idea_id = nm.story_idea_id
-        where nm.story_idea_id = """ + group_id + """
-        group by nm.id,
-        g.name;
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data)
-
 class nodes:
     def GET(self, table, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
