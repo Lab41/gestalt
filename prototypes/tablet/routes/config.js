@@ -25,8 +25,10 @@ config.workspace.allWorkspaces = {
     route: workspaceBase + "/persona/:persona",
     
     query: [
-        "select w.id,w.persona_id,w.url_name,w.is_default,wn.name,p.url_name as default_panel,array_agg(row_to_json(pl)) as panels from " + tablePrefix + "workspace w left join " + tablePrefix + "workspace_name wn on wn.id = w.workspace_name_id left join " + tablePrefix + "workspace_panel wp on wp.workspace_id = w.id left join " + tablePrefix + "panel p on p.id = wp.panel_id left join (select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id from " + tablePrefix + "workspace_panel wp left join " + tablePrefix + "panel pl on pl.id = wp.panel_id left join " + tablePrefix + "workspace w on w.id = wp.workspace_id) pl on pl.workspace_id = w.id where w.persona_id = ",
-		" and wp.is_default = true group by w.id,w.persona_id,w.url_name,w.url_name,wn.name,p.url_name order by wn.name asc;"
+        "select w.id,w.persona_id,w.url_name,w.is_default,wn.name,p.url_name as default_panel,v.directive as default_vis,array_agg(row_to_json(pl)) as panels from " + tablePrefix + "workspace w left join " + tablePrefix + "workspace_name wn on wn.id = w.workspace_name_id left join " + tablePrefix + "workspace_panel wp on wp.workspace_id = w.id left join " + tablePrefix + "panel p on p.id = wp.panel_id left join " + tablePrefix + "persona_panel_story pps on pps.panel_id = wp.panel_id and pps.persona_id = ",
+		" left join " + tablePrefix + "story s on s.id = pps.story_id left join " + tablePrefix + "vis v on v.id = s.vis_id left join (select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id, v.directive as visualization from " + tablePrefix + "workspace_panel wp left join " + tablePrefix + "persona_panel_story pps on pps.panel_id = wp.panel_id and pps.persona_id = ",
+		" left join " + tablePrefix + "story s on s.id = pps.story_id left join " + tablePrefix + "vis v on v.id = s.vis_id left join " + tablePrefix + "panel pl on pl.id = wp.panel_id left join " + tablePrefix + "workspace w on w.id = wp.workspace_id) pl on pl.workspace_id = w.id where w.persona_id = ",
+		" and wp.is_default = true group by w.id,w.persona_id,w.url_name,w.url_name,wn.name,p.url_name,v.directive order by wn.name asc;"
     ]
     
 };
@@ -37,15 +39,8 @@ config.workspace.singleWorkspace = {
     route: workspaceBase + "/:workspace",
     
     query: [
-        "SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name\
-            FROM " + tablePrefix + "workspace w\
-            LEFT JOIN " + tablePrefix + "workspace_name wn\
-            ON w.workspace_name_id = wn.id\
-            LEFT JOIN " + tablePrefix + "persona p\
-            ON w.persona_id = p.id\
-            WHERE w.url_name IS NOT NULL \
-            AND w.url_name = '",
-        "' ORDER BY w.id;"
+        "SELECT DISTINCT ON (w.id) w.id, wn.name, p.name AS persona_name, w.url_name FROM " + tablePrefix + "workspace AS w LEFT JOIN " + tablePrefix + "workspace_name AS wn ON w.workspace_name_id = wn.id LEFT JOIN " + tablePrefix + "persona AS p ON w.persona_id = p.id WHERE w.id IS NOT NULL AND w.url_name = '",
+		"' ORDER BY w.id;"
     ]
     
 };
@@ -53,18 +48,12 @@ config.workspace.singleWorkspace = {
 // workspace-3-get-all-panels-single-workspace.route.js
 config.workspace.panelsSingleWorkspace = {
     
-    route: workspaceBase + "/:workspace/panels",
+    route: workspaceBase + "/:workspace/panels/:persona",
     
     query: [
-        "SELECT DISTINCT ON (p.id) p.id as panel_id, p.name, p.url_name, w.url_name as workspace_url_name, w.persona_id\
-            FROM " + tablePrefix + "panel p\
-            RIGHT JOIN " + tablePrefix + "workspace_panel wp\
-            ON wp.panel_id = p.id\
-            right join " + tablePrefix + "workspace w\
-            on w.id = wp.workspace_id\
-            and w.url_name = '",
-        "' WHERE p.id IS NOT NULL\
-            ORDER BY p.id;"
+        "select pps.panel_id,p.url_name,w.url_name as workspace_url_name,p.name,pps.persona_id,v.directive as default_vis from " + tablePrefix + "persona_panel_story pps left join " + tablePrefix + "workspace_panel wp on wp.panel_id = pps.panel_id left join " + tablePrefix + "story s on s.id = pps.story_id left join " + tablePrefix + "vis v on v.id = s.vis_id left join " + tablePrefix + "panel p on p.id = wp.panel_id left join " + tablePrefix + "workspace w on w.id = wp.workspace_id where w.url_name = '",
+		"' and pps.persona_id = ",
+		";"
     ]
     
 };
@@ -83,9 +72,22 @@ config.story.allStoriesSinglePanelPersona = {
     route: storyBase + "/persona/:persona/panel/:panel",
     
     query: [
-        "select pps.*,s.name,s.url_name,array_agg(row_to_json(si)) as ideas from " + tablePrefix + "persona_panel_story pps left join " + tablePrefix + "story s on s.id = pps.story_id left join (select sti.*,array_agg(row_to_json(c)) as controls from " + tablePrefix + "story_idea sti left join (select sac.*,g.name from " + tablePrefix + "story_action_control sac left join " + tablePrefix + "group g on g.id = sac.name_id) c on c.story_action_id = sti.action_id group by sti.id) si on si.story_id = pps.story_id where pps.persona_id = ",
+        "select pps.*,s.name,s.url_name,array_agg(row_to_json(si)) as ideas from " + tablePrefix + "persona_panel_story pps left join " + tablePrefix + "story s on s.id = pps.story_id left join (select sti.*,array_agg(row_to_json(c)) as controls from " + tablePrefix + "story_idea sti left join (select sac.*,case when sac.story_action_id = 1 then g.name when sac.story_action_id = 2 then v.name else f.name end as name from " + tablePrefix + "story_action_control sac left join " + tablePrefix + "group g on g.id = sac.name_id left join " + tablePrefix + "vertex v on v.id = sac.name_id left join " + tablePrefix + "flow f on f.id = sac.name_id) c on c.story_action_id = sti.action_id group by sti.id) si on si.story_id = pps.story_id where pps.persona_id = ",
 		" and pps.panel_id = ",
 		" group by pps.id,s.name,s.url_name;"
+    ]
+    
+};
+
+// story-2-get-story-idea-metrics-single-panel-persona.route.js
+config.story.storyIdeaMetricsSinglePanelPersona = {
+    
+    route: storyBase + "/idea/:idea/metric/:control",
+    
+    query: [
+        "select sac.id,sim.label,sim.description,si.id as story_idea_id,case when sac.story_action_id = 1 then g.name when sac.story_action_id = 2 then v.name else f.name end as control_name,sa.name as action_name,sim.name as metric_name,array_agg(row_to_json(m)) as metrics from " + tablePrefix + "story_action_control sac left join " + tablePrefix + "story_action sa on sa.id = sac.story_action_id left join " + tablePrefix + "story_idea si on si.action_id = sac.story_action_id left join " + tablePrefix + "group g on g.id = sac.name_id left join " + tablePrefix + "vertex v on v.id = sac.name_id left join " + tablePrefix + "flow f on f.id = sac.name_id left join " + tablePrefix + "story_idea_metric sim on sim.control_id = sac.id left join (select * from " + tablePrefix + "story_idea_metric_value) m on m.control_id = sac.id where si.id = ",
+		" and sac.id = ",
+		" group by sac.id,sim.label,sim.description,si.id,g.name,v.name,f.name,sa.name,sim.name;"
     ]
     
 };
@@ -162,14 +164,14 @@ config.visualization.nodeFlows = {
     
 };
 
-// visualization-5-network-metrics.route.js
-config.visualization.networkMetrics = {
+// visualization-5-dynamic-directives.route.js
+config.visualization.dynamicDirectives = {
     
-    route: visualizationBase + "/network/metrics/:groupId",
+    route: visualizationBase + "/angular/directives/:visual",
     
     query: [
-        "select nm.*,gt.name as group_type,g.name as group_name,array_agg(row_to_json(m)) as metrics from " + tablePrefix + "network_metrics nm left join " + tablePrefix + "group_type gt on gt.id = nm.group_id left join " + tablePrefix + "group g on g.id = nm.group_id left join (select m.* from " + tablePrefix + "network_metrics_values m) m on m.group_id = nm.group_id where nm.group_id = ",
-        " group by nm.id,gt.name,g.name;"
+        "select * from " + tablePrefix + "vis where id = ",
+		";"
     ]
     
 };

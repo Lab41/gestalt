@@ -27,7 +27,7 @@ angular.module("bar-chart-directive", [])
             var valueKey = attrs.valueKey || "value";
             var gutter = 0.1;
             var transition = {
-                time: 3000
+                time: 1000
             };
             
             // get d3 promise
@@ -70,6 +70,91 @@ angular.module("bar-chart-directive", [])
                             function getStyleValue(style, value) {
                                 return parseFloat(style.getPropertyValue(value).split("px")[0]);
                             };
+							
+							// update/enter/exit content of groups
+							function updateGroupContent(group, data) {
+
+								// LABEL
+
+								// set selection
+								var label = group
+									.selectAll(".label")
+									.data([data]);
+
+								// update selection
+								label
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "label",
+										x: horzOrientation ? gutter * 100 : xScale(data.name),
+										y: horzOrientation ? yScale(data.name) + (yScale.rangeBand() / 2) : height,
+										dx: horzOrientation ? 0 : "2.5em",
+										dy: horzOrientation ? "0.3em" : 0
+									})
+									.text(data.name);
+
+								// enter selection
+								label
+									.enter()
+									.append("text")
+									.attr({
+										class: "label",
+										x: horzOrientation ? gutter * 100 : xScale(data.name),
+										y: horzOrientation ? yScale(data.name) + (yScale.rangeBand() / 2) : height,
+										dx: horzOrientation ? 0 : "2.5em",
+										dy: horzOrientation ? "0.3em" : 0
+									})
+									.text(data.name);
+
+								// exit selection
+								label
+									.exit()
+									.transition()
+									.duration(transition.time / 2)
+									.remove();
+
+								// BAR
+
+								// set selection
+								var bar = group
+									.selectAll(".bar")
+									.data([data]);
+
+								// update selection
+								bar
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "bar",
+										x: horzOrientation ? xScaleMin : xScale(data.name),
+										y: horzOrientation ? yScale(data.name) : yScale(data[valueKey]),
+										width: horzOrientation ? xScale(data[valueKey]) : xScale.rangeBand(),
+										height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(data[valueKey])
+									});
+
+								// enter selection
+								bar
+									.enter()
+									.append("rect")
+									.transition()
+									.duration(transition.time)
+									.attr({
+										class: "bar",
+										x: horzOrientation ? xScaleMin : xScale(data.name),
+										y: horzOrientation ? yScale(data.name) : yScale(data[valueKey]),
+										width: horzOrientation ? xScale(data[valueKey]) : xScale.rangeBand(),
+										height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(data[valueKey])
+									});
+
+								// exit selection
+								bar
+									.exit()
+									.transition()
+									.duration(transition.time / 2)
+									.remove();
+
+							};
                             
                             // calc max/min scales
                             var style = $window.getComputedStyle(element.find("svg")[0]);
@@ -108,88 +193,21 @@ angular.module("bar-chart-directive", [])
                             
                             // STACK
                             var barSet = canvas
-                                .selectAll("g")
+                                .selectAll(".barset")
                                 .data(data);
 							
 							// update selection
 							barSet
 								.transition()
 								.duration(transition.time)
+								.attr({
+									class: "barset"
+								})
                             
                                 // each group
                                 .each(function(d) {
                                 
-                                    var group = d3.select(this);
-                                
-                                    // LABEL
-
-                                    // set selection
-                                    var label = group
-                                        .selectAll("text")
-                                        .data([d]);
-
-                                    // update selection
-                                    label
-                                        .transition()
-                                        .duration(transition.time)
-                                        .text(function(d) { return d.name });
-
-                                    // enter selection
-                                    label
-                                        .enter()
-                                        .append("text")
-                                        .attr({
-                                            x: horzOrientation ? gutter * 100 : xScale(d.name),
-                                            y: horzOrientation ? yScale(d.name) + (yScale.rangeBand() / 2) : height,
-                                            dx: horzOrientation ? 0 : "2.5em",
-                                            dy: horzOrientation ? "0.3em" : 0
-                                        })
-                                        .text(d.name);
-
-                                    // exit selection
-                                    label
-                                        .exit()
-                                        .transition()
-                                        .duration(transition.time)
-                                        .remove();
-                                
-                                    // BAR
-                                
-                                    // set selection
-                                    var bar = group
-                                        .selectAll("rect")
-                                        .data([d]);
-                                
-                                    // update selection
-                                    bar
-                                        .transition()
-                                        .duration(transition.time)
-                                        .attr({
-                                            x: horzOrientation ? xScaleMin : xScale(d.name),
-                                            y: horzOrientation ? yScale(d.name) : yScale(d[valueKey]),
-                                            width: horzOrientation ? xScale(d[valueKey]) : xScale.rangeBand(),
-                                            height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(d[valueKey])
-                                        });
-                                
-                                    // enter selection
-                                    bar
-                                        .enter()
-                                        .append("rect")
-                                        .transition()
-                                        .duration(transition.time)
-                                        .attr({
-                                            x: horzOrientation ? xScaleMin : xScale(d.name),
-                                            y: horzOrientation ? yScale(d.name) : yScale(d[valueKey]),
-                                            width: horzOrientation ? xScale(d[valueKey]) : xScale.rangeBand(),
-                                            height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(d[valueKey])
-                                        });
-                                
-                                    // exit selection
-                                    bar
-                                        .exit()
-                                        .transition()
-                                        .duration(transition.time)
-                                        .remove();
+                                    updateGroupContent(d3.select(this), d);
 
                                 });
 							
@@ -199,81 +217,14 @@ angular.module("bar-chart-directive", [])
 								.append("g")
 								.transition()
 								.duration(transition.time)
+								.attr({
+									class: "barset"
+								})
 								
 								// each group
 								.each(function(d) {
                                 
-                                    var group = d3.select(this);
-                                
-                                    // LABEL
-
-                                    // set selection
-                                    var label = group
-                                        .selectAll("text")
-                                        .data([d]);
-
-                                    // update selection
-                                    label
-                                        .transition()
-                                        .duration(transition.time)
-                                        .text(function(d) { return d.name });
-
-                                    // enter selection
-                                    label
-                                        .enter()
-                                        .append("text")
-                                        .attr({
-                                            x: horzOrientation ? gutter * 100 : xScale(d.name),
-                                            y: horzOrientation ? yScale(d.name) + (yScale.rangeBand() / 2) : height,
-                                            dx: horzOrientation ? 0 : "2.5em",
-                                            dy: horzOrientation ? "0.3em" : 0
-                                        })
-                                        .text(d.name);
-
-                                    // exit selection
-                                    label
-                                        .exit()
-                                        .transition()
-                                        .duration(transition.time)
-                                        .remove();
-                                
-                                    // BAR
-                                
-                                    // set selection
-                                    var bar = group
-                                        .selectAll("rect")
-                                        .data([d]);
-                                
-                                    // update selection
-                                    bar
-                                        .transition()
-                                        .duration(transition.time)
-                                        .attr({
-                                            x: horzOrientation ? xScaleMin : xScale(d.name),
-                                            y: horzOrientation ? yScale(d.name) : yScale(d[valueKey]),
-                                            width: horzOrientation ? xScale(d[valueKey]) : xScale.rangeBand(),
-                                            height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(d[valueKey])
-                                        });
-                                
-                                    // enter selection
-                                    bar
-                                        .enter()
-                                        .append("rect")
-                                        .transition()
-                                        .duration(transition.time)
-                                        .attr({
-                                            x: horzOrientation ? xScaleMin : xScale(d.name),
-                                            y: horzOrientation ? yScale(d.name) : yScale(d[valueKey]),
-                                            width: horzOrientation ? xScale(d[valueKey]) : xScale.rangeBand(),
-                                            height: horzOrientation ? yScale.rangeBand() : yScaleMax - yScale(d[valueKey])
-                                        });
-                                
-                                    // exit selection
-                                    bar
-                                        .exit()
-                                        .transition()
-                                        .duration(transition.time)
-                                        .remove();
+                                    updateGroupContent(d3.select(this), d);
 
                                 });
 							
@@ -281,7 +232,7 @@ angular.module("bar-chart-directive", [])
 							barSet
 								.exit()
 								.transition()
-								.duration(transition.time)
+								.duration(transition.time / 2)
 								.remove();
 							
                         };

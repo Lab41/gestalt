@@ -1,6 +1,6 @@
 angular.module("panel-nav-directive", [])
 
-.directive("panelNav", ["$state", "$ionicViewSwitcher", "layoutService", "$rootScope", function($state, $ionicViewSwitcher, layoutService, $rootScope) {
+.directive("panelNav", ["$state", "$ionicViewSwitcher", "layoutService", "$rootScope", "authenticationService", function($state, $ionicViewSwitcher, layoutService, $rootScope, authenticationService) {
 	return {
 		restrict: "E",
 		scope: {
@@ -13,55 +13,61 @@ angular.module("panel-nav-directive", [])
 	    	
 	    	// change the pane via navigation
             $scope.changePanel = function(event, idx) {
+				
+				var panelParam = event.target.id;
+				var workspaceParam = $state.params.workspace;
 
 				// set active panel
-				$scope.panelParam = event.target.id;
+				$scope.panelParam = panelParam;
 				
-				var originUrl = $state.params.panel;
-                var destinationIdx = idx;
-                                
-                // get panel from data stored in service
-                layoutService.getStructure(originUrl, "panel", "panels").then(function(data) {
-					
-					// origin panel
-					var origin = data;
-                    console.log($scope.panels);
-                    // check all panels
-                    angular.forEach($scope.panels, function(value, key) {
-                        
-                        // get destination index
-                        if (origin.id == value.id) {
-                            
-                            var originIdx = key;
-                                                         
-                            // check indicies to resolve animation direction
-                            if (destinationIdx < originIdx) {
-								
-								$ionicViewSwitcher.nextDirection(["back"]);
-								
-							} else if (destinationIdx > originIdx) {
-								
-								$ionicViewSwitcher.nextDirection(["forward"]);
-								
-							} else {
-								
-								$ionicViewSwitcher.nextDirection(["enter"]);
-								
-							};
-                            
-                        };
-                    
-                    });
+				// get credentials from local storage
+				authenticationService.getCredentials().then(function(userData) {
 
-                });
+					var user = userData;
+					var originUrl = $state.params.panel;
+					var destinationIdx = idx;
+					var objs = { multi: "panels", single: "panel" };
+					var endpoint = workspaceParam + "/panels/" + user.id;
+					var check = { key: "url_name", value: panelParam };
+                                
+					// get panel from data stored in service
+					layoutService.getStructure(panelParam, objs, endpoint, check).then(function(data) {
+
+						// origin panel
+						var origin = data;
+						
+						// check all panels
+						angular.forEach($scope.panels, function(value, key) {
+
+							// get destination index
+							if (origin.id == value.id) {console.log(key);
+
+								var originIdx = key;
+
+								// check indicies to resolve animation direction
+								if (destinationIdx < originIdx) {
+
+									$ionicViewSwitcher.nextDirection(["back"]);
+
+								} else if (destinationIdx > originIdx) {
+
+									$ionicViewSwitcher.nextDirection(["forward"]);
+
+								} else {
+
+									$ionicViewSwitcher.nextDirection(["enter"]);
+
+								};
+
+							};
+
+						});
+
+					});
+					
+				});
 
             };
-			
-			$rootScope.$on("hideNav", function(event, args) {
-		
-		        $scope.hideNav = args.val;
-		        
-			});
 	    	
 	    },
 		templateUrl: "templates/panel-nav.html",

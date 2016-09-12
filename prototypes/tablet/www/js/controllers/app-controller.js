@@ -21,7 +21,7 @@ angular.module("app-controller", [])
 
             var user = userData;
             var endpoint = "persona/" + user.id + "/";
-            var objs = { multi: "workspaces", single: "workspace" };
+            var objs = { multi: "workspaces", single: "workspace" };console.log(workspaceParam);
             var check = { key: "url_name", value: workspaceParam };
 
             // get workspaces
@@ -34,9 +34,10 @@ angular.module("app-controller", [])
 
                     var workspace = singleWorkspace;
                     var objs = { multi: "panels", single: "panel" };
+					var panelEndpoint = workspaceParam + "/panels/" + user.id + "/";
 
                     // get single workspace panels
-                    layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
+                    layoutService.getStructures(panelEndpoint, objs).then(function(workspacePanels) {console.log(workspacePanels);
 
                         var panels = workspacePanels;
 
@@ -68,7 +69,7 @@ angular.module("app-controller", [])
     setScope();
     
     // change workspace
-    $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, personaID) {
+    $scope.changeWorkspace = function(workspaceID, workspaceParam, panelParam, personaID, visualParam) {
         
         // clear stored layout values
         layoutService.clearValues(["workspace", "panels", "panel"]);
@@ -77,13 +78,18 @@ angular.module("app-controller", [])
         $scope.workspaceParam = workspaceParam;
 
         // transition state
-        $state.go("app.panel", {
-            workspace: workspaceParam,
-            panel: panelParam
-        });
-        
-        setScope();
-        
+        $state.go("app.panel.visual", {
+			workspace: workspaceParam,
+			panel: panelParam,
+			visual: visualParam
+		},{
+			inherit: false
+		}).then(function() {
+			
+			setScope();
+			
+		});
+                
     };
     
     // log out
@@ -101,11 +107,11 @@ angular.module("app-controller", [])
     };
     
     // detect login
-    $rootScope.$on("login", function(event, args) {
+    /*$rootScope.$on("login", function(event, args) {
         
         // set scope and global menu values
         setScope();
         
-    });
+    });*/
 	
 }]);
