@@ -14,6 +14,7 @@
 /* --- !login
 /* --- !group nodes
 /* --- !tile grid map
+/* --- !bar chart
 
 /******************************* !IMPORTS *******************************/
 
@@ -241,4 +242,15 @@ tile-grid-map path.default {
     fill: rgb(102, 112, 128);
     stroke: rgb(26,26,26);
     
+}
+
+/***********************/
+/***** !bar chart ******/
+/***********************/
+
+/* node */
+bar-chart rect {
+	
+	fill: #444b5a;
+	
 }
