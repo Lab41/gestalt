@@ -46,17 +46,6 @@ angular.module("group-nodes-directive", [])
                 
                 // circle scale
                 var cScale = d3.scale.linear();
-                    geo: -8
-                };
-                var transition = {
-                    time: 500
-                };
-                
-                // x-scale
-                var xScale = d3.scale.ordinal();
-                
-                // circle scale
-                var cScale = d3.scale.linear();
 				
                 // set up force layout algorithm
 				var force = d3.layout.force()
