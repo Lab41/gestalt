@@ -5,8 +5,6 @@ import psycopg2.extras
 import web
 
 import helper
-from random import randint
-from loremipsum import get_sentences
 
 urls = (
     
