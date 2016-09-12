@@ -12,6 +12,8 @@ urls = (
     "", "all_stories",
     # 0.0.0.0:8000/api/data/story/#/, where # == story.id
     "(\d+)/", "single_story",
+	# /api/data/story/idea/metric/#/, where # == storyidea.id
+	"idea/(\d+)/metric/(\d+)/", "story_idea_metrics",
     # 0.0.0.0:8000/api/data/story/persona/#/, where # == persona.id
     "persona/(\d+)/", "persona_stories",
     # 0.0.0.0:8000/api/data/story/persona/#/panel/#/, where first # == persona.id and second # == panel.id
@@ -141,6 +143,53 @@ class persona_panel_stories:
 		group by pps.id,
 		s.name,
 		s.url_name;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+class story_idea_metrics:
+    def GET(self, story_idea_id, control_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+        select sac.id,
+		sim.label,
+		sim.description,
+		si.id as story_idea_id,
+		case
+		when sac.story_action_id = 1 then g.name
+		when sac.story_action_id = 2 then v.name
+		else f.name
+		end 
+		as control_name,
+		sa.name as action_name,
+		sim.name as metric_name,
+		array_agg(row_to_json(m)) as metrics
+		from """ + helper.table_prefix + """story_action_control sac
+		left join """ + helper.table_prefix + """story_action sa on sa.id = sac.story_action_id
+		left join """ + helper.table_prefix + """story_idea si on si.action_id = sac.story_action_id
+		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
+		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
+		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
+		left join """ + helper.table_prefix + """story_idea_metric sim on sim.control_id = sac.id
+		left join (
+		select * from """ + helper.table_prefix + """story_idea_metric_value
+		) m on m.control_id = sac.id
+		where si.id = """ + story_idea_id + """ and sac.id = """ + control_id + """
+		group by sac.id,
+		sim.label,
+		sim.description,
+		si.id,
+		g.name,
+		v.name,
+		f.name,
+		sa.name,
+		sim.name;
         """)
         # obtain the data
         data = self.cursor.fetchall()

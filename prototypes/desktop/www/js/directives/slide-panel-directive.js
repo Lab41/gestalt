@@ -43,7 +43,9 @@ angular.module("slide-panel-directive", [])
                     workspace: workspaceParam,
                     panel: panelParam,
 					visual: visualParam
-                });
+                },{
+					inherit: false
+				});
 
             };
             

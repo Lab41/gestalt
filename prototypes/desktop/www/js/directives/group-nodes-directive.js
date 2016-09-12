@@ -79,7 +79,9 @@ angular.module("group-nodes-directive", [])
                 var link; // each link
                 var foci = {}; // layout focus coordinates mapped to node id
                 var geoGroup = "country"; // group name that needs specific geographic x,y coords
-                var ideaType = "cluster"; // idea type that needs specific functionality
+                var clusterType = "cluster"; // cluster nodes functionality
+				var sizeType = "size"; // resize nodes functionality
+				var linkType = "link"; // link nodes functionality
 				
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
@@ -105,118 +107,6 @@ angular.module("group-nodes-directive", [])
                             ///////////////////////////////////////////////
                             /////////////// d3 RENDER START ///////////////
                             ///////////////////////////////////////////////
-							
-							// draw flows between nodes
-							function drawFlows(d) {
-								
-								// network health
-                                contentService.getData("visualization/flows/unique_targets/" + d.id + "/").then(function(data) {
-                                    
-                                    var sourceId = d.id;
-
-                                    // map raw links to d3 index-specific objects for layout algorithm
-									// 3rd param is the connector key in the raw data that connects nodes
-									function mapLinks(links, nodes, key) {
-
-										var data = [];
-
-										links.forEach(function(l) {
-
-											// set up the source node
-											var source = nodes.filter(function(o, i) {
-
-												// add index to obj
-												// note: d3 replaces any "index" key
-												o.i = i;
-
-												return o[key] === l.source;
-
-											})[0].i;
-
-											// set up target node
-											var target = nodes.filter(function(o, i) {
-
-												// add index to obj
-												// note: d3 replaces any "index" key
-												o.i = i;
-
-												return o[key] === l.target;
-
-											})[0].i;
-
-											// push to new array
-											data.push({
-												source: source,
-												target: target
-											});
-
-										});
-
-										return data;
-
-									};
-									
-									links = mapLinks(data, nodes, "iso"); // remap links b/c d3 wants use an index to connect nodes
-                                    
-									force
-                                        .nodes(nodes)
-                                        .links(links)
-										.charge(function(d, i) { return d.id == sourceId ? -150 : -50; }) // for central node with links
-										.friction(0.9)
-										.linkDistance(20);
-									
-									// update viz
-									updateLinks();
-
-                                });
-								
-							};
-                            
-                            // change node attributes based on storyline
-                            function storyChange(d) {
-								
-								if (d == "equal") {
-									
-									// all nodes equal size
-									nodes = data.map(function(o) {
-										o.r = radius;
-										return o;
-									});
-									
-								} else if (d == "high degree") {
-
-									// set nodes from data
-									// map radius value so collision detection can evaluate nodes
-									nodes = data.map(function(o) {
-										o.r = cScale(calcRadius(o.count))
-										return o;
-									});
-
-								} else if (d == "high centrality") {
-									
-									// set nodes from data
-									nodes = data.map(function(o) {
-										o.r = cScale(calcRadius(o.index))
-										return o;
-									});
-
-								} else if (d == "no links") {
-									
-									force.links([]);
-									
-									updateLinks();
-									
-								};
-								
-								// update force settings
-								force
-									.friction(0)
-									.charge(0);
-                                
-								// update visualization
-								updateVis();
-								
-                            };
                             
                             // force layout started
                             function startForce(e) {
@@ -261,13 +151,6 @@ angular.module("group-nodes-directive", [])
                             // force layout done
                             function endForce(e) {
                                 console.log("do something when layout complete");                                
-                            };
-                                                     
-                            // calc circle radius when area is mapped to count
-                            function calcRadius(value) {
-                                
-                                return Math.sqrt(value / Math.PI);
-                                
                             };
                             
 							// managae collision detection between nodes
@@ -319,193 +202,6 @@ angular.module("group-nodes-directive", [])
                                     
                                 }
                             };
-							
-							// enter/update/exit node groups
-							function updateVis() {
-								
-								// NODE
-								
-								// set selection
-								node = node.data(nodes, function(d) { return d.id; });
-								
-								// update selection
-								node
-									.transition()
-									.duration(transition.time)
-									.attr({
-										class: function(d) { return d.count == 0 ? "node inactive" : "node" },
-										id: function(d) { return "node-" + d.id; }
-									})
-									.each(function(d) {
-
-										updateGroupContent(d3.select(this), [d]);
-									
-									});
-								
-								// enter selection
-								node
-									.enter()
-									.append("g")
-									.attr({
-										class: function(d) { return d.count == 0 ? "node inactive" : "node" },
-										id: function(d) { return "node-" + d.id; }
-									})
-									.each(function(d) {
-
-										var currentGroup = d3.select(this);
-
-										// circle
-										currentGroup
-											.append("circle")
-											.attr({
-												class: "shape",
-												r: function(d) { return d.r; }
-											});
-
-										// label
-										currentGroup
-											.append("text")
-											.attr({
-												class: "label",
-												dx: 0,
-												dy: "0.35em"
-											})
-											.text(function(d) { return d.iso });
-									})
-									.on("click", drawFlows);
-								
-								// exit selection
-								node
-									.exit()
-									.transition()
-									.duration(transition.time)
-									.remove();
-								
-								// start force
-								force.start();
-								
-							};
-							
-							// update/enter/exit content of groups
-							function updateGroupContent(group, data) {
-								
-								// SHAPE
-									
-								// set selection
-								var shape = group
-									.selectAll(".shape")
-									.data(data);
-
-								// update selection
-								shape
-									.transition()
-									.duration(transition.time)
-									.attr({
-										class: "shape",
-										r: function(d) { return d.r; }
-									});
-
-								// enter selection
-								shape
-									.append("circle")
-									.transition()
-									.duration(transition.time)
-									.attr({
-										class: "shape",
-										r: function(d) { return d.r; }
-									});
-
-								// exit selection
-								shape
-									.exit()
-									.transition()
-									.duration(transition.time)
-									.remove();
-
-								// LABEL
-								
-								// set selection
-								var label = group
-									.selectAll(".label")
-									.data(data);
-								
-								// update selection
-								label
-									.transition()
-									.duration(transition.time)
-									.attr({
-										class: "label",
-										dx: 0,
-										dy: "0.35em"
-									})
-									.text(function(d) { return d.iso });
-								
-								// enter selection
-								label
-									.enter()
-									.append("text")
-									.attr({
-										class: "label",
-										dx: 0,
-										dy: "0.35em"
-									})
-									.text(function(d) { return d.iso });
-								
-								// exit selection
-								label
-									.exit()
-									.transition()
-									.duration(transition.time)
-									.remove();
-								
-							};
-							
-							// enter/update/exit links
-							function updateLinks() {
-								
-								// LINK
-								
-								// set selection
-								link = link.data(force.links());
-								
-								// update selection
-								link
-									.transition()
-									.duration(transition.time)
-									.attr({
-										class: "link",
-										x1: function(d) { return d.source.x; },
-										y1: function(d) { return d.source.y; },
-										x2: function(d) { return d.target.x; },
-										y2: function(d) { return d.target.y; }
-									});
-									
-								
-								// enter selection
-								link
-									.enter()
-									.append("line")
-									.transition()
-									.duration(transition.time)
-									.attr({
-										class: "link",
-										x1: function(d) { return d.source.x; },
-										y1: function(d) { return d.source.y; },
-										x2: function(d) { return d.target.x; },
-										y2: function(d) { return d.target.y; }
-									});
-								
-								// exit selection
-								link
-									.exit()
-									.transition()
-									.duration(transition.time)
-									.remove();
-								
-								// start force
-								force.start();
-								
-							};
                             
                             // create foci lookups
                             function createFoci(groups) {
@@ -595,20 +291,6 @@ angular.module("group-nodes-directive", [])
                             
                             // generate foci lookup object
                             createFoci(groups);
-                            
-                            /*var storyButtons = ["equal", "high degree", "high centrality", "no links"];
-                            
-                            // temp buttons while we build more transition options
-                            d3.select(element.find("div")[0])
-                                .selectAll(".temp")
-                                .data(storyButtons)
-                                .enter()
-                                .append("button")
-                                .attr({
-                                    type: "button"
-                                })
-                                .text(function(d) { return d; })
-                                .on("click", storyChange);*/
                             
                             // set nodes from data
                             // map radius value so collision detection can evaluate nodes
@@ -783,6 +465,266 @@ angular.module("group-nodes-directive", [])
                             };
 
                         };
+						
+						// enter/update/exit node groups
+						function updateVis() {
+
+							// NODE
+
+							// set selection
+							node = node.data(nodes, function(d) { return d.id; });
+
+							// update selection
+							node
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: function(d) { return d.count == 0 ? "node inactive" : "node" },
+									id: function(d) { return "node-" + d.id; }
+								})
+								.each(function(d) {
+
+									updateGroupContent(d3.select(this), [d]);
+
+								});
+
+							// enter selection
+							node
+								.enter()
+								.append("g")
+								.attr({
+									class: function(d) { return d.count == 0 ? "node inactive" : "node" },
+									id: function(d) { return "node-" + d.id; }
+								})
+								.each(function(d) {
+
+									var currentGroup = d3.select(this);
+
+									// circle
+									currentGroup
+										.append("circle")
+										.attr({
+											class: "shape",
+											r: function(d) { return d.r; }
+										});
+
+									// label
+									currentGroup
+										.append("text")
+										.attr({
+											class: "label",
+											dx: 0,
+											dy: "0.35em"
+										})
+										.text(function(d) { return d.iso });
+								})
+								.on("click", drawFlows);
+
+							// exit selection
+							node
+								.exit()
+								.transition()
+								.duration(transition.time)
+								.remove();
+
+							// start force
+							force.start();
+
+						};
+						
+						// update/enter/exit content of groups
+						function updateGroupContent(group, data) {
+
+							// SHAPE
+
+							// set selection
+							var shape = group
+								.selectAll(".shape")
+								.data(data);
+
+							// update selection
+							shape
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "shape",
+									r: function(d) { return d.r; }
+								});
+
+							// enter selection
+							shape
+								.append("circle")
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "shape",
+									r: function(d) { return d.r; }
+								});
+
+							// exit selection
+							shape
+								.exit()
+								.transition()
+								.duration(transition.time)
+								.remove();
+
+							// LABEL
+
+							// set selection
+							var label = group
+								.selectAll(".label")
+								.data(data);
+
+							// update selection
+							label
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "label",
+									dx: 0,
+									dy: "0.35em"
+								})
+								.text(function(d) { return d.iso });
+
+							// enter selection
+							label
+								.enter()
+								.append("text")
+								.attr({
+									class: "label",
+									dx: 0,
+									dy: "0.35em"
+								})
+								.text(function(d) { return d.iso });
+
+							// exit selection
+							label
+								.exit()
+								.transition()
+								.duration(transition.time)
+								.remove();
+
+						};
+						
+						// enter/update/exit links
+						function updateLinks() {
+
+							// LINK
+
+							// set selection
+							link = link.data(force.links());
+
+							// update selection
+							link
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "link",
+									x1: function(d) { return d.source.x; },
+									y1: function(d) { return d.source.y; },
+									x2: function(d) { return d.target.x; },
+									y2: function(d) { return d.target.y; }
+								});
+
+
+							// enter selection
+							link
+								.enter()
+								.append("line")
+								.transition()
+								.duration(transition.time)
+								.attr({
+									class: "link",
+									x1: function(d) { return d.source.x; },
+									y1: function(d) { return d.source.y; },
+									x2: function(d) { return d.target.x; },
+									y2: function(d) { return d.target.y; }
+								});
+
+							// exit selection
+							link
+								.exit()
+								.transition()
+								.duration(transition.time)
+								.remove();
+
+							// start force
+							force.start();
+
+						};
+						
+						// draw flows between nodes
+						function drawFlows(d) {
+
+							// network health
+							contentService.getData("visualization/flows/unique_targets/" + d.id + "/").then(function(data) {
+
+								var sourceId = d.id;
+
+								// map raw links to d3 index-specific objects for layout algorithm
+								// 3rd param is the connector key in the raw data that connects nodes
+								function mapLinks(links, nodes, key) {
+
+									var data = [];
+
+									links.forEach(function(l) {
+
+										// set up the source node
+										var source = nodes.filter(function(o, i) {
+
+											// add index to obj
+											// note: d3 replaces any "index" key
+											o.i = i;
+
+											return o[key] === l.source;
+
+										})[0].i;
+
+										// set up target node
+										var target = nodes.filter(function(o, i) {
+
+											// add index to obj
+											// note: d3 replaces any "index" key
+											o.i = i;
+
+											return o[key] === l.target;
+
+										})[0].i;
+
+										// push to new array
+										data.push({
+											source: source,
+											target: target
+										});
+
+									});
+
+									return data;
+
+								};
+
+								links = mapLinks(data, nodes, "iso"); // remap links b/c d3 wants use an index to connect nodes
+
+								force
+									.nodes(nodes)
+									.links(links)
+									.charge(function(d, i) { return d.id == sourceId ? -150 : -50; }) // for central node with links
+									.friction(0.9)
+									.linkDistance(20);
+
+								// update viz
+								updateLinks();
+
+							});
+
+						};
+						
+						// calc circle radius when area is mapped to count
+						function calcRadius(value) {
+
+							return Math.sqrt(value / Math.PI);
+
+						};
 
                         // update the viz
                         draw(data, groups);
@@ -800,19 +742,62 @@ angular.module("group-nodes-directive", [])
                             
                             // TODO could abstract make less dependent on specific nomenclature
                             // could use unique ID but then dev has to know what the ID corresponds to
-                            var groupName = args.val.group_name;
+                            var controlName = args.val.control_name;
                             var actionName = args.val.action_name;
-                            console.log(args.val);
-                            // check idea name
-                            if (actionName == ideaType) {
+                            
+                            // check action name
+                            if (actionName == clusterType) {
 
                                 // cluster nodes into selected group
-                                clusterNodes(groupName, groups);
+                                clusterNodes(controlName, groups);
 
                                 // update labels
-                                updateLabels(groupName, groups);
+                                updateLabels(controlName, groups);
                                 
-                            };
+                            } else {
+								
+								if (controlName == "equal") {
+									
+									// all nodes equal size
+									nodes = data.map(function(o) {
+										o.r = radius;
+										return o;
+									});
+									
+								} else if (controlName == "high degree") {
+
+									// set nodes from data
+									// map radius value so collision detection can evaluate nodes
+									nodes = data.map(function(o) {
+										o.r = cScale(calcRadius(o.count))
+										return o;
+									});
+
+								} else if (controlName == "high centrality") {
+									
+									// set nodes from data
+									nodes = data.map(function(o) {
+										o.r = cScale(calcRadius(o.index))
+										return o;
+									});
+
+								} else if (controlName == "none") {
+									
+									force.links([]);
+									
+									updateLinks();
+									
+								};
+								
+								// update force settings
+								force
+									.friction(0)
+									.charge(0);
+                                
+								// update visualization
+								updateVis();
+							
+							};
 
                         });
                         
