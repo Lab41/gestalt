@@ -9,19 +9,21 @@ var conString = config.connectionString;
 /************* GET *************/
 /*******************************/
 
-// all workspaces
-router.get(config.workspace.allWorkspaces.route, function(req, res) {
+// all story idea metrics for a single story in a single panel for a single persona
+router.get(config.story.storyIdeaMetricsSinglePanelPersona.route, function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
         
-        var personaID = req.params.persona;
-        var configQuery = config.workspace.allWorkspaces.query;
+        var ideaID = req.params.idea;
+        var controlID = req.params.control;
+        
+        var configQuery = config.story.storyIdeaMetricsSinglePanelPersona.query;
                 
         // SQL query
-        var query = client.query(configQuery[0] + personaID + configQuery[1] + personaID + configQuery[2] + personaID + configQuery[3]);
+        var query = client.query(configQuery[0] + ideaID + configQuery[1] + controlID + configQuery[2]);
         
         // stream results back one row at a time
         query.on("row", function(row) {
@@ -41,6 +43,6 @@ router.get(config.workspace.allWorkspaces.route, function(req, res) {
         
     });
     
-});
+})
 
 module.exports = router;

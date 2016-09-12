@@ -8,7 +8,6 @@ angular.module("panel-controller", [])
 	// data objects
 	$scope.content;
     
-    //function setPanel(panelParam, workspace, user) {
 	// get credentials from local storage
     authenticationService.getCredentials().then(function(userData) {
         

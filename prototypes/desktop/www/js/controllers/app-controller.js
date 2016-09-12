@@ -43,7 +43,7 @@ angular.module("app-controller", [])
         var check = { key: "url_name", value: workspaceParam };
 
         // get workspaces
-        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
+        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {console.log(allWorkspaces);
             
             var workspaces = allWorkspaces;
             

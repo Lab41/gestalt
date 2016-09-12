@@ -11,19 +11,19 @@ var conString = config.connectionString;
 /*******************************/
 
 // all groups
-router.get(config.visualization.networkMetrics.route, function(req, res) {
+router.get(config.visualization.dynamicDirectives.route, function(req, res) {
 
     var results = [];
     
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
 		
-		var groupId = req.params.groupId;
+		var visualID = req.params.visual;
         
-        var configQuery = config.visualization.networkMetrics.query;
+        var configQuery = config.visualization.dynamicDirectives.query;
                 
         // SQL query
-        var query = client.query(configQuery[0] + groupId + configQuery[1]);
+        var query = client.query(configQuery[0] + visualID + configQuery[1]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

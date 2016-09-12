@@ -30,8 +30,7 @@ angular.module("login-controller", [])
                     
                     workspace: workspace.url_name,
                     panel: workspace.default_panel,
-                    grid: visual_config.tilemap,
-                    group: visual_config.group
+                    visual: workspace.default_vis
                     
                 }).then(function() {
                     

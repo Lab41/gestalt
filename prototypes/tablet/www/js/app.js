@@ -127,7 +127,11 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     	url: "/{panel}",
     	views: {
     		"panel": {
-    			templateUrl: "templates/panel.html",
+    			templateProvider: function($http, $stateParams) {
+                    return $http.get("templates/panels/" + $stateParams.panel + ".html").then(function(template) {
+                        return template.data;
+                    });
+                },
     			controller: "panelCtrl"
     		}
     	}
@@ -135,18 +139,18 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
 	
 	// visual
 	.state("app.panel.visual", {
-		url: "/{group}/{grid}",
-		views: {
-			"visual": {
+    	url: "/{visual}?:si?:sc",
+    	views: {
+    		"visual": {
 				templateProvider: function($http, $stateParams) {
-                    return $http.get("templates/visual.html").then(function(template) {
+                    return $http.get("templates/visualizations/" + $stateParams.visual + ".html").then(function(template) {
                         return template.data;
                     });
                 },
 				controller: "vizCtrl"
 			}
-		}
-	});
+    	}
+    });
 
     $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
 
