@@ -209,7 +209,7 @@ function install_postgresql {
     psql -d gestalt -c "CREATE USER gestalt_user WITH SUPERUSER LOGIN PASSWORD 'umami';"
 
     echo ">> Install admin pack in case you wanted to use PgAdmin's UI"
-    psql -d gestalt -c "CREATE EXTENSION 'adminpack';"
+    psql -d gestalt -c 'CREATE EXTENSION "adminpack";'
 }
 
 function populate_gestalt_db {
@@ -229,7 +229,7 @@ function populate_gestalt_db {
 
 function run_postgres {
     # assuming you have run install_postgresql first
-    psql -d gestalt -h localhost
+    psql -d gestalt -h 0.0.0.0
 }
 
 function set_env_var_postgres {
@@ -238,7 +238,7 @@ function set_env_var_postgres {
         echo "What is the remote database's..."
         read -p 'name (i.e. postgres)? ' db_name
         read -p 'user (i.e. johndoe)? ' db_user
-        read -p 'host (i.e. 127.0.0.1)? ' db_host
+        read -p 'host (i.e. 0.0.0.0)? ' db_host
         read -p 'password? ' db_password
         read -p 'post (i.e. 5432)? ' db_port
     else
