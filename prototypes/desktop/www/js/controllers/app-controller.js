@@ -43,7 +43,7 @@ angular.module("app-controller", [])
         var check = { key: "url_name", value: workspaceParam };
 
         // get workspaces
-        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {
+        layoutService.getStructures(endpoint, objs).then(function(allWorkspaces) {console.log(allWorkspaces);
             
             var workspaces = allWorkspaces;
             
@@ -52,9 +52,10 @@ angular.module("app-controller", [])
                 
                 var workspace = singleWorkspace;
                 var objs = { multi: "panels", single: "panel" };
+				var panelEndpoint = workspaceParam + "/panels/" + user.id + "/";
                 
                 // get single workspace panels
-                layoutService.getStructures(workspaceParam + "/panels/", objs).then(function(workspacePanels) {
+                layoutService.getStructures(panelEndpoint, objs).then(function(workspacePanels) {
                     
                     var panels = workspacePanels;
                     

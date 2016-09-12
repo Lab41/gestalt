@@ -19,6 +19,32 @@
 /***** !group nodes ******/
 /*************************/
 
+/* node */
+group-nodes .node {
+	
+	cursor: pointer;
+    opacity: 1;
+	pointer-events: all;
+	
+}
+
+/* unclickable node */
+group-nodes .inactive {
+    
+    cursor: not-allowed;
+    opacity: 0.2;
+    pointer-events: none;
+    
+}
+
+/* link */
+group-nodes .link {
+	
+    opacity: 0.5;
+    stroke-width: 0.5px;
+	
+}
+
 /* node label */
 group-nodes .node text {
     
@@ -29,9 +55,10 @@ group-nodes .node text {
 }
 
 /* group label */
-group-nodes .group-label text {
+group-nodes .group-label {
     
-    font-size: 0.5em;
+    fill: currentColor;
+    font-size: 0.35em;
     text-anchor: middle;
     
 }

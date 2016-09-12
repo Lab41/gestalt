@@ -30,5 +30,6 @@ var theme_config = {
 
 // visualization
 var visual_config = {
-	tilemap: "rectangle"
+	tilemap: "rectangle",
+    group: 5
 };

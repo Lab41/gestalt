@@ -1,6 +1,6 @@
 angular.module("panel-nav-directive", [])
 
-.directive("panelNav", ["$state", "layoutService", "$rootScope", function($state, layoutService, $rootScope) {
+.directive("panelNav", ["$state", "layoutService", "authenticationService", "$rootScope", function($state, layoutService, authenticationService, $rootScope) {
 	return {
 		restrict: "E",
 		scope: {
@@ -20,46 +20,52 @@ angular.module("panel-nav-directive", [])
 				// set scope
 				$scope.panelParam = panelParam;
 				
-				var originUrl = $state.params.panel;
-                var destinationIdx = idx;
-                var objs = { multi: "panels", single: "panel" };
-                var endpoint = workspaceParam + "/panels/";
-                var check = { key: "url_name", value: panelParam };
-                                
-                // pull panel from stored panels in service
-                layoutService.getStructure(panelParam, objs, endpoint, check).then(function(data) {
-					
-					// origin panel
-					var origin = data;
-                    
-                    // check all panels
-                    angular.forEach($scope.panels, function(value, key) {
-                        
-                        // get destination index
-                        if (origin.id == value.id) {
-                            
-                            var originIdx = key;
-                                                         
-                            // check indicies to resolve animation direction
-                            if (destinationIdx < originIdx) {
-								
-								//$ionicViewSwitcher.nextDirection(["back"]);
-								
-							} else if (destinationIdx > originIdx) {
-								
-								//$ionicViewSwitcher.nextDirection(["forward"]);
-								
-							} else {
-								
-								//$ionicViewSwitcher.nextDirection(["enter"]);
-								
-							};
-                            
-                        };
-                    
-                    });
+				// get credentials from local storage
+				authenticationService.getCredentials().then(function(userData) {
 
-                });
+					var user = userData;
+					var originUrl = $state.params.panel;
+					var destinationIdx = idx;
+					var objs = { multi: "panels", single: "panel" };
+					var endpoint = workspaceParam + "/panels/" + user.id + "/";
+					var check = { key: "url_name", value: panelParam };
+
+					// pull panel from stored panels in service
+					layoutService.getStructure(panelParam, objs, endpoint, check).then(function(data) {
+
+						// origin panel
+						var origin = data;
+
+						// check all panels
+						angular.forEach($scope.panels, function(value, key) {
+
+							// get destination index
+							if (origin.id == value.id) {
+
+								var originIdx = key;
+
+								// check indicies to resolve animation direction
+								if (destinationIdx < originIdx) {
+
+									//$ionicViewSwitcher.nextDirection(["back"]);
+
+								} else if (destinationIdx > originIdx) {
+
+									//$ionicViewSwitcher.nextDirection(["forward"]);
+
+								} else {
+
+									//$ionicViewSwitcher.nextDirection(["enter"]);
+
+								};
+
+							};
+
+						});
+
+					});
+					
+				});
                 
             };
 	    	

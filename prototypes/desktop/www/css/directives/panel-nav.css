@@ -45,14 +45,8 @@ panel-nav a {
 	
 }
 
-panel-nav a:not(:last-child) {
-	
-	margin-right: 1em;
-	
-}
-
 /* navigation link underline */
-panel-nav a.active:after {
+panel-nav a:last-child::after{
 	
 	background: currentColor;
 	bottom: 0;
@@ -60,6 +54,16 @@ panel-nav a.active:after {
 	height: 3px;
 	left: 0;
 	position: absolute;
+	-webkit-transition: -webkit-transform 0.3s;
+	transition: transform 0.3s;
 	width: 100%;
 	
+}
+
+/* line position */
+panel-nav nav a:first-child.active ~ a:last-child::after {
+    
+	-webkit-transform: translate3d(-100%,0,0);
+	transform: translate3d(-100%,0,0);
+    
 }

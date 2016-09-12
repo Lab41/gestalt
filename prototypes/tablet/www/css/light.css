@@ -14,6 +14,7 @@
 /* --- !login
 /* --- !group nodes
 /* --- !tile grid map
+/* --- !bar chart
 
 /******************************* !IMPORTS *******************************/
 
@@ -196,14 +197,22 @@ ion-item.item {
 /***** !group nodes ******/
 /**************************/
 
-group-nodes .node {
+/* node */
+group-nodes .node .shape {
 	
 	fill: #667080;
 	
 }
 
+/* link */
+group-nodes .link {
+    
+    stroke: #667080;
+    
+}
+
 /* node label */
-group-nodes .node text {
+group-nodes .node .label {
     
     fill: rgb(244,244,244);
     
@@ -219,4 +228,15 @@ tile-grid-map path.default {
     fill: rgb(102, 112, 128);
     stroke: rgb(244,244,244);
     
+}
+
+/***********************/
+/***** !bar chart ******/
+/***********************/
+
+/* node */
+bar-chart rect {
+	
+	fill: #667080;
+	
 }

@@ -23,7 +23,7 @@ router.get(config.visualization.geojson.route, function(req, res) {
         var configQuery = config.visualization.geojson.query;
                 
         // SQL query
-        var query = client.query(configQuery[0] + grid + configQuery[1] + grid + configQuery[2] + grid + configQuery[3]);
+        var query = client.query(configQuery[0]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

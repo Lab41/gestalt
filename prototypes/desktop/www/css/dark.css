@@ -15,6 +15,7 @@
 /* --- !slide panel
 /* --- !group nodes
 /* --- !tile grid map
+/* --- !bar chart
 
 /******************************* !IMPORTS *******************************/
 
@@ -54,19 +55,6 @@ button:active {
 }
 
 /******************************* !CUSTOM *******************************/
-
-/* TEMP section */
-.login section {
-    
-    background: rgba(20,20,20,0.5);
-    
-}
-
-.login section:nth-child(even) {
-    
-    background: rgba(20,20,20,0.8);
-    
-}
 
 /********************/
 /***** !active ******/
@@ -162,14 +150,22 @@ slide-panel section.right {
 /***** !group nodes ******/
 /**************************/
 
-group-nodes .node {
+/* node */
+group-nodes .node .shape {
 	
 	fill: #444b5a;
 	
 }
 
+/* link */
+group-nodes .link {
+    
+    stroke: #444b5a;
+    
+}
+
 /* node label */
-group-nodes .node text {
+group-nodes .node .label {
     
     fill: rgb(244,244,244);
     
@@ -185,4 +181,15 @@ tile-grid-map path.default {
     fill: rgb(102, 112, 128);
     stroke: rgb(26,26,26);
     
+}
+
+/***********************/
+/***** !bar chart ******/
+/***********************/
+
+/* node */
+bar-chart rect {
+	
+	fill: #444b5a;
+	
 }

@@ -34,7 +34,7 @@ angular.module("tile-grid-map-directive", [])
 				// use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
                 
-                function draw(data, map, interactive, styleUrl) {
+                function draw(data, map, interactive, styleUrl) {console.log(data);
 					
 					// style url
 					var style = mapbox_config.style[styleUrl];
@@ -71,7 +71,8 @@ angular.module("tile-grid-map-directive", [])
                             // add pop up
                             layer.bindPopup(content, popUpOptions);
 							
-							var polygonLabel = L.marker(layer.getBounds().getCenter(), {
+							// add polygon label
+							L.marker(layer.getBounds().getCenter(), {
 								icon: L.divIcon({
 									html: "<p>" + feature.properties.iso + "</p>",
 									iconSize: [20,20]

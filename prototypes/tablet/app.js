@@ -10,8 +10,11 @@ app.use(bodyParser.json());
 app.use(require("./routes/workspace-1-get-all-workspaces.route"));
 app.use(require("./routes/workspace-2-get-single-workspace.route"));
 app.use(require("./routes/workspace-3-get-all-panels-single-workspace.route"));
+app.use(require("./routes/story-2-get-story-idea-metrics-single-panel-persona.route"));
 app.use(require("./routes/story-1-get-all-stories-single-panel-persona.route"));
 app.use(require("./routes/persona-1-get-all-personas.route"));
+app.use(require("./routes/visualization-4-node-flows.route"));
+app.use(require("./routes/visualization-5-dynamic-directives.route"));
 app.use(require("./routes/visualization-1-node-groups.route"));
 app.use(require("./routes/visualization-2-geojson-countries.route"));
 app.use(require("./routes/visualization-3-grouped-countries.route"));
@@ -19,7 +22,7 @@ app.use(require("./routes/visualization-3-grouped-countries.route"));
 // static front end
 app.use("/", express.static(__dirname + "/www"));
 
-var server = app.listen(8000, '0.0.0.0', function () {
+var server = app.listen(8001, '0.0.0.0', function () {
   var host = server.address().address;
   var port = server.address().port;
 
