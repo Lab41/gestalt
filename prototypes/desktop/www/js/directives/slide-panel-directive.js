@@ -24,6 +24,7 @@
         
     }
 
+    // add additional services to be used within the controller
     slidePanelController.$inject = ["$rootScope", "$scope", "$state", "authenticationFactory", "layoutFactory"];
 
 
@@ -74,9 +75,10 @@
             };
             var transition = function() {      
                 // transition to the new workspace and its respective default panel
-                $state.go("app.panel.visual", {
-                    workspace: layoutFactory.getCurrentWorkspace().url_name,
-                    panel: layoutFactory.getCurrentPanel().url_name,
+                // triggers watchForPanelChange function in panel-nav-directive
+                $state.go("app.panel", {
+                    currentWorkspaceUrl: layoutFactory.getCurrentWorkspace().url_name,
+                    currentPanelUrl: layoutFactory.getCurrentPanel().url_name,
                 });
 
             };

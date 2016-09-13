@@ -78,15 +78,15 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     
     // main
     .state("app", {
-        url: "/{workspace}?:t",
+        url: "/{currentWorkspaceUrl}?:t",
         abstract: true,
         templateUrl: "templates/app.html",
 		controller: "appController",
         resolve: {
-			authorized: ["$q", function($q) {
-				if(localStorage.getItem("gestaltUser") === null) {
-					return $q.reject("requires login");
-				};
+			authorized: ["$state", "authenticationFactory", function($state, authenticationFactory) {
+				if(authenticationFactory.getCurrentPersona() === null) {
+                    $state.go("login");
+				} 
 			}]
 		},
 		params: {
@@ -96,7 +96,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     
     // panel
     .state("app.panel", {
-        url: "/{panel}",
+        url: "/{currentPanelUrl}",
         views: {
     		"panel": {
     			templateUrl: "templates/panel.html",

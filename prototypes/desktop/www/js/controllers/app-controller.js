@@ -21,6 +21,8 @@
         $scope.showRight = showRight;
         $scope.close = close;
         $scope.slidePanelContent = {};
+        // * panel navigation
+        $scope.listOfPanels;
 
         // --------------------------------------------------------------------
         // call functions
@@ -29,11 +31,17 @@
         // --------------------------------------------------------------------
         // define functions
         function activate() {
+            // * slide panel
             addInteractivityToSlidePanel();
-            addSlidePanelContent();   
+            addSlidePanelContent();  
+            // * panel navigation
+            getListOfPanels();
         }
 
-        // * slide panel
+        // ============================
+        // * slide panel 
+        // ============================
+    
         function showLeft(event) {
             $scope.leftVisible = true;
             event.stopPropagation();
@@ -71,10 +79,11 @@
              * - workspaces associated with current persona
              */
             var getListOfWorkspaces = function() {
-                return layoutFactory.getAllWorkspaces(currentPersona.id)
-                                    .then(function(listOfWorkspaces) {
-                                        return listOfWorkspaces
-                                    });
+                return layoutFactory
+                        .getAllWorkspaces(currentPersona.id)
+                        .then(function(listOfWorkspaces) {
+                            return listOfWorkspaces
+                        });
 
             };
             var setSlidePanelContent = function(listOfWorkspaces) {
@@ -93,9 +102,21 @@
             getListOfWorkspaces()         
                 .then(setSlidePanelContent);
 
-
         }
 
+        // ============================
+        // * panel navigation 
+        // ============================
+        
+        function getListOfPanels() {
+            return layoutFactory
+                    .getAllPanels(layoutFactory.getCurrentWorkspace().id)
+                    .then(function (listOfPanels) {
+                        $scope.listOfPanels = listOfPanels;
+                    });
+        }
+
+        
     }
 
 })();
