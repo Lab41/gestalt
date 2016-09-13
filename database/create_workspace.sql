@@ -11,27 +11,36 @@ INSERT INTO gestalt_workspace_name (name) VALUES
 INSERT INTO gestalt_workspace_name (name) VALUES 
     ('olympics');
 
+
 CREATE TABLE gestalt_workspace (
     id SERIAL PRIMARY KEY,
-    workspace_name_id INTEGER NOT NULL,
     persona_id INTEGER NOT NULL,
+    workspace_name_id INTEGER NOT NULL,
     url_name TEXT UNIQUE NOT NULL CHECK (url_name <> ''),
     is_default BOOLEAN DEFAULT FALSE,
     UNIQUE (workspace_name_id, persona_id, url_name)
 );
 
-INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (1, 1, '30bb1f348edf70cead2426e5762bc015', TRUE);
-INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (2, 1, 'd7352676dcfc563ba04e6bc1de6236a2', FALSE);
-INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (3, 1, 'a3c90460cd127a4df22fb8a7b792651c', FALSE);
-INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (2, 2, 'd8711880b39a55baf7f4b4fb29f031c6', FALSE);
-INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (2, 3, '9ca944d898c7b5a1952110d66df48d0e', FALSE);
-INSERT INTO gestalt_workspace (workspace_name_id, persona_id, url_name, is_default) VALUES 
-    (2, 4, '7d483e685f8adaa808ed064c3abebafe', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (1, 1, md5(random()::text), FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (1, 2, md5(random()::text), TRUE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (2, 1, md5(random()::text), FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (2, 2, md5(random()::text), TRUE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (2, 3, md5(random()::text), FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (3, 1, md5(random()::text), TRUE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (3, 2, md5(random()::text), FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (3, 3, md5(random()::text), FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (4, 1, md5(random()::text), FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (4, 3, md5(random()::text), TRUE);
 
 
 CREATE TABLE gestalt_workspace_panel (
@@ -43,21 +52,56 @@ CREATE TABLE gestalt_workspace_panel (
 );
 
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (1, 1, FALSE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
     (1, 2, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (1, 3, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
     (2, 1, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (3, 1, FALSE);
+    (2, 4, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (3, 5, TRUE);
+    (3, 2, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (4, 1, TRUE);
+    (3, 3, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (5, 1, TRUE);
+    (4, 1, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (6, 1, TRUE);
+    (4, 4, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (4, 7, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (5, 5, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (5, 6, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (5, 7, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (6, 2, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (6, 3, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (7, 1, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (7, 4, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (7, 7, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (8, 5, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (8, 6, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (8, 7, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (9, 2, FALSE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (9, 3, TRUE);
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (10, 5, FALSE);    
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (10, 6, TRUE);  
+INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
+    (10, 7, FALSE);  
+
 
 CREATE TABLE gestalt_workspace_tag(
     workspace_id INTEGER,

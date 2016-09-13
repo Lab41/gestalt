@@ -6,34 +6,35 @@ CREATE TABLE gestalt_story (
 );
 
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Different country groups result in varied contagion levels', '323a3738dd81639f491d1c32f9954da7');
+    ('Different country groups result in varied contagion levels', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Cross border spillover infects financial system', 'd7079e1dadda417b35edc363753a3272');
+    ('Cross border spillover infects financial system', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Greatest risks for financial disaster', '2cb371055a85250b67d8592578a0578f');
+    ('Greatest risks for financial disaster', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Capital investment flows between pseudo country groups', 'a498f8b4013c6fd3bc9110fd6eddf4d6');
+    ('Capital investment flows between pseudo country groups', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What tool to use for which data visualization task', '05601d2dbb636e06301ffa846b871332');
+    ('What tool to use for which data visualization task', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What visual form best communicates your dataset', 'cae8ad1832005c88c2919e50ddd2fb56');
+    ('What visual form best communicates your dataset', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Use data science to choose visuals', '234424fb624fb8eb6870f6232f117882');
+    ('Use data science to choose visuals', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Scenario based visualizations in visual gestalt_storytelling', 'df84f3f13935907918af2017360f6d31');
+    ('Scenario based visualizations in visual gestalt_storytelling', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What we learned about gathering metrics for data visualization', '31afd6c73b3e3aa65aaa4f9197324566');
+    ('What we learned about gathering metrics for data visualization', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('How a social media gestalt_story moves through social networks', '54ce007009b6d704cbaa7a5c1d0f86bd');
+    ('How a social media gestalt_story moves through social networks', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('How a social media gestalt_story evolves into viral status', 'a115437f762819de185527a3cecf79a8');
+    ('How a social media gestalt_story evolves into viral status', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Tracking events through social networks in location based tweets', 'cc3a353ca54dc9b1073f74d2bbc8aec8');
+    ('Tracking events through social networks in location based tweets', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What is the life-cycle of a trending social gestalt_story across geographies', '6c91c28b0d7b29d7c5f4762d2195550e');
+    ('What is the life-cycle of a trending social gestalt_story across geographies', md5(random()::text));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What events can be predicted from social data trends', '109a0b34fbb89ed7c294ebdc99ad6b9f');
+    ('What events can be predicted from social data trends', md5(random()::text));
  
+
 CREATE TABLE gestalt_story_tag (
     story_id INTEGER,
     tag_id INTEGER,

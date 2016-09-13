@@ -6,79 +6,131 @@ CREATE TABLE gestalt_panel (
 );
  
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('contagion', '8fb281a2a171d8c7843a5c84b58aab9b');
+    ('contagion', md5(random()::text));
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('tools', '00ffbf8cc4dfe548eb461b3ccea17090');
+    ('tools', md5(random()::text));
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('form', '67027c47f193b586dc0ba126330226d4');
+    ('form', md5(random()::text));
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('vulnerability', '26dafed49b6fdc439bf4500e0e284348');
+    ('vulnerability', md5(random()::text));
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('events', '6cb07d0874bb72bf170ca076c67f7b66');
+    ('events', md5(random()::text));
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('locations', '9fb8f9edfd5e3fe331cb687cff067125');
+    ('locations', md5(random()::text));
 INSERT INTO gestalt_panel (name, url_name) VALUES
-    ('scenarios', 'e631f95b974f98f7d1a52baf27bcd0e6');
+    ('scenarios', md5(random()::text));
 
-CREATE TABLE gestalt_persona_panel_story ( 
+
+CREATE TABLE gestalt_workspace_panel_story ( 
     id SERIAL PRIMARY KEY,
-    persona_id INTEGER NOT NULL,
+    workspace_id INTEGER NOT NULL,
     panel_id INTEGER NOT NULL,
     story_id INTEGER NOT NULL,
-    UNIQUE (persona_id, panel_id, story_id)
+    UNIQUE (workspace_id, panel_id, story_id)
 );
  
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 1, 1);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 1, 2);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 1, 4);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
     (1, 2, 5);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 2, 9);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
     (1, 3, 6);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 3, 9);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 4, 3);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 5, 10);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 5, 11);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 5, 12);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 5, 13);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 6, 12);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 6, 14);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 7, 12);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (1, 7, 14);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
     (2, 1, 1);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
     (2, 1, 2);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
     (2, 1, 4);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (3, 1, 1);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (3, 1, 2);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (3, 1, 4);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (4, 1, 1);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (4, 1, 2);
-INSERT INTO gestalt_persona_panel_story (persona_id, panel_id, story_id) VALUES
-    (4, 1, 4);
- 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (2, 4, 3); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (3, 2, 5); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (3, 3, 6); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (4, 1, 1); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (4, 1, 2); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (4, 1, 4); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (4, 4, 3); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (4, 7, 10); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (4, 7, 11); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (5, 5, 12); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (5, 5, 14); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (5, 6, 13); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (5, 7, 8); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 2, 5); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 2, 7); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 2, 9); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 3, 6); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 3, 8); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 3, 10); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (6, 3, 11); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (7, 1, 1); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (7, 1, 2); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (7, 1, 4); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (7, 4, 3); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (7, 7, 10); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (7, 7, 11); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (8, 5, 12);
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (8, 5, 14);
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (8, 6, 10);
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (8, 6, 11);
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (8, 6, 13);
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (8, 7, 8); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 2, 5); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 2, 7); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 2, 9); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 3, 6); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 3, 8); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 3, 10); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (9, 3, 11); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (10, 5, 12); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (10, 5, 14); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (10, 6, 10); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (10, 6, 11); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (10, 6, 13); 
+INSERT INTO gestalt_workspace_panel_story (workspace_id, panel_id, story_id) VALUES
+    (10, 7, 8); 
+
+
 CREATE TABLE gestalt_panel_tag (
     panel_id INTEGER,
     tag_id INTEGER,
@@ -89,6 +141,6 @@ INSERT INTO gestalt_panel_tag
     (panel_id, tag_id)
 SELECT DISTINCT pcs.panel_id, st.tag_id 
     FROM gestalt_story_tag st
-    RIGHT JOIN gestalt_persona_panel_story pcs
+    RIGHT JOIN gestalt_workspace_panel_story pcs
     ON pcs.story_id = st.story_id
 ;
