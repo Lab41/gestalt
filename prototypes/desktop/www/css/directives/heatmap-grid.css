@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** heatmap-grid directive STYLE ***************************************/
+
+/* heatmap grid directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !heatmap grid
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/**************************/
+/***** !heatmap grid ******/
+/**************************/
+
+/* grid cell */
+heatmap-grid rect {
+    
+    fill: currentColor;
+    
+}
+
+/* label */
+heatmap-grid text {
+    
+    fill: currentColor;
+    
+}
