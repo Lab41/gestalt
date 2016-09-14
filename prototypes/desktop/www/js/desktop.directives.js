@@ -7,5 +7,7 @@ var app = angular.module("desktop.directives", [
     "story-controls-directive",
 	"story-idea-metric-directive",
 	"dynamic-directive-directive",
-    "heatmap-grid-directive"
+    "heatmap-grid-directive",
+    "visualization-standard-directive",
+    "card-layout-directive"
 ]);

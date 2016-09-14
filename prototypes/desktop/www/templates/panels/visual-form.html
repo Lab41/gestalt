@@ -2,17 +2,16 @@
             
 	<h2>{{ story.name }}</h2>
     
-    <div style="display: flex; margin-top: 1em;">
+    <div style="display: flex; margin-top: 1em; flex-wrap: wrap;">
     
-        <div ng-repeat="idea in story.ideas" style="margin-right: 2em;">
+        <div ng-repeat="idea in story.ideas" style="margin-right: 2.5em; width: 20%;">
 
-            <h3 style="font-weight: 700;">{{ idea.name }}<span>{{ '(' + idea.label + ')' }}</span></h3>
-            <p>{{ idea.description }}</p>
-			
-			<ui-view name="visual"></ui-view>
+            <card-layout headline="idea.label" description="idea.description" poster="idea.svg_icon" vis-id="idea.id"></card-layout>
 
         </div>
         
     </div>
 	
 </section>
+
+<ui-view name="visual"></ui-view>

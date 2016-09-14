@@ -9,9 +9,10 @@ import helper
 urls = (
     
     # rest API backend endpoints
-    "flows/unique_targets/(.*)/", "flows",
+    "flows/unique_targets/(\d+)/", "flows",
     "story/metric/(\d+)/", "metrics",
-	"angular/directives/(.*)/", "ng_directives",
+    "heuristics/(\d+)/", "heuristics",
+	"angular/directives/(\d+)/", "ng_directives",
 	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
     "(.*)/", "nodes"
@@ -172,7 +173,7 @@ class geojson:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
-	
+    
 class ng_directives:
     def GET(self, vis_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -181,9 +182,32 @@ class ng_directives:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
+        select v.*
+        from """ + helper.table_prefix + """vis v
+        where v.id = """ + vis_id + """;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+	
+class heuristics:
+    def GET(self, vistype_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+        select v.*,
+        array_agg(row_to_json(d)) as data
+        from """ + helper.table_prefix + """vis v
+        left join (
         select *
-		from gestalt_vis
-		where id = """ + vis_id + """;
+        from """ + helper.table_prefix + """vis_dummy_data
+        ) d on d.vis_id = v.id
+        where v.vis_type_id = """ + vistype_id + """
+        group by v.id;
         """)
         # obtain the data
         data = self.cursor.fetchall()
