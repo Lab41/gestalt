@@ -6,6 +6,8 @@ import web
 
 import helper
 
+# TODO: handle persona_panel_stories && story_idea_metrics
+
 urls = (
     
     # 0.0.0.0:8000/api/story/getAllStories
@@ -33,7 +35,7 @@ class getAllStories:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT * FROM """ + helper.table_prefix + """story;
+            SELECT * FROM gestalt_story;
         """)        
         # obtain the data
         data = self.cursor.fetchall()
@@ -57,7 +59,7 @@ class getSingleStory:
         # execute query
         self.cursor.execute("""
             SELECT * 
-            FROM """ + helper.table_prefix + """story AS story
+            FROM gestalt_story AS story
             WHERE story.id = """ + story_id + """;
         """)
         # obtain the data
@@ -66,7 +68,7 @@ class getSingleStory:
         return json.dumps(data)
 
 class getAllStoriesByWorkspaceAndPanel:
-    """ Extract all the stories from a specific panel with a particular persona.
+    """ Extract all the stories from a specific panel with a particular workspace and persona.
     input:
         * workspace.id
         * panel.id
@@ -74,7 +76,6 @@ class getAllStoriesByWorkspaceAndPanel:
         * story.id
         * story.name
         * story.url_name
-        * story_ideas
     """
     def GET(self, workspace_id, panel_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string

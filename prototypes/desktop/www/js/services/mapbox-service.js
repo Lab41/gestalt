@@ -2,19 +2,19 @@
 (function() {
     'use strict';
 
-    // set mapbox-factory application and register its factory
+    // set mapbox-service application and register its service
     angular
-        .module("mapbox-factory", [])
-        .factory("mapboxFactory", mapboxFactory);
+        .module("mapbox-service", [])
+        .service("mapboxService", mapboxService);
 
-    // add additional services to be used within the factory
-    mapboxFactory.$inject = ["$document", "$q", "$rootScope", "$window", "agentFactory"];
+    // add additional services to be used within the service
+    mapboxService.$inject = ["$document", "$q", "$rootScope", "$window", "agentService"];
 
-    // define the factory
-    function mapboxFactory($document, $q, $rootScope, $window, agentFactory) {
+    // define the service
+    function mapboxService($document, $q, $rootScope, $window, agentService) {
 		
 		var d = $q.defer();
-		var mapboxfactory = {
+		var mapboxservice = {
 			mapboxgl: function() {
 				return d.promise;
 			},
@@ -27,8 +27,8 @@
 		var gl = mapbox_config.gl;
 		var mbox = mapbox_config.raster;
 		
-		// get USER AGENT data stored in factory
-		agentFactory.getData().then(function(data) {
+		// get USER AGENT data stored in service
+		agentService.getData().then(function(data) {
 			
 			function onScriptLoad() {
 
@@ -78,8 +78,8 @@
 			
 		});
 		
-		// return a mapboxFactory instance
-	    return mapboxfactory;
+		// return a mapboxService instance
+	    return mapboxservice;
 		
     }
 

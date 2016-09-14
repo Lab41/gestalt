@@ -2,29 +2,29 @@
 (function() {
     'use strict';
 
-    // set plotly-factory application and register its factory
+    // set d3-service application and register its service
     angular
-        .module("plotly-factory", [])
-        .factory("plotlyFactory", plotlyFactory);
+        .module("d3-service", [])
+        .service("d3Service", d3Service);
 
-    // add additional services to be used within the factory
-    plotlyFactory.$inject = ["$document", "$q", "$rootScope", "$window"];
+    // add additional services to be used within the service
+    d3Service.$inject = ["$document", "$q", "$rootScope", "$window"];
 
-    // define the factory
-    function plotlyFactory($document, $q, $rootScope, $window) {
-		
+    // define the service
+    function d3Service($document, $q, $rootScope, $window) {
+    	
 		var d = $q.defer();
-		var plotlyFactory = {
-			Plotly: function() {
+		var d3service = {
+			d3: function() {
 				return d.promise;
 			}
 		};
 		
-		//create script tag for plotly source
+		//create script tag for d3 source
 		var scriptTag = $document[0].createElement("script");
 		scriptTag.type = "text/javascript";
 		scriptTag.async = true;
-		scriptTag.src = "https://cdn.plot.ly/plotly-latest.min.js";
+		scriptTag.src = "lib/d3.js";
 		scriptTag.onreadystatechange = function() {
 			
 			//check state
@@ -42,14 +42,14 @@
 		var s = $document[0].getElementsByTagName("body")[0];
 		s.appendChild(scriptTag);
 		
-		//return plotly object
-	    return plotlyFactory;
+		//return d3 object
+	    return d3service;
 		
 		function onScriptLoad() {
 			
 			//load client in the browser
 			$rootScope.$apply(function() {
-				d.resolve($window.Plotly);
+				d.resolve($window.d3);
 			});
 			
 		};

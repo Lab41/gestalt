@@ -6,6 +6,8 @@ import web
 
 import helper
 
+# TODO: handle persona_workspaces && workspace_panels
+
 urls = (
 
     # 0.0.0.0:8000/api/workspace/getDefaultWorkspaceByPersona/#, where # == persona.id
@@ -46,7 +48,6 @@ class getDefaultWorkspaceByPersona:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
-
 
 class getAllWorkspacesByPersona:
     """ Extract all workspaces for a particular persona.

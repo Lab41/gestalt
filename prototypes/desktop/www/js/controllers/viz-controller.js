@@ -8,15 +8,16 @@
         .controller("vizController", vizController);
 
     // add additional services to be used within the controller
-    vizController.$inject = ["$q", "$scope", "$state", "contentFactory"];
+    vizController.$inject = ["$q", "$scope", "$state", "contentService"];
 
     // define the controller
-    function vizController($q, $scope, $state, contentFactory) {
+    function vizController($q, $scope, $state, contentService) {
 		// --------------------------------------------------------------------
         // define bindable members
         $scope.nodes;
         $scope.nodeGroups;
-        $scope.geojson;
+        $scope.dynamicDirectives;
+        $scope.dummyData = [{"name": "category1", "value": 5}, {"name": "category2", "value": 2}, {"name": "category3", "value": 1}];
 
         // --------------------------------------------------------------------
         // call functions
@@ -32,15 +33,15 @@
         function getEconomicsData() {
             // retrieve data in parallel
             return $q.all([
-                        contentFactory.getCdis(),
-                        contentFactory.getCountryGroup(),
-                        contentFactory.getGeojson($state.params.grid)
+                        contentService.getCdis(),
+                        contentService.getCountryGroup(),
+                        contentService.getDynamicDirectives()
                     ])
-                    .then(function(listOfNodes, listOfNodeGroups, geojson)
+                    .then(function(listOfNodes, listOfNodeGroups, data)
                     {
                         $scope.nodes = listOfNodes;
                         $scope.nodeGroups = listOfNodeGroups;
-                        $scope.geojson = geojson;
+                        $scope.dynamicDirectives = data;
                     });
         }
 

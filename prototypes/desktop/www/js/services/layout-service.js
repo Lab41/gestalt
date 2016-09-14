@@ -2,16 +2,16 @@
 (function() {
     'use strict';
 
-    // set layout-factory application and register its factory
+    // set layout-service application and register its service
     angular
-        .module("layout-factory", [])
-        .factory("layoutFactory", layoutFactory);
+        .module("layout-service", [])
+        .service("layoutService", layoutService);
 
-    // add additional services to be used within the factory
-    layoutFactory.$inject = ["$http", "$log"];
+    // add additional services to be used within the service
+    layoutService.$inject = ["$http", "$log"];
 
-    // define the factory
-    function layoutFactory($http, $log) {
+    // define the service
+    function layoutService($http, $log) {
         // --------------------------------------------------------------------
         // for backend
         // * workspace
@@ -28,8 +28,8 @@
         var currentListOfPanels;
 
         // --------------------------------------------------------------------
-        // return a layoutFactory instance
-        var layoutFactory = {
+        // return a layoutService instance
+        var layoutService = {
             // * workspace
             getDefaultWorkspace: getDefaultWorkspace,
             getAllWorkspaces: getAllWorkspaces,
@@ -44,10 +44,10 @@
             // * additional functionalities
             cleanup: cleanup
         };
-        return layoutFactory;
+        return layoutService;
 
         // --------------------------------------------------------------------
-        // function definition used in factory instance
+        // function definition used in service instance
         function callBackend(backendUrl) {
             $log.log("****** GET " + backendUrl + " ******");
             return $http.get(backendUrl)

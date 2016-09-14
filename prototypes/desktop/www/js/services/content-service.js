@@ -2,16 +2,16 @@
 (function() {
     'use strict';
 
-    // set content-factory application and register its factory
+    // set content-service application and register its service
     angular
-        .module("content-factory", [])
-        .factory("contentFactory", contentFactory);
+        .module("content-service", [])
+        .service("contentService", contentService);
 
-    // add additional services to be used within the factory
-    contentFactory.$inject = ["$http", "$log"];
+    // add additional services to be used within the service
+    contentService.$inject = ["$http", "$log"];
 
-    // define the factory
-    function contentFactory($http, $log) {
+    // define the service
+    function contentService($http, $log) {
         // --------------------------------------------------------------------
         // for backend
         // * story
@@ -19,22 +19,23 @@
         var getAllStoriesUrl = storyBackendBaseUrl + "getAllStoriesByWorkspaceAndPanel";
         // * vis
         var visBackendBaseUrl = api_config.content_vis_uri;
-        var getCdisUrl = visBackendBaseUrl + "cdis";
-        var getCountryGroupUrl = visBackendBaseUrl + "countries/groups";
+        var getCdisUrl = visBackendBaseUrl + "cdis/";
+        var getCountryGroupUrl = visBackendBaseUrl + "countries/groups/";
         var getGeojsonUrl = visBackendBaseUrl + "geojson";
+        var getDynamicDirectivesUrl = visBackendBaseUrl + "angular/directives/1/";
 
         // --------------------------------------------------------------------		
-		// return a contentFactory instance
-        var contentFactory = {
+		// return a contentService instance
+        var contentService = {
             getAllStories: getAllStories,
             getCdis: getCdis,
             getCountryGroup: getCountryGroup,
             getGeojson: getGeojson
         };
-		return contentFactory;
+		return contentService;
 
         // --------------------------------------------------------------------
-        // function definition used in factory instance
+        // function definition used in service instance
         function callBackend(backendUrl) {
             $log.log("****** GET " + backendUrl + " ******");
             return $http.get(backendUrl)
@@ -45,20 +46,25 @@
             return callBackend(getAllStoriesUrl + "/workspace/" + workspaceId + "/panel/" + panelId);
         }
 
-        // TODO: clean this up
         function getCdis() {
-            return callBackend(getCdisUrl + "/");
+            // TODO: remove this? It's not used. 
+            return callBackend(getCdisUrl);
         }
 
         function getCountryGroup() {
-            return callBackend(getCountryGroupUrl + "/");
+            return callBackend(getCountryGroupUrl);
         }
 
         function getGeojson(gridType) {
+            // TODO: remove this? It's not used
             return callBackend(getGeojsonUrl + "/" + gridType + "/")
                     .then(function(listOfGeojson){
                         return listOfGeojson[0];
                     });
+        }
+
+        function getDynamicDirectives() {
+            return callBackend(getDynamicDirectivesUrl);
         }
 
     }

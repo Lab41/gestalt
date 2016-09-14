@@ -8,10 +8,10 @@
         .controller("appController", appController);
 
     // add additional services to be used within the controller
-    appController.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "authenticationFactory", "layoutFactory"];
+    appController.$inject = ["$rootScope", "$scope", "$state", "$stateParams", "authenticationService", "layoutService"];
 
     // define the controller
-    function appController($rootScope, $scope, $state, $stateParams, authenticationFactory, layoutFactory) {
+    function appController($rootScope, $scope, $state, $stateParams, authenticationService, layoutService) {
         // --------------------------------------------------------------------
         // define bindable members
         // * slide panel
@@ -79,7 +79,7 @@
              * - workspaces associated with current persona
              */
             var getListOfWorkspaces = function() {
-                return layoutFactory
+                return layoutService
                         .getAllWorkspaces(currentPersona.id)
                         .then(function(listOfWorkspaces) {
                             return listOfWorkspaces
@@ -90,7 +90,7 @@
                 $scope.slidePanelContent = {
                     currentPersona: currentPersona.name,
                     theme: $scope.$parent.theme,
-                    currentWorkspaceId: layoutFactory.getCurrentWorkspace().id,
+                    currentWorkspaceId: layoutService.getCurrentWorkspace().id,
                     listOfWorkspaces: listOfWorkspaces
                 };
 
@@ -98,7 +98,7 @@
 
             // get all workspaces associated with the current persona 
             // in order to fill the content of the slide panel 
-            var currentPersona = authenticationFactory.getCurrentPersona();
+            var currentPersona = authenticationService.getCurrentPersona();
             getListOfWorkspaces()         
                 .then(setSlidePanelContent);
 
@@ -109,8 +109,8 @@
         // ============================
         
         function getListOfPanels() {
-            return layoutFactory
-                    .getAllPanels(layoutFactory.getCurrentWorkspace().id)
+            return layoutService
+                    .getAllPanels(layoutService.getCurrentWorkspace().id)
                     .then(function (listOfPanels) {
                         $scope.listOfPanels = listOfPanels;
                     });

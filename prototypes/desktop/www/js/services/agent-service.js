@@ -2,18 +2,18 @@
 (function() {
     'use strict';
 
-    // set agent-factory application and register its factory
+    // set agent-service application and register its service
     angular
-        .module("agent-factory", [])
-        .factory("agentFactory", agentFactory);
+        .module("agent-service", [])
+        .service("agentService", agentService);
 
-    // add additional services to be used within the factory
-    agentFactory.$inject = ["$http", "$q"];
+    // add additional services to be used within the service
+    agentService.$inject = ["$http", "$q"];
 
-    // define the factory
-    function agentFactory($http, $q) {
+    // define the service
+    function agentService($http, $q) {
 
-        // return an agentFactory instance			
+        // return an agentService instance			
 		return {
 			
 			// data storage

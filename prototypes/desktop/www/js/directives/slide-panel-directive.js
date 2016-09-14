@@ -25,10 +25,9 @@
     }
 
     // add additional services to be used within the controller
-    slidePanelController.$inject = ["$rootScope", "$scope", "$state", "authenticationFactory", "layoutFactory"];
+    slidePanelController.$inject = ["$rootScope", "$scope", "$state", "authenticationService", "layoutService"];
 
-
-    function slidePanelController($rootScope, $scope, $state, authenticationFactory, layoutFactory) { 
+    function slidePanelController($rootScope, $scope, $state, authenticationService, layoutService) { 
         // --------------------------------------------------------------------
         // define bindable members  
         $scope.logout = logout;
@@ -55,8 +54,8 @@
 
         function logout() {
             // clear stored information
-            authenticationFactory.cleanup();
-            layoutFactory.cleanup();
+            authenticationService.cleanup();
+            layoutService.cleanup();
 
             // transition state
             $state.go("login");
@@ -66,25 +65,26 @@
             // TODO: refactor this because the functionality is similar to login-controller's login function         
             var getDefaultPanel = function(workspaceId, workspaceUrlName) {
                 // get the workspace's default panel to be passed in to the transition function
-                return layoutFactory.getDefaultPanel(workspaceId) 
+                return layoutService.getDefaultPanel(workspaceId) 
                                     .then(function(defaultPanel) {
                                         // set current panel
-                                        layoutFactory.setCurrentPanel(defaultPanel.id, defaultPanel.url_name);
+                                        layoutService.setCurrentPanel(defaultPanel.id, defaultPanel.url_name);
                                         return defaultPanel.id;
                                     });
             };
             var transition = function() {      
                 // transition to the new workspace and its respective default panel
                 // triggers watchForPanelChange function in panel-nav-directive
+                // TODO: need to handle visualParam
                 $state.go("app.panel", {
-                    currentWorkspaceUrl: layoutFactory.getCurrentWorkspace().url_name,
-                    currentPanelUrl: layoutFactory.getCurrentPanel().url_name,
+                    currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
+                    currentPanelUrl: layoutService.getCurrentPanel().url_name,
                 });
 
             };
 
             // set current workspace
-            layoutFactory.setCurrentWorkspace(newWorkspaceId, newWorkspaceUrlName);
+            layoutService.setCurrentWorkspace(newWorkspaceId, newWorkspaceUrlName);
 
             // get the workspace's default panel 
             // in order to transition

@@ -2,16 +2,16 @@
 (function() {
     'use strict';
 
-    // set authentication-factory application and register its factory
+    // set authentication-service application and register its service
     angular
-        .module("authentication-factory", [])
-        .factory("authenticationFactory", authenticationFactory);
+        .module("authentication-service", [])
+        .service("authenticationService", authenticationService);
 
-    // add additional services to be used within the factory
-    authenticationFactory.$inject = ["$http", "$log", "$rootScope", "$window"];
+    // add additional services to be used within the service
+    authenticationService.$inject = ["$http", "$log", "$rootScope", "$window"];
 
-    // define the factory
-    function authenticationFactory($http, $log, $rootScope, $window) {
+    // define the service
+    function authenticationService($http, $log, $rootScope, $window) {
         // --------------------------------------------------------------------
         // for backend 
         var backendBaseUrl = api_config.authentication_uri;
@@ -29,18 +29,18 @@
         });                            
 
         // --------------------------------------------------------------------
-        // return an authenticationFactory instance
-        var authenticationFactory = {
+        // return an authenticationService instance
+        var authenticationService = {
             getAllPersonas: getAllPersonas,
             setCurrentPersona: setCurrentPersona,
             getCurrentPersona: getCurrentPersona,
             unsetCurrentPersona: unsetCurrentPersona,
             cleanup: cleanup
         }
-        return authenticationFactory;
+        return authenticationService;
 
         // --------------------------------------------------------------------
-        // function definition used in factory instance
+        // function definition used in service instance
         function callBackend(backendUrl) {
             $log.log("****** GET " + backendUrl + " ******");
             return $http.get(backendUrl)

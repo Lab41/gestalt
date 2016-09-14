@@ -11,9 +11,9 @@ urls = (
     # rest API backend endpoints
     "flows/unique_targets/(.*)/", "flows",
     "story/metric/(\d+)/", "metrics",
-	"angular/directives/(.*)/", "ng_directives",
-	"countries/groups/", "node_groups",
-	"geojson/(.*)/", "geojson",
+    "angular/directives/(.*)/", "ng_directives",
+    "countries/groups/", "node_groups",
+    "geojson/(.*)/", "geojson",
     "(.*)/", "nodes"
     
 )
@@ -27,22 +27,22 @@ class flows:
         # execute query
         self.cursor.execute("""
         select gn.name as source_name,
-		cy.iso2code as source,
-		gnt.name as target_name,
-		cyt.iso2code as target,
-		cy.id as source_id,
-		count(cdis.target_id) as value
-		from """ + helper.table_prefix + """cdis cdis
-		left join """ + helper.table_prefix + """geography_name gn on gn.id = cdis.source_id
-		left join """ + helper.table_prefix + """geography_name gnt on gnt.id = cdis.target_id
-		left join """ + helper.table_prefix + """country cy on cy.id = cdis.source_id
-		left join """ + helper.table_prefix + """country cyt on cyt.id = cdis.target_id
-		where source_id = """ + source_id + """ and cyt.iso2code is not null
-		group by gn.name,
-		cy.iso2code,
-		cy.id,
-		gnt.name,
-		cyt.iso2code
+        cy.iso2code as source,
+        gnt.name as target_name,
+        cyt.iso2code as target,
+        cy.id as source_id,
+        count(cdis.target_id) as value
+        from """ + helper.table_prefix + """cdis cdis
+        left join """ + helper.table_prefix + """geography_name gn on gn.id = cdis.source_id
+        left join """ + helper.table_prefix + """geography_name gnt on gnt.id = cdis.target_id
+        left join """ + helper.table_prefix + """country cy on cy.id = cdis.source_id
+        left join """ + helper.table_prefix + """country cyt on cyt.id = cdis.target_id
+        where source_id = """ + source_id + """ and cyt.iso2code is not null
+        group by gn.name,
+        cy.iso2code,
+        cy.id,
+        gnt.name,
+        cyt.iso2code
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -57,17 +57,17 @@ class nodes:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-		select distinct on (gn.name) gn.name,
-		cy.iso2code as iso,
-		cy.id,
-		count(distinct cdis.target_id) as count
-		from """ + helper.table_prefix + """country cy 
-		left join """ + helper.table_prefix + """geography_name gn on gn.id = cy.name_id
-		left join """ + helper.table_prefix + """geography geo on geo.name_id = cy.name_id
-		left join """ + helper.table_prefix + """cdis cdis on source_id = cy.id
-		group by gn.name,
-		cy.iso2code,
-		cy.id
+        select distinct on (gn.name) gn.name,
+        cy.iso2code as iso,
+        cy.id,
+        count(distinct cdis.target_id) as count
+        from """ + helper.table_prefix + """country cy 
+        left join """ + helper.table_prefix + """geography_name gn on gn.id = cy.name_id
+        left join """ + helper.table_prefix + """geography geo on geo.name_id = cy.name_id
+        left join """ + helper.table_prefix + """cdis cdis on source_id = cy.id
+        group by gn.name,
+        cy.iso2code,
+        cy.id
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -146,20 +146,20 @@ class geojson:
         row_to_json(f) as properties,
         row_to_json(c) as geometry 
         from t,
-		""" + helper.table_prefix + """geography geo 
+        """ + helper.table_prefix + """geography geo 
         left join (
-		select geo.id,
+        select geo.id,
         gn.name,
         cy.iso2code as iso
         from """ + helper.table_prefix + """geography geo
         left join """ + helper.table_prefix + """geography_name gn on gn.id = geo.name_id
         left join """ + helper.table_prefix + """country cy on cy.id = geo.name_id
-		) f on f.id = geo.id 
-		left join (
-		with t as (
-		select 'Polygon'::text
-		) 
-		select t.text as type,
+        ) f on f.id = geo.id 
+        left join (
+        with t as (
+        select 'Polygon'::text
+        ) 
+        select t.text as type,
         geo.hexagon_polygon as coordinates 
         from t,
         """ + helper.table_prefix + """geography geo
@@ -172,7 +172,7 @@ class geojson:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
-	
+    
 class ng_directives:
     def GET(self, vis_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -182,8 +182,8 @@ class ng_directives:
         # execute query
         self.cursor.execute("""
         select *
-		from gestalt_vis
-		where id = """ + vis_id + """;
+        from gestalt_vis
+        where id = """ + vis_id + """;
         """)
         # obtain the data
         data = self.cursor.fetchall()
