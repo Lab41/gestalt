@@ -3,7 +3,7 @@ angular.module("story-controls-directive", [])
 .directive("storyControls", ["contentService", "$rootScope", "$state", function(contentService, $rootScope, $state) {
 	return {
 		restrict: "E",
-        template: "<div><button ng-repeat='control in controls' type='button' ng-click='changeIdea(control.story_action_id, control.id)'><a scroll-to='test'>{{ control.name }}</a></button></div>",
+        template: "<div><button ng-repeat='control in controls' type='button' ng-click='changeIdea(control.story_action_id, control.id)'>{{ control.name }}</button></div>",
 		scope: {
             controls: "=",
 			visTypeId: "="
@@ -44,7 +44,8 @@ angular.module("story-controls-directive", [])
 						$rootScope.$broadcast("heuristicChange", { val: data });
 
 						// transition state url
-						$state.go("app.panel.visual.heuristic", {
+						$state.go("app.heuristic", {
+                            panel: $state.params.panel,
 							visual: $state.params.visual,
 							heuristic: data[0].name
 						});

@@ -101,7 +101,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         views: {
     		"panel": {
     			templateProvider: function($http, $stateParams) {
-                    return $http.get("templates/panels/" + $stateParams.panel + ".html").then(function(template) {
+                    return $http.get("templates/panels/" + $stateParams.panel + ".html").then(function(template) {console.log("b");
                         return template.data;
                     });
                 },
@@ -129,15 +129,15 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     })
 	
 	// heuristics visual
-    .state("app.panel.visual.heuristic", {
-    	url: "/{heuristic}",
+    .state("app.heuristic", {
+    	url: "/{panel}/{visual}/{heuristic}",
     	views: {
-    		"visual": {
+    		"panel": {
 				templateUrl: "templates/visualizations/visualization-standard.html",
 				controller: "vizCtrl"
 			}
     	}
-    });
+    })
 
     $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
 

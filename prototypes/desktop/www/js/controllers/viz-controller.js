@@ -1,6 +1,6 @@
 angular.module("viz-controller", [])
 
-.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", function($scope, contentService, $state, $rootScope) {
+.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", function($scope, contentService, $state, $rootScope) {console.log("vis controller")
     	        
 	// data objects
 	$scope.nodes;
@@ -24,7 +24,7 @@ angular.module("viz-controller", [])
 	});
 	
 	// watch for story idea changes
-	$rootScope.$on("heuristicChange", function(event, args) {
+	$rootScope.$on("heuristicChange", function(event, args) {console.log(args);
 		
 		// set scope
 		$scope.heuristics = args.val;
