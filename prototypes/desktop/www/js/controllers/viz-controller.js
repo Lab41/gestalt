@@ -22,5 +22,14 @@ angular.module("viz-controller", [])
 		$scope.nodeGroups = data;
 		
 	});
+	
+	// watch for story idea changes
+	$rootScope.$on("heuristicChange", function(event, args) {
+		
+		// set scope
+		$scope.heuristics = args.val;
+		$scope.currentHeuristic = args.val[0].name;
+		
+	});
     
 }]);

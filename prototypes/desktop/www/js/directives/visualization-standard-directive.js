@@ -5,31 +5,22 @@ angular.module("visualization-standard-directive", [])
 		restrict: 'E',
 		replace: true,
 		scope: {
-			visId: "="
+			directiveName: "=",
+			directiveData: "="
 		},
         link: function(scope, element, attrs) {
 			
-			var id = scope.visId;
-            console.log(id);
-            // get appropriate directive and corresponding dummy data
-            contentService.getData("visualization/angular/directives/" + id + "/standards/").then(function(data) {
-
-                // set scope
-                $scope.visualization = data;console.log(data);
-
-            });
-			
 			// add directive
-			//var customDirective = angular.element("<" + directiveName + "></" + directiveName + ">");
+			var customDirective = angular.element("<" + scope.directiveName + "></" + scope.directiveName + ">");
 			
 			// add attributes
-			//customDirective.attr("viz-data", "dirData");
+			customDirective.attr("viz-data", "directiveData");
 			
 			// compile the custom directive
-			//$compile(customDirective)(scope);
+			$compile(customDirective)(scope);
 			
 			// add custom directive
-			//element.append(customDirective);
+			element.append(customDirective);
 			
         }
 	};

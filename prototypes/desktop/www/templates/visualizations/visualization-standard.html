@@ -1,0 +1,6 @@
+<h3>{{ currentHeuristic }}</h3>
+
+<!-- VISUALIZATION -->
+<div ng-repeat="vis in heuristics">
+	<visualization-standard directive-name="vis.directive" directive-data="vis.data"></visualization-standard>
+</div>

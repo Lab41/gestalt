@@ -200,14 +200,17 @@ class heuristics:
         # execute query
         self.cursor.execute("""
         select v.*,
+		vt.name,
         array_agg(row_to_json(d)) as data
         from """ + helper.table_prefix + """vis v
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
         left join (
         select *
         from """ + helper.table_prefix + """vis_dummy_data
         ) d on d.vis_id = v.id
         where v.vis_type_id = """ + vistype_id + """
-        group by v.id;
+        group by v.id,
+		vt.name;
         """)
         # obtain the data
         data = self.cursor.fetchall()

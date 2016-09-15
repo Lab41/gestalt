@@ -1,17 +1,24 @@
+<!-- STORY -->
 <section ng-repeat="story in content">
-            
-	<h2>{{ story.name }}</h2>
-    
-    <div style="display: flex; margin-top: 1em; flex-wrap: wrap;">
-    
-        <div ng-repeat="idea in story.ideas" style="margin-right: 2.5em; width: 20%;">
-
-            <card-layout headline="idea.label" description="idea.description" poster="idea.svg_icon" vis-id="idea.id"></card-layout>
-
-        </div>
         
-    </div>
+	<!-- TITLE -->
+	<h2>{{ story.name }}</h2>
 	
+	<div style="display: flex; margin-top: 1em; flex-wrap: wrap;">
+    
+		<!-- IDEA -->
+		<div ng-repeat="idea in story.ideas" style="margin-right: 2.5em; width: 20%;">
+
+			<!-- CONTENT -->
+			<card-layout headline="idea.label" description="idea.description" poster="idea.svg_icon" vis-id="idea.id"></card-layout>
+
+			<!-- ACTIONS -->
+			<story-controls controls="idea.controls" vis-type-id="idea.vis_type_id"></story-controls>
+
+		</div>
+		
+	</div>
+        
 </section>
 
 <ui-view name="visual"></ui-view>
