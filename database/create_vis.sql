@@ -14,7 +14,14 @@
  * 
  */
 
-/* gestalt_vis_type ------------------------------------------------------------ */
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis_type
+   This table lists the types of visualizations
+   * id: vis type id
+   * name: vis type name
+   -------------------------------------------------------------------------
+ */
 
 CREATE TABLE gestalt_vis_type (
     id SERIAL PRIMARY KEY,
@@ -28,211 +35,80 @@ INSERT INTO gestalt_vis_type (name) VALUES ('hierarchy');
 INSERT INTO gestalt_vis_type (name) VALUES ('parts of a whole');
 INSERT INTO gestalt_vis_type (name) VALUES ('relatedness');
 
-/*
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis_directive 
+   This table lists the front-end directives. A directive builds a 
+   visualization.
+   * id: directive id
+   * name: directive name
+   -------------------------------------------------------------------------
+ */
 
--- TODO: Is there a better way to do this than reinserting the same values into the gestalt_panel table? 
+CREATE TABLE gestalt_vis_directive (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL CHECK (name <> ''),
+    UNIQUE (name)
 
-WITH inserted_vis_type AS (
-    INSERT INTO gestalt_vis_type (name) VALUES 
-    ('comparison') 
-    RETURNING name AS vis_type_name
-)
-INSERT INTO gestalt_panel (name, url_name) 
-SELECT vis_type_name, md5(random()::text)
-FROM inserted_vis_type;
+);
 
-WITH inserted_vis_type AS (
-    INSERT INTO gestalt_vis_type (name) VALUES
-    ('time series')
-    RETURNING name AS vis_type_name
-)
-INSERT INTO gestalt_panel (name, url_name)
-SELECT vis_type_name, md5(random()::text)
-FROM inserted_vis_type;
+INSERT INTO gestalt_vis_directive (name) VALUES ('bar-chart');
+INSERT INTO gestalt_vis_directive (name) VALUES ('group-nodes');
+INSERT INTO gestalt_vis_directive (name) VALUES ('visualization-standard');
+INSERT INTO gestalt_vis_directive (name) VALUES ('tbd');
+INSERT INTO gestalt_vis_directive (name) VALUES ('line-chart');
 
-WITH inserted_vis_type AS (
-    INSERT INTO gestalt_vis_type (name) VALUES
-    ('hierarchy')
-    RETURNING name AS vis_type_name
-)
-INSERT INTO gestalt_panel (name, url_name)
-SELECT vis_type_name, md5(random()::text)
-FROM inserted_vis_type;
-
-WITH inserted_vis_type AS (
-    INSERT INTO gestalt_vis_type (name) VALUES
-    ('parts of a whole')
-    RETURNING name AS vis_type_name
-)
-INSERT INTO gestalt_panel (name, url_name)
-SELECT vis_type_name, md5(random()::text)
-FROM inserted_vis_type;
-
-WITH inserted_vis_type AS (
-    INSERT INTO gestalt_vis_type (name) VALUES
-    ('relatedness')
-    RETURNING name AS vis_type_name
-)
-INSERT INTO gestalt_panel (name, url_name)
-SELECT vis_type_name, md5(random()::text)
-FROM inserted_vis_type;
-*/
-
-/* gestalt_vis --------------------------------------------------------------------- */
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis
+   This table lists the visualizations.
+   * id: vis id
+   * vis_type_id: vis type id in gestalt_vis_type
+   * name: 
+   -------------------------------------------------------------------------
+ */
 
 CREATE TABLE gestalt_vis (
     id SERIAL PRIMARY KEY,
     vis_type_id INTEGER NOT NULL,
+    vis_directive_id INTEGER NOT NULL,
     name TEXT NOT NULL CHECK (name <> ''),
     max_limit INTEGER NOT NULL,
     UNIQUE (name)
 );
 
-/*
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (1, 1, 'bar chart', 100);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (5, 2, 'group nodes', 500);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (2, 4, 'tbd', 500);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (2, 5, 'spark line', 500);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (1, 1, 'column chart', 100);
 
--- TODO: Need to add max limit.
-
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (1, 'bar chart');
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (2, 'spark line')
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (2, 'line chart') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (2, 'heatmap grid') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (3, 'dendogram (radial)') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (3, 'dendogram (linear)') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (3, 'packed circles') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (3, 'tree list') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (4, 'pie chart') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (4, 'donut chart') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (5, 'node link') 
-INSERT INTO gestalt_vis (vis_type_id, name) VALUES (5, 'adjacency matrix') 
-*/
-
-/*
-
--- TODO: Is there a better way to do this than reinserting the same values into the gestalt_story table?
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (1, 'bar chart') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (2, 'spark line') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (2, 'line chart') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (2, 'heatmap grid') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (3, 'dendogram (radial)') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (3, 'dendogram (linear)') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (3, 'packed circles') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (3, 'tree list') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (4, 'pie chart') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (4, 'donut chart') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (5, 'node link') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-
-WITH inserted_vis AS (
-    INSERT INTO gestalt_vis (vis_type_id, name) VALUES 
-    (5, 'adjacency matrix') 
-    RETURNING name AS vis_name
-)
-INSERT INTO gestalt_story (name, url_name) 
-SELECT vis_name, md5(random()::text)
-FROM inserted_vis;
-*/
-
-/* story_gestalt_vis --------------------------------------------------------------- */
-
-CREATE TABLE gestalt_story_vis ( 
-    id SERIAL PRIMARY KEY,
-    story_id INTEGER NOT NULL,
-    vis_id INTEGER NOT NULL,
-    order_num INTEGER NOT NULL,
-    UNIQUE (story_id, vis_id)
-);
-
--- TODO: add data
--- INSERT INTO gestalt_story_vis (story_id, vis_id, order_num) VALUES (1, 1, 1);
-
-/* vis's attributes -------------------------------------------------------- */
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis_code_attr
+   This table lists the code attributes to build the visualization.
+   * vis_id: vis id in gestalt_vis table
+   * vis_data: ???
+   * is_vis_data_required: ???
+   * canvas_width: ???
+   * is_canvas_width_required: ???
+   * canvas_height: ???
+   * is_canvas_height_required: ???
+   * orientation: ???
+   * is_orientation_required: ???
+   * format: ???
+   * is_format_required: ???
+   * grouping: ???
+   * is_grouping_required: ???
+   * start_group: ???
+   * is_start_group_required: ???
+   -------------------------------------------------------------------------
+ */
 
 CREATE TABLE gestalt_vis_code_attr (
     vis_id INTEGER PRIMARY KEY,
@@ -253,7 +129,7 @@ CREATE TABLE gestalt_vis_code_attr (
 );
 
 -- TODO: add more data
-
+/*
 INSERT INTO gestalt_vis_code_attr (vis_id, canvas_width, canvas_height, orientation) VALUES 
     (1, 'integer', 'integer', 'vertical | horizontal');
 INSERT INTO gestalt_vis_code_attr (vis_id) VALUES 
@@ -278,6 +154,16 @@ INSERT INTO gestalt_vis_code_attr (vis_id) VALUES
     (11);
 INSERT INTO gestalt_vis_code_attr (vis_id) VALUES 
     (12);
+*/
+
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis_do_attr
+   This table lists when you can use the visualization.
+   * vis_id: vis id in gestalt_vis table
+   * do_value: information about when you can use the visualization
+   -------------------------------------------------------------------------
+ */
 
 CREATE TABLE gestalt_vis_do_attr (
     vis_id INTEGER PRIMARY KEY,
@@ -286,7 +172,7 @@ CREATE TABLE gestalt_vis_do_attr (
 );
 
 -- TODO: add more data
-
+/*
 INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
     (5, 'Use for data that is hierarchial.');
 INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
@@ -305,6 +191,16 @@ INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
     (8, 'Use when data is more than 6 layers deep or data has more than 100 nodes.');
 INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
     (8, 'Use when space is extremely limited and/or extremely tall/skinny.');
+*/
+
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis_dont_attr
+   This table lists when you cannot use the visualization.
+   * vis_id: vis id in gestalt_vis table
+   * dont_value: information about when you should not use the visualization
+   -------------------------------------------------------------------------
+ */
 
 CREATE TABLE gestalt_vis_dont_attr (
     vis_id INTEGER PRIMARY KEY,
@@ -313,7 +209,7 @@ CREATE TABLE gestalt_vis_dont_attr (
 );
 
 -- TODO: add more data
-
+/*
 INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
     (5, 'Don\'t use if data is more than 6 layers deep.');
 INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
@@ -330,6 +226,17 @@ INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
     (8, 'Don\'t use it if interactivity is not available.');
 INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
     (8, 'Don\'t use when all labels must be visible at once.');
+*/
+
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_vis_dont_attr
+   This table lists when the alternate visualizations you can use
+   * vis_id: vis id in gestalt_vis table
+   * alt_vis_id: vis id in gestalt_vis table about the other visualizations
+   *     you can use as an alternative.
+   -------------------------------------------------------------------------
+ */
 
 CREATE TABLE gestalt_vis_alt_attr (
     vis_id INTEGER PRIMARY KEY,
@@ -338,7 +245,7 @@ CREATE TABLE gestalt_vis_alt_attr (
 );  
 
 -- TODO: add more data
-
+/*
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (5, 7);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (5, 8);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (6, 7);
@@ -349,4 +256,4 @@ INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (7, 8);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (8, 5);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (8, 6);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_id) VALUES (8, 7);
-
+*/

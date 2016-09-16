@@ -1,3 +1,14 @@
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_story
+   This table lists the stories and contains only information about the
+   stories.
+   * id: story id
+   * name: story name
+   * url_name: the url used to refer to this story
+   -------------------------------------------------------------------------
+ */
+
 CREATE TABLE gestalt_story (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),
@@ -6,67 +17,128 @@ CREATE TABLE gestalt_story (
 );
 
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Different country groups result in varied contagion levels', md5(random()::text));
+    ('What tool to use for which data visualization task', substring(md5(random()::text),0,6));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Cross border spillover infects financial system', md5(random()::text));
+    ('What visual form best communicates your dataset', substring(md5(random()::text),0,6));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Greatest risks for financial disaster', md5(random()::text));
+    ('What the network looks like', substring(md5(random()::text),0,6));
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Capital investment flows between pseudo country groups', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What tool to use for which data visualization task', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What visual form best communicates your dataset', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Use data science to choose visuals', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Scenario based visualizations in visual gestalt_storytelling', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What we learned about gathering metrics for data visualization', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('How a social media gestalt_story moves through social networks', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('How a social media gestalt_story evolves into viral status', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('Tracking events through social networks in location based tweets', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What is the life-cycle of a trending social gestalt_story across geographies', md5(random()::text));
-INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What events can be predicted from social data trends', md5(random()::text));
+    ('tbd', substring(md5(random()::text),0,6));
+
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_story_idea
+   This table lists the ideas that make up a story. An idea can only fall
+   under one story. An idea can only perform one collective actions. For 
+   this reason, gestalt_story_idea table contains information about the 
+   ideas as well as their respective story and action.
+   * id: story idea id
+   * title: title of the idea
+   * subtitle: subtitle of the idea; it can be NULL
+   * description: description of the idea
+   * story_id: story id in gestalt_story table
+   * action_id: action id in gestalt_story_action table
+   -------------------------------------------------------------------------
+ */
+
+CREATE TABLE gestalt_idea (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL CHECK (name <> ''),
+    subtitle TEXT,
+    description TEXT, 
+    story_id INTEGER NOT NULL, 
+    action_id INTEGER NOT NULL,
+    UNIQUE (title, story_id, action_id)
+);
+
+INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Neque lorem cursus curabitur vulputate quis iaculis', 
+     'grouping', 
+     'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',
+      3,
+      1);
+INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Etiam felis nostra', 'degree/centrality', 
+     'Velit risus.Magna justo.Curae etiam scelerisque per.Metus ipsum.Dolor morbi neque vel velit fermentum.',
+      3,
+      2);
+INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Purus nulla lectus', 
+     'connectedness', 
+     'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
+      3,
+      3);
+INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Comparison', 
+     'comparison', 
+     'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
+      2,
+      4);
+
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_action_group
+   This table lists the action name of the group. An idea can only perform 
+   one collective set of actions. Action name refers to the name of a list 
+   of actions an idea can perform.
+   * id: action group id
+   * name: name of the action group
+   -------------------------------------------------------------------------
+ */
+
+CREATE TABLE gestalt_action_group (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL CHECK (name <> ''),
+    UNIQUE (name)
+);
+
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('cluster');
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('size');
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('link');
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('demo');
+
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_action_name
+   This table lists all the actions that fall under an action name. 
+   * id: action id
+   * action_group_id: action group id that this action falls under
+   * name: name of the action
+   -------------------------------------------------------------------------
+ */
+
+CREATE TABLE gestalt_action (
+    id SERIAL PRIMARY KEY,
+    action_group_id INTEGER NOT NULL,
+    name TEXT NOT NULL CHECK (name <> ''),
+    UNIQUE (action_name_id, name)
+);
+
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (1, 'region');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (1, 'investment');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (1, 'trade');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (1, 'export');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (1, 'default');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (1, 'country');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (2, 'equal');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (2, 'high degree');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (2, 'high centrality');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (3, 'none');
+INSERT INTO gestalt_action (action_name_id, name) VALUES
+    (3, 'unique targets');
  
 
-CREATE TABLE gestalt_story_tag (
-    story_id INTEGER,
-    tag_id INTEGER,
-    PRIMARY KEY (story_id, tag_id)
-);
- 
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (1, 1);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (1, 5);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (2, 1);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (2, 5);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (3, 2);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (3, 5);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (4, 1);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (4, 5);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (5, 3);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (5, 4);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (5, 6);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (6, 3);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (6, 7);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (7, 3);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (7, 4);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (8, 3);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (9, 3);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (9, 4);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (9, 6);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (9, 7);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (10, 4);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (10, 8);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (11, 4);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (11, 8);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (12, 8);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (12, 9);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (13, 4);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (13, 8);
-INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (14, 9);

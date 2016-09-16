@@ -86,11 +86,13 @@ class getAllStoriesByWorkspaceAndPanel:
         self.cursor.execute("""
             SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
             FROM gestalt_story AS st
-            RIGHT JOIN gestalt_workspace_panel_story AS wps
+            LEFT JOIN gestalt_wp_story AS wps
+                INNER JOIN gestalt_workspace_panel AS wp
+                ON wps.wp_id = wp.id
             ON st.id = wps.story_id 
-            AND wps.workspace_id = """ + workspace_id + """
-            AND wps.panel_id = """ + panel_id + """
-            WHERE st.id IS NOT NULL
+            WHERE wp.workspace_id = """ + workspace_id + """
+            AND wp.panel_id = """ + panel_id + """
+            AND st.id IS NOT NULL
             ORDER BY st.id;
         """)
         # obtain the data
