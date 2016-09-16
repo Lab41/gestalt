@@ -15,11 +15,11 @@
         // --------------------------------------------------------------------
         // for backend
         // * workspace
-        var workspaceBackendBaseUrl = api_config.layout_workspace_uri;
+        var workspaceBackendBaseUrl = apiConfig.layoutWorkspaceUri;
         var getDefaultWorkspaceUrl = workspaceBackendBaseUrl + "getDefaultWorkspaceByPersona";
         var getAllWorkspacesUrl = workspaceBackendBaseUrl + "getAllWorkspacesByPersona";
         // * panel
-        var panelBackendBaseUrl = api_config.layout_panel_uri;
+        var panelBackendBaseUrl = apiConfig.layoutPanelUri;
         var getDefaultPanelUrl = panelBackendBaseUrl + "getDefaultPanelByWorkspace";
         var getAllPanelsUrl = panelBackendBaseUrl + "getAllPanelsByWorkspace";
         // * storage (TODO: figure out a better way to handle this)
@@ -131,6 +131,10 @@
             currentListOfPanels = null;
         }
 
+        // ============================
+        // * cleanup           
+        // ============================
+        
         function cleanup() {
             unsetCurrentWorkspace();
             unsetCurrentPanel();

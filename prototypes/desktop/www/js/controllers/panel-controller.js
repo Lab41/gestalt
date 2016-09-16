@@ -15,6 +15,7 @@
         // --------------------------------------------------------------------
         // define bindable members
         $scope.listOfStories;
+        $scope.getListOfIdeas = getListOfIdeas;
 
         // --------------------------------------------------------------------
         // call functions   
@@ -40,6 +41,13 @@
                           
         }
     	
+        function getListOfIdeas(storyId) {
+            contentService
+                .getAllIdeas(storyId)
+                .then(function (listOfIdeas) {
+                    return listOfIdeas;
+                });
+        }
     }
 
 })();

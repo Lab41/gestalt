@@ -15,8 +15,8 @@
         // --------------------------------------------------------------------
         // define bindable members
         $scope.theme = {
-            current: theme_config.ui.start,
-            opposite: theme_config.ui.opposite
+            current: themeConfig.ui.start,
+            opposite: themeConfig.ui.opposite
         };
         $scope.changeTheme = changeTheme;
 

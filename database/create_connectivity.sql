@@ -144,13 +144,3 @@ INSERT INTO gestalt_story_vis (story_id, vis_id) VALUES
 INSERT INTO gestalt_story_vis (story_id, vis_id) VALUES
     (4, 4);
 
-
-
-CREATE TABLE gestalt_vis (
-    id SERIAL PRIMARY KEY,
-    vis_type_id INTEGER NOT NULL,
-    name TEXT NOT NULL CHECK (name <> ''),
-    template_name TEXT NOT NULL CHECK (name <> ''),
-    max_limit INTEGER NOT NULL,
-    UNIQUE (name)
-);

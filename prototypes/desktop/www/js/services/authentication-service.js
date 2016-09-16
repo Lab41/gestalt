@@ -14,7 +14,7 @@
     function authenticationService($http, $log, $rootScope, $window) {
         // --------------------------------------------------------------------
         // for backend 
-        var backendBaseUrl = api_config.authentication_uri;
+        var backendBaseUrl = apiConfig.authenticationUri;
         var getAllPersonasUrl = backendBaseUrl + "getAllPersonas";
         var getSinglePersonaUrl = backendBaseUrl + "getSinglePersona";
 

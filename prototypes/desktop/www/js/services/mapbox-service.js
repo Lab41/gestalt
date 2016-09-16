@@ -24,8 +24,8 @@
 		};
 		
 		// sources
-		var gl = mapbox_config.gl;
-		var mbox = mapbox_config.raster;
+		var gl = mapboxConfig.gl;
+		var mbox = mapboxConfig.raster;
 		
 		// get USER AGENT data stored in service
 		agentService.getData().then(function(data) {

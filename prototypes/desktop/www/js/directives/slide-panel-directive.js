@@ -56,6 +56,7 @@
             // clear stored information
             authenticationService.cleanup();
             layoutService.cleanup();
+            contentService.cleanup();
 
             // transition state
             $state.go("login");
@@ -76,9 +77,10 @@
                 // transition to the new workspace and its respective default panel
                 // triggers watchForPanelChange function in panel-nav-directive
                 // TODO: need to handle visualParam
-                $state.go("app.panel", {
+                $state.go("app.panel.visual", {
                     currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
                     currentPanelUrl: layoutService.getCurrentPanel().url_name,
+                    // TODO: add the visual
                 });
 
             };

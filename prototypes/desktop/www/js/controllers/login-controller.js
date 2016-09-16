@@ -8,10 +8,10 @@
         .controller("loginController", loginController);
 
     // add additional services to be used within the controller
-    loginController.$inject = ["$scope", "$state", "$templateCache", "authenticationService", "layoutService"];
+    loginController.$inject = ["$scope", "$state", "$templateCache", "authenticationService", "layoutService", "contentService"];
 
     // define the controller
-    function loginController($scope, $state, $templateCache, authenticationService, layoutService) {
+    function loginController($scope, $state, $templateCache, authenticationService, layoutService, contentService) {
         // --------------------------------------------------------------------
         // define bindable members
         $scope.listOfPersonas = [];
@@ -52,14 +52,28 @@
                         .then(function(defaultPanel) {
                             // set current panel
                             layoutService.setCurrentPanel(defaultPanel.id, defaultPanel.url_name);
-                            return defaultPanel.id;
+                            return { workspaceId: workspaceId, panelId: defaultPanel.id };
                         });
+            };
+            var getDefaultStory = function(input) {
+                // get the panel's default story to be passed into the transition function
+                return contentService
+                       .getDefaultStory(input.workspaceId, input.panelId)
+                       .then(function(defaultStory) {
+                            // set current story
+                            contentService.setCurrentStory(defaultStory.id, defaultStory.url_name);
+                            console.log("currentStory: " + angular.toJson(contentService.getCurrentStory()));
+                            console.log(angular.toJson(defaultStory));
+                            return defaultStory.id;
+                       });
             };
             var transition = function() {
                 // transition to the persona's default workspace and the workspace's default panel
-                $state.go("app.panel", {
+                $state.go("app.panel.story", {
                     currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
                     currentPanelUrl: layoutService.getCurrentPanel().url_name,
+                    currentStoryUrl: contentService.getCurrentStory().url_name,
+                    // TODO: add the visual
                 });
 
             };
@@ -71,6 +85,7 @@
             // in order to transition
             getDefaultWorkspace(personaId)
                 .then(getDefaultPanel)
+                .then(getDefaultStory)
                 .then(transition);
         }
 

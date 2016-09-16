@@ -56,6 +56,7 @@
             $state.go("app.panel", {
                 currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
                 currentPanelUrl: layoutService.getCurrentPanel().url_name,
+                currentVisualUrl: visualConfig.url_name
             });
      
         }

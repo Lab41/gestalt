@@ -17,13 +17,13 @@ CREATE TABLE gestalt_story (
 );
 
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What tool to use for which data visualization task', substring(md5(random()::text),0,6));
+    ('What tool to use for which data visualization task', 'which-tool');
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What visual form best communicates your dataset', substring(md5(random()::text),0,6));
+    ('What visual form best communicates your dataset', 'which-form');
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What the network looks like', substring(md5(random()::text),0,6));
+    ('What the network looks like', 'network');
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('tbd', substring(md5(random()::text),0,6));
+    ('tbd', 'tbd');
 
 /* 
    ------------------------------------------------------------------------- 
@@ -43,7 +43,7 @@ INSERT INTO gestalt_story (name, url_name) VALUES
 
 CREATE TABLE gestalt_idea (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL CHECK (name <> ''),
+    title TEXT NOT NULL CHECK (title <> ''),
     subtitle TEXT,
     description TEXT, 
     story_id INTEGER NOT NULL, 
@@ -51,24 +51,24 @@ CREATE TABLE gestalt_idea (
     UNIQUE (title, story_id, action_id)
 );
 
-INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
     ('Neque lorem cursus curabitur vulputate quis iaculis', 
      'grouping', 
      'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',
       3,
       1);
-INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
     ('Etiam felis nostra', 'degree/centrality', 
      'Velit risus.Magna justo.Curae etiam scelerisque per.Metus ipsum.Dolor morbi neque vel velit fermentum.',
       3,
       2);
-INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
     ('Purus nulla lectus', 
      'connectedness', 
      'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
       3,
       3);
-INSERT INTO gestalt_story_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
     ('Comparison', 
      'comparison', 
      'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',

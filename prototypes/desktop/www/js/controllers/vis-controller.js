@@ -2,16 +2,16 @@
 (function() {
     'use strict';
 
-    // set viz-controller application and register its controller
+    // set vis-controller application and register its controller
     angular
-        .module("viz-controller", [])
-        .controller("vizController", vizController);
+        .module("vis-controller", [])
+        .controller("visController", visController);
 
     // add additional services to be used within the controller
-    vizController.$inject = ["$q", "$scope", "$state", "contentService"];
+    visController.$inject = ["$q", "$scope", "$state", "contentService"];
 
     // define the controller
-    function vizController($q, $scope, $state, contentService) {
+    function visController($q, $scope, $state, contentService) {
 		// --------------------------------------------------------------------
         // define bindable members
         $scope.nodes;
@@ -43,16 +43,6 @@
                         $scope.nodeGroups = listOfNodeGroups;
                         $scope.dynamicDirectives = data;
                     });
-        }
-
-        function getGestaltData() {
-            // TODO
-            return
-        }
-
-        function getOlympicsData() {
-            // TODO
-            return
         }
     
     }

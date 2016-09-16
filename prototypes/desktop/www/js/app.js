@@ -72,7 +72,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         templateUrl: "templates/login.html",
         controller: "loginController",
 		params: {
-			t: theme_config.ui.start
+			t: themeConfig.ui.start
 		}
     })
     
@@ -83,14 +83,14 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         templateUrl: "templates/app.html",
 		controller: "appController",
         resolve: {
-			authorized: ["$state", "authenticationFactory", function($state, authenticationFactory) {
-				if(authenticationFactory.getCurrentPersona() === null) {
+			authorized: ["$state", "authenticationService", function($state, authenticationService) {
+				if(authenticationService.getCurrentPersona() === null) {
                     $state.go("login");
 				} 
 			}]
 		},
 		params: {
-			t: theme_config.ui.start
+			t: themeConfig.ui.start
 		}
     })
     
@@ -99,7 +99,13 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         url: "/{currentPanelUrl}",
         views: {
     		"panel": {
-    			templateUrl: "templates/panel.html",
+    			templateProvider: function($http, $stateParams) {
+                    // url_name is linked to the template being used
+                    console.log("getting panel " + $stateParams.currentPanelUrl + ".html");
+                    return $http.get("templates/panels/" + $stateParams.currentPanelUrl + ".html").then(function(template) {
+                        return template.data;
+                    });
+                },
     			controller: "panelController"
     		},
             "slide": {
@@ -107,22 +113,42 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
             }
     	}
     })
+
+    // story
+    .state("app.panel.story", {
+        url:"/{currentStoryUrl}",
+        views: {
+            "story": {
+                templateProvider: function($http, $stateParams) {
+                    // url_name is linked to the template being used
+                    console.log("getting story " + $stateParams.currentStoryUrl + ".html");
+                    return $http.get("templates/stories/" + $stateParams.currentStoryUrl + ".html").then(function(template) {
+                        return template.data;
+                    });                   
+                },
+                controller: "storyController"
+            }
+        }
+    })
 	
 	// visual
-    .state("app.panel.visual", {
-    	url: "/{visual}?:si?:sc",
+    .state("app.panel.story.visual", {
+    	url: "/{currentVisualUrl}?:si?:sc",
     	views: {
     		"visual": {
 				templateProvider: function($http, $stateParams) {
-                    return $http.get("templates/visualizations/" + $stateParams.visual + ".html").then(function(template) {
+                    // url_name is linked to the template being used
+                    console.log("getting vis " + $stateParams.currentVisualUrl + ".html");
+                    //return $http.get("templates/visualizations/" + $stateParams.currentVisualUrl + ".html").then(function(template) {
+                    return $http.get("templates/visualizations/visual-standard.html").then(function(template) {
                         return template.data;
                     });
                 },
-				controller: "vizController"
+				controller: "visController"
 			}
     	}
     });
 
-    $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
+    $urlRouterProvider.otherwise("/login?t=" + themeConfig.ui.start);
 
 });

@@ -11,7 +11,7 @@ angular.module("tile-grid-map-directive", [])
         link: function(scope, element, attrs) {
             
             var canvas = element.find("div")[0];
-            var token = mapbox_config.token;
+            var token = mapboxConfig.token;
             var radius = 7;
             var blur = 1;
             var opacity = 0.5;
@@ -37,7 +37,7 @@ angular.module("tile-grid-map-directive", [])
                 function draw(data, map, interactive, styleUrl) {console.log(data);
                     
                     // style url
-                    var style = mapbox_config.style[styleUrl];
+                    var style = mapboxConfig.style[styleUrl];
                     
                     // add style
                     //L.mapbox.styleLayer(style).addTo(map);

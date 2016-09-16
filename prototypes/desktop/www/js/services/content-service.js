@@ -15,19 +15,30 @@
         // --------------------------------------------------------------------
         // for backend
         // * story
-		var storyBackendBaseUrl = api_config.content_story_uri;
+		var storyBackendBaseUrl = apiConfig.contentStoryUri;
+        var getDefaultStoryUrl = storyBackendBaseUrl + "getDefaultStoryByWorkspaceAndPanel";
         var getAllStoriesUrl = storyBackendBaseUrl + "getAllStoriesByWorkspaceAndPanel";
+        // * idea
+        var getAllIdeasUrl = storyBackendBaseUrl + "getAllIdeasByStory";
         // * vis
-        var visBackendBaseUrl = api_config.content_vis_uri;
+        var visBackendBaseUrl = apiConfig.contentVisUri;
         var getCdisUrl = visBackendBaseUrl + "cdis/";
         var getCountryGroupUrl = visBackendBaseUrl + "countries/groups/";
         var getGeojsonUrl = visBackendBaseUrl + "geojson";
         var getDynamicDirectivesUrl = visBackendBaseUrl + "angular/directives/1/";
+        // * storage (TODO: figure out a better way to handle this)
+        var currentStory;
 
         // --------------------------------------------------------------------		
 		// return a contentService instance
         var contentService = {
+            getDefaultStory: getDefaultStory,
             getAllStories: getAllStories,
+            setCurrentStory: setCurrentStory,
+            getCurrentStory: getCurrentStory,
+            getAllIdeas: getAllIdeas,
+
+            // TODO: do we need these functions below?
             getCdis: getCdis,
             getCountryGroup: getCountryGroup,
             getGeojson: getGeojson
@@ -42,10 +53,55 @@
                         .then(function(backendResponse) { return backendResponse.data; });
         }
 
+        // ============================
+        // * story           
+        // ============================
+        
+        function getDefaultStory(workspaceId, panelId) {
+            return callBackend(getDefaultStoryUrl + "/workspace/" + workspaceId + "/panel/" + panelId).then(function(listOfDefaultStories){
+                return listOfDefaultStories[0];
+            });
+        }
+
         function getAllStories(workspaceId, panelId) {
             return callBackend(getAllStoriesUrl + "/workspace/" + workspaceId + "/panel/" + panelId);
         }
 
+        function setCurrentStory(storyId, storyUrlName) {
+            var story = {
+                id: storyId,
+                url_name: storyUrlName
+            }
+            currentStory = story;
+            return currentStory;
+        }
+
+        function getCurrentStory() {
+            return currentStory;
+        }
+
+        function unsetCurrentStory() {
+            currentStory = null;
+        }
+
+        // ============================
+        // * idea           
+        // ============================
+
+        function getAllIdeas(storyId) {
+            return callBackend(getAllIdeasUrl + "/" + storyId);
+        }
+
+        // ============================
+        // * vis           
+        // ============================
+        
+
+        // ============================
+        // * miscellaneous           
+        // ============================
+        
+        // TODO: do we need these functions below?
         function getCdis() {
             // TODO: remove this? It's not used. 
             return callBackend(getCdisUrl);
@@ -65,6 +121,14 @@
 
         function getDynamicDirectives() {
             return callBackend(getDynamicDirectivesUrl);
+        }
+
+        // ============================
+        // * cleanup           
+        // ============================
+        
+        function cleanup() {
+            unsetCurrentStory();
         }
 
     }
