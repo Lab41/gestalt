@@ -6,7 +6,7 @@ angular.module("story-controls-directive", [])
         template: "<div><button ng-repeat='control in controls' type='button' ng-click='changeIdea(control.story_action_id, control.id)'>{{ control.name }}</button></div>",
 		scope: {
             controls: "=",
-			visTypeId: "="
+			visTypeName: "="
         },
         controller: function($scope) {
             
@@ -38,16 +38,20 @@ angular.module("story-controls-directive", [])
 				} else {
 					
 					// get current set of heuristics
-					contentService.getData("visualization/heuristics/" + $scope.visTypeId + "/").then(function(data) {console.log(data);
-						
-						// broadcast so other visualizations can update
-						$rootScope.$broadcast("heuristicChange", { val: data });
+					contentService.getData("visualization/heuristics/" + $scope.visTypeName + "/").then(function(data) {
 
 						// transition state url
 						$state.go("app.heuristic", {
+							
                             panel: $state.params.panel,
 							visual: $state.params.visual,
-							heuristic: data[0].name
+							heuristic: data[0].vis_type_name
+							
+						}).then(function() {
+							
+							// broadcast so other visualizations can update
+							$rootScope.$broadcast("heuristicChange", { val: data });
+							
 						});
 
 					});

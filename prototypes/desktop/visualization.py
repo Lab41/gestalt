@@ -11,7 +11,7 @@ urls = (
     # rest API backend endpoints
     "flows/unique_targets/(\d+)/", "flows",
     "story/metric/(\d+)/", "metrics",
-    "heuristics/(\d+)/", "heuristics",
+    "heuristics/(.*)/", "heuristics",
 	"angular/directives/(\d+)/", "ng_directives",
 	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
@@ -192,7 +192,7 @@ class ng_directives:
         return json.dumps(data)
 	
 class heuristics:
-    def GET(self, vistype_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+    def GET(self, vistype_name, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
@@ -200,7 +200,7 @@ class heuristics:
         # execute query
         self.cursor.execute("""
         select v.*,
-		vt.name,
+		vt.name as vis_type_name,
         array_agg(row_to_json(d)) as data
         from """ + helper.table_prefix + """vis v
 		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
@@ -208,7 +208,7 @@ class heuristics:
         select *
         from """ + helper.table_prefix + """vis_dummy_data
         ) d on d.vis_id = v.id
-        where v.vis_type_id = """ + vistype_id + """
+        where vt.name = '""" + vistype_name + """'
         group by v.id,
 		vt.name;
         """)

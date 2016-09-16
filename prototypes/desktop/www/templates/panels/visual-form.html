@@ -7,13 +7,13 @@
 	<div style="display: flex; margin-top: 1em; flex-wrap: wrap;">
     
 		<!-- IDEA -->
-		<div ng-repeat="idea in story.ideas" style="margin-right: 2.5em; width: 20%;">
+		<div ng-repeat="idea in story.ideas" style="margin-right: 2.5em; width: 20%;margin-bottom: 2em;">
 
 			<!-- CONTENT -->
 			<card-layout headline="idea.label" description="idea.description" poster="idea.svg_icon" vis-id="idea.id"></card-layout>
 
 			<!-- ACTIONS -->
-			<story-controls controls="idea.controls" vis-type-id="idea.vis_type_id"></story-controls>
+			<story-controls controls="idea.controls" vis-type-name="idea.vis_type_name"></story-controls>
 
 		</div>
 		

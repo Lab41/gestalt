@@ -101,7 +101,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         views: {
     		"panel": {
     			templateProvider: function($http, $stateParams) {
-                    return $http.get("templates/panels/" + $stateParams.panel + ".html").then(function(template) {console.log("b");
+                    return $http.get("templates/panels/" + $stateParams.panel + ".html").then(function(template) {
                         return template.data;
                     });
                 },
@@ -135,7 +135,10 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     		"panel": {
 				templateUrl: "templates/visualizations/visualization-standard.html",
 				controller: "vizCtrl"
-			}
+			},
+			"slide": {
+                templateUrl: "templates/slide-panel.html"
+            }
     	}
     })
 
