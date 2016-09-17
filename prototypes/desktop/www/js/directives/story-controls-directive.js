@@ -47,11 +47,6 @@ angular.module("story-controls-directive", [])
 							visual: $state.params.visual,
 							heuristic: data[0].vis_type_name
 							
-						}).then(function() {
-							
-							// broadcast so other visualizations can update
-							$rootScope.$broadcast("heuristicChange", { val: data });
-							
 						});
 
 					});

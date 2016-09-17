@@ -1,6 +1,53 @@
-<h3>{{ currentHeuristic }}</h3>
+<!-- VIS TYPE -->
+<h3 style="text-transform: capitalize; margin-bottom: 2em;">{{ currentHeuristic }}</h3>
 
 <!-- VISUALIZATION -->
-<div ng-repeat="vis in heuristics">
-	<visualization-standard directive-name="vis.directive" directive-data="vis.data"></visualization-standard>
+<div ng-repeat="vis in heuristics" style="margin-bottom: 2em;">
+	
+	<!-- TITLE -->
+	<p style="margin-bottom: 0; font-weight: 700; margin-top: 1em; text-transform: capitalize;">{{ vis.name }}</p>
+	
+	<visualization-standard directive-name="vis.directive" directive-data="vis.data" orientation="vis.orientation" canvas-width="vis.canvas_width" canvas-height="vis.canvas_height"></visualization-standard>
+	
+	<figcaption>
+        
+		<!-- DO -->
+		<div ng-if="vis.dos.length !== null">
+			<p>do</p>
+			<ul>
+				<li ng-repeat="text in vis.dos">{{ text.do_value }}</li>
+			</ul>
+		</div>
+		
+		<!-- DON'T -->
+		<div ng-if="vis.donts.length !== null">
+			<p>don't</p>
+			<ul>
+				<li ng-repeat="text in vis.donts">{{ text.dont_value }}</li>
+			</ul>
+		</div>
+
+		<!-- CODE -->
+		<div>
+			<p>code
+				<span class="code-legend">
+					<span class="required">required</span>
+					<span class="optional">optional</span>
+				</span>
+			</p>
+			<pre>
+				<code>&lt;{{ vis.directive }} <span ng-repeat="attr in content.code.attrs" ng-class="attr.required ? 'required' : 'optional'">{{ attr.name }}='{{ attr.value }}'</span>&gt;&lt;&sol;{{ vis.directive }}&gt;</code>
+			</pre>
+		</div>
+
+		<!-- DATA -->
+		<div>
+			<p>sample data</p>
+			<pre>
+				<code>{{ vis.data | json }}</code>
+			</pre>
+		</div>
+
+	</figcaption>
+
 </div>

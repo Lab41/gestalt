@@ -6,7 +6,10 @@ angular.module("visualization-standard-directive", [])
 		replace: true,
 		scope: {
 			directiveName: "=",
-			directiveData: "="
+			directiveData: "=",
+			orientation: "=",
+			canvasWidth: "=",
+			canvasHeight: "="
 		},
         link: function(scope, element, attrs) {
 			
@@ -15,6 +18,26 @@ angular.module("visualization-standard-directive", [])
 			
 			// add attributes
 			customDirective.attr("viz-data", "directiveData");
+			
+			// TODO abstract attributes
+			
+			if (scope.orientation) {
+				
+				customDirective.attr("orientation", scope.orientation);
+				
+			};
+			
+			if (scope.canvasWidth) {
+				
+				customDirective.attr("canvas-width", scope.canvasWidth);
+				
+			};
+			
+			if (scope.canvasHeight) {
+				
+				customDirective.attr("canvas-height", scope.canvasHeight);
+				
+			};
 			
 			// compile the custom directive
 			$compile(customDirective)(scope);

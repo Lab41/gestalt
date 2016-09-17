@@ -199,18 +199,61 @@ class heuristics:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-        select v.*,
+		-- dummy data
+        with data as (
+		select dd.vis_id,
+		array_agg(row_to_json((
+		select r
+		from (select dd.*) r
+		))) as data
+		from """ + helper.table_prefix + """vis_dummy_data dd
+		group by dd.vis_id
+		),
+		-- attributes
+		attrs as (
+		select vca.vis_id,
+		array_agg(row_to_json((
+		select r 
+		from (select vca.*) r 
+		))) as attrs
+		from """ + helper.table_prefix + """vis_code_attr vca
+		group by vca.vis_id
+		),
+		-- do guidance
+		dos as (
+		select doa.vis_directive_id,
+		array_agg(row_to_json((
+		select r 
+		from (select doa.*) r 
+		))) as dos
+		from gestalt_vis_do_attr doa
+		group by doa.vis_directive_id
+		),
+		-- dont guidance
+		donts as (
+		select donta.vis_directive_id,
+		array_agg(row_to_json((
+		select r 
+		from (select donta.*) r 
+		))) as donts
+		from gestalt_vis_dont_attr donta
+		group by donta.vis_directive_id
+		)
+		select v.*,
 		vt.name as vis_type_name,
-        array_agg(row_to_json(d)) as data
-        from """ + helper.table_prefix + """vis v
+		vd.name as directive,
+		dd.data,
+		vca.attrs,
+		doa.dos,
+		donta.donts
+		from """ + helper.table_prefix + """vis v
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
 		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
-        left join (
-        select *
-        from """ + helper.table_prefix + """vis_dummy_data
-        ) d on d.vis_id = v.id
-        where vt.name = '""" + vistype_name + """'
-        group by v.id,
-		vt.name;
+		left join data dd on dd.vis_id = v.id
+		left join attrs vca on vca.vis_id = v.id
+		left join dos doa on doa.vis_directive_id = v.vis_directive_id
+		left join donts donta on donta.vis_directive_id = v.vis_directive_id
+		where vt.name = '""" + vistype_name + """';
         """)
         # obtain the data
         data = self.cursor.fetchall()

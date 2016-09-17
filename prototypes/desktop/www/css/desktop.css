@@ -40,14 +40,14 @@ a {
 	
 }
 
-h1, h2 {
+h1, h2, h3 {
 	
 	font-family: "Source Sans Pro Light", sans-serif;
 	font-weight: 300;
 	
 }
 
-h2 {
+h2, h3 {
     
     font-size: 1.5em;
     max-width: 500px;
@@ -270,7 +270,7 @@ button:focus {
     
     cursor: pointer;
     padding: 2em;
-    width: 42%;
+    width: calc(50% - 4em);
     
 }
 

@@ -42,6 +42,7 @@ card-layout figure h1 {
 card-layout figure figcaption {
     
     margin-top: 1em;
-    padding: 1em;
+	padding-bottom: 1em;
+    padding-top: 0.5em;
     
 }

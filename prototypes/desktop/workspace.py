@@ -100,7 +100,7 @@ class persona_workspaces:
 		w.is_default,
 		wn.name,
 		p.url_name as default_panel,
-		v.directive as default_vis,
+		vd.name as default_vis,
 		array_agg(row_to_json(pl)) as panels
 		from """ + helper.table_prefix + """workspace w
 		left join """ + helper.table_prefix + """workspace_name wn on wn.id = w.workspace_name_id
@@ -109,12 +109,14 @@ class persona_workspaces:
 		left join """ + helper.table_prefix + """persona_panel_story pps on pps.panel_id = wp.panel_id and pps.persona_id = """ + persona_id + """
 		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
 		left join """ + helper.table_prefix + """vis v on v.id = s.vis_id
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
 		left join (
-		select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id, v.directive as visualization
+		select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id, vd.name as visualization
 		from """ + helper.table_prefix + """workspace_panel wp
 		left join """ + helper.table_prefix + """persona_panel_story pps on pps.panel_id = wp.panel_id and pps.persona_id = """ + persona_id + """
 		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
 		left join """ + helper.table_prefix + """vis v on v.id = s.vis_id
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
 		left join """ + helper.table_prefix + """panel pl
 		on pl.id = wp.panel_id
 		left join """ + helper.table_prefix + """workspace w
@@ -127,7 +129,7 @@ class persona_workspaces:
 		w.url_name,
 		wn.name,
 		p.url_name,
-		v.directive
+		vd.name
 		order by wn.name asc;
         """)
 
@@ -168,11 +170,12 @@ class workspace_panels:
 		w.url_name as workspace_url_name,
 		p.name,
 		pps.persona_id,
-		v.directive as default_vis
+		vd.name as default_vis
 		from """ + helper.table_prefix + """persona_panel_story pps
 		left join """ + helper.table_prefix + """workspace_panel wp on wp.panel_id = pps.panel_id
 		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
 		left join """ + helper.table_prefix + """vis v on v.id = s.vis_id
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
 		left join """ + helper.table_prefix + """panel p on p.id = wp.panel_id
 		left join """ + helper.table_prefix + """workspace w on w.id = wp.workspace_id
 		where w.url_name = '""" + workspace_url_name + """' and pps.persona_id = """ + persona_id + """;

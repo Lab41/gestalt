@@ -23,13 +23,18 @@ angular.module("viz-controller", [])
 		
 	});
 	
-	// watch for story idea changes
-	$rootScope.$on("heuristicChange", function(event, args) {
+	// check for heuristic url param
+	if ($state.params.heuristic) {
+	
+		// get current set of heuristics
+		contentService.getData("visualization/heuristics/" + $state.params.heuristic + "/").then(function(data) {
+
+			// set scope
+			$scope.heuristics = data;
+			$scope.currentHeuristic = data[0].vis_type_name;
+
+		});
 		
-		// set scope
-		$scope.heuristics = args.val;
-		$scope.currentHeuristic = args.val[0].vis_type_name;
-		
-	});
+	};
 																																  
 }]);

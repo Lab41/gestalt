@@ -87,9 +87,9 @@ angular.module("bar-chart-directive", [])
 									.duration(transition.time)
 									.attr({
 										class: "label",
-										x: horzOrientation ? gutter * 100 : xScale(data.name),
+										x: horzOrientation ? gutter * 100 : (xScale(data.name) + xScale.rangeBand()/2),
 										y: horzOrientation ? yScale(data.name) + (yScale.rangeBand() / 2) : height,
-										dx: horzOrientation ? 0 : "2.5em",
+										dx: 0,
 										dy: horzOrientation ? "0.3em" : 0
 									})
 									.text(data.name);
@@ -100,9 +100,9 @@ angular.module("bar-chart-directive", [])
 									.append("text")
 									.attr({
 										class: "label",
-										x: horzOrientation ? gutter * 100 : xScale(data.name),
+										x: horzOrientation ? gutter * 100 : (xScale(data.name) + xScale.rangeBand()/2),
 										y: horzOrientation ? yScale(data.name) + (yScale.rangeBand() / 2) : height,
-										dx: horzOrientation ? 0 : "2.5em",
+										dx: 0,
 										dy: horzOrientation ? "0.3em" : 0
 									})
 									.text(data.name);
