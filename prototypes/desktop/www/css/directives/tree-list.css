@@ -1,0 +1,171 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** tree-list directive STYLE ***************************************/
+
+/* tree list directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !tree list
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/***********************/
+/***** !tree list ******/
+/***********************/
+
+tree-list ul,
+tree-list li {
+    
+	list-style: none;
+	list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+}
+
+/* list item */
+tree-list li {
+    
+    border-bottom: 1px;
+    border-bottom-color: currentColor;
+    border-bottom-style: solid;
+    cursor: pointer;
+    padding-bottom: 0.75em;
+    padding-top: 0.75em;
+    position: relative;
+    
+}
+
+/* last list item in each set */
+tree-list ul li:last-of-type {
+    
+    border: 0 none;
+    
+}
+
+/* list link wrap */
+tree-list li div {
+    
+    align-content: center;
+    display: flex;
+    width: 100%;
+    
+}
+
+/* item arrow */
+tree-list .arrow {
+    
+    color: currentColor;
+    cursor: pointer;
+    margin-right: 0.5em;
+    -webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+    -webkit-transition: all ease 250ms;
+    -moz-transition: all ease 250ms;
+    -ms-transition: all ease 250ms;
+    -o-transition: all ease 250ms;
+    transition: all ease 250ms;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+    
+}
+
+/* item count */
+tree-list .count {
+    
+    position: absolute;
+    right: 1em;
+    
+}
+
+/* lowest-level item */
+tree-list .item {
+    
+    padding-left: 2.75em;
+    
+}
+
+/* collapses list */
+tree-list .collapsed ul {
+    
+	display: none;
+    
+}
+
+/* open arrow */
+tree-list li.open > div .arrow {
+    
+    -webkit-transform: rotate(0deg);
+	transform: rotate(0deg);
+    
+}
+
+/* depths of tree branches */
+tree-list .depth-1 ul {
+    
+    margin-top: 1em;
+    
+}
+
+tree-list .depth-2,
+tree-list .depth-3,
+tree-list .depth-4,
+tree-list .depth-5,
+tree-list .depth-6,
+tree-list .depth-7,
+tree-list .depth-8 {
+    
+    border: 0 none;
+    
+}
+
+tree-list .depth-2 {
+    
+    padding-left: 1em;
+    
+}
+
+tree-list .depth-3 {
+    
+    
+    padding-left: 2em;
+    
+}
+
+/* children horizontal lines */
+tree-list .depth-2 div:before,
+tree-list .depth-3 div:before,
+tree-list .depth-4 div:before,
+tree-list .depth-5 div:before,
+tree-list .depth-6 div:before,
+tree-list .depth-7 div:before,
+tree-list .depth-8 div:before {
+    
+    border-top: 1px;
+    border-top-color: currentColor;
+    border-top-style: solid;
+    content: '';
+    left: 0;
+    position: absolute;
+    width: 100%;
+    
+}
+
+tree-list .depth-2 div:before {
+    
+    top: -0.2em;
+    
+}
+
+/* lowest-level item */
+tree-list .item:before {
+    
+    border: 0 none;
+    
+}

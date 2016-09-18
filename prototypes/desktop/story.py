@@ -122,22 +122,27 @@ class persona_panel_stories:
 		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
 		left join (
 		select sti.*,
+		vt.url_name as vis_type_name,
 		array_agg(row_to_json(c)) as controls
 		from """ + helper.table_prefix + """story_idea sti
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = sti.vis_type_id
 		left join (
 		select sac.*,
 		case
 		when sac.story_action_id = 1 then g.name
 		when sac.story_action_id = 2 then v.name
-		else f.name
+		when sac.story_action_id = 3 then f.name
+		when sac.story_action_id = 4 then h.name
 		end
 		as name
 		from """ + helper.table_prefix + """story_action_control sac
 		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
 		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
 		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
+		left join """ + helper.table_prefix + """heuristic h on h.id = sac.name_id
 		) c on c.story_action_id = sti.action_id
-		group by sti.id
+		group by sti.id,
+		vt.url_name
 		) si on si.story_id = pps.story_id
 		where pps.persona_id = """ + persona_id + """ and pps.panel_id = """ + panel_id + """
 		group by pps.id,

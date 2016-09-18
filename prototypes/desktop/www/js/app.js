@@ -1,6 +1,7 @@
 var app = angular.module("app", [
     "ui.router",
 	"angularMoment",
+	"smoothScroll",
     "desktop.controllers",
     "desktop.directives",
     "desktop.services"
@@ -125,7 +126,21 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 				controller: "vizCtrl"
 			}
     	}
-    });
+    })
+	
+	// heuristics visual
+    .state("app.heuristic", {
+    	url: "/{panel}/{visual}/{heuristic}",
+    	views: {
+    		"panel": {
+				templateUrl: "templates/visualizations/visualization-standard.html",
+				controller: "vizCtrl"
+			},
+			"slide": {
+                templateUrl: "templates/slide-panel.html"
+            }
+    	}
+    })
 
     $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
 

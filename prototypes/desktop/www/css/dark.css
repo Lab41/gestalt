@@ -16,6 +16,7 @@
 /* --- !group nodes
 /* --- !tile grid map
 /* --- !bar chart
+/* --- !card layout
 
 /******************************* !IMPORTS *******************************/
 
@@ -192,4 +193,22 @@ bar-chart rect {
 	
 	fill: #444b5a;
 	
+}
+
+/*************************/
+/***** !card layout ******/
+/*************************/
+
+/* poster */
+card-layout figure > div {
+    
+    background: rgb(0,0,0);
+    
+}
+
+/* poster graphic */
+card-layout figure > div svg {
+    
+    fill: #444b5a;
+    
 }

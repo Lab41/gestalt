@@ -11,6 +11,7 @@
 /* --- !item
 /* --- !menu
 /* --- !login
+/* --- !heuristic
 
 /******************************* !IMPORTS *******************************/
 @import url("reset.css");
@@ -40,14 +41,14 @@ a {
 	
 }
 
-h1, h2 {
+h1, h2, h3 {
 	
 	font-family: "Source Sans Pro Light", sans-serif;
 	font-weight: 300;
 	
 }
 
-h2 {
+h2, h3 {
     
     font-size: 1.5em;
     max-width: 500px;
@@ -270,7 +271,7 @@ button:focus {
     
     cursor: pointer;
     padding: 2em;
-    width: 42%;
+    width: calc(50% - 4em);
     
 }
 
@@ -279,4 +280,128 @@ button:focus {
     font-weight: 700;
     text-transform: capitalize;
     
+}
+
+/***********************/
+/***** !heuristic ******/
+/***********************/
+
+/* section wrap */
+.heuristic {
+
+	margin-bottom: 2em;
+	
+}
+
+/* vis title */
+.heuristic h1 {
+	
+	font-weight: 700;
+	margin-bottom: 0;
+	margin-top: 1em;
+	text-transform: capitalize;
+	
+}
+
+/* vis graphic/code/data wrap */
+.heuristic figure,
+.heuristic figcaption {
+	
+	display: flex;
+	
+}
+
+/* vis graphic/code/data */
+.heuristic figure > div,
+.heuristic figcaption > div {
+	
+	padding: 1em;
+	width: calc(100% / 3);
+
+}
+
+/* viz guidance headline */
+.heuristic figure div p,
+.heuristic figcaption div p{
+    
+    font-size: 0.8em;
+    font-weight: 700;
+    position: relative;
+    text-transform: uppercase;
+    
+}
+
+/* horizontal line */
+.heuristic figure div p:after,
+.heuristic figcaption div p:after{
+    
+    background: currentColor;
+    content: "";
+    height: 1px;
+    position: absolute;
+    top: -1em;
+    left: 0;
+    width: 100%;
+    
+}
+
+/* code legend */
+.heuristic .code-legend {
+    
+    font-weight: 400;
+    margin-left: 2em;
+    text-transform: capitalize;
+    
+}
+
+.heuristic .code-legend span {
+    
+    position: relative;
+    
+}
+
+/* code legend item */
+.heuristic .code-legend span:before {
+    
+    content: "";
+    height: 1em;
+    left: -1.2em;
+    position: absolute;
+    width: 1em;
+    
+}
+
+/* code block */
+.heuristic pre {
+    
+	font-size: 0.8em;
+    max-height: 200px;
+    overflow-y: scroll;
+    padding: 1em;
+    
+}
+
+.heuristic pre code span {
+    
+    display: inline-block;
+    
+}
+
+.heuristic pre code span:not(:first-child) {
+    
+    margin-left: 1em;
+    
+}
+
+.heuristic .code-legend span {
+    
+    margin-left: 2em;
+    
+}
+
+/* bold citation */
+.heuristic small span {
+	
+	font-weight: 700;
+	
 }

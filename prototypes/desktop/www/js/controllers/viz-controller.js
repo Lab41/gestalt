@@ -1,11 +1,11 @@
 angular.module("viz-controller", [])
 
 .controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", function($scope, contentService, $state, $rootScope) {
-	        
+    	        
 	// data objects
 	$scope.nodes;
 	$scope.nodeGroups;
-	$scope.dynamicDirectives;
+	$scope.heuristics;
     
     // country nodes
 	contentService.getData("visualization/cdis/").then(function(data) {
@@ -23,14 +23,18 @@ angular.module("viz-controller", [])
 		
 	});
 	
-	$scope.dummyData = [{"name": "category1", "value": 5}, {"name": "category2", "value": 2}, {"name": "category3", "value": 1}];
+	// check for heuristic url param
+	if ($state.params.heuristic) {
 	
-	// dynamic directives
-    contentService.getData("visualization/angular/directives/1/").then(function(data) {
+		// get current set of heuristics
+		contentService.getData("visualization/heuristics/" + $state.params.heuristic + "/").then(function(data) {
+
+			// set scope
+			$scope.heuristics = data;
+			$scope.currentHeuristic = data[0].vis_type_name;
+
+		});
 		
-		// set scope
-		$scope.dynamicDirectives = data;
-		
-	});
-    
+	};
+																																  
 }]);

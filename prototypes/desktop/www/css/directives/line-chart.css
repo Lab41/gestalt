@@ -1,0 +1,46 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** line-chart directive STYLE ***************************************/
+
+/* line chart directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !line chart
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/************************/
+/***** !line chart ******/
+/************************/
+
+/* line */
+line-chart .line path {
+    
+    fill: transparent;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    
+}
+
+/* label */
+line-chart .line text {
+    
+    fill: currentColor;
+    
+}
+
+/* point */
+line-chart .line circle {
+	
+	fill: currentColor;
+	
+}

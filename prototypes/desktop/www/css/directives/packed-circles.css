@@ -1,0 +1,39 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** packed circles directive STYLE ***************************************/
+
+/* packed circles directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* --- !packed circles
+/* !CUSTOM
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/****************************/
+/***** !packed circles ******/
+/****************************/
+
+/* circles */
+packed-circles .node {
+    
+    cursor: pointer;
+    fill: transparent;
+    pointer-events: all;
+    stroke: currentColor;
+    
+}
+
+/* labels */
+packed-circles .label {
+    
+    fill: currentColor;
+    pointer-events: none;
+    text-anchor: middle;
+    
+}

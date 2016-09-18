@@ -14,6 +14,8 @@
 /* --- !group nodes
 /* --- !tile grid map
 /* --- !bar chart
+/* --- !card layout
+/* --- !heuristic
 
 /******************************* !IMPORTS *******************************/
 
@@ -190,4 +192,59 @@ bar-chart rect {
 	
 	fill: #667080;
 	
+}
+
+/*************************/
+/***** !card layout ******/
+/*************************/
+
+/* poster */
+card-layout figure > div {
+    
+    background: rgb(255,255,255);
+    
+}
+
+/* poster graphic */
+card-layout figure > div svg {
+    
+    fill: #667080;
+    
+}
+
+/***********************/
+/***** !heuristic ******/
+/***********************/
+
+/* temp */
+.heuristic pre {
+    
+    background: rgb(30, 30, 30);
+    color: rgb(150,150,150);
+    
+}
+
+/* temp */
+.heuristic pre .required {
+    
+    color: rgb(0, 216, 255);
+    
+}
+
+.heuristic .code-legend span.required:before {
+    
+    background: rgb(0, 216, 255);
+    
+}
+
+.heuristic pre .optional {
+    
+    color: rgb(154, 152, 116);
+       
+}
+
+.heuristic .code-legend span.optional:before {
+    
+    background: rgb(154, 152, 116);
+       
 }

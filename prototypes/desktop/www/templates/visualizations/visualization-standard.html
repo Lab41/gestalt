@@ -1,0 +1,77 @@
+<!-- VIS TYPE -->
+<h3 style="text-transform: capitalize;">{{ currentHeuristic }}
+
+	<!-- CLOSE -->
+	<span ui-sref="app.panel.visual({ panel: 'visual-form', visual: 'tbd'})" style="font-size: 0.8em; margin-left: 1em; cursor: pointer;">
+		<i class="ion-close-round"></i>
+	</span>
+	
+</h3>
+
+<section ng-repeat="vis in heuristics" class="heuristic">
+	
+	<!-- TITLE -->
+	<h1>{{ vis.name }}</h1>
+	
+	<figure>
+	
+		<!-- VISUALIZATION -->
+		<div>
+			<visualization-standard directive-name="vis.directive" directive-data="vis.data" directive-attributes="vis.attrs"></visualization-standard>
+		</div>
+		
+		<!-- CODE -->
+		<div>
+			<p>code
+				<span class="code-legend">
+					<span class="required">required</span>
+					<span class="optional">optional</span>
+				</span>
+			</p>
+			<pre>
+				<code>&lt;{{ vis.directive }} <span ng-repeat="attr in vis.attrs" ng-class="attr.is_required ? 'required' : 'optional'">{{ attr.attr_name }}='{{ attr.default_value }}'</span>&gt;&lt;&sol;{{ vis.directive }}&gt;</code>
+			</pre>
+		</div>
+
+		<!-- DATA -->
+		<div>
+			<p>sample data</p>
+			<pre>
+				<code>{{ vis.data | json }}</code>
+			</pre>
+			<small>Note: <span>vis_id</span> and <span>id</span> are not required.</small>
+		</div>
+		
+	</figure>
+	
+	<figcaption>
+        
+		<!-- DO -->
+		<div ng-if="vis.dos.length !== null">
+			<p>do</p>
+			<ul>
+				<li ng-repeat="text in vis.dos">{{ text.do_value }}</li>
+			</ul>
+		</div>
+		
+		<!-- DON'T -->
+		<div ng-if="vis.donts.length !== null">
+			<p>don't</p>
+			<ul>
+				<li ng-repeat="text in vis.donts">{{ text.dont_value }}</li>
+			</ul>
+		</div>
+		
+		<!-- ALTERNATIVES -->
+		<div ng-if="vis.alts.length !== null">
+			<p>alternatives</p>
+			<ul>
+				<a ng-repeat="alt in vis.alts" ui-sref="app.panel.visual({ panel: 'visual-form', visual: alt.alt_type})">
+					<li>{{ alt.alt_name }}</li>
+				</a>
+			</ul>
+		</div>
+
+	</figcaption>
+
+</section>

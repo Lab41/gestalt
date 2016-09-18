@@ -1,0 +1,46 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** dendrogram directive STYLE ***************************************/
+
+/* dendrogram directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* --- !dendrogram
+/* !CUSTOM
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/************************/
+/***** !dendrogram ******/
+/************************/
+
+/* link */
+dendrogram .link {
+    
+    fill: transparent;
+    stroke: currentColor;
+    opacity: 0.25;
+    
+}
+
+/* label name */
+dendrogram .label-name {
+    
+    fill: currentColor;
+    font-size: 1.1em;
+    
+}
+
+/* label type */
+dendrogram .label-type {
+    
+    fill: currentColor;
+    font-size: 0.7em;
+    font-weight: 700;
+    
+}
