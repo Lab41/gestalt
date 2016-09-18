@@ -200,43 +200,38 @@ class heuristics:
         # execute query
         self.cursor.execute("""
 		-- dummy data
-        with data as (
+		with data_array as (
 		select dd.vis_id,
-		array_agg(row_to_json((
-		select r
-		from (select dd.*) r
-		))) as data
+		array_agg(row_to_json((select r from (select dd.*) r))) as data
 		from """ + helper.table_prefix + """vis_dummy_data dd
 		group by dd.vis_id
 		),
 		-- attributes
-		attrs as (
+		attrs_array as (
 		select vca.vis_id,
-		array_agg(row_to_json((
-		select r 
-		from (select vca.*) r 
-		))) as attrs
-		from """ + helper.table_prefix + """vis_code_attr vca
+		array_agg(row_to_json((select r from (select vca.*, va.name as attr_name, va.value as default_value) r ))) as attrs
+		from gestalt_vis_code_attr vca
+		left join gestalt_vis_attr va on va.id = vca.attr_id
 		group by vca.vis_id
 		),
 		-- do guidance
-		dos as (
+		dos_array as (
 		select doa.vis_directive_id,
 		array_agg(row_to_json((
 		select r 
 		from (select doa.*) r 
 		))) as dos
-		from gestalt_vis_do_attr doa
+		from """ + helper.table_prefix + """vis_do_attr doa
 		group by doa.vis_directive_id
 		),
 		-- dont guidance
-		donts as (
+		donts_array as (
 		select donta.vis_directive_id,
 		array_agg(row_to_json((
 		select r 
 		from (select donta.*) r 
 		))) as donts
-		from gestalt_vis_dont_attr donta
+		from """ + helper.table_prefix + """vis_dont_attr donta
 		group by donta.vis_directive_id
 		)
 		select v.*,
@@ -249,10 +244,59 @@ class heuristics:
 		from """ + helper.table_prefix + """vis v
 		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
 		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
-		left join data dd on dd.vis_id = v.id
-		left join attrs vca on vca.vis_id = v.id
-		left join dos doa on doa.vis_directive_id = v.vis_directive_id
-		left join donts donta on donta.vis_directive_id = v.vis_directive_id
+		left join data_array dd on dd.vis_id = v.id
+		left join attrs_array vca on vca.vis_id = v.id
+		left join dos_array doa on doa.vis_directive_id = v.vis_directive_id
+		left join donts_array donta on donta.vis_directive_id = v.vis_directive_id
+		where vt.name = 'comparison';-- dummy data
+		with data_array as (
+		select dd.vis_id,
+		array_agg(row_to_json((select r from (select dd.*) r))) as data
+		from """ + helper.table_prefix + """vis_dummy_data dd
+		group by dd.vis_id
+		),
+		-- attributes
+		attrs_array as (
+		select vca.vis_id,
+		array_agg(row_to_json((select r from (select vca.*, va.name as attr_name, va.value as default_value) r ))) as attrs
+		from gestalt_vis_code_attr vca
+		left join gestalt_vis_attr va on va.id = vca.attr_id
+		group by vca.vis_id
+		),
+		-- do guidance
+		dos_array as (
+		select doa.vis_directive_id,
+		array_agg(row_to_json((
+		select r 
+		from (select doa.*) r 
+		))) as dos
+		from """ + helper.table_prefix + """vis_do_attr doa
+		group by doa.vis_directive_id
+		),
+		-- dont guidance
+		donts_array as (
+		select donta.vis_directive_id,
+		array_agg(row_to_json((
+		select r 
+		from (select donta.*) r 
+		))) as donts
+		from """ + helper.table_prefix + """vis_dont_attr donta
+		group by donta.vis_directive_id
+		)
+		select v.*,
+		vt.name as vis_type_name,
+		vd.name as directive,
+		dd.data,
+		vca.attrs,
+		doa.dos,
+		donta.donts
+		from """ + helper.table_prefix + """vis v
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
+		left join data_array dd on dd.vis_id = v.id
+		left join attrs_array vca on vca.vis_id = v.id
+		left join dos_array doa on doa.vis_directive_id = v.vis_directive_id
+		left join donts_array donta on donta.vis_directive_id = v.vis_directive_id
 		where vt.name = '""" + vistype_name + """';
         """)
         # obtain the data

@@ -7,37 +7,34 @@ angular.module("visualization-standard-directive", [])
 		scope: {
 			directiveName: "=",
 			directiveData: "=",
-			orientation: "=",
-			canvasWidth: "=",
-			canvasHeight: "="
+			directiveAttributes: "="
 		},
         link: function(scope, element, attrs) {
+			
+			var attrs = scope.directiveAttributes;
 			
 			// add directive
 			var customDirective = angular.element("<" + scope.directiveName + "></" + scope.directiveName + ">");
 			
+			// check for attributes
+			if (attrs) {
+				
+				angular.forEach(attrs, function(value, key) {
+					
+					// check value
+					if (value.attr_value) {
+						
+						// add attribute
+						customDirective.attr(value.attr_name, value.attr_value);
+						
+					};
+					
+				});
+				
+			};
+			
 			// add attributes
 			customDirective.attr("viz-data", "directiveData");
-			
-			// TODO abstract attributes
-			
-			if (scope.orientation) {
-				
-				customDirective.attr("orientation", scope.orientation);
-				
-			};
-			
-			if (scope.canvasWidth) {
-				
-				customDirective.attr("canvas-width", scope.canvasWidth);
-				
-			};
-			
-			if (scope.canvasHeight) {
-				
-				customDirective.attr("canvas-height", scope.canvasHeight);
-				
-			};
 			
 			// compile the custom directive
 			$compile(customDirective)(scope);
