@@ -398,3 +398,10 @@ button:focus {
     margin-left: 2em;
     
 }
+
+/* bold citation */
+.heuristic small span {
+	
+	font-weight: 700;
+	
+}

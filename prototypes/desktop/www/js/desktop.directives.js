@@ -9,5 +9,9 @@ var app = angular.module("desktop.directives", [
 	"dynamic-directive-directive",
     "heatmap-grid-directive",
     "visualization-standard-directive",
-    "card-layout-directive"
+    "card-layout-directive",
+	"dendrogram-directive",
+	"packed-circles-directive",
+	"tree-list-directive",
+	"line-chart-directive"
 ]);

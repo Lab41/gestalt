@@ -45,7 +45,7 @@ angular.module("story-controls-directive", [])
 							
                             panel: $state.params.panel,
 							visual: $state.params.visual,
-							heuristic: data[0].vis_type_name
+							heuristic: data[0].vis_type_urlname
 							
 						});
 

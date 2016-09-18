@@ -1,5 +1,12 @@
 <!-- VIS TYPE -->
-<h3 style="text-transform: capitalize;">{{ currentHeuristic }}</h3>
+<h3 style="text-transform: capitalize;">{{ currentHeuristic }}
+
+	<!-- CLOSE -->
+	<span ui-sref="app.panel.visual({ panel: 'visual-form', visual: 'tbd'})" style="font-size: 0.8em; margin-left: 1em; cursor: pointer;">
+		<i class="ion-close-round"></i>
+	</span>
+	
+</h3>
 
 <section ng-repeat="vis in heuristics" class="heuristic">
 	
@@ -32,6 +39,7 @@
 			<pre>
 				<code>{{ vis.data | json }}</code>
 			</pre>
+			<small>Note: <span>vis_id</span> and <span>id</span> are not required.</small>
 		</div>
 		
 	</figure>
@@ -51,6 +59,16 @@
 			<p>don't</p>
 			<ul>
 				<li ng-repeat="text in vis.donts">{{ text.dont_value }}</li>
+			</ul>
+		</div>
+		
+		<!-- ALTERNATIVES -->
+		<div ng-if="vis.alts.length !== null">
+			<p>alternatives</p>
+			<ul>
+				<a ng-repeat="alt in vis.alts" ui-sref="app.panel.visual({ panel: 'visual-form', visual: alt.alt_type})">
+					<li>{{ alt.alt_name }}</li>
+				</a>
 			</ul>
 		</div>
 
