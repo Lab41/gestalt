@@ -70,8 +70,8 @@ INSERT INTO gestalt_vis_directive (name) VALUES ('line-chart');
 
 CREATE TABLE gestalt_vis (
     id SERIAL PRIMARY KEY,
-    vis_type_id INTEGER NOT NULL,
-    vis_directive_id INTEGER NOT NULL,
+    vis_type_id INTEGER REFERENCES gestalt_vis_type(id),
+    vis_directive_id INTEGER REFERENCES gestalt_vis_directive(id),
     name TEXT NOT NULL CHECK (name <> ''),
     max_limit INTEGER NOT NULL,
     UNIQUE (name)
@@ -166,7 +166,7 @@ INSERT INTO gestalt_vis_code_attr (vis_id) VALUES
  */
 
 CREATE TABLE gestalt_vis_do_attr (
-    vis_id INTEGER PRIMARY KEY,
+    vis_id INTEGER REFERENCES gestalt_vis(id) PRIMARY KEY,
     do_value TEXT NOT NULL CHECK (do_value <> ''),
     UNIQUE (vis_id, do_value)
 );
@@ -203,7 +203,7 @@ INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
  */
 
 CREATE TABLE gestalt_vis_dont_attr (
-    vis_id INTEGER PRIMARY KEY,
+    vis_id INTEGER REFERENCES gestalt_vis(id) PRIMARY KEY,
     dont_value TEXT NOT NULL CHECK (dont_value <> ''),
     UNIQUE (vis_id, dont_value)
 );
@@ -239,8 +239,8 @@ INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
  */
 
 CREATE TABLE gestalt_vis_alt_attr (
-    vis_id INTEGER PRIMARY KEY,
-    alt_vis_id INTEGER NOT NULL,
+    vis_id INTEGER REFERENCES gestalt_vis(id) PRIMARY KEY,
+    alt_vis_id INTEGER REFERENCES gestalt_vis(id) ,
     UNIQUE (vis_id, alt_vis_id)
 );  
 

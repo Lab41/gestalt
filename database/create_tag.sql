@@ -38,8 +38,8 @@ INSERT INTO gestalt_tag (name)
  */
 
 CREATE TABLE gestalt_story_tag (
-    story_id INTEGER,
-    tag_id INTEGER,
+    story_id INTEGER REFERENCES gestalt_story(id),
+    tag_id INTEGER REFERENCES gestalt_tag(id),
     PRIMARY KEY (story_id, tag_id)
 );
 
@@ -84,8 +84,8 @@ INSERT INTO gestalt_story_tag (story_id, tag_id) VALUES (14, 9);
  */
 
 CREATE TABLE gestalt_panel_tag (
-    panel_id INTEGER,
-    tag_id INTEGER,
+    panel_id INTEGER REFERENCES gestalt_panel(id),
+    tag_id INTEGER REFERENCES gestalt_tag(id),
     PRIMARY KEY (panel_id, tag_id)
 );
 
@@ -108,8 +108,8 @@ SELECT DISTINCT pcs.panel_id, st.tag_id
  */
 
 CREATE TABLE gestalt_workspace_tag(
-    workspace_id INTEGER,
-    tag_id INTEGER,
+    workspace_id INTEGER REFERENCES gestalt_workspace(id),
+    tag_id INTEGER REFERENCES gestalt_tag(id),
     PRIMARY KEY (workspace_id, tag_id)
 );
 

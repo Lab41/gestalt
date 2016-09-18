@@ -12,8 +12,8 @@
 
 CREATE TABLE gestalt_workspace_panel (
     id SERIAL PRIMARY KEY,
-    workspace_id INTEGER NOT NULL,
-    panel_id INTEGER NOT NULL,
+    workspace_id INTEGER REFERENCES gestalt_workspace(id),
+    panel_id INTEGER REFERENCES gestalt_panel(id),
     is_default BOOLEAN DEFAULT FALSE,
     UNIQUE (workspace_id, panel_id)
 );
@@ -73,8 +73,8 @@ INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
 
 CREATE TABLE gestalt_wp_story ( 
     id SERIAL PRIMARY KEY,
-    wp_id INTEGER NOT NULL,
-    story_id INTEGER NOT NULL,
+    wp_id INTEGER REFERENCES gestalt_workspace_panel(id),
+    story_id INTEGER REFERENCES gestalt_story(id),
     is_default BOOLEAN DEFAULT FALSE,
     UNIQUE (wp_id, story_id)
 );
@@ -129,8 +129,8 @@ INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
 
 CREATE TABLE gestalt_story_vis ( 
     id SERIAL PRIMARY KEY,
-    story_id INTEGER NOT NULL,
-    vis_id INTEGER NOT NULL,
+    story_id INTEGER REFERENCES gestalt_story(id),
+    vis_id INTEGER REFERENCES gestalt_vis(id),
     order_num INTEGER DEFAULT 1,
     UNIQUE (story_id, vis_id)
 );

@@ -39,8 +39,8 @@ INSERT INTO gestalt_workspace_name (name) VALUES
 
 CREATE TABLE gestalt_workspace (
     id SERIAL PRIMARY KEY,
-    persona_id INTEGER NOT NULL,
-    workspace_name_id INTEGER NOT NULL,
+    persona_id INTEGER REFERENCES gestalt_persona(id),
+    workspace_name_id INTEGER REFERENCES gestalt_workspace_name(id),
     url_name TEXT UNIQUE NOT NULL CHECK (url_name <> ''),
     is_default BOOLEAN DEFAULT FALSE,
     UNIQUE (workspace_name_id, persona_id, url_name)

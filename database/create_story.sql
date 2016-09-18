@@ -27,56 +27,6 @@ INSERT INTO gestalt_story (name, url_name) VALUES
 
 /* 
    ------------------------------------------------------------------------- 
-   gestalt_story_idea
-   This table lists the ideas that make up a story. An idea can only fall
-   under one story. An idea can only perform one collective actions. For 
-   this reason, gestalt_story_idea table contains information about the 
-   ideas as well as their respective story and action.
-   * id: story idea id
-   * title: title of the idea
-   * subtitle: subtitle of the idea; it can be NULL
-   * description: description of the idea
-   * story_id: story id in gestalt_story table
-   * action_id: action id in gestalt_story_action table
-   -------------------------------------------------------------------------
- */
-
-CREATE TABLE gestalt_idea (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL CHECK (title <> ''),
-    subtitle TEXT,
-    description TEXT, 
-    story_id INTEGER NOT NULL, 
-    action_id INTEGER NOT NULL,
-    UNIQUE (title, story_id, action_id)
-);
-
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
-    ('Neque lorem cursus curabitur vulputate quis iaculis', 
-     'grouping', 
-     'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',
-      3,
-      1);
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
-    ('Etiam felis nostra', 'degree/centrality', 
-     'Velit risus.Magna justo.Curae etiam scelerisque per.Metus ipsum.Dolor morbi neque vel velit fermentum.',
-      3,
-      2);
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
-    ('Purus nulla lectus', 
-     'connectedness', 
-     'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
-      3,
-      3);
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
-    ('Comparison', 
-     'comparison', 
-     'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
-      2,
-      4);
-
-/* 
-   ------------------------------------------------------------------------- 
    gestalt_action_group
    This table lists the action name of the group. An idea can only perform 
    one collective set of actions. Action name refers to the name of a list 
@@ -113,7 +63,7 @@ INSERT INTO gestalt_action_name (name) VALUES
 
 CREATE TABLE gestalt_action (
     id SERIAL PRIMARY KEY,
-    action_group_id INTEGER NOT NULL,
+    action_group_id INTEGER REFERENCES gestalt_action(id),
     name TEXT NOT NULL CHECK (name <> ''),
     UNIQUE (action_name_id, name)
 );
@@ -142,3 +92,52 @@ INSERT INTO gestalt_action (action_name_id, name) VALUES
     (3, 'unique targets');
  
 
+/* 
+   ------------------------------------------------------------------------- 
+   gestalt_story_idea
+   This table lists the ideas that make up a story. An idea can only fall
+   under one story. An idea can only perform one collective actions. For 
+   this reason, gestalt_story_idea table contains information about the 
+   ideas as well as their respective story and action.
+   * id: story idea id
+   * title: title of the idea
+   * subtitle: subtitle of the idea; it can be NULL
+   * description: description of the idea
+   * story_id: story id in gestalt_story table
+   * action_id: action id in gestalt_story_action table
+   -------------------------------------------------------------------------
+ */
+
+CREATE TABLE gestalt_idea (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL CHECK (title <> ''),
+    subtitle TEXT,
+    description TEXT, 
+    story_id INTEGER REFERENCES gestalt_story(id), 
+    action_id INTEGER REFERENCES gestalt_action(id),
+    UNIQUE (title, story_id, action_id)
+);
+
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Neque lorem cursus curabitur vulputate quis iaculis', 
+     'grouping', 
+     'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',
+      3,
+      1);
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Etiam felis nostra', 'degree/centrality', 
+     'Velit risus.Magna justo.Curae etiam scelerisque per.Metus ipsum.Dolor morbi neque vel velit fermentum.',
+      3,
+      2);
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Purus nulla lectus', 
+     'connectedness', 
+     'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
+      3,
+      3);
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+    ('Comparison', 
+     'comparison', 
+     'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
+      2,
+      4);
