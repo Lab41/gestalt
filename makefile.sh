@@ -51,7 +51,7 @@ function install_homebrew {
     which -s brew
     if [[ $? != 0 ]]; then
         echo ">> Install homebrew"
-        sudo ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     else
         echo ">> Update homebrew"
         brew update
