@@ -51,10 +51,10 @@ function install_homebrew {
     which -s brew
     if [[ $? != 0 ]]; then
         echo ">> Install homebrew"
-		sudo ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	else
-		echo ">> Update homebrew"
-		brew update
+        sudo ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    else
+        echo ">> Update homebrew"
+        brew update
     fi
 }
 
@@ -215,11 +215,17 @@ function install_postgresql {
 function populate_gestalt_db {
     if psql -lqt | cut -d \| -f 1 | grep -qw gestalt; then
         echo ">> Populate gestalt database"
-        psql -d gestalt -U gestalt_user -f ./database/create_persona.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_tag.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_story.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_panel.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_workspace.sql
+        # temporary hack
+        psql -d gestalt -U gestalt_user -f ./database/create_all.sql
+        psql -d gestalt -U gestalt_user -f ~/gestalt_econ_data.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_persona.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_workspace.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_panel.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_story.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_vis.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_connectivity.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_tag.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_econ_data.sql
     else
         echo ">> Gestalt database does not exist. \
                  Please run 'createdb gestalt' or install_postgres first. EXITING!"
