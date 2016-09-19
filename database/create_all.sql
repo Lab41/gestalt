@@ -1,3 +1,40 @@
+drop table if exists gestalt_vis_directive; 
+CREATE TABLE gestalt_vis_directive (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL CHECK (name <> ''),
+    UNIQUE (name)
+
+);
+
+INSERT INTO gestalt_vis_directive (name) VALUES ('bar-chart');
+INSERT INTO gestalt_vis_directive (name) VALUES ('group-nodes');
+INSERT INTO gestalt_vis_directive (name) VALUES ('visualization-standard');
+INSERT INTO gestalt_vis_directive (name) VALUES ('tbd');
+INSERT INTO gestalt_vis_directive (name) VALUES ('line-chart');
+select * from gestalt_vis_directive;
+
+drop table if exists gestalt_vis; 
+CREATE TABLE gestalt_vis (
+    id SERIAL PRIMARY KEY,
+    vis_type_id INTEGER,
+    vis_directive_id INTEGER REFERENCES gestalt_vis_directive(id),
+    name TEXT NOT NULL CHECK (name <> ''),
+    max_limit INTEGER NOT NULL,
+    UNIQUE (name)
+);
+
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (1, 1, 'bar chart', 100);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (5, 2, 'group nodes', 500);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (2, 4, 'tbd', 500);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (2, 5, 'spark line', 500);
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+    (1, 1, 'column chart', 100);
+select * from gestalt_vis;
+
 drop table if exists gestalt_persona; create table gestalt_persona (id serial primary key, name text, description text);
  insert into gestalt_persona (name,description) values ('general','Use for a high-level overview with information meant to be understood by anyone.');
  insert into gestalt_persona (name,description) values ('corporate','Use for a high-level overview with information curated for helping you make high-level decisions.');
