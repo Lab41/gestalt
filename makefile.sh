@@ -68,6 +68,14 @@ function install_python {
     fi
 }
 
+function install_pip {
+    which -s pip
+    if [[ $? != 0 ]]; then 
+        echo ">> Install pip"
+        sudo easy_install pip
+    fi
+}
+
 function install_virtualenv {
     echo ">> Install virtualenv"
     pip install virtualenv 
@@ -296,6 +304,8 @@ function setup_db {
 function build_all {
     setup_bash_profile
     install_homebrew
+    install_python
+    install_pip
     install_virtualenv
     activate_virtualenv
     install_global_dependencies
