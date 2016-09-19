@@ -1,0 +1,37 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** adjacent-matrix directive STYLE ***************************************/
+
+/* adjacent matrix directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !adjacent matrix
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/*****************************/
+/***** !adjacent matrix ******/
+/*****************************/
+
+/* background */
+adjacent-matrix svg > rect:first-child {
+    
+    fill: currentColor;
+    opacity: 0.1;
+    
+}
+
+/* lines */
+adjacent-matrix line {
+    
+    stroke: currentColor;
+    
+}

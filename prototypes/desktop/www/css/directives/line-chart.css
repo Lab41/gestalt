@@ -25,7 +25,6 @@
 line-chart .line path {
     
     fill: transparent;
-    stroke: currentColor;
     stroke-linecap: round;
     stroke-linejoin: round;
     
@@ -36,11 +35,4 @@ line-chart .line text {
     
     fill: currentColor;
     
-}
-
-/* point */
-line-chart .line circle {
-	
-	fill: currentColor;
-	
 }

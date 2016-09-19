@@ -1,0 +1,45 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** node-link directive STYLE ***************************************/
+
+/* node link directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !node link
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/***********************/
+/***** !node link ******/
+/***********************/
+
+/* node */
+node-link circle {
+    
+    fill: currentColor;
+    
+}
+
+/* link */
+node-link line {
+    
+    fill: transparent;
+    opacity: 0.8;
+    stroke: currentColor;
+    
+}
+
+/* label */
+node-link text {
+    
+    fill: currentColor;
+    
+}

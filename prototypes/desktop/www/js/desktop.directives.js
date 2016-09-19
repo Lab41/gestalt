@@ -13,5 +13,8 @@ var app = angular.module("desktop.directives", [
 	"dendrogram-directive",
 	"packed-circles-directive",
 	"tree-list-directive",
-	"line-chart-directive"
+	"line-chart-directive",
+    "pie-chart-directive",
+    "node-link-directive",
+    "adjacent-matrix-directive"
 ]);
