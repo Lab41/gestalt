@@ -78,7 +78,7 @@ function install_pip {
 
 function install_virtualenv {
     echo ">> Install virtualenv"
-    pip install virtualenv 
+    sudo pip install virtualenv 
 
     echo ">> Create a python 2.x virtualenv for gestalt called gestalt_virtualenv"
     virtualenv gestalt_virtualenv --distribute
