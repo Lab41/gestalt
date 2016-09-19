@@ -8,15 +8,45 @@ import helper
 
 urls = (
     
-    # rest API backend endpoints
+    # 0.0.0.0:8000/api/visualization/getDirectiveName/#
+    #   where # == vis.id
+    "getDirectiveNameByVis/(\d+)", "getDirectiveNameByVis",
+
+
+
     "flows/unique_targets/(.*)/", "flows",
     "story/metric/(\d+)/", "metrics",
-    "angular/directives/(.*)/", "ng_directives",
     "countries/groups/", "node_groups",
     "geojson/(.*)/", "geojson",
     "(.*)/", "nodes"
     
 )
+
+class getDirectiveNameByVis:
+    """ Get the directive name for the vis so that the front-end can call
+        the directive to build the vis.
+    input:
+        * vis.id
+    output:
+        * vis.directive_name
+    """
+    def GET(self, vis_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT vis_directive.name
+            FROM gestalt_vis AS vis
+            RIGHT JOIN gestalt_vis_directive AS vis_directive 
+            ON vis.vis_directive_id = vis_directive.id
+            WHERE vis.id = """ + vis_id + """;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
 
 class flows:
     def GET(self, source_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
@@ -32,11 +62,11 @@ class flows:
         cyt.iso2code as target,
         cy.id as source_id,
         count(cdis.target_id) as value
-        from """ + helper.table_prefix + """cdis cdis
-        left join """ + helper.table_prefix + """geography_name gn on gn.id = cdis.source_id
-        left join """ + helper.table_prefix + """geography_name gnt on gnt.id = cdis.target_id
-        left join """ + helper.table_prefix + """country cy on cy.id = cdis.source_id
-        left join """ + helper.table_prefix + """country cyt on cyt.id = cdis.target_id
+        from gestalt_cdis cdis
+        left join gestalt_geography_name gn on gn.id = cdis.source_id
+        left join geography_name gnt on gnt.id = cdis.target_id
+        left join gestalt_country cy on cy.id = cdis.source_id
+        left join gestalt_country cyt on cyt.id = cdis.target_id
         where source_id = """ + source_id + """ and cyt.iso2code is not null
         group by gn.name,
         cy.iso2code,
@@ -50,6 +80,11 @@ class flows:
         return json.dumps(data)
     
 class nodes:
+    # TODO: refactor
+    # 1. combine name from geography_name into gestalt_country
+    # 2. create a table called gestalt_region to differentiate the different regions
+    # 3. create a table called gestalt_region_country to know which country falls under what region
+    # 4. 
     def GET(self, table, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
@@ -57,17 +92,14 @@ class nodes:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-        select distinct on (gn.name) gn.name,
-        cy.iso2code as iso,
-        cy.id,
-        count(distinct cdis.target_id) as count
-        from """ + helper.table_prefix + """country cy 
-        left join """ + helper.table_prefix + """geography_name gn on gn.id = cy.name_id
-        left join """ + helper.table_prefix + """geography geo on geo.name_id = cy.name_id
-        left join """ + helper.table_prefix + """cdis cdis on source_id = cy.id
-        group by gn.name,
-        cy.iso2code,
-        cy.id
+        SELECT distinct on (geo_name.name) geo_name.name, country.iso2code AS iso, country.id,
+            COUNT(DISTINCT cdis.target_id) AS count
+        FROM gestalt_country AS country 
+            INNER JOIN gestalt_geography_name AS geo_name 
+            ON geo_name.id = country.name_id
+        LEFT JOIN gestalt_geography AS geo on geo.name_id = country.name_id
+        LEFT JOIN gestalt_cdis AS cdis on source_id = country.id
+        GROUP BY geo_name.name, country.iso2code, country.id
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -84,7 +116,7 @@ class node_groups:
         self.cursor.execute("""
         select g.*,
         array_agg(row_to_json(s)) as subgroups 
-        from """ + helper.table_prefix + """group g 
+        from gestalt_group g 
         left join (
         select distinct on (sg.name_id, sg.group_id) sg.name_id, 
         sg.group_id,
@@ -98,18 +130,18 @@ class node_groups:
         geo.hexagon_center_x as center_x,
         geo.hexagon_center_y as center_y,
         array_agg(row_to_json(n)) as nodes 
-        from """ + helper.table_prefix + """subgroup sg 
-        left join """ + helper.table_prefix + """geography_name gn on gn.id = sg.name_id 
-        left join """ + helper.table_prefix + """subgroup_name sgn on sgn.id = sg.name_id 
-        left join """ + helper.table_prefix + """group g on g.id = sg.group_id 
-        left join """ + helper.table_prefix + """group_type gt on gt.id = g.type_id 
-        left join """ + helper.table_prefix + """geography geo on geo.name_id = sg.name_id and gt.id = 1 
+        from gestalt_subgroup sg 
+        left join gestalt_geography_name gn on gn.id = sg.name_id 
+        left join gestalt_subgroup_name sgn on sgn.id = sg.name_id 
+        left join gestalt_group g on g.id = sg.group_id 
+        left join gestalt_group_type gt on gt.id = g.type_id 
+        left join gestalt_geography geo on geo.name_id = sg.name_id and gt.id = 1 
         left join (
         select gn.name,
         gcy.id,
         gcy.iso2code as iso 
-        from """ + helper.table_prefix + """country gcy 
-        left join """ + helper.table_prefix + """geography_name gn on gn.id = gcy.name_id
+        from gestalt_country gcy 
+        left join gestalt_geography_name gn on gn.id = gcy.name_id
         ) n on n.id = sg.country_id 
         group by sg.name_id,
         sg.group_id,
@@ -146,14 +178,14 @@ class geojson:
         row_to_json(f) as properties,
         row_to_json(c) as geometry 
         from t,
-        """ + helper.table_prefix + """geography geo 
+        gestalt_geography geo 
         left join (
         select geo.id,
         gn.name,
         cy.iso2code as iso
-        from """ + helper.table_prefix + """geography geo
-        left join """ + helper.table_prefix + """geography_name gn on gn.id = geo.name_id
-        left join """ + helper.table_prefix + """country cy on cy.id = geo.name_id
+        from gestalt_geography geo
+        left join gestalt_geography_name gn on gn.id = geo.name_id
+        left join gestalt_country cy on cy.id = geo.name_id
         ) f on f.id = geo.id 
         left join (
         with t as (
@@ -162,28 +194,11 @@ class geojson:
         select t.text as type,
         geo.hexagon_polygon as coordinates 
         from t,
-        """ + helper.table_prefix + """geography geo
+        gestalt_geography geo
         ) c on c.coordinates = geo.hexagon_polygon 
         where geo.hexagon_polygon is not null 
         ) r 
         group by type;
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data)
-    
-class ng_directives:
-    def GET(self, vis_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-        select *
-        from gestalt_vis
-        where id = """ + vis_id + """;
         """)
         # obtain the data
         data = self.cursor.fetchall()

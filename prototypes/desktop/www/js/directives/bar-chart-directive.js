@@ -11,7 +11,8 @@ angular.module("bar-chart-directive", [])
             valueKey: "="
 		},
 		link: function(scope, element, attrs) {
-			
+			console.log("boo yah, got inside bar-chart-directive link function");
+
 			// set up the dom node to attach the d3 to
             // this could be any valid d3 selector like a class
             var domNode = element[0];

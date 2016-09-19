@@ -39,6 +39,7 @@
         // --------------------------------------------------------------------
         // define bindable members 
         $scope.currentPanel = layoutService.getCurrentPanel();
+        $scope.currentStory = contentService.getCurrentStory();
         $scope.listOfStories = [];
         $scope.changePanel = changePanel;
 
@@ -53,7 +54,7 @@
             layoutService.setCurrentPanel(panelId, panelUrlName);
             $scope.currentPanel = layoutService.getCurrentPanel();
             // transition to the selected panel
-            $state.go("app.panel", {
+            $state.go("app.panel.story", {
                 currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
                 currentPanelUrl: layoutService.getCurrentPanel().url_name,
                 currentVisualUrl: visualConfig.url_name

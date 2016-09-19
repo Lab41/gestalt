@@ -14,6 +14,30 @@
  * 
  */
 
+create table gestalt_group (id serial primary key,name text,type_id integer);
+insert into gestalt_group (name,type_id) values ('region',1);
+insert into gestalt_group (name,type_id) values ('investment',2);
+insert into gestalt_group (name,type_id) values ('trade',2);
+insert into gestalt_group (name,type_id) values ('export',2);
+insert into gestalt_group (name,type_id) values ('default',2);
+insert into gestalt_group (name,type_id) values ('country',1);
+
+create table gestalt_subgroup_name (id serial primary key,name text);
+insert into gestalt_subgroup_name (name) values ('vc');
+insert into gestalt_subgroup_name (name) values ('tech');
+insert into gestalt_subgroup_name (name) values ('oil');
+insert into gestalt_subgroup_name (name) values ('rice');
+insert into gestalt_subgroup_name (name) values ('timber');
+insert into gestalt_subgroup_name (name) values ('sugar');
+insert into gestalt_subgroup_name (name) values ('nafta');
+insert into gestalt_subgroup_name (name) values ('stock');
+insert into gestalt_subgroup_name (name) values ('capital');
+insert into gestalt_subgroup_name (name) values ('all');
+
+create table gestalt_group_type (id serial primary key,name text);
+insert into gestalt_group_type (name) values ('geographic');
+insert into gestalt_group_type (name) values ('other');
+
 /* 
    ------------------------------------------------------------------------- 
    gestalt_vis_type

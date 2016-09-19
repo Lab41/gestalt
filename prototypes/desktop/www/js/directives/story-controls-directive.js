@@ -19,7 +19,7 @@ angular.module("story-controls-directive", [])
                     $rootScope.$broadcast("storyIdeaChange", { val: data[0] });
                     
                     // transition state url
-                    $state.go("app.panel.visual", {
+                    $state.go("app.panel.story.visual", {
                         si: ideaId,
 						sc: controlId
                     },{

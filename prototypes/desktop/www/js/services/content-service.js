@@ -22,26 +22,31 @@
         var getAllIdeasUrl = storyBackendBaseUrl + "getAllIdeasByStory";
         // * vis
         var visBackendBaseUrl = apiConfig.contentVisUri;
+        var getDirectiveNameUrl = visBackendBaseUrl + "getDirectiveNameByVis";
+        // * vis: econ
         var getCdisUrl = visBackendBaseUrl + "cdis/";
         var getCountryGroupUrl = visBackendBaseUrl + "countries/groups/";
-        var getGeojsonUrl = visBackendBaseUrl + "geojson";
-        var getDynamicDirectivesUrl = visBackendBaseUrl + "angular/directives/1/";
         // * storage (TODO: figure out a better way to handle this)
         var currentStory;
+        var currentVis;
 
         // --------------------------------------------------------------------		
 		// return a contentService instance
         var contentService = {
+            // * story
             getDefaultStory: getDefaultStory,
             getAllStories: getAllStories,
             setCurrentStory: setCurrentStory,
             getCurrentStory: getCurrentStory,
+            // * idea
             getAllIdeas: getAllIdeas,
-
-            // TODO: do we need these functions below?
-            getCdis: getCdis,
-            getCountryGroup: getCountryGroup,
-            getGeojson: getGeojson
+            // * vis
+            getDirectiveName: getDirectiveName,
+            setCurretVis: setCurrentVis,
+            getCurrentVis: getCurrentVis,
+            // * vis: econ
+            getCountryNodes: getCountryNodes,
+            getNodeGroups: getNodeGroups,
         };
 		return contentService;
 
@@ -58,6 +63,7 @@
         // ============================
         
         function getDefaultStory(workspaceId, panelId) {
+            // TODO: verify first that there is only one default workspace and handle it if there's none
             return callBackend(getDefaultStoryUrl + "/workspace/" + workspaceId + "/panel/" + panelId).then(function(listOfDefaultStories){
                 return listOfDefaultStories[0];
             });
@@ -93,35 +99,49 @@
         }
 
         // ============================
-        // * vis           
+        // * vis      
         // ============================
         
+        function getDirectiveName(visId) {
+            // there is only one directive name linked to each vis, but $http call returns a list
+            // so this is the hack
+            return callBackend(getDirectiveNameUrl + "/" + visId).then(function(listOfDirectives) {
+                return listOfDirectives[0].name;
+            });
+        }
+
+        function setCurrentVis(visId, visUrlName) {
+            var vis = {
+                id: visId,
+                url_name: visUrlName
+            }
+            currentVis = vis;
+            return currentVis;
+        }
+
+        function getCurrentVis() {
+            return currentVis;
+        }
+
+        function unsetCurrentVis() {
+            currentVis = null;
+        }
 
         // ============================
-        // * miscellaneous           
+        // * vis: econ        
         // ============================
         
-        // TODO: do we need these functions below?
-        function getCdis() {
-            // TODO: remove this? It's not used. 
+        function getCountryNodes() {
+            console.log("getCountryNodes");
             return callBackend(getCdisUrl);
         }
 
-        function getCountryGroup() {
+        function getNodeGroups() {
+            console.log("getNodeGroups");
             return callBackend(getCountryGroupUrl);
         }
 
-        function getGeojson(gridType) {
-            // TODO: remove this? It's not used
-            return callBackend(getGeojsonUrl + "/" + gridType + "/")
-                    .then(function(listOfGeojson){
-                        return listOfGeojson[0];
-                    });
-        }
 
-        function getDynamicDirectives() {
-            return callBackend(getDynamicDirectivesUrl);
-        }
 
         // ============================
         // * cleanup           
@@ -129,6 +149,7 @@
         
         function cleanup() {
             unsetCurrentStory();
+            unsetCurrentVis();
         }
 
     }

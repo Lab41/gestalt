@@ -8,10 +8,10 @@
         .controller("storyController", storyController);
 
     // add additional services to be used within the controller
-    storyController.$inject = ["$scope", "contentService", "layoutService"];
+    storyController.$inject = ["$scope", "contentService"];
 
     // define the controller
-    function storyController($scope, contentService, layoutService) {
+    function storyController($scope, contentService) {
         // --------------------------------------------------------------------
         // define bindable members
         $scope.listOfIdeas;
@@ -23,9 +23,21 @@
         // --------------------------------------------------------------------
         // define functions    
         function activate() {
-            console.log("WOOT WOOT in story-controller activate function");
-
+            var currentStoryId = contentService.getCurrentStory().id;
+            
+            // get all ideas from a story
+            getListOfIdeas(currentStoryId);
         }
+        
+        function getListOfIdeas(storyId) {
+            contentService
+                .getAllIdeas(storyId)
+                .then(function (listOfIdeas) {
+                    $scope.listOfIdeas = listOfIdeas;
+                    console.log("listOfIdeas: " + angular.toJson($scope.listOfIdeas));
+                });
+        }
+
 
     }
 

@@ -67,13 +67,14 @@
                             return defaultStory.id;
                        });
             };
-            var transition = function() {
+            var transition = function() {                
                 // transition to the persona's default workspace and the workspace's default panel
-                $state.go("app.panel.story", {
+                $state.go("app.panel.story.visual", {
                     currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
                     currentPanelUrl: layoutService.getCurrentPanel().url_name,
                     currentStoryUrl: contentService.getCurrentStory().url_name,
-                    // TODO: add the visual
+                    // TODO: figure out which visual template to use?
+                    currentVisualUrl: "visual-standard"
                 });
 
             };

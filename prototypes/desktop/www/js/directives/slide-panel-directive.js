@@ -27,7 +27,7 @@
     // add additional services to be used within the controller
     slidePanelController.$inject = ["$rootScope", "$scope", "$state", "authenticationService", "layoutService"];
 
-    function slidePanelController($rootScope, $scope, $state, authenticationService, layoutService) { 
+    function slidePanelController($rootScope, $scope, $state, authenticationService, contentService, layoutService) { 
         // --------------------------------------------------------------------
         // define bindable members  
         $scope.logout = logout;
@@ -77,9 +77,10 @@
                 // transition to the new workspace and its respective default panel
                 // triggers watchForPanelChange function in panel-nav-directive
                 // TODO: need to handle visualParam
-                $state.go("app.panel.visual", {
+                $state.go("app.panel.story.visual", {
                     currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
                     currentPanelUrl: layoutService.getCurrentPanel().url_name,
+                    currentStoryUrl: contentService.getCurrentStory().url_name,
                     // TODO: add the visual
                 });
 
