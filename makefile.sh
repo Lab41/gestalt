@@ -225,7 +225,6 @@ function populate_gestalt_db {
         echo ">> Populate gestalt database"
         # temporary hack
         psql -d gestalt -U gestalt_user -f ./database/create_all.sql
-        psql -d gestalt -U gestalt_user -f ~/gestalt_econ_data.sql
         #psql -d gestalt -U gestalt_user -f ./database/create_persona.sql
         #psql -d gestalt -U gestalt_user -f ./database/create_workspace.sql
         #psql -d gestalt -U gestalt_user -f ./database/create_panel.sql
