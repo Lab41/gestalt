@@ -1,0 +1,46 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** pie-chart directive STYLE ***************************************/
+
+/* pie chart directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !pie chart
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/***********************/
+/***** !pie chart ******/
+/***********************/
+
+/* arc */
+pie-chart path {
+    
+    fill: currentColor;
+    opacity: 0.3;
+    
+}
+
+/* label */
+pie-chart text {
+    
+    fill: currentColor;
+    text-anchor: middle;
+    
+}
+
+/* vertical labels */
+pie-chart svg[data-format="pie"] path {
+    
+    stroke: currentColor;
+    stroke-width: 3px;
+    
+}

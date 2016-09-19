@@ -11,7 +11,10 @@ urls = (
     # rest API backend endpoints
     "flows/unique_targets/(\d+)/", "flows",
     "story/metric/(\d+)/", "metrics",
-    "heuristics/(.*)/", "heuristics",
+    "heuristics/comparison/", "heuristic_comparison",
+    "heuristics/time-series/", "heuristic_timeseries",
+    "heuristics/parts-of-a-whole/", "heuristic_partofwhole",
+    "heuristics/relatedness/", "heuristic_relatedness",
 	"angular/directives/(\d+)/", "ng_directives",
 	"countries/groups/", "node_groups",
 	"geojson/(.*)/", "geojson",
@@ -190,27 +193,28 @@ class ng_directives:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
-	
-class heuristics:
-    def GET(self, vistype_name, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+    
+class heuristic_comparison:
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
         connection = psycopg2.connect(connection_string)
         # get a cursor to perform queries
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-		with data_array as (
+        with data_array as (
 		select dd.vis_id,
-		array_agg(row_to_json((select r from (select dd.*) r))) as data
+		array_agg(row_to_json((select r from (select ddl.name, dd.value) r))) as data
 		from """ + helper.table_prefix + """vis_dummy_data dd
+        left join """ + helper.table_prefix + """vis_dummy_data_label ddl on ddl.id = dd.name_id
 		group by dd.vis_id
 		),
 		-- attributes
 		attrs_array as (
 		select vca.vis_id,
 		array_agg(row_to_json((select r from (select vca.*, va.name as attr_name, va.value as default_value) r ))) as attrs
-		from gestalt_vis_code_attr vca
-		left join gestalt_vis_attr va on va.id = vca.attr_id
+		from """ + helper.table_prefix + """vis_code_attr vca
+		left join """ + helper.table_prefix + """vis_attr va on va.id = vca.attr_id
 		group by vca.vis_id
 		),
 		-- do guidance
@@ -237,10 +241,10 @@ class heuristics:
 		alts_array as (
 		select val.vis_id,
 		array_agg(row_to_json((select r from (select val.*, vd.name as alt_name, vt.url_name as alt_type) r ))) as alts
-		from gestalt_vis_alt_attr val
-		left join gestalt_vis_directive vd on vd.id = val.alt_vis_directive_id
-		left join gestalt_vis v on v.id = val.alt_vis_directive_id
-		left join gestalt_vis_type vt on vt.id = v.vis_type_id
+		from """ + helper.table_prefix + """vis_alt_attr val
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = val.alt_vis_directive_id
+		left join """ + helper.table_prefix + """vis v on v.id = val.alt_vis_directive_id
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
 		group by val.vis_id
 		)
 		select v.*,
@@ -260,7 +264,224 @@ class heuristics:
 		left join dos_array doa on doa.vis_id = v.id
 		left join donts_array donta on donta.vis_id = v.id
 		left join alts_array val on val.vis_id = v.id
-		where vt.url_name = '""" + vistype_name + """';
+		where vt.url_name = 'comparison';
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+	
+class heuristic_timeseries:
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+        -- dummy data
+        with data_array as (
+        -- values
+        with value_array as (
+        select ddv.data_id,
+        array_agg(row_to_json((select r from (select ddv.value, ddv.date as timestamp) r))) as values
+        from """ + helper.table_prefix + """vis_dummy_data_values ddv
+        group by ddv.data_id
+        )
+        select dd.vis_id,
+        array_agg(row_to_json((select r from (select ddl.name, va.values
+        ) r))) as data
+        from """ + helper.table_prefix + """vis_dummy_data dd
+        left join """ + helper.table_prefix + """vis_dummy_data_label ddl on ddl.id = dd.name_id
+        left join value_array va on va.data_id = dd.id
+        group by dd.vis_id
+        ),
+		-- attributes
+		attrs_array as (
+		select vca.vis_id,
+		array_agg(row_to_json((select r from (select vca.*, va.name as attr_name, va.value as default_value) r ))) as attrs
+		from """ + helper.table_prefix + """vis_code_attr vca
+		left join """ + helper.table_prefix + """vis_attr va on va.id = vca.attr_id
+		group by vca.vis_id
+		),
+		-- do guidance
+		dos_array as (
+		select doa.vis_id,
+		array_agg(row_to_json((
+		select r 
+		from (select doa.*) r 
+		))) as dos
+		from """ + helper.table_prefix + """vis_do_attr doa
+		group by doa.vis_id
+		),
+		-- dont guidance
+		donts_array as (
+		select donta.vis_id,
+		array_agg(row_to_json((
+		select r 
+		from (select donta.*) r 
+		))) as donts
+		from """ + helper.table_prefix + """vis_dont_attr donta
+		group by donta.vis_id
+		),
+		-- alternatives
+		alts_array as (
+		select val.vis_id,
+		array_agg(row_to_json((select r from (select val.*, vd.name as alt_name, vt.url_name as alt_type) r ))) as alts
+		from """ + helper.table_prefix + """vis_alt_attr val
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = val.alt_vis_directive_id
+		left join """ + helper.table_prefix + """vis v on v.id = val.alt_vis_directive_id
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
+		group by val.vis_id
+		)
+		select v.*,
+		vt.name as vis_type_name,
+		vt.url_name as vis_type_urlname,
+		vd.name as directive,
+		dd.data,
+		vca.attrs,
+		doa.dos,
+		donta.donts,
+		val.alts
+		from """ + helper.table_prefix + """vis v
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
+		left join data_array dd on dd.vis_id = v.id
+		left join attrs_array vca on vca.vis_id = v.id
+		left join dos_array doa on doa.vis_id = v.id
+		left join donts_array donta on donta.vis_id = v.id
+		left join alts_array val on val.vis_id = v.id
+		where vt.url_name = 'time-series';
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+    
+class heuristic_partofwhole:
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+        with data_array as (
+		select dd.vis_id,
+		array_agg(row_to_json((select r from (select ddl.name, dd.value) r))) as data
+		from """ + helper.table_prefix + """vis_dummy_data dd
+        left join """ + helper.table_prefix + """vis_dummy_data_label ddl on ddl.id = dd.name_id
+		group by dd.vis_id
+		),
+		-- attributes
+		attrs_array as (
+		select vca.vis_id,
+		array_agg(row_to_json((select r from (select vca.*, va.name as attr_name, va.value as default_value) r ))) as attrs
+		from """ + helper.table_prefix + """vis_code_attr vca
+		left join """ + helper.table_prefix + """vis_attr va on va.id = vca.attr_id
+		group by vca.vis_id
+		),
+		-- do guidance
+		dos_array as (
+		select doa.vis_id,
+		array_agg(row_to_json((
+		select r 
+		from (select doa.*) r 
+		))) as dos
+		from """ + helper.table_prefix + """vis_do_attr doa
+		group by doa.vis_id
+		),
+		-- dont guidance
+		donts_array as (
+		select donta.vis_id,
+		array_agg(row_to_json((
+		select r 
+		from (select donta.*) r 
+		))) as donts
+		from """ + helper.table_prefix + """vis_dont_attr donta
+		group by donta.vis_id
+		),
+		-- alternatives
+		alts_array as (
+		select val.vis_id,
+		array_agg(row_to_json((select r from (select val.*, vd.name as alt_name, vt.url_name as alt_type) r ))) as alts
+		from """ + helper.table_prefix + """vis_alt_attr val
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = val.alt_vis_directive_id
+		left join """ + helper.table_prefix + """vis v on v.id = val.alt_vis_directive_id
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
+		group by val.vis_id
+		)
+		select v.*,
+		vt.name as vis_type_name,
+		vt.url_name as vis_type_urlname,
+		vd.name as directive,
+		dd.data,
+		vca.attrs,
+		doa.dos,
+		donta.donts,
+		val.alts
+		from """ + helper.table_prefix + """vis v
+		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
+		left join """ + helper.table_prefix + """vis_type vt on vt.id = v.vis_type_id
+		left join data_array dd on dd.vis_id = v.id
+		left join attrs_array vca on vca.vis_id = v.id
+		left join dos_array doa on doa.vis_id = v.id
+		left join donts_array donta on donta.vis_id = v.id
+		left join alts_array val on val.vis_id = v.id
+		where vt.url_name = 'parts-of-a-whole';
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+    
+class heuristic_relatedness:
+    def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+        -- dummy data
+with data_array as (
+	-- nodes
+	with node_array as (
+	select dd.vis_id,
+	array_agg(row_to_json((select r from (select ddl.name) r))) as nodes
+	from gestalt_vis_dummy_data dd
+	left join gestalt_vis_dummy_data_label ddl on ddl.id = dd.name_id
+	group by dd.vis_id
+	),
+	-- links
+	link_array as (
+	select ddv.data_id,
+	array_agg(row_to_json((select r from (select ddl.name) r))) as links
+	from gestalt_vis_dummy_data_values ddv
+	left join gestalt_vis_dummy_data_label ddl on ddl.id = ddv.value
+	group by ddv.data_id
+	)
+	
+	select dd.vis_id,
+	array_agg(row_to_json((select r from (select ddl.name, na.nodes, la.links) r))) as data
+	from gestalt_vis_dummy_data dd
+	left join gestalt_vis_dummy_data_label ddl on ddl.id = dd.name_id
+	left join node_array na on na.vis_id = dd.id
+	left join link_array la on la.data_id = dd.id
+	group by dd.vis_id
+
+)
+
+select v.*,
+vt.name as vis_type_name,
+vt.url_name as vis_type_urlname,
+vd.name as directive,
+dd.data
+from gestalt_vis v
+left join gestalt_vis_directive vd on vd.id = v.vis_directive_id
+left join gestalt_vis_type vt on vt.id = v.vis_type_id
+left join data_array dd on dd.vis_id = v.id
+where vt.url_name = 'relatedness';
         """)
         # obtain the data
         data = self.cursor.fetchall()

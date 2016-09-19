@@ -21,13 +21,6 @@
 /***** !heatmap grid ******/
 /**************************/
 
-/* grid cell */
-heatmap-grid rect {
-    
-    fill: currentColor;
-    
-}
-
 /* label */
 heatmap-grid text {
     

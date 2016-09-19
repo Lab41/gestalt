@@ -16,6 +16,8 @@
 /* --- !bar chart
 /* --- !card layout
 /* --- !heuristic
+/* --- !line chart
+/* --- !heatmap grid
 
 /******************************* !IMPORTS *******************************/
 
@@ -247,4 +249,33 @@ card-layout figure > div svg {
     
     background: rgb(154, 152, 116);
        
+}
+
+/************************/
+/***** !line chart ******/
+/************************/
+
+/* line */
+line-chart .line path {
+    
+    stroke: #667080;
+    
+}
+
+/* point */
+line-chart .line circle {
+	
+	fill: #667080;
+	
+}
+
+/**************************/
+/***** !heatmap grid ******/
+/**************************/
+
+/* grid cell */
+heatmap-grid rect {
+    
+    fill: #667080;
+    
 }

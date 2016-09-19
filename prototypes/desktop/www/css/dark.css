@@ -17,6 +17,9 @@
 /* --- !tile grid map
 /* --- !bar chart
 /* --- !card layout
+/* --- !heuristic
+/* --- !line chart
+/* --- !heatmap grid
 
 /******************************* !IMPORTS *******************************/
 
@@ -208,6 +211,72 @@ card-layout figure > div {
 
 /* poster graphic */
 card-layout figure > div svg {
+    
+    fill: #444b5a;
+    
+}
+
+/***********************/
+/***** !heuristic ******/
+/***********************/
+
+/* temp */
+.heuristic pre {
+    
+    background: rgb(60, 60, 60);
+    color: rgb(200,200,200);
+    
+}
+
+/* temp */
+.heuristic pre .required {
+    
+    color: rgb(0, 216, 255);
+    
+}
+
+.heuristic .code-legend span.required:before {
+    
+    background: rgb(0, 216, 255);
+    
+}
+
+.heuristic pre .optional {
+    
+    color: rgb(154, 152, 116);
+       
+}
+
+.heuristic .code-legend span.optional:before {
+    
+    background: rgb(154, 152, 116);
+       
+}
+
+/************************/
+/***** !line chart ******/
+/************************/
+
+/* line */
+line-chart .line path {
+    
+    stroke: #444b5a;
+    
+}
+
+/* point */
+line-chart .line circle {
+	
+	fill: #444b5a;
+	
+}
+
+/**************************/
+/***** !heatmap grid ******/
+/**************************/
+
+/* grid cell */
+heatmap-grid rect {
     
     fill: #444b5a;
     
