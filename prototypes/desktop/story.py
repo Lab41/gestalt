@@ -133,6 +133,8 @@ class persona_panel_stories:
 		when sac.story_action_id = 2 then v.name
 		when sac.story_action_id = 3 then f.name
 		when sac.story_action_id = 4 then h.name
+        when sac.story_action_id = 5 then c.name
+        when sac.story_action_id = 6 then e.name
 		end
 		as name
 		from """ + helper.table_prefix + """story_action_control sac
@@ -140,6 +142,8 @@ class persona_panel_stories:
 		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
 		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
 		left join """ + helper.table_prefix + """heuristic h on h.id = sac.name_id
+        left join """ + helper.table_prefix + """color c on c.id = sac.name_id
+        left join """ + helper.table_prefix + """emphasis e on e.id = sac.name_id
 		) c on c.story_action_id = sti.action_id
 		group by sti.id,
 		vt.url_name
@@ -169,6 +173,8 @@ class story_idea_metrics:
 		case
 		when sac.story_action_id = 1 then g.name
 		when sac.story_action_id = 2 then v.name
+        when sac.story_action_id = 5 then c.name
+        when sac.story_action_id = 6 then e.name
 		else f.name
 		end 
 		as control_name,
@@ -181,6 +187,8 @@ class story_idea_metrics:
 		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
 		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
 		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
+        left join """ + helper.table_prefix + """color c on c.id = sac.name_id
+        left join """ + helper.table_prefix + """emphasis e on e.id = sac.name_id
 		left join """ + helper.table_prefix + """story_idea_metric sim on sim.control_id = sac.id
 		left join (
 		select * from """ + helper.table_prefix + """story_idea_metric_value
@@ -193,6 +201,8 @@ class story_idea_metrics:
 		g.name,
 		v.name,
 		f.name,
+        c.name,
+        e.name,
 		sa.name,
 		sim.name;
         """)

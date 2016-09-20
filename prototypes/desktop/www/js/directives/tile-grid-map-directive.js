@@ -1,20 +1,20 @@
 angular.module("tile-grid-map-directive", [])
 
-.directive("tileGridMap", ["mapboxService", function(mapboxService) {
-    return {
-        restrict: "E",
-        scope: {
-            vizData: "=",
-            theme: "="
-        },
-        template: "<div data-tap-disabled='true' style='height: 100%; width: 100%; background: none;'></div>",
-        link: function(scope, element, attrs) {
-
-            var canvas = element.find("div")[0];
-            var token = mapbox_config.token;
-            var radius = 7;
-            var blur = 1;
-            var opacity = 0.5;
+.directive("tileGridMap", ["mapboxService", "$rootScope", function(mapboxService, $rootScope) {
+	return {
+		restrict: "E",
+		scope: {
+			vizData: "=",
+			theme: "="
+		},
+		template: "<div data-tap-disabled='true' style='height: 600px; width: 100%; background: none; margin-top:1em;'></div>",
+		link: function(scope, element, attrs) {
+			
+			var canvas = element.find("div")[0];
+			var token = mapbox_config.token;
+			var radius = 7;
+			var blur = 1;
+			var opacity = 0.5;
             var interactivity = true;
 
             // get mapbox promise
@@ -102,6 +102,21 @@ angular.module("tile-grid-map-directive", [])
                     };
 
                 });
+
+                ////////////////////////////////////////////////////
+                /////////////// ANGULAR EVENTS START ///////////////
+                ////////////////////////////////////////////////////
+                
+                // watch for story idea changes
+                $rootScope.$on("mapStoryIdeaChange", function(event, args) {
+                    
+                    console.log(args);
+
+                });
+                
+                //////////////////////////////////////////////////
+                /////////////// ANGULAR EVENTS END ///////////////
+                //////////////////////////////////////////////////
 
             });
 
