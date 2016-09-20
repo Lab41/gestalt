@@ -28,6 +28,12 @@
     text-align: center;
 }
 
+@media only screen and (max-width: 768px) {
+    .vis-title {
+        position: relative;
+    }
+}
+
 /****************************/
 /***** !story controls ******/
 /****************************/

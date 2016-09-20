@@ -18,11 +18,30 @@
 /******************************* !CUSTOM *******************************/
 
 .vis-key {
-    width: 200px;
+    width: 20rem;
     background-color: #e2e2e2;
     border: 1px solid #7c7c7c;
     margin: 6rem 1.5rem 0 1.5rem;
     padding: 15px;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-key {
+        position: relative;
+        width: auto;
+        margin: 1.5rem 1.5rem 0 1.5rem;
+    }
+}
+
+.vis-key--item {
+    clear: both;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-key--item {
+        display: inline;
+        clear: none;
+    }
 }
 
 .vis-key h2 {
@@ -49,6 +68,12 @@
     line-height: 1.1rem;
     padding: .3rem;
     float: left;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-key--label {
+        padding-right: .8rem;
+    }
 }
 
 /****************************/
