@@ -1,0 +1,57 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** story-controls directive STYLE ***************************************/
+
+/* vis key directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !story controls
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+.vis-key {
+    width: 200px;
+    background-color: #e2e2e2;
+    border: 1px solid #7c7c7c;
+    margin: 25px;
+    padding: 15px;
+}
+
+.vis-key h2 {
+    font-size: 1.3rem;
+}
+
+.vis-key hr {
+    border-color: #7c7c7c;
+    margin: 12px 0px;
+}
+
+.vis-key__color-well {
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: .3rem;
+    background-color: deeppink;
+    float: left;
+}
+
+.vis-key--label {
+    position: relative;
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+    padding: .3rem;
+    float: left;
+}
+
+/****************************/
+/***** !story controls ******/
+/****************************/
+
