@@ -1,6 +1,6 @@
 angular.module("story-controls-directive", [])
 
-.directive("storyControls", ["contentService", "$rootScope", "$state", function(contentService, $rootScope, $state) {
+.directive("storyControls", ["contentService", "$rootScope", "$state", function (contentService, $rootScope, $state) {
     return {
         restrict: "E",
         templateUrl: "templates/directives/story-controls.html",
@@ -11,8 +11,22 @@ angular.module("story-controls-directive", [])
         controller: function($scope) {
 
             // Some TEMP Vars
+            $scope.filterOpen = {
+                isOpen : false
+            };
+
             $scope.filteredBy = "All";
+
+            $scope.colorOpen = {
+                isOpen : false
+            };
+
             $scope.coloredBy = "None";
+
+            $scope.sortOpen = {
+                isOpen : false
+            };
+
             $scope.sortedBy = "None";
 
             // story idea functionality
