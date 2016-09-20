@@ -243,6 +243,21 @@ angular.module("tile-grid-map-directive", [])
                     }
                 });
 
+                ////////////////////////////////////////////////////
+                /////////////// ANGULAR EVENTS START ///////////////
+                ////////////////////////////////////////////////////
+                
+                // watch for story idea changes
+                $rootScope.$on("mapStoryIdeaChange", function(event, args) {
+                    
+                    console.log(args);
+
+                });
+                
+                //////////////////////////////////////////////////
+                /////////////// ANGULAR EVENTS END ///////////////
+                //////////////////////////////////////////////////
+
             });
 
         }
