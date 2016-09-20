@@ -17,6 +17,18 @@
 
 /******************************* !CUSTOM *******************************/
 
+.story-controls {
+    padding: 15px 25px;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    margin-top: 10px;
+}
+
+.dropdown-label {
+    padding-right: 10px;
+    line-height: 2rem;
+}
+
 /****************************/
 /***** !story controls ******/
 /****************************/
