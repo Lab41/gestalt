@@ -9,6 +9,10 @@ angular.module("vis-title-directive", [])
         },
         controller: function($scope) {
 
+            //filter title uses Notioanl Map of the World as the default
+            $scope.filterTitle = "Notional Map of the World";
+            $scope.colorTitle = "";
+
         }
     };
 
