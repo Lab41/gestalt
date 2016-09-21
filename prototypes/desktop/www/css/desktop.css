@@ -19,9 +19,9 @@
 /******************************* !GLOBALS *******************************/
 
 html, body {
-    
+
     font-size: 16px;
-    
+
 }
 
 html,
@@ -29,54 +29,54 @@ body,
 h1,
 h2,
 h3 {
-	
-	font-family: "Source Sans Pro", sans-serif;
-	
+
+    font-family: "Source Sans Pro", sans-serif;
+
 }
 
 a {
-	
-	color: currentColor;
+
+    color: currentColor;
     text-decoration: none;
-	
+
 }
 
 h1, h2, h3 {
-	
-	font-family: "Source Sans Pro Light", sans-serif;
-	font-weight: 300;
-	
+
+    font-family: "Source Sans Pro Light", sans-serif;
+    font-weight: 300;
+
 }
 
 h2, h3 {
-    
+
     font-size: 1.5em;
     max-width: 500px;
     width: 60%;
-    
+
 }
 
 p {
-    
+
     line-height: 1.2;
     margin-bottom: 1em;
-    
+
 }
 
 button {
-	
-	border: 1px;
-	border-style: solid;
-	font-family: "Source Sans Pro", sans-serif;
-	font-size: 0.85em;
-	padding: 0.5em;
-	
+
+    border: 1px;
+    border-style: solid;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.85em;
+    padding: 0.5em;
+
 }
 
 button:focus {
-    
+
     outline: none;
-    
+
 }
 
 /******************************* !CUSTOM *******************************/
@@ -87,31 +87,31 @@ button:focus {
 
 /* vanilla item for lists */
 .item {
-    
+
     display: block;
     padding: 0.5em;
     position: relative;
-    
+
 }
 
 .item.menu-item.active {
-    
+
     margin-left: -1em;
     margin-right: -1em;
     padding-left: 2em;
     padding-right: 2em;
-    
+
 }
 
 .item-divider {
-    
+
     font-size: 2em;
     font-weight: 300;
     margin-bottom: 0.25em;
     margin-top: 1em;
     padding: 0;
     padding-left: 0.5em;
-    
+
 }
 
 /******************/
@@ -120,55 +120,72 @@ button:focus {
 
 /* icon */
 .menu-icon {
-    
+
     border: 0 none;
     cursor: pointer;
     font-size: 1.7em;
     padding: 0.5em;
-    
+
 }
 
 /* text */
 .menu-title {
-    
+
     padding: 1em;
     position: relative;
-    
+
 }
 
 /* underline */
 .menu-title:after {
-    
+
     bottom: 0;
-	content: '';
-	height: 1px;
-	left: 1em;
-	position: absolute;
-	width: calc(100% - 2em);
-    
+    content: '';
+    height: 1px;
+    left: 1em;
+    position: absolute;
+    width: calc(100% - 2em);
+
 }
 
 /* close button */
 .menu-title span {
-    
+
     cursor: pointer;
     font-size: 0.9em;
     position: absolute;
     right: 1em;
     top: 1.4em;
-    
+
+}
+
+/* capture button */
+.capture-button {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 5rem;
+    height: 5rem;
+    line-height: 1.2rem;
+    white-space: normal;
+}
+
+.capture-button svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: #505050;
 }
 
 /* menu item */
 .menu-item {
-    
+
     padding-left: 1em;
-    
+
 }
 
 /* theme */
 .theme-change {
-    
+
     font-size: 0.7em;
     left: 5px;
     padding-bottom: 0.25em;
@@ -178,55 +195,55 @@ button:focus {
     position: relative;
     text-transform: lowercase;
     top: -2px;
-    
+
 }
 
 /* user */
 .user {
-    
+
     padding: 1em;
-    
+
 }
 
 .user span:last-child {
-    
+
     cursor: pointer;
-    
+
 }
 
 .user span:first-child {
-    
+
     border-right: 1px;
     border-right-color: currentColor;
     border-right-style: solid;
     font-weight: 700;
     padding-right: 0.5em;
     text-transform: uppercase;
-    
+
 }
 
 .user span:last-child {
-    
+
     padding-left: 0.5em;
-    
+
 }
 
 /* items */
 .menu-item {
-    
+
     cursor: pointer;
     text-transform: capitalize;
-    
+
 }
 
 /* active menu item */
 .item.active.menu-item {
-    
+
     margin-left: -1em;
     margin-right: -1em;
     padding-left: 2em;
     padding-right: 2em;
-    
+
 }
 
 /*******************/
@@ -235,7 +252,7 @@ button:focus {
 
 /* wrap */
 .login {
-    
+
     left: 50%;
     max-width: 900px;
     padding: 5em;
@@ -247,39 +264,39 @@ button:focus {
     -o-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
     width: 70%;
-    
+
 }
 
 /* login headline subtext */
 .login h2 + p {
-    
+
     margin-bottom: 2em;
-    
+
 }
 
 /* wrap personas */
 .login section {
-    
+
     display: flex;
     flex-wrap: wrap;
     padding: 0;
-    
+
 }
 
 /* persona */
 .login section div {
-    
+
     cursor: pointer;
     padding: 2em;
     width: calc(50% - 4em);
-    
+
 }
 
 .login section div p:first-child {
-    
+
     font-weight: 700;
     text-transform: capitalize;
-    
+
 }
 
 /***********************/
@@ -289,52 +306,52 @@ button:focus {
 /* section wrap */
 .heuristic {
 
-	margin-bottom: 2em;
-	
+    margin-bottom: 2em;
+
 }
 
 /* vis title */
 .heuristic h1 {
-	
-	font-weight: 700;
-	margin-bottom: 0;
-	margin-top: 1em;
-	text-transform: capitalize;
-	
+
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 1em;
+    text-transform: capitalize;
+
 }
 
 /* vis graphic/code/data wrap */
 .heuristic figure,
 .heuristic figcaption {
-	
-	display: flex;
-	
+
+    display: flex;
+
 }
 
 /* vis graphic/code/data */
 .heuristic figure > div,
 .heuristic figcaption > div {
-	
-	padding: 1em;
-	width: calc(100% / 3);
+
+    padding: 1em;
+    width: calc(100% / 3);
 
 }
 
 /* viz guidance headline */
 .heuristic figure div p,
 .heuristic figcaption div p{
-    
+
     font-size: 0.8em;
     font-weight: 700;
     position: relative;
     text-transform: uppercase;
-    
+
 }
 
 /* horizontal line */
 .heuristic figure div p:after,
 .heuristic figcaption div p:after{
-    
+
     background: currentColor;
     content: "";
     height: 1px;
@@ -342,66 +359,66 @@ button:focus {
     top: -1em;
     left: 0;
     width: 100%;
-    
+
 }
 
 /* code legend */
 .heuristic .code-legend {
-    
+
     font-weight: 400;
     margin-left: 2em;
     text-transform: capitalize;
-    
+
 }
 
 .heuristic .code-legend span {
-    
+
     position: relative;
-    
+
 }
 
 /* code legend item */
 .heuristic .code-legend span:before {
-    
+
     content: "";
     height: 1em;
     left: -1.2em;
     position: absolute;
     width: 1em;
-    
+
 }
 
 /* code block */
 .heuristic pre {
-    
-	font-size: 0.8em;
+
+    font-size: 0.8em;
     max-height: 200px;
     overflow-y: scroll;
     padding: 1em;
-    
+
 }
 
 .heuristic pre code span {
-    
+
     display: inline-block;
-    
+
 }
 
 .heuristic pre code span:not(:first-child) {
-    
+
     margin-left: 1em;
-    
+
 }
 
 .heuristic .code-legend span {
-    
+
     margin-left: 2em;
-    
+
 }
 
 /* bold citation */
 .heuristic small span {
-	
-	font-weight: 700;
-	
+
+    font-weight: 700;
+
 }
