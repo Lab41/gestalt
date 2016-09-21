@@ -19,6 +19,7 @@ angular.module("tile-grid-map-directive", [])
             var interactivity = true;
             var map = {};
             var geoJsonLayer = {};
+            var labelsLayer = {};
             var currentData = {};
 					
             // get mapbox promise
@@ -87,7 +88,6 @@ angular.module("tile-grid-map-directive", [])
                 };
 
                 function regroupData(grouping) {
-                    
 
                     var featureDeltas = {};
                     var STEPS = 10;
@@ -96,9 +96,16 @@ angular.module("tile-grid-map-directive", [])
                     var dX = 3.4641016151377;
                     var dY = 4.0;
 
+                    map.removeLayer(labelsLayer);
+
                     // Cook the data for the selected group
                     if(grouping.name !== 'default') {
-                        var groupWidth = 270.0 / grouping.subgroups.length;
+                        var labelFeatures = {
+                            "type": "FeatureCollection",
+                            "features": []
+                        };
+
+                        var groupWidth = 150.0 / grouping.subgroups.length;
 
                         var groupGeoData = {};
                         var groupLookup = {};
@@ -106,11 +113,23 @@ angular.module("tile-grid-map-directive", [])
                         grouping.subgroups.forEach(function(subgroup, idx) {
                             groupGeoData[idx] = {};
                             groupGeoData[idx].name = subgroup.name;
-                            groupGeoData[idx].minX = -135.0 + (idx * groupWidth);
-                            groupGeoData[idx].maxX = -135.0 + ((idx + 1) * groupWidth);
+                            groupGeoData[idx].minX = -75.0 + (idx * groupWidth);
+                            groupGeoData[idx].maxX = -75.0 + ((idx + 1) * groupWidth);
                             groupGeoData[idx].nextX = groupGeoData[idx].minX + (dX / 2);
                             groupGeoData[idx].nextY = 60.0 - (dY / 2);
 
+                            // Make label feature
+                            var labelFeature = {
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [((groupGeoData[idx].minX + groupGeoData[idx].maxX) / 2) - dX, 62.0]
+                                },
+                                "properties": {
+                                    "name": subgroup.name
+                                }
+                            };
+                            labelFeatures.features.push(labelFeature);
 
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
@@ -144,15 +163,25 @@ angular.module("tile-grid-map-directive", [])
                                 groupGeoData[group].nextY -= dY;
                             }
                         });
+
+                        labelsLayer = L.geoJson(labelFeatures, {
+                            pointToLayer: function(feature, latlng) {
+                                var icon = L.divIcon({
+                                    "html": "<span style='font-size:2em;font-weight:700;'>" + feature.properties.name + "</span>",
+                                });
+
+                                return L.marker(latlng, {
+                                    "icon": icon
+                                });
+                            }
+                        }).addTo(map);
                     } else {
                         var targetLocs = {};
-                        console.log(scope.vizData);
                         scope.vizData[0].features.forEach(function(feature) {
                             targetLocs[feature.properties.iso] = {};
                             targetLocs[feature.properties.iso].x = feature.geometry.coordinates[0][0][0] + (dX / 2);
                             targetLocs[feature.properties.iso].y = feature.geometry.coordinates[0][0][1] + (dY / 4);
                         });
-                        console.log(targetLocs);
 
                         currentData[0].features.forEach(function(feature) {
                             var centerX = feature.geometry.coordinates[0][0][0] + (dX / 2);

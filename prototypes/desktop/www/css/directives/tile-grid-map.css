@@ -47,3 +47,10 @@ tile-grid-map .leaflet-div-icon p {
 	padding: 0;
 	
 }
+
+tile-grid-map-category-label {
+
+	font-size: 2em;
+	font-weight: 700;
+	color: red;
+}
