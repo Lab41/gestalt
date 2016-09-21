@@ -41,6 +41,7 @@
     .vis-key--item {
         display: inline;
         clear: none;
+        float: left;
     }
 }
 
