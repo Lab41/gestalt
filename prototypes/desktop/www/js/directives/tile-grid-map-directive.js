@@ -94,6 +94,16 @@ angular.module("tile-grid-map-directive", [])
                     var dX = 3.4641016151377;
                     var dY = 4.0;
 
+                    map.removeLayer(labelsLayer);
+
+                    // Cook the data for the selected group
+                    if(grouping.name !== 'default') {
+                        var labelFeatures = {
+                            "type": "FeatureCollection",
+                            "features": []
+                        };
+
+                        var groupWidth = 150.0 / grouping.subgroups.length;
 
                         var groupGeoData = {};
                         var groupLookup = {};
