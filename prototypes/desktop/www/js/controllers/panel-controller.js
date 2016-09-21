@@ -37,6 +37,14 @@ angular.module("panel-controller", [])
 		
 		// set scope
 		$scope.hexdata = data;
+
 	});
 	
+	// node groups
+	contentService.getData("visualization/countries/groups/").then(function(data) {
+		
+		// set scope
+		$scope.nodeGroups = data;
+	});
+
 }]);
