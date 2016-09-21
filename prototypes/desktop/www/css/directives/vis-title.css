@@ -1,0 +1,40 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** vis title ***************************************/
+
+/* directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !story controls
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+.vis-title {
+    position: absolute;
+    margin-top: 25px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-title {
+        position: relative;
+    }
+}
+
+/****************************/
+/***** !story controls ******/
+/****************************/
+
