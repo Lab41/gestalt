@@ -16,94 +16,129 @@ angular.module("tile-grid-map-directive", [])
 			var blur = 1;
 			var opacity = 0.5;
             var interactivity = true;
+			var style = {
+				dark: mapbox_config.style.dark, 
+				light: mapbox_config.style.light
+			};
 					
-            // get mapbox promise
-            mapboxService.L().then(function(L) {
+            // get mapboxgl promise
+			mapboxService.mapboxgl().then(function(mapboxgl) {
 
-                var circleMarker = {
-                    radius: 5,
-                    fillOpacity: opacity,
-                    stroke: false
-                };
+				mapboxgl.accessToken = token;
+				var style2= {
+				"version": 8,
+				"name": "Empty",
+				"metadata": {
+				"mapbox:autocomposite": true,
+				"mapbox:type": "template"
+				},
+				"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+				"sources": {},
+				"layers": [
+				{
+				"id": "background",
+				"type": "background",
+				"paint": {
+				"background-color": "rgba(0,0,0,0)"
+				}
+				}
+				]
+				};
 
-                L.mapbox.accessToken = token;
+				// initialize map object
+				var map = new mapboxgl.Map({
+					container: canvas,
+					//style: style[scope.theme],
+					style: style2,
+					interactive: interactivity,
+					center: [0, 0],
+    				zoom: 1.5,
+					minZoom: 1.5
+				});
 
-                // initialize map object
-                var map = L.mapbox.map(canvas);
-                
-				// use standard non-geographic coordinate system
-                map.options.crs = L.CRS.Simple;
-                
-                function draw(data, map, interactive, styleUrl) {console.log(data);
-					
-					// style url
-					var style = mapbox_config.style[styleUrl];
-					
-					// add style
-					//L.mapbox.styleLayer(style).addTo(map);
+				// bind data
+				scope.$watch("vizData", function(newData, oldData) {
 
-                    var geoJsonLayer = L.geoJson(data, {
+					// async check
+					if (newData !== undefined) {
 
-                        // modify color
-                        style: function(feature) {
-
-								return { className: "default" };
-                            /*switch (feature.properties.type) {
-                                case "article": return { color: articleColor };
-                                    break;
-                                default "tweet": return { color: tweetColor };
-                            }*/
-                            
-                        },
-
-                        // add labels
-                        onEachFeature: function (feature, layer) {
+						function draw(data) {
 							
-							// set popup options
-                            var popUpOptions = {
-                                offset: L.point(0, 10)
-                            };
-                            
-                            // custom popup content
-                            var label = feature.properties;
-                            var content = "<p>" + label.name + "</p>";
-
-                            // add pop up
-                            layer.bindPopup(content, popUpOptions);
+							function mapboxProjection(lonlat) {
+							  var p = map.project(new mapboxgl.LngLat(lonlat[0], lonlat[1]))
+							  return [p.x, p.y];
+							};
 							
-							// add polygon label
-							L.marker(layer.getBounds().getCenter(), {
-								icon: L.divIcon({
-									html: "<p>" + feature.properties.iso + "</p>",
-									iconSize: [20,20]
-								})
-							}).addTo(map);
+							function pointOnCircle(angle) {
+								return {
+									"type": "Point",
+									"coordinates": [
+										Math.cos(angle) * radius,
+										Math.sin(angle) * radius
+									]
+								};
+							}
 
-                        }
+							// wait for style to load
+							map.on("style.load", function(e) {
 
-                    }).addTo(map);
+								// add a new source with clustering true
+								map.addSource("nodes", {
+									type: "geojson",
+									data: data
+								});
+								
+								map.addSource('point', {
+									"type": "geojson",
+									"data": pointOnCircle(0)
+								});
+								
+								map.addLayer({
+									id: "tilegrid",
+									type: "fill",
+									source: "nodes",
+									layout: {},
+									paint: {
+										"fill-color": "#667080",
+										"fill-opacity": 0.4,
+										"fill-outline-color": "#667080"
+									}
+								});
+								
+								map.addLayer({
+									"id": "point",
+									"source": "point",
+									"type": "circle",
+									"paint": {
+										"circle-radius": 10,
+										"circle-color": "#007cbf"
+									}
+								});
 
-                    // center and zoom map based on markers
-                    map.fitBounds(geoJsonLayer.getBounds(), {
-                        //padding: [0,12],
-                        //minZoom: 5
-                    });
+								function animateMarker(timestamp) {
+									// Update the data to a new position based on the animation timestamp. The
+									// divisor in the expression `timestamp / 1000` controls the animation speed.
+									map.getSource('point').setData(pointOnCircle(timestamp / 1000));
 
-                };
+									// Request the next frame of the animation.
+									requestAnimationFrame(animateMarker);
+								}
 
-                // bind data
-                scope.$watchGroup(["vizData", "theme"], function(newData, oldData) {
+								// Start the animation.
+								animateMarker(0);
 
-                    // async check
-					if (newData[0] !== undefined) {
+							});
 
-                        draw(newData[0], map, interactivity, newData[1]);
+						};
 
-                    };
+						// update the viz
+						draw(newData[0]);
 
-                });
+					};
 
-            });
+				});
+
+			});
 			
 		}
 		

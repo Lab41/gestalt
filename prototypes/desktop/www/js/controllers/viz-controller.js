@@ -6,6 +6,7 @@ angular.module("viz-controller", [])
 	$scope.nodes;
 	$scope.nodeGroups;
 	$scope.heuristics;
+	$scope.tileGridData;
     
     // country nodes
 	contentService.getData("visualization/cdis/").then(function(data) {
@@ -20,6 +21,14 @@ angular.module("viz-controller", [])
 		
 		// set scope
 		$scope.nodeGroups = data;
+		
+	});
+	
+	// geojson
+	contentService.getData("visualization/geojson/hexagon/").then(function(data) {
+		
+		// set scope
+		$scope.tileGridData = data;
 		
 	});
 	
