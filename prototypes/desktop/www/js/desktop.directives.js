@@ -7,6 +7,7 @@ var app = angular.module("desktop.directives", [
     "story-controls-directive",
     "vis-key-directive",
     "vis-title-directive",
+    "detail-overlay-directive",
     "story-idea-metric-directive",
     "dynamic-directive-directive",
     "heatmap-grid-directive",
