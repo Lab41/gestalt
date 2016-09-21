@@ -94,16 +94,6 @@ angular.module("tile-grid-map-directive", [])
                     var dX = 3.4641016151377;
                     var dY = 4.0;
 
-                    map.removeLayer(labelsLayer);
-
-                    // Cook the data for the selected group
-                    if(grouping.name !== 'default') {
-                        var labelFeatures = {
-                            "type": "FeatureCollection",
-                            "features": []
-                        };
-
-                        var groupWidth = 150.0 / grouping.subgroups.length;
 
                         var groupGeoData = {};
                         var groupLookup = {};
@@ -242,22 +232,7 @@ angular.module("tile-grid-map-directive", [])
                         }
                     }
                 });
-
-                ////////////////////////////////////////////////////
-                /////////////// ANGULAR EVENTS START ///////////////
-                ////////////////////////////////////////////////////
                 
-                // watch for story idea changes
-                $rootScope.$on("mapStoryIdeaChange", function(event, args) {
-                    
-                    console.log(args);
-
-                });
-                
-                //////////////////////////////////////////////////
-                /////////////// ANGULAR EVENTS END ///////////////
-                //////////////////////////////////////////////////
-
             });
 
         }
