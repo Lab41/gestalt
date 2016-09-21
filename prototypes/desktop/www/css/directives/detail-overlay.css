@@ -1,0 +1,50 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** detail overlay ***************************************/
+
+/* directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !story controls
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+.detail-overlay__cover-all {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9000;
+    background-color: rgba(177, 177, 177, 0.58);
+}
+
+.detail-overlay {
+    z-index: 10000;
+    position: fixed;
+    top: 0px;
+    height: 75%;
+    width: 40%;
+    margin: 13% 30% 0% 30%;
+    background-color: white;
+}
+
+.detail-overlay__close {
+    width: 25px;
+    height: 25px;
+    float: right;
+    margin: 15px;
+    fill: #414141;
+}
+
+/****************************/
+/***** !story controls ******/
+/****************************/
+
