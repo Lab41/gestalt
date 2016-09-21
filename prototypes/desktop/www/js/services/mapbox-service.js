@@ -22,21 +22,21 @@ angular.module("mapbox-service", [])
 		function onScriptLoad() {
 
 			// check os
-			if (os == "Android") {
+			//if (os == "Android") {
 				
 				// serve up mapbox
 				$rootScope.$apply(function() {
 					d.resolve($window.L);
 				});
 				
-			} else {
+			/*} else {
 				
 				// serve up mapbox gl
 				$rootScope.$apply(function() {
 					d.resolve($window.mapboxgl);
 				});
 				
-			};
+			};*/
 			
 		};
 		
@@ -46,8 +46,8 @@ angular.module("mapbox-service", [])
 		var scriptTag = $document[0].createElement("script");
 		scriptTag.type = "text/javascript";
 		scriptTag.async = true;
-		scriptTag.src = os == "Android" ? mbox : gl;
-		//scriptTag.src = gl;
+		//scriptTag.src = os == "Android" ? mbox : gl;
+		scriptTag.src = mbox;
 		scriptTag.onreadystatechange = function() {
 			
 			//check state
