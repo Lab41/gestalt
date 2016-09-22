@@ -9,7 +9,7 @@ angular.module("detail-overlay-directive", [])
             },
             controller: function ($scope) {
 
-                $scope.showDetail = true;
+                $scope.showDetail = false;
 
                 $scope.closeDetail = function () {
                     $rootScope.$broadcast('toggle-detail-overlay');
