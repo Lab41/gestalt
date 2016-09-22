@@ -84,13 +84,13 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         abstract: true,
         templateUrl: "templates/app.html",
         controller: "appCtrl",
-        resolve: {
+        /*resolve: {
             authorized: ["$q", function($q) {
                 if(localStorage.getItem("gestaltUser") === null) {
                     return $q.reject("requires login");
                 };
             }]
-        },
+        },*/
         params: {
             t: theme_config.ui.start
         }
@@ -143,6 +143,6 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         }
     })
 
-    $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
+    $urlRouterProvider.otherwise("/econ/contagion/tile-grid-map?t=" + theme_config.ui.start);
 
 });
