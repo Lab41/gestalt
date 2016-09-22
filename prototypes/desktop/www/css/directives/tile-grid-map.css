@@ -56,17 +56,17 @@ tile-grid-map .leaflet-div-icon {
 
 /* polygon label text */
 tile-grid-map .leaflet-div-icon p {
-	
-	color: magenta;
-	font-size: 1em;
-	margin: 0;
-	padding: 0;
-	
+
+    color: magenta;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+
 }
 
 tile-grid-map-category-label {
 
-	font-size: 2em;
-	font-weight: 700;
-	color: red;
+    font-size: 2em;
+    font-weight: 700;
+    color: red;
 }
