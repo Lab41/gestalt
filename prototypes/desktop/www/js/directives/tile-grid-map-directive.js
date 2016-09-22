@@ -220,10 +220,11 @@ angular.module("tile-grid-map-directive", [])
 
                 // bind data
                 scope.$watchGroup(["vizData", "theme"], function(newData, oldData) {
-                    currentData = JSON.parse(JSON.stringify(newData[0]));
 
                     // async check
                     if (newData[0] !== undefined) {
+						
+						currentData = JSON.parse(JSON.stringify(newData[0]));
 
                         draw(currentData, map, interactivity, newData[1]);
 

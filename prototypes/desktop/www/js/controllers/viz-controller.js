@@ -25,7 +25,7 @@ angular.module("viz-controller", [])
 	});
 	
 	// geojson
-	contentService.getData("visualization/geojson/hexagon/").then(function(data) {
+	contentService.getData("visualization/geography/geojson/hexagon/").then(function(data) {
 		
 		// set scope
 		$scope.tileGridData = data;
