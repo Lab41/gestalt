@@ -10,38 +10,22 @@ angular.module("story-controls-directive", [])
         },
         controller: function($scope) {
 
-            // Some TEMP Vars
-            $scope.filterOpen = {
-                isOpen : false
-            };
-
-            $scope.filteredBy = "All";
-
-            $scope.colorOpen = {
-                isOpen : false
-            };
-
-            $scope.coloredBy = "None";
-
-            $scope.sortOpen = {
-                isOpen : false
-            };
-
-            $scope.sortedBy = "None";
-
             // story idea functionality
-            $scope.changeIdea = function(ideaId, controlId) {
+            $scope.changeOption = function(ideaName, ideaId, controlId) {
 
                 // TODO abstract so functionality is data driven not hardcoded here
 
                 // check control id
-                if (controlId < 12) {
+                //if (controlId < 12) {
 
                     // get current idea corresponding impact metric
                     contentService.getData("story/idea/" + ideaId + "/metric/" + controlId + "/").then(function(data) {
+						
+						// set option scope
+						$scope[ideaName] = data[0].control_name;
 
                         // broadcast so other visualizations can update
-                        $rootScope.$broadcast("storyIdeaChange", { val: data[0] });
+                        $rootScope.$broadcast("mapStoryIdeaChange", { val: data[0] });
 
                         // transition state url
                         $state.go("app.panel.visual", {
@@ -54,7 +38,7 @@ angular.module("story-controls-directive", [])
 
                     });
 
-                } else {
+                /*} else {
 
                     // get current set of heuristics
                     contentService.getData("visualization/heuristics/" + $scope.visTypeName + "/").then(function(data) {
@@ -70,11 +54,34 @@ angular.module("story-controls-directive", [])
 
                     });
 
-                }
+                }*/
 
             };
 
-        }
+        },
+		link: function(scope, element, attrs) {
+			
+			scope.$watch("controls", function(newData, oldData) {
+				
+				// async check
+				if (newData !== undefined) {
+					
+					var data = newData;
+					
+					// set initial values
+					angular.forEach(data, function(value, key) {
+						
+						// add scope value
+						scope[value.label] = "All";
+						scope[value.label + "Open"] = false;
+						
+					});
+					
+				};
+
+			});
+			
+		}
     };
 
 }]);

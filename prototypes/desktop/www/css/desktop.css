@@ -30,7 +30,7 @@ h1,
 h2,
 h3 {
 
-    font-family: "Source Sans Pro", sans-serif;
+    font-family: "body-copy-regular", "Source Sans Pro", sans-serif;
 
 }
 
@@ -60,6 +60,7 @@ p {
 
     line-height: 1.2;
     margin-bottom: 1em;
+    font-family: "body-copy-light"
 
 }
 
