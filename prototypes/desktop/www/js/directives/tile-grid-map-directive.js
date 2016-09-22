@@ -1,27 +1,27 @@
 angular.module("tile-grid-map-directive", [])
 
 .directive("tileGridMap", ["mapboxService", "$timeout", "$rootScope", function(mapboxService, $timeout, $rootScope) {
-	return {
-		restrict: "E",
-		scope: {
-			vizData: "=",
+    return {
+        restrict: "E",
+        scope: {
+            vizData: "=",
             grouping: "=",
-			theme: "="
-		},
-		template: "<div data-tap-disabled='true' style='height: 700px; width: 100%; background: none; margin-top:1em;'></div>",
-		link: function(scope, element, attrs) {
-			
-			var canvas = element.find("div")[0];
-			var token = mapbox_config.token;
-			var radius = 7;
-			var blur = 1;
-			var opacity = 0.5;
+            theme: "="
+        },
+        template: "<div data-tap-disabled='true' style='height: 100%; width: 100%; background: none;'></div>",
+        link: function(scope, element, attrs) {
+
+            var canvas = element.find("div")[0];
+            var token = mapbox_config.token;
+            var radius = 7;
+            var blur = 1;
+            var opacity = 0.5;
             var interactivity = true;
             var map = {};
             var geoJsonLayer = {};
             var labelsLayer = {};
             var currentData = {};
-					
+
             // get mapbox promise
             mapboxService.L().then(function(L) {
 
@@ -223,14 +223,14 @@ angular.module("tile-grid-map-directive", [])
 
                     // async check
                     if (newData[0] !== undefined) {
-						
-						currentData = JSON.parse(JSON.stringify(newData[0]));
+
+                        currentData = JSON.parse(JSON.stringify(newData[0]));
 
                         draw(currentData, map, interactivity, newData[1]);
 
                     };
                 });
-                
+
                 // watch for story idea changes
                 $rootScope.$on("mapStoryIdeaChange", function(event, args) {
                     if(args.val.action_name === 'cluster') {
@@ -243,7 +243,7 @@ angular.module("tile-grid-map-directive", [])
                         }
                     }
                 });
-                
+
             });
 
         }
