@@ -5,7 +5,8 @@ var app = angular.module("app", [
     "smoothScroll",
     "desktop.controllers",
     "desktop.directives",
-    "desktop.services"
+    "desktop.services",
+    "desktop.filters"
 ]);
 
 /***********************/
