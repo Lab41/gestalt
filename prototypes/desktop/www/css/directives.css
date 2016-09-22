@@ -27,3 +27,8 @@ ui-view[name="panel"] section {
 
 /*    padding: 0;*/
 }
+
+.position-fix {
+    position: absolute;
+    width: 100%;
+}
