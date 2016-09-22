@@ -7,6 +7,7 @@ import story
 import tag
 import workspace
 import visualization
+import data_economic
 
 urls = (
 
@@ -16,6 +17,7 @@ urls = (
     "/api/data/story/", story.app,
     "/api/tag/", tag.app,
     "/api/data/visualization/", visualization.app,
+    "/api/data/economic/", data_economic.app,
 
     # front-end routes to load angular app
     "/", "index",
