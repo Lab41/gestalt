@@ -26,7 +26,12 @@
     height: 100%;
     top: 0px;
     left: 0px;
-    padding-top: 8.1rem;
+
+    /* Padding When Main Menu Is Hidden */
+    padding-top: 4.7rem;
+
+    /* Padding When Main Menu Is Shown */
+    /* padding-top: 8.1rem; */
 }
 
 .vis-container-inside {
