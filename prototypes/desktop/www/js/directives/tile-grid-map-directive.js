@@ -8,7 +8,7 @@ angular.module("tile-grid-map-directive", [])
             grouping: "=",
 			theme: "="
 		},
-		template: "<div data-tap-disabled='true' style='height: 700px; width: 100%; background: none; margin-top:1em;'></div>",
+		template: "<div data-tap-disabled='true' style='height: 700px; width: 100%; background: none; border: 1px solid #666; margin-top:1em;'></div>",
 		link: function(scope, element, attrs) {
 			
 			var canvas = element.find("div")[0];
@@ -23,6 +23,9 @@ angular.module("tile-grid-map-directive", [])
             var categoryLabelsLayer = {};
             var currentData = {};
             var customLayerOpts = {};
+            var emphasizedGrouping = {};
+            var emphasizedValue = "default";
+            var emphasizedGroupMembers = [];
 
             var colorIndex = 0;
             var colorLookup = {};
@@ -36,17 +39,18 @@ angular.module("tile-grid-map-directive", [])
             mapboxService.L().then(function(L) {
                 var defaultLayerOpts = {
                     "style": function(feature) {
+                        var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         return {
-                            "className": "countryHex defaultHex",
+                            "className": "countryHex defaultHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
                             "color": "#202020"
                         };
                     },
                     "onEachFeature": function(feature) {
+                        var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         var icon = L.divIcon({
-                            "className": "defaultHexLabel",
+                            "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
                             "html": "<span style='color:rgba(30,30,30,1.0);'>" + feature.properties.iso + "</span>",
                         });
-                        console.log(feature.geometry.coordinates);
 
                         L.marker([feature.geometry.coordinates[0][0][1] - (dY/10), feature.geometry.coordinates[0][0][0] - (dX/1.8)], {
                             "icon": icon
@@ -70,6 +74,51 @@ angular.module("tile-grid-map-directive", [])
                     map.fitBounds(geoJsonLayer.getBounds());
                 };
 
+                function emphasizeData() {
+                    
+                    // Remove deemphasis class from existing map elements
+                    var mapElements = document.getElementsByClassName("countryHex");
+                    Array.prototype.forEach.call(mapElements, function (targetElement) {
+                        targetElement.classList.remove("deemphasizeHex");
+                    });
+                    mapElements = document.getElementsByClassName("defaultHexLabel");
+                    Array.prototype.forEach.call(mapElements, function (targetElement) {
+                        targetElement.classList.remove("deemphasizeHex");
+                    });
+
+                    if(emphasizedValue !== "default") {
+                        // Make a structure for looking up group membership by iso
+                        emphasizedGroupMembers = []
+                        emphasizedGrouping.subgroups.forEach(function(subgroup) {
+                            if(subgroup.name === emphasizedValue) {
+                                subgroup.nodes.forEach(function(node) {
+                                    if(node !== null) {
+                                        if(node.hasOwnProperty('iso')) {
+                                            emphasizedGroupMembers.push(node.iso);
+                                        } else {
+                                            // Just print a little warning
+                                            console.log("Node without iso property found!");
+                                            console.log(node);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                        currentData[0].features.forEach(function(feature) {
+                            if(!emphasizedGroupMembers.includes(feature.properties.iso)) {
+                                // Get feature and label for matching iso
+                                var targetFeature = document.getElementsByClassName("hex-feature-" + feature.properties.iso)[0];
+                                var targetLabel = document.getElementsByClassName("hex-label-" + feature.properties.iso)[0];
+
+                                // Apply deemphasizeHex class to make features muted
+                                targetFeature.classList.add("deemphasizeHex");
+                                targetLabel.classList.add("deemphasizeHex");
+                            }
+                        });
+                    }
+                };
+
                 function recolorData(grouping) {
                     if(grouping.name !== "default") {
                         // Generate lookup structure to quickly
@@ -91,14 +140,16 @@ angular.module("tile-grid-map-directive", [])
 
                         customLayerOpts = {
                             "style": function(feature) {
+                                var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 return {
-                                    "className": "countryHex coloredHex",
+                                    "className": "countryHex coloredHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
                                     "fillColor": getGroupColor(groupLookup[feature.properties.iso])
                                 };
                             },
                             "onEachFeature": function(feature) {
+                                var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 var icon = L.divIcon({
-                                    "className": "defaultHexLabel",
+                                    "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
                                     "html": "<span style='color:white;'>" + feature.properties.iso + "</span>",
                                 });
 
@@ -138,7 +189,6 @@ angular.module("tile-grid-map-directive", [])
                 }
 
                 function regroupData(grouping) {
-
                     var featureDeltas = {};
                     var STEPS = 10;
 
@@ -287,7 +337,6 @@ angular.module("tile-grid-map-directive", [])
                 
                 // watch for story idea changes
                 $rootScope.$on("mapStoryIdeaChange", function(event, args) {
-                    console.log(args.val);
                     if(args.val.action_name === 'cluster') {
                         // Based on the selected arg apply new grouping
                         var newGrouping = scope.grouping.find(function(group) {
@@ -305,6 +354,16 @@ angular.module("tile-grid-map-directive", [])
                         if(newGrouping !== undefined) {
                             recolorData(newGrouping);
                         }
+                    }
+                    if(args.val.action_name === 'emphasize') {
+                        // Select grouping based on metric value
+                        var groupingName = args.val.metrics[0].name;
+                        emphasizedGrouping = scope.grouping.find(function(group) {
+                            return group.name === groupingName;
+                        });
+                        emphasizedValue = args.val.metric_name;
+
+                        emphasizeData();
                     }
                 });
 

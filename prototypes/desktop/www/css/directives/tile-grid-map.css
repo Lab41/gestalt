@@ -41,17 +41,38 @@ tile-grid-map .defaultHex {
 
 }
 
+tile-grid-map .defaultHexLabel span {
+
+	font-size: 1em;
+	font-weight: 500;
+
+}
+
 tile-grid-map .coloredHex {
 
 	stroke-width: 2;
 	stroke-opacity: 1;
 	stroke: #FFF;
 	fill-opacity: 1.0;
+
 }
 
-tile-grid-map .defaultHexLabel span {
 
-	font-size: 1em;
-	font-weight: 500;
+tile-grid-map .deemphasizeHex.defaultHex {
+
+	stroke-opacity: 0.1;
+
+}
+
+tile-grid-map .deemphasizeHex.coloredHex {
+
+	fill-opacity: 0.1;
+	stroke-opacity: 0.1;
+
+}
+
+tile-grid-map .deemphasizeHex.defaultHexLabel span {
+
+	opacity: 0.1;
 
 }
