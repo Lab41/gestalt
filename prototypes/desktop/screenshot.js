@@ -1,0 +1,1 @@
+var page = require('webpage').create(); page.viewportSize = { width: 1690, height: 604 }; page.open('http://0.0.0.0:8000/#/econ/contagion/tile-grid-map?t=light', function(status) { setTimeout(function(){ page.render('viz3.png'); console.log('completed'); phantom.exit(); },1000); });

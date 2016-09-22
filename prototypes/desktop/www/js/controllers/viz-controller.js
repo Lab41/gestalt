@@ -46,16 +46,6 @@ angular.module("viz-controller", [])
 		
 	};
     
-    // trigger screenshot
-    $scope.takeScreenshot = function() {
-        
-        // post infor for phantom
-        screenshotService.postScreenCapture().then(function(data) {
 
-            console.log("done");
-            
-        })
-    
-    };
 																																  
 }]);
