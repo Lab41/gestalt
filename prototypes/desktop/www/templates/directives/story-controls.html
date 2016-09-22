@@ -1,20 +1,22 @@
 <div class="story-controls">
 
     <div class="row">
-		
-		<div ng-repeat="control in controls" class="col-xs-4">
-			<span class="pull-left dropdown-label">{{ control.label + ' by:' }}</span>
-			<div class="btn-group" uib-dropdown>
+
+        <div ng-repeat="control in controls" class="col-xs-4">
+            <span class="pull-left dropdown-label">{{ control.label + ' by:' | capitalize}}</span>
+            <div class="btn-group" uib-dropdown>
                 <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
                     <span ng-bind="{{control.label}}"></span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
                     <li ng-repeat="option in control.controls" role="menuitem">
-						<a ng-click="changeOption(control.label,control.id,option.id);">{{ option.name }}</a>
-					</li>
+                        <a href="" ng-click="changeOption(control.label,control.id,option.id);">
+                            {{option.name | capitalize}}
+                        </a>
+                    </li>
                 </ul>
             </div>
-		</div>
+        </div>
 
     </div>
 

@@ -1,6 +1,6 @@
 angular.module("viz-controller", [])
 
-.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", function($scope, contentService, $state, $rootScope) {
+.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", "screenshotService", function($scope, contentService, $state, $rootScope, screenshotService) {
     	        
 	// data objects
 	$scope.nodes;
@@ -45,5 +45,17 @@ angular.module("viz-controller", [])
 		});
 		
 	};
+    
+    // trigger screenshot
+    $scope.takeScreenshot = function() {
+        
+        // post infor for phantom
+        screenshotService.postScreenCapture().then(function(data) {
+
+            console.log("done");
+            
+        })
+    
+    };
 																																  
 }]);

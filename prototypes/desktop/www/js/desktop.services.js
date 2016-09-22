@@ -7,5 +7,6 @@ angular.module("desktop.services", [
 	"d3-service",
 	"mapbox-service",
 	"agent-service",
-    "economic-service",
+    "economic-service",,
+    "screenshot-service"
 ]);
