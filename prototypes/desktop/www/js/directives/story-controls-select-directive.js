@@ -9,6 +9,9 @@ angular.module("story-controls-select-directive", [])
 			visTypeName: "="
         },
         controller: function($scope) {
+        	$scope.idea.controls.sort(function(a,b) {
+        		return a.id - b.id;
+        	});
         	$scope.selectedIdea = $scope.idea.controls[0];
             
             // story idea functionality
