@@ -11,7 +11,7 @@ angular.module("panel-controller", [])
 	// get credentials from local storage
     authenticationService.getCredentials().then(function(userData) {
         
-        var user = userData;
+        var user = { user: "general", id: 1};
 		var objs = { multi: "panels", single: "panel" };
 		var endpoint = workspaceParam + "/panels/" + user.id + "/";
 		var check = { key: "url_name", value: panelParam };
