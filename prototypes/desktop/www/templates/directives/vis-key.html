@@ -1,4 +1,15 @@
-<div class="vis-key clearfix">
+
+<!-- button for toggling the key to show -->
+<div class="clearfix" ng-show="showkey">
+<button ng-click = "showkey=!showkey" class="pull-left"> Show Key </button> 
+</div>
+
+
+
+<div class="vis-key clearfix" ng-show="!showkey">
+
+    <!-- button for toggling the key to hide -->
+    <button ng-click = "showkey=!showkey" class="pull-right"> Hide Key </button> 
     <h2>Legend</h2>
     <hr>
     <div>

@@ -94,6 +94,10 @@ button:active {
 .menu-item:hover {
     
     background: rgb(30,30,30);
+    margin-left: -1em;
+    margin-right: -1em;
+    padding-left: 2em;
+    padding-right: 2em;
     
 }
 
