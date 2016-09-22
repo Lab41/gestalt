@@ -9,14 +9,14 @@ angular.module("screenshot-service", [])
     screenshotService.postScreenCapture = function() {
         
         var url = $location.$$absUrl;
-        var width = 500;
-        var height = 400;
+        var width = 1690;
+        var height = 604;
 			
         // set up a valid object
         var obj = {
         	"width": width,
         	"height": height,
-            "url": "blah"
+            "url": url
     	};                             
         
         // post it
