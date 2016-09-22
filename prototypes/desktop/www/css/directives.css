@@ -18,12 +18,17 @@
 ui-view[name="panel"] {
 
     display: block;
-    padding: 0;
+/*    padding: 0;*/
 
 }
 
 /* section in panel */
 ui-view[name="panel"] section {
 
-    padding: 0;
+/*    padding: 0;*/
+}
+
+.position-fix {
+    position: absolute;
+    width: 100%;
 }

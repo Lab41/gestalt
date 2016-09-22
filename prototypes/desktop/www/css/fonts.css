@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'header-regular';
+    src: url('fonts/slabo/slabo27px-regular-webfont.eot');
+    src: url('fonts/slabo/slabo27px-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/slabo/slabo27px-regular-webfont.woff2') format('woff2'),
+         url('fonts/slabo/slabo27px-regular-webfont.woff') format('woff'),
+         url('fonts/slabo/slabo27px-regular-webfont.ttf') format('truetype'),
+         url('fonts/slabo/slabo27px-regular-webfont.svg#slabo_27pxregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'body-copy-light';
+    src: url('fonts/lato/lato-light-webfont.eot');
+    src: url('fonts/lato/lato-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato/lato-light-webfont.woff2') format('woff2'),
+         url('fonts/lato/lato-light-webfont.woff') format('woff'),
+         url('fonts/lato/lato-light-webfont.ttf') format('truetype'),
+         url('fonts/lato/lato-light-webfont.svg#latolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'body-copy-regular';
+    src: url('fonts/lato/lato-regular-webfont.eot');
+    src: url('fonts/lato/lato-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lato/lato-regular-webfont.woff2') format('woff2'),
+         url('fonts/lato/lato-regular-webfont.woff') format('woff'),
+         url('fonts/lato/lato-regular-webfont.ttf') format('truetype'),
+         url('fonts/lato/lato-regular-webfont.svg#latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
