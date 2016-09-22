@@ -27,6 +27,17 @@
     height: 25px;
 }
 
+.hide-key {
+    margin-top: -5px;
+    padding: 5px 5px 0px 5px;
+    background-color: transparent;
+}
+
+.hide-key svg {
+    width: 20px;
+    height: 20px;
+}
+
 .vis-key {
     width: 20rem;
     background-color: #e2e2e2;
