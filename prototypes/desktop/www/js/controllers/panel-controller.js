@@ -32,19 +32,4 @@ angular.module("panel-controller", [])
 		
 	});
 
-	// node groups
-	contentService.getData("visualization/geojson/hexagon/").then(function(data) {
-		
-		// set scope
-		$scope.hexdata = data;
-
-	});
-	
-	// node groups
-	contentService.getData("visualization/countries/groups/").then(function(data) {
-		
-		// set scope
-		$scope.nodeGroups = data;
-	});
-
 }]);
