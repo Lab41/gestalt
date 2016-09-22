@@ -6,5 +6,6 @@ angular.module("desktop.services", [
     "plotly-service",
 	"d3-service",
 	"mapbox-service",
-	"agent-service"
+	"agent-service",
+    "economic-service",
 ]);

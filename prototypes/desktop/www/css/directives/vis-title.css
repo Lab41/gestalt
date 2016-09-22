@@ -1,9 +1,9 @@
 @charset "UTF-8";
 /* CSS Document */
 
-/*************************************** story-controls directive STYLE ***************************************/
+/*************************************** vis title ***************************************/
 
-/* story controls directive specific styling. */
+/* directive specific styling. */
 
 /* !IMPORTS
 /* !GLOBAL
@@ -17,16 +17,21 @@
 
 /******************************* !CUSTOM *******************************/
 
-.story-controls {
-    padding: 15px 25px;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    margin-top: 10px;
+.vis-title {
+    position: absolute;
+    margin-top: 25px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+    text-align: center;
 }
 
-.dropdown-label {
-    padding-right: 10px;
-    line-height: 2rem;
+@media only screen and (max-width: 768px) {
+    .vis-title {
+        position: relative;
+    }
 }
 
 /****************************/

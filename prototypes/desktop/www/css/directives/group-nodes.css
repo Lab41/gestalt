@@ -19,46 +19,59 @@
 /***** !group nodes ******/
 /*************************/
 
+group-nodes {
+    position: absolute;
+    width: 100%;
+    top: 13rem;
+}
+
+@media only screen and (max-width: 768px) {
+    group-nodes {
+        position: relative;
+        top: 0;
+    }
+}
+
 /* node */
 group-nodes .node {
-	
-	cursor: pointer;
+
+    cursor: pointer;
     opacity: 1;
-	pointer-events: all;
-	
+    pointer-events: all;
+
 }
 
 /* unclickable node */
 group-nodes .inactive {
-    
+
     cursor: not-allowed;
     opacity: 0.2;
     pointer-events: none;
-    
+
 }
 
 /* link */
 group-nodes .link {
-	
+
     opacity: 0.5;
     stroke-width: 0.5px;
-	
+
 }
 
 /* node label */
 group-nodes .node text {
-    
+
     font-size: 0.25em;
     text-anchor: middle;
     text-transform: uppercase;
-    
+
 }
 
 /* group label */
 group-nodes .group-label {
-    
+
     fill: currentColor;
     font-size: 0.35em;
     text-anchor: middle;
-    
+
 }

@@ -1,0 +1,49 @@
+<div class="story-controls">
+
+    <div class="row">
+
+        <!--Filter By-->
+        <div class="col-xs-4">
+            <span class="pull-left dropdown-label">Filter By:</span>
+            <div class="btn-group" uib-dropdown is-open="filterOpen.isOpen">
+                <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                    <span ng-bind="filteredBy"></span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
+                    <li role="menuitem"><a href="#">Option 1</a></li>
+                    <li role="menuitem"><a href="#">Option 2</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!--Color By-->
+        <div class="col-xs-4">
+            <span class="pull-left dropdown-label">Color By:</span>
+            <div class="btn-group" uib-dropdown is-open="colorOpen.isOpen">
+                <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                    <span ng-bind="coloredBy"></span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
+                    <li role="menuitem"><a href="#">Option 1</a></li>
+                    <li role="menuitem"><a href="#">Option 2</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!--Sort By-->
+        <div class="col-xs-4">
+            <span class="pull-left dropdown-label">Sort By:</span>
+            <div class="btn-group" uib-dropdown is-open="sortOpen.isOpen">
+                <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                    <span ng-bind="sortedBy"></span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
+                    <li role="menuitem"><a href="#">Option 1</a></li>
+                    <li role="menuitem"><a href="#">Option 2</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</div>

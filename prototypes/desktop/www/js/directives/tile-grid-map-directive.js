@@ -34,50 +34,48 @@ angular.module("tile-grid-map-directive", [])
                 L.mapbox.accessToken = token;
 
                 // initialize map object
-                map = L.mapbox.map(canvas);
-                
-				// use standard non-geographic coordinate system
+                var map = L.mapbox.map(canvas);
+
+                // use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
-                
-                function draw(data, map, interactive, styleUrl) {
-					
-					// style url
-					var style = mapbox_config.style[styleUrl];
-					
-					// add style
-					//L.mapbox.styleLayer(style).addTo(map);
+
+                function draw(data, map, interactive, styleUrl) {console.log(data);
+
+                    // style url
+                    var style = mapbox_config.style[styleUrl];
+
+                    // add style
+                    //L.mapbox.styleLayer(style).addTo(map);
 
                     geoJsonLayer = L.geoJson(data/*, {
 
                         // modify color
                         style: function(feature) {
 
-								return { className: "default" };
-                            
                         },
 
                         // add labels
                         onEachFeature: function (feature, layer) {
-							
-							// set popup options
+
+                            // set popup options
                             var popUpOptions = {
                                 offset: L.point(0, 10)
                             };
-                            
+
                             // custom popup content
                             var label = feature.properties;
                             var content = "<p>" + label.name + "</p>";
 
                             // add pop up
                             layer.bindPopup(content, popUpOptions);
-							
-							// add polygon label
-							L.marker(layer.getBounds().getCenter(), {
-								icon: L.divIcon({
-									html: "<p>" + feature.properties.iso + "</p>",
-									iconSize: [20,20]
-								})
-							}).addTo(map);
+
+                            // add polygon label
+                            L.marker(layer.getBounds().getCenter(), {
+                                icon: L.divIcon({
+                                    html: "<p>" + feature.properties.iso + "</p>",
+                                    iconSize: [20,20]
+                                })
+                            }).addTo(map);
 
                         }
 
@@ -225,7 +223,7 @@ angular.module("tile-grid-map-directive", [])
                     currentData = JSON.parse(JSON.stringify(newData[0]));
 
                     // async check
-					if (newData[0] !== undefined) {
+                    if (newData[0] !== undefined) {
 
                         draw(currentData, map, interactivity, newData[1]);
 
@@ -244,10 +242,10 @@ angular.module("tile-grid-map-directive", [])
                         }
                     }
                 });
-
+                
             });
-			
-		}
-		
-	};
+
+        }
+
+    };
 }]);

@@ -16,14 +16,14 @@
 
 /* panel wrap */
 ui-view[name="panel"] {
-    
+
     display: block;
-    padding: 2em;
-    
+/*    padding: 0;*/
+
 }
 
 /* section in panel */
 ui-view[name="panel"] section {
-    
-    padding: 1em;
+
+/*    padding: 0;*/
 }
