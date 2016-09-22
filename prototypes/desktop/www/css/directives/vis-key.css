@@ -17,6 +17,16 @@
 
 /******************************* !CUSTOM *******************************/
 
+.show-key {
+    margin: 6rem 1.5rem 0 1.5rem;
+    padding: 7px 9px 2px 9px;
+}
+
+.show-key svg {
+    width: 25px;
+    height: 25px;
+}
+
 .vis-key {
     width: 20rem;
     background-color: #e2e2e2;

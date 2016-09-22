@@ -1,15 +1,17 @@
 
 <!-- button for toggling the key to show -->
-<div class="clearfix" ng-show="showkey">
-<button ng-click = "showkey=!showkey" class="pull-left"> Show Key </button> 
+<div ng-show="showkey">
+
+    <button ng-click = "showkey=!showkey" class="btn btn-default show-key">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><g><path d="M35.7,27.2h58.5c1,0,1.8-0.8,1.8-1.8s-0.8-1.8-1.8-1.8H35.7c-1,0-1.8,0.8-1.8,1.8S34.7,27.2,35.7,27.2z"></path><path d="M94.1,47.3H35.7c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8h58.5c1,0,1.8-0.8,1.8-1.8S95.1,47.3,94.1,47.3z"></path><path d="M94.1,70.9H35.7c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8h58.5c1,0,1.8-0.8,1.8-1.8S95.1,70.9,94.1,70.9z"></path><path d="M22.7,39.7H7.5c-1,0-1.8,0.8-1.8,1.8v15.2c0,1,0.8,1.8,1.8,1.8h15.2c1,0,1.8-0.8,1.8-1.8V41.5   C24.4,40.5,23.6,39.7,22.7,39.7z"></path><path d="M7.1,34h15.6c0.6,0,1.2-0.3,1.5-0.9s0.3-1.2,0-1.8l-7.8-13.5c-0.3-0.5-0.9-0.9-1.5-0.9s-1.2,0.3-1.5,0.9L5.6,31.4   c-0.3,0.5-0.3,1.2,0,1.8S6.5,34,7.1,34z"></path><path d="M15.4,62.6c-5.5,0-10,4.5-10,10s4.5,10,10,10s10-4.5,10-10S20.9,62.6,15.4,62.6z"></path></g></svg>
+    </button>
+
 </div>
-
-
 
 <div class="vis-key clearfix" ng-show="!showkey">
 
     <!-- button for toggling the key to hide -->
-    <button ng-click = "showkey=!showkey" class="pull-right"> Hide Key </button> 
+    <button ng-click = "showkey=!showkey" class="pull-right"> Hide Key </button>
     <h2>Legend</h2>
     <hr>
     <div>
@@ -26,4 +28,5 @@
             <div class="vis-key--label">Key 3</div>
         </div>
     </div>
+
 </div>
