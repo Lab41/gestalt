@@ -47,34 +47,11 @@
     width: 100%;
 }
 
-/* reset path style from what mapbox defines */
-
-tile-grid-map path {
-    fill-opacity: 0.5;
-    stroke-width: 1;
-    stroke-opacity: 1;
-}
-
-/* polygon label wrap */
-
 tile-grid-map .leaflet-div-icon {
     background: none;
     border: none 0;
     pointer-events: none;
     text-align: center;
-}
-
-/* polygon label text */
-
-tile-grid-map .leaflet-div-icon p {
-    color: magenta;
-    font-size: 1em;
-    margin: 0;
-    padding: 0;
-}
-
-tile-grid-map .leaflet-marker-icon {
-    margin: 0;
 }
 
 tile-grid-map .defaultHex {
@@ -88,18 +65,15 @@ tile-grid-map .defaultHex {
 
 tile-grid-map .defaultHexLabel {
 
-    font-family: "header-regular";
-    color:rgba(30,30,30,1.0);
-    pointer-events: none;
+	font-weight: 500;
 
 }
 
 tile-grid-map .coloredHex {
 
-    stroke-width: 2;
-    stroke-opacity: 1;
-    stroke: #FFF;
-    fill-opacity: 1.0;
+	stroke-width: 2;
+	stroke-opacity: 0.0;
+	fill-opacity: 1.0;
 
 }
 
@@ -117,16 +91,9 @@ tile-grid-map .deemphasizeHex.coloredHex {
 
 }
 
-tile-grid-map .deemphasizeHex.defaultHexLabel span {
+tile-grid-map .deemphasizeHex.defaultHexLabel {
 
     opacity: 0.1;
-
-}
-
-tile-grid-map-category-label {
-    font-size: 2em;
-    font-weight: 700;
-    color: red;
 
 }
 

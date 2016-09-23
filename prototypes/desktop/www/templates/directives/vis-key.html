@@ -1,4 +1,4 @@
-<div class="vis-key__container">
+<div class="vis-key__container" ng-show="isActive">
 
     <!-- button for toggling the key to show -->
     <div ng-show="showkey">
@@ -33,21 +33,14 @@
         </button>
 
         <div ng-show="true">
-            <h2>Color Legend</h2>
+            <h2>{{legendData.name}}</h2>
             <hr>
 
             <div>
-                <div class="vis-key--item">
-                    <div class="vis-key__color-well" ng-style=""></div>
-                    <div class="vis-key--label">Key 1</div>
-                </div>
-                <div class="vis-key--item">
-                    <div class="vis-key__color-well" ng-style=""></div>
-                    <div class="vis-key--label">Key 2</div>
-                </div>
-                <div class="vis-key--item">
-                    <div class="vis-key__color-well" ng-style=""></div>
-                    <div class="vis-key--label">Key 3</div>
+                <div ng-repeat="legendItem in legendData.legend_data" class="vis-key--item">
+                    <div class="vis-key__color-well" ng-style="setColor(legendItem.color)"></div>
+                    <div class="vis-key--label">{{legendItem.name}}</div>
+                    <div class="vis-key--label">{{legendItem.count}}</div>
                 </div>
             </div>
         </div>
