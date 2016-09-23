@@ -8,7 +8,7 @@ angular.module("story-controls-directive", [])
             controls: "=",
             visTypeName: "="
         },
-        controller: function($scope) {
+        controller: function($scope, $filter) {
 
             // story idea functionality
             $scope.changeOption = function(ideaName, ideaId, controlId) {
@@ -20,9 +20,9 @@ angular.module("story-controls-directive", [])
 
                     // get current idea corresponding impact metric
                     contentService.getData("story/idea/" + ideaId + "/metric/" + controlId + "/").then(function(data) {
-						
-						// set option scope
-						$scope[ideaName] = data[0].control_name;
+
+                        // set option scope
+                        $scope[ideaName] = $filter('capitalize')(data[0].control_name);
 
                         // broadcast so other visualizations can update
                         $rootScope.$broadcast("mapStoryIdeaChange", { val: data[0] });
@@ -59,29 +59,29 @@ angular.module("story-controls-directive", [])
             };
 
         },
-		link: function(scope, element, attrs) {
-			
-			scope.$watch("controls", function(newData, oldData) {
-				
-				// async check
-				if (newData !== undefined) {
-					
-					var data = newData;
-					
-					// set initial values
-					angular.forEach(data, function(value, key) {
-						
-						// add scope value
-						scope[value.label] = "All";
-						scope[value.label + "Open"] = false;
-						
-					});
-					
-				};
+        link: function(scope, element, attrs) {
 
-			});
-			
-		}
+            scope.$watch("controls", function(newData, oldData) {
+
+                // async check
+                if (newData !== undefined) {
+
+                    var data = newData;
+
+                    // set initial values
+                    angular.forEach(data, function(value, key) {
+
+                        // add scope value
+                        scope[value.label] = "Not Set";
+                        scope[value.label + "Open"] = false;
+
+                    });
+
+                };
+
+            });
+
+        }
     };
 
 }]);
