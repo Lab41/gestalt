@@ -1,6 +1,6 @@
 angular.module("panel-controller", [])
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, authenticationService, $rootScope) {
+.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "authenticationService", "$rootScope","screenshotService", function($scope, $stateParams, $state, contentService, layoutService, authenticationService, $rootScope,screenshotService) {
     
     var workspaceParam = $stateParams.workspace;
     var panelParam = $stateParams.panel;
@@ -31,5 +31,17 @@ angular.module("panel-controller", [])
 		});
 		
 	});
+
+	    // trigger screenshot
+    $scope.takeScreenshot = function() {
+        console.log("before taking screenshot");
+        // post infor for phantom
+        screenshotService.postScreenCapture().then(function(data) {
+
+            console.log("done");
+            
+        })
+    
+    };
 
 }]);
