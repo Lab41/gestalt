@@ -35,7 +35,7 @@ class postViewport:
         timestr = time.strftime("%Y%m%d-%H%M%S")
         current_dir =  os.path.abspath(os.path.dirname(__file__))
         img_name = "screenshot-"+timestr
-        img_url = current_dir+"/www/"+img_name+'.png'
+        img_url = current_dir+"/www/screenshots/"+img_name+'.png'
         # insert code into screenshot.js
         fo=open("screenshot.js","wb")
         code="var page = require('webpage').create(); page.viewportSize = { width: "+str(width)+", height: "+str(height)+" }; page.open('"+ web_url+"', function(status) { setTimeout(function(){ page.render('"+img_url+"'); console.log('completed'); phantom.exit(); },1000); });"
@@ -44,7 +44,7 @@ class postViewport:
         # execute command to take screeshot
         os.system('phantomjs screenshot.js')
         # send back url,so that user can download image.
-        return "http://0.0.0.0:8000/"+img_name+".png"
+        return "http://0.0.0.0:8000/screenshots/"+img_name+".png"
 
 # instantiate the application
 app = web.application(urls, locals())

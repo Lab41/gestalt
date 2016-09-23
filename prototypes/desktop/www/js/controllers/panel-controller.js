@@ -41,7 +41,7 @@ angular.module("panel-controller", [])
 
         	// Force download for user.
             var link = document.createElement("a");
-  			link.download = "data:image/png,myVisualization.png";
+  			link.download = "data:image/png,myVis.png";
   			link.href = data.data;
   			document.body.appendChild(link);
   			link.click();
