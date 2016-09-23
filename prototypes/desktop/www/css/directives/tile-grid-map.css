@@ -83,7 +83,7 @@ tile-grid-map-category-label {
 
 .tile-grid-popup {
     position: relative;
-    width: 280px;
+    width: 350px;
     height: 180px;
     padding: 15px;
     background: #FFFFFF;
@@ -91,8 +91,6 @@ tile-grid-map-category-label {
     -moz-border-radius: 10px;
     border-radius: 10px;
     border: #7f7f7f solid 1px;
-    margin-left: -140px;
-    margin-top: -196px;
 }
 
 .tile-grid-popup hr {
@@ -119,7 +117,7 @@ tile-grid-map-category-label {
     width: 0;
     z-index: 1;
     bottom: -22px;
-    left: 128px;
+    left: 175px;
 }
 
 .tile-grid-popup:before {
@@ -132,5 +130,23 @@ tile-grid-map-category-label {
     width: 0;
     z-index: 0;
     bottom: -23px;
-    left: 128px;
+    left: 175px;
+}
+
+.tile-grid-popup h3 {
+    font-size: 1.3rem;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+}
+
+.leaflet-popup-close-button+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    padding: 0;
+    margin: 0;
+}
+
+.leaflet-popup-content-wrapper {
+    box-shadow: none;
 }

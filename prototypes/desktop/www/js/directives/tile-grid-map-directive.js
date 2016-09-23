@@ -47,7 +47,7 @@ angular.module("tile-grid-map-directive", [])
                     // add style
                     //L.mapbox.styleLayer(style).addTo(map);
 
-                    geoJsonLayer = L.geoJson(data/*, {
+                    geoJsonLayer = L.geoJson(data, {
 
                         // modify color
                         style: function(feature) {
@@ -59,12 +59,13 @@ angular.module("tile-grid-map-directive", [])
 
                             // set popup options
                             var popUpOptions = {
-                                offset: L.point(0, 10)
+                                offset: L.point(10, 0),
+                                className: "tile-grid-popup"
                             };
 
                             // custom popup content
                             var label = feature.properties;
-                            var content = "<p>" + label.name + "</p>";
+                            var content = "<h3> (" + feature.properties.iso + ") " + label.name + "</h3><hr><ul><li class='popup-item'>" + "test" + "</li></ul>";
 
                             // add pop up
                             layer.bindPopup(content, popUpOptions);
@@ -79,7 +80,7 @@ angular.module("tile-grid-map-directive", [])
 
                         }
 
-                    }*/).addTo(map);
+                    }).addTo(map);
 
                     // center and zoom map based on markers
                     map.fitBounds(geoJsonLayer.getBounds());
