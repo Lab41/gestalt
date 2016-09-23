@@ -1,6 +1,6 @@
 angular.module("panel-controller", [])
 
-.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "authenticationService", "$rootScope", function($scope, $stateParams, $state, contentService, layoutService, authenticationService, $rootScope) {
+.controller("panelCtrl", ["$scope", "$stateParams", "$state", "contentService", "layoutService", "authenticationService", "$rootScope","screenshotService", function($scope, $stateParams, $state, contentService, layoutService, authenticationService, $rootScope,screenshotService) {
     
     var workspaceParam = $stateParams.workspace;
     var panelParam = $stateParams.panel;
@@ -11,7 +11,7 @@ angular.module("panel-controller", [])
 	// get credentials from local storage
     authenticationService.getCredentials().then(function(userData) {
         
-        var user = userData;
+        var user = { user: "general", id: 1};
 		var objs = { multi: "panels", single: "panel" };
 		var endpoint = workspaceParam + "/panels/" + user.id + "/";
 		var check = { key: "url_name", value: panelParam };
@@ -32,19 +32,16 @@ angular.module("panel-controller", [])
 		
 	});
 
-	// node groups
-	contentService.getData("visualization/geojson/hexagon/").then(function(data) {
-		
-		// set scope
-		$scope.hexdata = data;
+	    // trigger screenshot
+    $scope.takeScreenshot = function() {
+        console.log("before taking screenshot");
+        // post infor for phantom
+        screenshotService.postScreenCapture().then(function(data) {
 
-	});
-	
-	// node groups
-	contentService.getData("visualization/countries/groups/").then(function(data) {
-		
-		// set scope
-		$scope.nodeGroups = data;
-	});
+            console.log("done");
+            
+        })
+    
+    };
 
 }]);

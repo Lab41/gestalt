@@ -1,21 +1,21 @@
 angular.module("tile-grid-map-directive", [])
 
 .directive("tileGridMap", ["mapboxService", "$timeout", "$rootScope", function(mapboxService, $timeout, $rootScope) {
-	return {
-		restrict: "E",
-		scope: {
-			vizData: "=",
+    return {
+        restrict: "E",
+        scope: {
+            vizData: "=",
             grouping: "=",
-			theme: "="
-		},
-		template: "<div data-tap-disabled='true' style='height: 700px; width: 100%; background: none; border: 1px solid #666; margin-top:1em;'></div>",
-		link: function(scope, element, attrs) {
-			
-			var canvas = element.find("div")[0];
-			var token = mapbox_config.token;
-			var radius = 7;
-			var blur = 1;
-			var opacity = 0.5;
+            theme: "="
+        },
+        template: "<div data-tap-disabled='true' style='height: 100%; width: 100%; background: none;'></div>",
+        link: function(scope, element, attrs) {
+
+            var canvas = element.find("div")[0];
+            var token = mapbox_config.token;
+            var radius = 7;
+            var blur = 1;
+            var opacity = 0.5;
             var interactivity = true;
             var map = {};
             var geoJsonLayer = {};
@@ -45,25 +45,44 @@ angular.module("tile-grid-map-directive", [])
                             "color": "#202020"
                         };
                     },
-                    "onEachFeature": function(feature) {
+                    "onEachFeature": function(feature, layer) {
+						
+						// set up class name
                         var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+						
+						// polygon label
                         var icon = L.divIcon({
                             "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
                             "html": "<span style='color:rgba(30,30,30,1.0);'>" + feature.properties.iso + "</span>",
                         });
 
+						// add polygon label to labels layer
                         L.marker([feature.geometry.coordinates[0][0][1] - (dY/10), feature.geometry.coordinates[0][0][0] - (dX/1.8)], {
                             "icon": icon
                         }).addTo(labelsLayer);
-                    }
+						
+						// set popup options
+						var popUpOptions = {
+							offset: L.point(0, 10)
+						};
+						
+						// custom popup content
+						var label = feature.properties;
+						var content = "<p>" + label.name + "</p>";
+						
+						// add pop up
+						layer.bindPopup(content, popUpOptions);
+						
+					}
+
                 };
 
                 L.mapbox.accessToken = token;
 
                 // initialize map object
-                map = L.mapbox.map(canvas);
-                
-				// use standard non-geographic coordinate system
+                var map = L.mapbox.map(canvas);
+
+                // use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
                 
                 function draw(data, map, interactive, styleUrl) {
@@ -325,16 +344,17 @@ angular.module("tile-grid-map-directive", [])
 
                 // bind data
                 scope.$watchGroup(["vizData", "theme"], function(newData, oldData) {
-                    currentData = JSON.parse(JSON.stringify(newData[0]));
 
                     // async check
-					if (newData[0] !== undefined) {
+                    if (newData[0] !== undefined) {
+
+                        currentData = JSON.parse(JSON.stringify(newData[0]));
 
                         draw(currentData, map, interactivity, newData[1]);
 
                     };
                 });
-                
+
                 // watch for story idea changes
                 $rootScope.$on("mapStoryIdeaChange", function(event, args) {
                     if(args.val.action_name === 'cluster') {
@@ -368,8 +388,8 @@ angular.module("tile-grid-map-directive", [])
                 });
 
             });
-			
-		}
-		
-	};
+
+        }
+
+    };
 }]);

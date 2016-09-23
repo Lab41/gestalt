@@ -130,11 +130,12 @@ class persona_panel_stories:
 		select sac.*,
 		case
 		when sac.story_action_id = 1 then g.name
-		when sac.story_action_id = 2 then v.name
+		when sac.story_action_id = 2 then g.name
 		when sac.story_action_id = 3 then f.name
 		when sac.story_action_id = 4 then h.name
-        when sac.story_action_id = 5 then c.name
-        when sac.story_action_id = 6 then e.name
+        when sac.story_action_id = 5 then g.name
+        when sac.story_action_id = 6 then g.name
+		when sac.story_action_id = 7 then g.name
 		end
 		as name
 		from """ + helper.table_prefix + """story_action_control sac
@@ -172,9 +173,10 @@ class story_idea_metrics:
 		si.id as story_idea_id,
 		case
 		when sac.story_action_id = 1 then g.name
-		when sac.story_action_id = 2 then v.name
-        when sac.story_action_id = 5 then c.name
-        when sac.story_action_id = 6 then e.name
+		when sac.story_action_id = 2 then g.name
+        when sac.story_action_id = 5 then g.name
+        when sac.story_action_id = 6 then g.name
+		when sac.story_action_id = 7 then g.name
 		else f.name
 		end 
 		as control_name,

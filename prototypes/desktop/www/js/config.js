@@ -2,7 +2,9 @@
 var api_config = {
 	content_service_uri : "api/data/",
     layout_service : "api/workspace/",
-    authentication_service_uri : "api/persona/"
+    authentication_service_uri : "api/persona/",
+    content_economic_service_uri: "api/data/economic/",
+    feedback_service_uri: "api/screenshot/"
 }; 
 
 // mapbox development

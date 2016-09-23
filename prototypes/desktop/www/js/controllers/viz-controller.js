@@ -1,11 +1,12 @@
 angular.module("viz-controller", [])
 
-.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", function($scope, contentService, $state, $rootScope) {
+.controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", "screenshotService", function($scope, contentService, $state, $rootScope, screenshotService) {
     	        
 	// data objects
 	$scope.nodes;
 	$scope.nodeGroups;
 	$scope.heuristics;
+	$scope.tileGridData;
     
     // country nodes
 	contentService.getData("visualization/cdis/").then(function(data) {
@@ -23,6 +24,14 @@ angular.module("viz-controller", [])
 		
 	});
 	
+	// geojson
+	contentService.getData("visualization/geography/geojson/hexagon/").then(function(data) {
+		
+		// set scope
+		$scope.tileGridData = data;
+		
+	});
+	
 	// check for heuristic url param
 	if ($state.params.heuristic) {
 	
@@ -36,5 +45,7 @@ angular.module("viz-controller", [])
 		});
 		
 	};
+    
+
 																																  
 }]);

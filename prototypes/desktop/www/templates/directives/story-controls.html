@@ -1,0 +1,23 @@
+<div class="story-controls clearfix">
+
+    <div ng-repeat="control in controls" class="pull-left story-controls__option">
+        <span class="pull-left dropdown-label">{{ control.label + ' by:' | capitalize}}</span>
+        <div class="btn-group" uib-dropdown>
+            <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                <span ng-bind="{{control.label}}"></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
+                <li ng-repeat="option in control.controls" role="menuitem">
+                    <a href="" ng-click="changeOption(control.label,control.id,option.id);">
+                        {{option.name | capitalize}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="btn btn-default btn-story-controls pull-right">
+        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" x="0px" y="0px"><title>Icons</title><path d="M4,17L2,19,0.71,20.29A1,1,0,0,0,1.41,22H5l2-2Z"></path><path d="M21.29,4.29L19.71,2.71a1,1,0,0,0-1.41,0L15,5l4,4,2.29-3.29A1,1,0,0,0,21.29,4.29Z"></path><polygon points="9 19 18 10 14 6 5 15 5 16 8 19 9 19"></polygon><polygon points="6 22 21 22 21 20 8 20 6 22"></polygon></svg>
+    </div>
+
+</div>

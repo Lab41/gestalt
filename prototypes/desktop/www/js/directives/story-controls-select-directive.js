@@ -3,10 +3,10 @@ angular.module("story-controls-select-directive", [])
 .directive("storyControlsSelect", ["contentService", "$rootScope", "$state", function(contentService, $rootScope, $state) {
 	return {
 		restrict: "E",
-        template: "<select ng-model='selectedIdea' ng-options='control as control.name for control in idea.controls' ng-change='changeSelectedIdea()'</select>",
+        //template: "<select ng-model='selectedIdea' ng-options='control as control.name for control in idea.controls' ng-change='changeSelectedIdea()'</select>",
+		templateUrl: "templates/directives/story-controls.html",
 		scope: {
-            idea: "=",
-			visTypeName: "="
+            idea: "="
         },
         controller: function($scope) {
         	$scope.idea.controls.sort(function(a,b) {

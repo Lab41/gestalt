@@ -1,3 +1,7 @@
+import decimal
+
+table_prefix = "gestalt_"
+
 def get_connection_string(database_url):
     if not database_url:
         return ""
@@ -10,4 +14,7 @@ def get_connection_string(database_url):
     connection_string = "host=" + DATABASE_HOST + " user=" + DATABASE_USER + " password=" + list_db_cfg[3] + " dbname=" + DATABASE_NAME
     return connection_string
 
-table_prefix = "gestalt_"
+def decimal_encoder(obj):
+    if isinstance(obj, decimal.Decimal):
+        return float(obj)
+    raise TypeError

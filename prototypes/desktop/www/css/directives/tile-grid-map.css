@@ -19,14 +19,54 @@
 /***** !tile grid map ******/
 /***************************/
 
+.vis-container {
+    z-index: -1000;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+
+    /* Padding When Main Menu Is Hidden */
+    padding-top: 4.7rem;
+
+    /* Padding When Main Menu Is Shown */
+    /* padding-top: 8.1rem; */
+}
+
+.vis-container-inside {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+/* reset path style from what mapbox defines */
+tile-grid-map path {
+
+    fill-opacity: 0.5;
+    stroke-width: 1;
+    stroke-opacity: 1;
+
+}
+
 /* polygon label wrap */
 tile-grid-map .leaflet-div-icon {
-	
-	background: none;
-	border: none 0;
-	pointer-events: none;
-	text-align: center;
-	
+
+    background: none;
+    border: none 0;
+    pointer-events: none;
+    text-align: center;
+
+}
+
+/* polygon label text */
+tile-grid-map .leaflet-div-icon p {
+
+    color: magenta;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+
 }
 
 tile-grid-map .leaflet-marker-icon {
@@ -74,5 +114,13 @@ tile-grid-map .deemphasizeHex.coloredHex {
 tile-grid-map .deemphasizeHex.defaultHexLabel span {
 
 	opacity: 0.1;
+
+}
+
+tile-grid-map-category-label {
+
+    font-size: 2em;
+    font-weight: 700;
+    color: red;
 
 }

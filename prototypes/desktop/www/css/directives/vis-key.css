@@ -1,0 +1,109 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** vis key ***************************************/
+
+/* directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !story controls
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+.vis-key__container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 6rem 1.5rem 0 1.5rem;
+}
+
+.show-key {
+    padding: 7px 9px 2px 9px;
+}
+
+.show-key svg {
+    width: 25px;
+    height: 25px;
+}
+
+.hide-key {
+    margin-top: -5px;
+    padding: 5px 5px 0px 5px;
+    background-color: transparent;
+}
+
+.hide-key svg {
+    width: 20px;
+    height: 20px;
+}
+
+.vis-key {
+    width: 20rem;
+    background-color: #e2e2e2;
+    border: 1px solid #7c7c7c;
+    padding: 15px;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-key {
+        position: relative;
+        width: auto;
+        margin: 1.5rem 1.5rem 0 1.5rem;
+    }
+}
+
+.vis-key--item {
+    clear: both;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-key--item {
+        display: inline;
+        clear: none;
+        float: left;
+    }
+}
+
+.vis-key h2 {
+    font-size: 1.3rem;
+}
+
+.vis-key hr {
+    border-color: #7c7c7c;
+    margin: 12px 0px;
+}
+
+.vis-key__color-well {
+    position: relative;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: .3rem;
+    background-color: deeppink;
+    float: left;
+}
+
+.vis-key--label {
+    position: relative;
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+    padding: .3rem;
+    float: left;
+}
+
+@media only screen and (max-width: 768px) {
+    .vis-key--label {
+        padding-right: .8rem;
+    }
+}
+
+/****************************/
+/***** !story controls ******/
+/****************************/
+
