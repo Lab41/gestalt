@@ -89,10 +89,8 @@ tile-grid-map .defaultHex {
 tile-grid-map .defaultHexLabel {
 
     font-family: "header-regular";
-    font-size: 0.9rem;
     color:rgba(30,30,30,1.0);
     pointer-events: none;
-    text-align: center;
 
 }
 
