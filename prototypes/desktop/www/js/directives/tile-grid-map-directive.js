@@ -233,6 +233,7 @@ angular.module("tile-grid-map-directive", [])
                             }
                         };
 
+                        map.removeLayer(geoJsonLayer);
                         map.removeLayer(labelsLayer);
 
                         labelsLayer = L.layerGroup().addTo(map);
