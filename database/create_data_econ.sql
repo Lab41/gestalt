@@ -3,56 +3,93 @@ CREATE TABLE gestalt_country_with_name AS
     FROM gestalt_country AS country, gestalt_geography_name AS country_name
     WHERE country.name_id = country_name.id;
 
-CREATE TABLE gestalt_nominal_gdp (
+CREATE TABLE gestalt_series (
     id SERIAL PRIMARY KEY,
-    date_inserted DATE DEFAULT CURRENT_DATE,
-    country_id INTEGER REFERENCES gestalt_country(id),
-    date DATE NOT NULL,
-    date_precision VARCHAR(5) NOT NULL,
-    value NUMERIC(15,2)
+    code TEXT,
+    description TEXT,
+    UNIQUE(code, description)
 );
 
-INSERT INTO gestalt_nominal_gdp (country_id, date, date_precision, value) VALUES
-   (160, '2014-01-01', 'year', 20.10);
+INSERT INTO gestalt_series (code, description) VALUES 
+    ('nominal', 'nominal gdp');
+INSERT INTO gestalt_series (code, description) VALUES
+    ('real' , 'real gdp');
+INSERT INTO gestalt_series (code, description) VALUES
+    ('area', 'country area');
 
-
-CREATE TABLE gestalt_real_gdp (
+CREATE TABLE gestalt_source_eiu (
     id SERIAL PRIMARY KEY, 
     date_inserted DATE DEFAULT CURRENT_DATE,
+    series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
     date DATE NOT NULL,
     date_precision VARCHAR(5) NOT NULL,
-    value NUMERIC(15,2)
+    value DECIMAL
 );
 
-INSERT INTO gestalt_real_gdp (country_id, date, date_precision, value) VALUES
-    (160, '2014-01-01', 'year', 12.90);
-INSERT INTO gestalt_real_gdp (country_id, date, date_precision, value) VALUES
-    (160, '2015-01-01', 'year', 13.10);
+INSERT INTO gestalt_source_eiu (series_id, country_id, date, date_precision, value) VALUES
+    (1, 160, to_date('2014', 'YYYY'), 'YYYY', 20.10);
+INSERT INTO gestalt_source_eiu (series_id, country_id, date, date_precision, value) VALUES
+    (2, 160, to_date('2014', 'YYYY'), 'YYYY', 12.90);
+INSERT INTO gestalt_source_eiu (series_id, country_id, date, date_precision, value) VALUES
+    (2, 160, to_date('2015', 'YYYY'), 'YYYY', 13.10);
 
-CREATE TABLE gestalt_country_area (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE gestalt_source_wdi (
+    id SERIAL PRIMARY KEY, 
     date_inserted DATE DEFAULT CURRENT_DATE,
+    series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
     date DATE,
     date_precision VARCHAR(5),
-    value INTEGER NOT NULL
+    value DECIMAL
 );
 
-INSERT INTO gestalt_country_area (country_id, value) VALUES 
-    (160, 100);
-
-CREATE TABLE gestalt_region (
-    id SERIAL PRIMARY KEY,
-    date_inserted DATE default CURRENT_DATE,
-    region_type TEXT NOT NULL,
-    region_name TEXT NOT NULL,
+CREATE TABLE gestalt_source_imf (
+    id SERIAL PRIMARY KEY, 
+    date_inserted DATE DEFAULT CURRENT_DATE,
+    series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
-    UNIQUE (region_type, region_name, country_id)
+    date DATE,
+    date_precision VARCHAR(5),
+    value DECIMAL
 );
 
-INSERT INTO gestalt_region (region_type, region_name, country_id) VALUES
-    ('Continent', 'Asia', 160);
+CREATE TABLE gestalt_source_fvi (
+    id SERIAL PRIMARY KEY, 
+    date_inserted DATE DEFAULT CURRENT_DATE,
+    series_id INTEGER REFERENCES gestalt_series(id),
+    country_id INTEGER REFERENCES gestalt_country(id),
+    date DATE,
+    date_precision VARCHAR(5),
+    value DECIMAL
+);
+
+CREATE TABLE gestalt_source_country_attribute (
+    id SERIAL PRIMARY KEY, 
+    date_inserted DATE DEFAULT CURRENT_DATE,
+    series_id INTEGER REFERENCES gestalt_series(id),
+    country_id INTEGER REFERENCES gestalt_country(id),
+    date DATE,
+    date_precision VARCHAR(5),
+    value DECIMAL
+);
+
+INSERT INTO gestalt_source_country_attribute (series_id, country_id, value) VALUES 
+    (3, 160, 100);
+
+CREATE TABLE gestalt_frontend_country_data (
+    id SERIAL PRIMARY KEY,
+    date_inserted DATE DEFAULT CURRENT_DATE,
+    source_name TEXT NOT NULL,
+    source_id INTEGER NOT NULL,
+    series_id INTEGER REFERENCES gestalt_series(id),
+    country_id INTEGER REFERENCES gestalt_country(id),
+    date DATE,
+    date_precision VARCHAR(5),
+    value DECIMAL,
+    UNIQUE (source_id, series_id)
+);
 
 # deleting content of tables  
-TRUNCATE gestalt_nominal_gdp, gestalt_real_gdp, gestalt_country_area, gestalt_region;
+TRUNCATE gestalt_series, gestalt_source_eiu, gestalt_source_wdi, 
+         gestalt_source_imf, gestalt_source_fathom, gestalt_source_country_attribute;
