@@ -29,10 +29,11 @@ class postViewport:
         url_data = ast.literal_eval(web.data())
         
         width = url_data["width"]
-        print width
+        #print width
         height = url_data["height"]
+        #print height
         url = url_data["url"]
-        print url
+        #print url
         # insert code into screenshot.js
         fo=open("screenshot.js","wb")
         code="var page = require('webpage').create(); page.viewportSize = { width: "+str(width)+", height: "+str(height)+" }; page.open('"+ url+"', function(status) { setTimeout(function(){ page.render('viz3.png'); console.log('completed'); phantom.exit(); },1000); });"
