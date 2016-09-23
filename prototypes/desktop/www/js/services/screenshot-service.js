@@ -11,9 +11,9 @@ angular.module("screenshot-service", [])
         var url = $location.$$absUrl;
         var width = window.outerWidth;
         var height = window.outerHeight;
-        console.log("----------------------");
-		console.log(width);
-        console.log(height);	
+        //console.log("----------------------");
+		//console.log(width);
+        //console.log(height);	
         // set up a valid object
         var obj = {
         	"width": width,
