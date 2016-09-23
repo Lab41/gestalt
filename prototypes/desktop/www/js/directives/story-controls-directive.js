@@ -10,6 +10,9 @@ angular.module("story-controls-directive", [])
         },
         controller: function($scope, $filter) {
 
+            $scope.highlight = highlightService.getHighlightMode;
+            $scope.toggleHighlighting = highlightService.toggleHighlightMode;
+
             // story idea functionality
             $scope.changeOption = function(ideaName, ideaId, controlId) {
 
