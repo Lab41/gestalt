@@ -23,12 +23,12 @@ urls = (
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByCountryAndDate/series/#/country/#/date/#
     #   where first # == series id, second # == country id, third # == date
     "extractSeriesValuesByCountryAndDate/series/(\d+)/country/(\d+)/date/(\w+)", "extractSeriesValuesByCountryAndDate",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByRegion/series/#/group/#/subgroup/#
+    #   where first # == series id, second # == group id, third # == subgroup id
+    "extractSeriesValuesByRegion/series/(\d+)/group/(\d+)/subgroup/(\d+)", "extractSeriesValuesByRegion",
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByRegionAndDate/series/#/group/#/subgroup/#/date/#
     #   where first # == series id, second # == group id, third # == subgroup id, fourth # == date
     "extractSeriesValuesByRegionAndDate/series/(\d+)/group/(\d+)/subgroup/(\d+)/date/(\w+)", "extractSeriesValuesByRegionAndDate",
-    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByRegion/series/#/group/#/subgroup/#
-    #   where first # == series id, second # == country id, third # == date
-    "extractSeriesValuesByRegion/series/(\d+)/group/(\d+)/subgroup/(\d+)", "extractSeriesValuesByRegion",
     # 0.0.0.0:8000/api/data/economic/getAllSubgroupsByGroup/#
     #   where # == group id
     "getAllSubgroupsByGroup/(\d+)", "getAllSubgroupsByGroup",
@@ -117,9 +117,6 @@ class insertSeriesToMV:
 
 class extractSeriesValuesByCountry: 
     """ Extract all the series information (i.e. the nominal GDP) of a given country.
-        extractSeriesValuesByCountry == getAllNominalGdpByCountry
-                                     == getAllRealGdpByCountry
-                                     == getCountryAreaByCountry
     input:
         * series.id
         * country.id
@@ -156,8 +153,6 @@ class extractSeriesValuesByCountry:
 
 class extractSeriesValuesByCountryAndDate:
     """ Extract the series information (i.e. the nominal GDP) of a given country at a particular date.
-        extractSeriesValuesByCountryAndDate == getSingleNominalGdpByCountryAndDate
-                                            == getSingleRealGdpByCountryAndDate
     input:
         * series.id
         * country.id
@@ -187,6 +182,47 @@ class extractSeriesValuesByCountryAndDate:
             WHERE mv.series_id = """ + series_id + """
             AND mv.country_id = """ + country_id + """
             AND to_char(mv.date, mv.date_precision) = '""" + date + """'
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder)
+
+class extractSeriesValuesByRegion:
+    """ Extract the series information (i.e. the real GDP) of a given region at a particular date.
+        extractSeriesValuesByRegionAndDate == getAllRealGdpByRegionAndDate
+    input:
+        * series.id
+        * group.id (i.e. region.group)
+        * subgroup.name.id (i.e. region.name)
+    output:
+        * mv.id
+        * country.id 
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, group_id, subgroup_name_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+                INNER JOIN gestalt_subgroup AS subgroup
+                ON mv.country_id = subgroup.country_id
+            WHERE mv.series_id = """ + series_id + """
+            AND subgroup.group_id = """ + group_id + """
+            AND subgroup.name_id = """ + subgroup_name_id + """
             ORDER BY country.name;
         """)        
         # obtain the data
@@ -237,46 +273,6 @@ class extractSeriesValuesByRegionAndDate:
         # convert data to a string
         return json.dumps(data, default=helper.decimal_encoder)
 
-class extractSeriesValuesByRegion:
-    """ Extract the series information (i.e. the real GDP) of a given region at a particular date.
-        extractSeriesValuesByRegionAndDate == getAllRealGdpByRegionAndDate
-    input:
-        * series.id
-        * group.id (i.e. region.group)
-        * subgroup.name.id (i.e. region.name)
-    output:
-        * mv.id
-        * country.id 
-        * country.name
-        * series.value
-        * series.date
-    """
-    def GET(self, series_id, group_id, subgroup_name_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-            SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
-                   mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
-                ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
-                ON mv.series_id = series.id
-                INNER JOIN gestalt_subgroup AS subgroup
-                ON mv.country_id = subgroup.country_id
-            WHERE mv.series_id = """ + series_id + """
-            AND subgroup.group_id = """ + group_id + """
-            AND subgroup.name_id = """ + subgroup_name_id + """
-            ORDER BY country.name;
-        """)        
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data, default=helper.decimal_encoder)
 
 class getAllSubgroupsByGroup:
     """ Extract all subgroups (i.e. regions) in a given group. 
