@@ -238,7 +238,7 @@ angular.module("tile-grid-map-directive", [])
                                 "type": "Feature",
                                 "geometry": {
                                     "type": "Point",
-                                    "coordinates": [groupGeoData[idx].minX, 63.0]
+                                    "coordinates": [groupGeoData[idx].minX - (groupWidth/6), 63.0]
                                 },
                                 "properties": {
                                     "name": subgroup.name
@@ -262,20 +262,22 @@ angular.module("tile-grid-map-directive", [])
                         // Calculate centroid of existing feature
                         currentData[0].features.forEach(function(feature) {
                             var group = groupLookup[feature.properties.iso];
-                            var centerX = feature.geometry.coordinates[0][0][0] + (dX / 2);
-                            var centerY = feature.geometry.coordinates[0][0][1] + (dY / 4);
+                            if(groupGeoData.hasOwnProperty(group)) {
+                                var centerX = feature.geometry.coordinates[0][0][0] + (dX / 2);
+                                var centerY = feature.geometry.coordinates[0][0][1] + (dY / 4);
 
-                            var deltaX = (centerX - groupGeoData[group].nextX) / STEPS;
-                            var deltaY = (centerY - groupGeoData[group].nextY) / STEPS;
+                                var deltaX = (centerX - groupGeoData[group].nextX) / STEPS;
+                                var deltaY = (centerY - groupGeoData[group].nextY) / STEPS;
 
-                            featureDeltas[feature.properties.iso] = {};
-                            featureDeltas[feature.properties.iso].dX = deltaX;
-                            featureDeltas[feature.properties.iso].dY = deltaY;
+                                featureDeltas[feature.properties.iso] = {};
+                                featureDeltas[feature.properties.iso].dX = deltaX;
+                                featureDeltas[feature.properties.iso].dY = deltaY;
 
-                            groupGeoData[group].nextX += (dX + (dX/5));
-                            if((groupGeoData[group].nextX + dX) >= groupGeoData[group].maxX) {
-                                groupGeoData[group].nextX = groupGeoData[group].minX + (dX / 2);
-                                groupGeoData[group].nextY -= (dY + (dY/6));
+                                groupGeoData[group].nextX += (dX + (dX/5));
+                                if((groupGeoData[group].nextX + dX) >= groupGeoData[group].maxX) {
+                                    groupGeoData[group].nextX = groupGeoData[group].minX + (dX / 2);
+                                    groupGeoData[group].nextY -= (dY + (dY/6));
+                                }
                             }
                         });
 
@@ -316,11 +318,13 @@ angular.module("tile-grid-map-directive", [])
 
                 function drawStep(data, featureDeltas, currentStep, maxSteps) {
                     data[0].features.forEach(function(feature) {
-                        feature.geometry.coordinates[0].forEach(function(coordinate) {
-                            var deltas = featureDeltas[feature.properties.iso];
-                            coordinate[0] = coordinate[0] - deltas.dX;
-                            coordinate[1] = coordinate[1] - deltas.dY;
-                        });
+                        if(featureDeltas.hasOwnProperty(feature.properties.iso)) {
+                            feature.geometry.coordinates[0].forEach(function(coordinate) {
+                                var deltas = featureDeltas[feature.properties.iso];
+                                coordinate[0] = coordinate[0] - deltas.dX;
+                                coordinate[1] = coordinate[1] - deltas.dY;
+                            });
+                        }
                     });
 
                     map.removeLayer(geoJsonLayer);
@@ -357,12 +361,16 @@ angular.module("tile-grid-map-directive", [])
 
                 // watch for story idea changes
                 $rootScope.$on("mapStoryIdeaChange", function(event, args) {
+                    console.log(args.val);
+                    console.log(scope.grouping);
+
                     if(args.val.action_name === 'cluster') {
                         // Based on the selected arg apply new grouping
                         var newGrouping = scope.grouping.find(function(group) {
                             return group.name === args.val.control_name;
                         });
                         if(newGrouping !== undefined) {
+                            console.log(newGrouping);
                             regroupData(newGrouping);
                         }
                     }

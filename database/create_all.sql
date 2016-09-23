@@ -124,17 +124,8 @@ drop table if exists gestalt_emphasis; create table gestalt_emphasis (id serial 
 select * from gestalt_emphasis;
 drop table if exists gestalt_story_action_control; create table gestalt_story_action_control (id serial primary key,name_id integer,story_action_id integer);
 insert into gestalt_story_action_control (name_id,story_action_id) values (1,1);
- insert into gestalt_story_action_control (name_id,story_action_id) values (2,1);
- insert into gestalt_story_action_control (name_id,story_action_id) values (3,1);
- insert into gestalt_story_action_control (name_id,story_action_id) values (4,1); 
 insert into gestalt_story_action_control (name_id,story_action_id) values (1,5);
- insert into gestalt_story_action_control (name_id,story_action_id) values (2,5);
- insert into gestalt_story_action_control (name_id,story_action_id) values (3,5);
- insert into gestalt_story_action_control (name_id,story_action_id) values (4,5); 
 insert into gestalt_story_action_control (name_id,story_action_id) values (1,7);
- insert into gestalt_story_action_control (name_id,story_action_id) values (2,7);
- insert into gestalt_story_action_control (name_id,story_action_id) values (3,7);
- insert into gestalt_story_action_control (name_id,story_action_id) values (4,7); 
  -- end dummy groups
 select * from gestalt_story_action_control where story_action_id = 1;
 drop table if exists gestalt_vis_type; CREATE TABLE gestalt_vis_type (
