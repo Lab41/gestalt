@@ -15,54 +15,31 @@
         // --------------------------------------------------------------------
         // for backend
         var economicBackendBaseUrl = api_config.content_economic_service_uri;
-        // * handling sources
-        var getAllSourcesUrl = economicBackendBaseUrl + "getAllSources";
-        // * handling series
-        var getAllSeriesUrl = economicBackendBaseUrl + "getAllSeriesByTableName";
-        // * handling values
-        var getValuesByCountryUrl = economicBackendBaseUrl + "extractSeriesValuesByCountry";
-        var getValuesByCountryAndDateUrl = economicBackendBaseUrl + "extractSeriesValuesByCountryAndDate";        
-        var getValuesByRegionUrl = economicBackendBaseUrl + "extractSeriesValuesByRegion";
-        var getValuesByRegionAndDateUrl = economicBackendBaseUrl + "extractSeriesValuesByRegionAndDate";
-        // * handling subgroups
-        var getAllSubgroupsUrl = economicBackendBaseUrl + "getAllSubgroupsByGroup";
-        var getAllCountriesUrl = economicBackendBaseUrl + "getAllCountriesBySubgroup";
-        // * handling MV (the table that stores all the data front-end needs)
-        var insertSeriesUrl = economicBackendBaseUrl + "insertSeriesToMV";
-        var cleanupMVUrl = economicBackendBaseUrl + "cleanupMV";
+        // * nominal gdp
+        var getAllNominalGdpUrl = economicBackendBaseUrl + "getAllNominalGdpByCountry";
+        var getSingleNominalGdpUrl = economicBackendBaseUrl + "getSingleNominalGdpByCountryAndDate"
+        // * real gdp
+        var getAllRealGdpUrl = economicBackendBaseUrl + "getAllRealGdpByCountry";
+        var getSingleRealGdpUrl = economicBackendBaseUrl + "getSingleRealGdpByCountryAndDate";
+        var getRegionRealGdpUrl = economicBackendBaseUrl + "getAllRealGdpByRegionAndDate";
+        // * country area
+        var getCountryAreaUrl = economicBackendBaseUrl + "getCountryAreaByCountry";
+        // * region
+        var getRegionCountriesUrl = economicBackendBaseUrl + "getAllCountriesByRegion";
 
         // --------------------------------------------------------------------     
         // return a economicService instance
         var economicService = {
-            // * all functionalities to manipulate economic data
-            // * handling sources
-            getAllSources: getAllSources,
-            // * handling series
-            getAllSeries: getAllSeries,
-            // * handling values
-            getValuesByCountry: getValuesByCountry,
-            getValuesByCountryAndDate: getValuesByCountryAndDate,
-            getValuesByRegion: getValuesByRegion,
-            getValuesByRegionAndDate: getValuesByRegionAndDate,
-            // * handling subgroups
-            getAllSubgroups: getAllSubgroups,
-            getAllCountries: getAllCountries,
-            // * handle MV (the table that stores all the data front-end needs)
-            insertSeries: insertSeries,
-            cleanupMV: cleanupMV,
-            // --------------------------------------------
             // * nominal gdp
-            getCountryNominalGdps: getCountryNominalGdps,
-            getCountryNominalGdp: getCountryNominalGdp,
+            getAllNominalGdp: getAllNominalGdp,
+            getSingleNominalGdp: getSingleNominalGdp,
             // * real gdp
-            getCountryRealGdps: getCountryRealGdps,
-            getCountryRealGdp: getCountryRealGdp,
+            getAllRealGdp: getAllRealGdp,
+            getSingleRealGdp: getSingleRealGdp,
             getRegionRealGdp: getRegionRealGdp,
             // * country area
             getCountryArea: getCountryArea,
-            getRegionArea: getRegionArea,
             // * region
-            getGroupRegions: getGroupRegions,
             getRegionCountries: getRegionCountries
         };
         return economicService;
@@ -76,72 +53,17 @@
         }
 
         // ============================
-        // * handling sources         
-        // ============================
-        function getAllSources() {
-            return callBackend(getAllSourcesUrl);
-        }
-
-        // ============================
-        // * handling series         
-        // ============================
-        function getAllSeries(tableName) {
-            return callBackend(getAllSeriesUrl + "/" + tableName);
-        }
-
-        // ============================
-        // * handling values       
-        // ============================
-        function getValuesByCountry(seriesId, countryId) {
-            return callBackend(getValuesByCountryUrl + "/series/" + seriesId + "/country/" + countryId);
-        }
-
-        function getValuesByCountryAndDate(seriesId, countryId, date) {
-            return callBackend(getValuesByCountryAndDateUrl + "/series/" + seriesId + "/country/" + countryId + "/date/" + date);
-        }
-
-        function getValuesByRegion(seriesId, groupId, subgroupId) {
-            return callBackend(getValuesByRegionUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId);
-        }
-
-        function getValuesByRegionAndDate(seriesId, groupId, subgroupId, date) {
-            return callBackend(getValuesByRegionAndDateUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId + "/date/" + date);
-        }
-
-        // ============================
-        // * handling subgroups         
-        // ============================
-        function getAllSubgroups(groupId) {
-            return callBackend(getAllSubgroupsUrl + "/" + groupId);
-        }
-
-        function getAllCountries(groupId, subgroupId) {
-            return callBackend(getAllCountriesUrl + "/group/" + groupId + "/subgroup/" + subgroupId);
-        }
-                
-        // ============================
-        // * handling MV          
-        // ============================
-        function insertSeries(tableName, seriesId) {
-            return callBackend(insertSeriesUrl + "/table_name/" + tableName + "/series/" + seriesId);
-        }
-
-        function cleanupMV() {
-            return callBackend(cleanupMVUrl);
-        }
-
-        // ============================
         // * nominal gdp           
         // ============================
         
-        function getCountryNominalGdps(seriesId, countryId) {
-            return getValuesByCountry(seriesId, countryId);
+        function getAllNominalGdp(countryId) {
+            return callBackend(getAllNominalGdpUrl + "/" + countryId);
         }
 
-        function getCountryNominalGdp(seriesId, countryId, date) {
+        function getSingleNominalGdp(countryId, date) {
             // TODO: verify first that there is a single nominal GDP per year for each country and handle it if there's none
-            return getValuesByCountryAndDate(seriesId, countryId, date).then(function(listOfNominalGdps){
-                return listOfNominalGdps[0];
+            return callBackend(getSingleNominalGdpUrl + "/country/" + countryId + "/date/" + date).then(function(listOfRealGdps){
+                return listOfRealGdps[0];
             });
         }
 
@@ -149,46 +71,38 @@
         // * real gdp           
         // ============================
 
-        function getCountryRealGdps(seriesId, countryId) {
-            return getValuesByCountry(seriesId, countryId);
+        function getAllRealGdp(countryId) {
+            return callBackend(getAllRealGdpUrl + "/" + countryId);
         }
 
-        function getCountryRealGdp(seriesId, countryId, date) {
+        function getSingleRealGdp(countryId, date) {
             // TODO: verify first that there is a single real GDP per year for each country and handle it if there's none
-            return getValuesByCountryAndDate(seriesId, countryId, date).then(function(listOfRealGdps){
+            return callBackend(getSingleRealGdpUrl + "/country/" + countryId + "/date/" + date).then(function(listOfRealGdps){
                 return listOfRealGdps[0];
             });
         }
 
-        function getRegionRealGdp(seriesId, groupId, subgroupId, date) {
-            return getValuesByRegionAndDate(seriesId, groupId, subgroupId, date);
+        function getRegionRealGdp(regionType, regionName, date) {
+            return callBackend(getRegionRealGdpUrl + "/region_type/" + regionType + "/region_name/" + regionName + "/date/" + date);
         }
 
         // ============================
         // * country area      
         // ============================
         
-        function getCountryArea(seriesId, countryId) {
+        function getCountryArea(countryId) {
             // TODO: verify first that there is only one area year after year and handle it if there's none
-            return getValuesByCountry(seriesId, countryId).then(function(listOfCountryAreas){
+            return callBackend(getRegionRealGdpUrl + "/" + countryId).then(function(listOfCountryAreas){
                 return listOfCountryAreas[0];
             });
-        }
-
-        function getRegionArea(seriesId, groupId, subgroupId) {
-            return getValuesByRegion(seriesId, groupId, subgroupId);
         }
 
         // ============================
         // * region      
         // ============================
         
-        function getGroupRegions(groupId) {
-            return getAllSubgroups(groupId);
-        }
-
-        function getRegionCountries(groupId, subgroupId) {
-            return getAllCountries(groupId, subgroupId);
+        function getRegionCountries(regionId) {
+            return callBackend(getRegionCountriesUrl + "/" + regionId);
         }
 
     }
