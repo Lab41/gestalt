@@ -1,6 +1,7 @@
 angular.module("login-controller", [])
 
-.controller("loginCtrl", ["$scope", "$state", "authenticationService", "layoutService", "$rootScope", function ($scope, $state, authenticationService, layoutService, $rootScope) {
+.controller("loginCtrl", ["$scope", "$state", "authenticationService", "layoutService", 
+    "economicService", "$rootScope", function ($scope, $state, authenticationService, layoutService, economicService, $rootScope) {
         
 	// get PERSONA CONTENT data stored in service
 	authenticationService.getData("").then(function(data) {
@@ -12,6 +13,17 @@ angular.module("login-controller", [])
     // login with persona
     $scope.login = function(persona, personaID) {
         
+economicService.insertSeries("gestalt_source_wdi", 5).then(function(data) {
+            console.log("insertSeries: " + angular.toJson(data));
+
+});
+
+
+/*
+
+            console.log("insertSeries: " + angular.toJson(economicService.insertSeries(5)));
+*/
+
         // get credentials from local storage
         authenticationService.postCredentials(persona, personaID).then(function(personaData) {
             
