@@ -1,9 +1,13 @@
 @charset "UTF-8";
+
 /* CSS Document */
+
 
 /*************************************** tile-grid-map directive STYLE ***************************************/
 
+
 /* tile grid map directive specific styling. */
+
 
 /* !IMPORTS
 /* !GLOBAL
@@ -13,10 +17,16 @@
 
 /******************************* !IMPORTS *******************************/
 
+
 /******************************* !GLOBAL *******************************/
 
+
 /***************************/
+
+
 /***** !tile grid map ******/
+
+
 /***************************/
 
 .vis-container {
@@ -26,14 +36,11 @@
     height: 100%;
     top: 0px;
     left: 0px;
-
     /* Padding When Main Menu Is Hidden */
     padding-top: 4.7rem;
-
     /* Padding When Main Menu Is Shown */
     /* padding-top: 8.1rem; */
 }
-
 .vis-container-inside {
     position: relative;
     height: 100%;
@@ -41,37 +48,89 @@
 }
 
 /* reset path style from what mapbox defines */
-tile-grid-map path {
 
+tile-grid-map path {
     fill-opacity: 0.5;
     stroke-width: 1;
     stroke-opacity: 1;
-
 }
 
 /* polygon label wrap */
-tile-grid-map .leaflet-div-icon {
 
+tile-grid-map .leaflet-div-icon {
     background: none;
     border: none 0;
     pointer-events: none;
     text-align: center;
-
 }
 
 /* polygon label text */
-tile-grid-map .leaflet-div-icon p {
 
+tile-grid-map .leaflet-div-icon p {
     color: magenta;
     font-size: 1em;
     margin: 0;
     padding: 0;
-
 }
 
 tile-grid-map-category-label {
-
     font-size: 2em;
     font-weight: 700;
     color: red;
+}
+
+/* pop-up */
+
+.tile-grid-popup {
+    position: relative;
+    width: 280px;
+    height: 180px;
+    padding: 15px;
+    background: #FFFFFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: #7f7f7f solid 1px;
+    margin-left: -140px;
+    margin-top: -196px;
+}
+
+.tile-grid-popup hr {
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.popup-item {
+    font-size: 1.1rem;
+    font-family: "body-copy-light", sans-serif;
+}
+
+.popup-item strong {
+    font-family: "body-copy-regular", sans-serif;
+}
+
+.tile-grid-popup:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 22px 9px 0;
+    border-color: #FFFFFF transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -22px;
+    left: 128px;
+}
+
+.tile-grid-popup:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 22px 9px 0;
+    border-color: #7F7F7F transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    bottom: -23px;
+    left: 128px;
 }
