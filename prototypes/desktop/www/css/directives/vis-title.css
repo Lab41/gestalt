@@ -23,16 +23,39 @@
     width: 50%;
     margin-left: 25%;
     margin-right: 25%;
+}
+
+.vis-title h1 {
     font-size: 1.8rem;
     line-height: 2.2rem;
     text-align: center;
     font-family: "header-regular", Tahoma, serif;
 }
 
+.vis-title h2 {
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    text-align: center;
+    font-family: "body-copy-light", sans-serif;
+    margin-top: 10px;
+}
+
+.vis-title h3 {
+    font-size: 1rem;
+    line-height: 1.2rem;
+    text-align: center;
+    font-family: "body-copy-light", sans-serif;
+    margin-top: 10px;
+}
+
 @media only screen and (max-width: 768px) {
     .vis-title {
         position: relative;
     }
+}
+
+.highlight-indicator {
+    background-color: #ffff00;
 }
 
 /****************************/

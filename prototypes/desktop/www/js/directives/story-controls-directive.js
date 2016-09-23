@@ -1,6 +1,6 @@
 angular.module("story-controls-directive", [])
 
-.directive("storyControls", ["contentService", "$rootScope", "$state", function (contentService, $rootScope, $state) {
+.directive("storyControls", ["contentService", "highlightService", "$rootScope", "$state", function (contentService, highlightService, $rootScope, $state) {
     return {
         restrict: "E",
         templateUrl: "templates/directives/story-controls.html",
