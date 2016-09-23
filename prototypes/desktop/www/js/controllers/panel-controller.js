@@ -7,8 +7,11 @@ angular.module("panel-controller", [])
 	
 	// data objects
 	$scope.content;
-    $scope.iframeHeight
-    $scope.iframeHeight
+    $scope.iframeHeight;
+    $scope.iframeHeight;
+
+    // for hiding the animation when user is downloading screenshot.
+    $scope.hideLoader=true;
 	// get credentials from local storage
     authenticationService.getCredentials().then(function(userData) {
         
@@ -48,6 +51,8 @@ angular.module("panel-controller", [])
   			document.body.removeChild(link);
   			delete link;
 
+  			// hide the loading animation. They are done downloading...
+  			$scope.hideLoader=true;
 
             
         })
