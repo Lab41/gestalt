@@ -29,7 +29,7 @@ angular.module("tile-grid-map-directive", [])
 
             var colorIndex = 0;
             var colorLookup = {};
-            var colors = ["#0044CC", "#51A351", "#EC4E20", "#1C3A13", "#1098F7", "#F89406", "#BD362F", "#2E294E", "#6BAA75", "#373F47", "#0088CC"]
+            var colors = ["#0044CC", "#51A351", "#EC4E20", "#1C3A13", "#1098F7", "#F89406", "#BD362F", "#2E294E", "#6BAA75", "#373F47", "#0088CC", "#000000"]
 
             // Hard-coded width and height of geographic hexagons
             var dX = 3.4641016151377;
@@ -49,15 +49,16 @@ angular.module("tile-grid-map-directive", [])
 
                         // set up class name
                         var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
-
-                        // polygon label
+                        var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
+                        var fontSize = getHexLabelFontSize(map.getZoom());
+						
+						// polygon label
                         var icon = L.divIcon({
-                            "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
-                            "html": "<span class='tile-grid-label'>" + feature.properties.iso + "</span>",
+                            "html": "<span class='" + className + "' style='color:rgba(30,30,30,1.0);font-size:" + fontSize + ";'>" + feature.properties.iso + "</span>"
                         });
 
-                        // add polygon label to labels layer
-                        L.marker([feature.geometry.coordinates[0][0][1] - (dY/10), feature.geometry.coordinates[0][0][0] - (dX/1.8)], {
+						// add polygon label to labels layer
+                        L.marker([feature.geometry.coordinates[0][0][1] - (dY/5), feature.geometry.coordinates[0][0][0] - (dX*0.6)], {
                             "icon": icon
                         }).addTo(labelsLayer);
 
@@ -85,6 +86,32 @@ angular.module("tile-grid-map-directive", [])
 
                 // use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
+
+                map.on("zoomend", scaleLabels);
+
+                function scaleLabels() {
+                    // rescale category labels
+                    var labelElements = document.getElementsByClassName("categoryLabel");
+                    var newFontSize = getCategoryLabelFontSize(map.getZoom());
+                    Array.prototype.forEach.call(labelElements, function (targetElement) {
+                        targetElement.style.fontSize = newFontSize;
+                    });
+
+                    // rescale hex labels
+                    labelElements = document.getElementsByClassName("defaultHexLabel");
+                    newFontSize = getHexLabelFontSize(map.getZoom());
+                    Array.prototype.forEach.call(labelElements, function (targetElement) {
+                        targetElement.style.fontSize = newFontSize;
+                    });
+                };
+
+                function getCategoryLabelFontSize(zoomLevel) {
+                    return 1.2 * (zoomLevel - 2) + "em";
+                }
+
+                function getHexLabelFontSize(zoomLevel) {
+                    return 1.0 * (zoomLevel - 2) + "em";
+                }
 
                 function draw(data, map, interactive, styleUrl) {
                     labelsLayer = L.layerGroup().addTo(map);
@@ -141,10 +168,23 @@ angular.module("tile-grid-map-directive", [])
 
                 function recolorData(grouping) {
                     if(grouping.name !== "default") {
+                        // Generate legend data
+                        var legendData = {};
+                        legendData.name = grouping.name;
+                        legendData.legend_lookup = {};
+                        legendData.legend_data = [];
+
                         // Generate lookup structure to quickly
                         // match a node to its group
                         var groupLookup = {};
                         grouping.subgroups.forEach(function(subgroup) {
+                            var groupColor = getGroupColor(subgroup.name);
+                            legendData.legend_lookup[subgroup.name] = groupColor;
+                            legendData.legend_data.push({
+                                "name": subgroup.name,
+                                "color": groupColor,
+                                "count": subgroup.nodes.length
+                            });
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
                                     if(node.hasOwnProperty('iso')) {
@@ -163,26 +203,43 @@ angular.module("tile-grid-map-directive", [])
                                 var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 return {
                                     "className": "countryHex coloredHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
-                                    "fillColor": getGroupColor(groupLookup[feature.properties.iso])
+                                    "fillColor": legendData.legend_lookup[groupLookup[feature.properties.iso]]
                                 };
                             },
-                            "onEachFeature": function(feature) {
+                            "onEachFeature": function(feature, layer) {
                                 var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                                var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
+                                var fontSize = getHexLabelFontSize(map.getZoom());
+
                                 var icon = L.divIcon({
-                                    "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
-                                    "html": "<span style='color:white;'>" + feature.properties.iso + "</span>",
+                                    "html": "<span class='" + className + "' style='color:white;font-size:" + fontSize + ";'>" + feature.properties.iso + "</span>"
                                 });
 
-                                L.marker([feature.geometry.coordinates[0][0][1] - (dY/5), feature.geometry.coordinates[0][0][0] - (dX/1.7)], {
+                                L.marker([feature.geometry.coordinates[0][0][1] - (dY/5), feature.geometry.coordinates[0][0][0] - (dX*0.6)], {
                                     "icon": icon
                                 }).addTo(labelsLayer);
+
+                                // set popup options
+                                var popUpOptions = {
+                                    offset: L.point(0, 10)
+                                };
+                                
+                                // custom popup content
+                                var label = feature.properties;
+                                var content = "<p>" + label.name + "</p>";
+                                
+                                // add pop up
+                                layer.bindPopup(content, popUpOptions);
                             }
                         };
 
+                        map.removeLayer(geoJsonLayer);
                         map.removeLayer(labelsLayer);
 
                         labelsLayer = L.layerGroup().addTo(map);
                         geoJsonLayer = L.geoJson(currentData, customLayerOpts).addTo(map);
+
+                        $rootScope.$broadcast("legendDataChange", { val: legendData });
                     } else {
                         // Clear out custom layer options
                         customLayerOpts = {};
@@ -193,6 +250,8 @@ angular.module("tile-grid-map-directive", [])
                         // Create layers with default layer options
                         labelsLayer = L.layerGroup().addTo(map);
                         geoJsonLayer = L.geoJson(currentData, defaultLayerOpts).addTo(map);
+
+                        $rootScope.$broadcast("legendDataClear");
                     }
                 }
 
@@ -219,7 +278,8 @@ angular.module("tile-grid-map-directive", [])
                             "features": []
                         };
 
-                        var groupWidth = 150.0 / grouping.subgroups.length;
+                        var groupSpan = Math.max(225, grouping.subgroups.length * 25);
+                        var groupWidth = groupSpan / grouping.subgroups.length;
 
                         var groupGeoData = {};
                         var groupLookup = {};
@@ -227,17 +287,18 @@ angular.module("tile-grid-map-directive", [])
                         grouping.subgroups.forEach(function(subgroup, idx) {
                             groupGeoData[idx] = {};
                             groupGeoData[idx].name = subgroup.name;
-                            groupGeoData[idx].minX = -75.0 + (idx * groupWidth);
-                            groupGeoData[idx].maxX = -75.0 + ((idx + 1) * groupWidth);
+                            groupGeoData[idx].minX = (-groupSpan/2) + (idx * groupWidth);
+                            groupGeoData[idx].maxX = (-groupSpan/2) + ((idx + 1) * groupWidth);
                             groupGeoData[idx].nextX = groupGeoData[idx].minX + (dX / 2);
                             groupGeoData[idx].nextY = 60.0 - (dY / 2);
+                            groupGeoData[idx].y = 1;
 
                             // Make label feature
                             var labelFeature = {
                                 "type": "Feature",
                                 "geometry": {
                                     "type": "Point",
-                                    "coordinates": [groupGeoData[idx].minX - (groupWidth/6), 63.0]
+                                    "coordinates": [groupGeoData[idx].minX, 65.0]
                                 },
                                 "properties": {
                                     "name": subgroup.name
@@ -272,18 +333,20 @@ angular.module("tile-grid-map-directive", [])
                                 featureDeltas[feature.properties.iso].dX = deltaX;
                                 featureDeltas[feature.properties.iso].dY = deltaY;
 
-                                groupGeoData[group].nextX += (dX + (dX/5));
-                                if((groupGeoData[group].nextX + dX) >= groupGeoData[group].maxX) {
-                                    groupGeoData[group].nextX = groupGeoData[group].minX + (dX / 2);
-                                    groupGeoData[group].nextY -= (dY + (dY/6));
+                                groupGeoData[group].nextX += dX;
+                                if((groupGeoData[group].nextX + dX) >= (groupGeoData[group].maxX - (dX/3))) {
+                                    groupGeoData[group].y += 1;
+                                    groupGeoData[group].nextX = groupGeoData[group].minX + ((dX / 2) * (groupGeoData[group].y % 2));
+                                    groupGeoData[group].nextY -= dY * 0.75;
                                 }
                             }
                         });
 
                         categoryLabelsLayer = L.geoJson(labelFeatures, {
                             pointToLayer: function(feature, latlng) {
+                                var fontSize = getCategoryLabelFontSize(map.getZoom());
                                 var icon = L.divIcon({
-                                    "html": "<span class='font-size:2em;font-weight:700;'>" + feature.properties.name + "</span>",
+                                    "html": "<span class='categoryLabel' style='font-size:" + fontSize + ";font-weight:500;'>" + feature.properties.name + "</span>",
                                 });
 
                                 return L.marker(latlng, {
@@ -360,8 +423,6 @@ angular.module("tile-grid-map-directive", [])
 
                 // watch for story idea changes
                 $rootScope.$on("mapStoryIdeaChange", function(event, args) {
-                    console.log(args.val);
-                    console.log(scope.grouping);
 
                     if(args.val.action_name === 'cluster') {
                         // Based on the selected arg apply new grouping
