@@ -1,33 +1,33 @@
 angular.module("highlight-service", [])
 
-.factory("highlightService", [ function() {
+    .factory("highlightService", [ function () {
 
-    var highlightMode = false;
-    var highlightService = {};
+        var highlightMode = false,
+            highlightService = {};
 
-    // HIGHLIGHT
-    highlightService.getHighlightMode = function() {
+        // HIGHLIGHT
+        highlightService.getHighlightMode = function () {
 
-        return highlightMode;
+            return highlightMode;
 
-    };
-
-    highlightService.setHighlightMode = function(val) {
-
-        highlightMode = val;
-
-    };
-
-    highlightService.toggleHighlightMode = function() {
-
-        if highlightMode === true {
-            highlightMode = false;
-        } else {
-            highlightMode = true;
         };
 
-    };
+        highlightService.setHighlightMode = function (val) {
 
-    return highlightService;
+            highlightMode = val;
 
-}]);
+        };
+
+        highlightService.toggleHighlightMode = function () {
+
+            if (highlightMode === true) {
+                highlightMode = false;
+            } else {
+                highlightMode = true;
+            }
+
+        };
+
+        return highlightService;
+
+    }]);
