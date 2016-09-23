@@ -53,7 +53,7 @@ angular.module("tile-grid-map-directive", [])
                         // polygon label
                         var icon = L.divIcon({
                             "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
-                            "html": "<span style='color:rgba(30,30,30,1.0);'>" + feature.properties.iso + "</span>",
+                            "html": "<span class='tile-grid-label'>" + feature.properties.iso + "</span>",
                         });
 
                         // add polygon label to labels layer
@@ -281,7 +281,7 @@ angular.module("tile-grid-map-directive", [])
                         categoryLabelsLayer = L.geoJson(labelFeatures, {
                             pointToLayer: function(feature, latlng) {
                                 var icon = L.divIcon({
-                                    "html": "<span style='font-size:2em;font-weight:700;'>" + feature.properties.name + "</span>",
+                                    "html": "<span class='font-size:2em;font-weight:700;'>" + feature.properties.name + "</span>",
                                 });
 
                                 return L.marker(latlng, {
