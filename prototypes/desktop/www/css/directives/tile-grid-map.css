@@ -73,10 +73,59 @@ tile-grid-map .leaflet-div-icon p {
     padding: 0;
 }
 
+tile-grid-map .leaflet-marker-icon {
+	margin: 0;
+}
+
+tile-grid-map .defaultHex {
+
+    stroke-width: 3;
+    stroke-opacity: 1.0;
+    fill-opacity: 0.0;
+
+}
+
+tile-grid-map .defaultHexLabel span {
+
+	font-size: 1em;
+	font-weight: 500;
+
+}
+
+tile-grid-map .coloredHex {
+
+	stroke-width: 2;
+	stroke-opacity: 1;
+	stroke: #FFF;
+	fill-opacity: 1.0;
+
+}
+
+
+tile-grid-map .deemphasizeHex.defaultHex {
+
+	stroke-opacity: 0.1;
+
+}
+
+tile-grid-map .deemphasizeHex.coloredHex {
+
+	fill-opacity: 0.1;
+	stroke-opacity: 0.1;
+
+}
+
+tile-grid-map .deemphasizeHex.defaultHexLabel span {
+
+	opacity: 0.1;
+
+}
+
 tile-grid-map-category-label {
     font-size: 2em;
     font-weight: 700;
     color: red;
+
 }
 
 /* pop-up */
