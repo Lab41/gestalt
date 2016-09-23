@@ -343,14 +343,18 @@ angular.module("tile-grid-map-directive", [])
                 }
 
                 // bind data
-                scope.$watchGroup(["vizData", "theme"], function(newData, oldData) {
+                scope.$watchGroup(["vizData", "theme", "grouping"], function(newData, oldData) {
 
                     // async check
-                    if (newData[0] !== undefined) {
+                    if (newData[0] !== undefined && newData[2] !== undefined) {
+                        
+                        var geojson = newData[0];
+                        var groupData = newData[2];
+                        var theme = newData[1];
 
-                        currentData = JSON.parse(JSON.stringify(newData[0]));
+                        currentData = JSON.parse(JSON.stringify(geojson));
 
-                        draw(currentData, map, interactivity, newData[1]);
+                        draw(currentData, map, interactivity, theme);
 
                     };
                 });
