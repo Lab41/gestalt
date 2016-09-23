@@ -6,6 +6,7 @@ import web
 import os
 import helper
 import ast
+import time
 
 urls = (
     
@@ -32,14 +33,25 @@ class postViewport:
         #print width
         height = url_data["height"]
         #print height
-        url = url_data["url"]
+        web_url = url_data["url"]
         #print url
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        #print timestr
+
+        current_dir =  os.path.abspath(os.path.dirname(__file__))
+        parent_dir = os.path.abspath(current_dir + "/../")
+        print current_dir
+        print parent_dir
+        img_name = "screenshot-"+timestr
+        img_url = current_dir+"/www/"+img_name+'.png'
+        print img_url
         # insert code into screenshot.js
         fo=open("screenshot.js","wb")
-        code="var page = require('webpage').create(); page.viewportSize = { width: "+str(width)+", height: "+str(height)+" }; page.open('"+ url+"', function(status) { setTimeout(function(){ page.render('viz3.png'); console.log('completed'); phantom.exit(); },1000); });"
+        code="var page = require('webpage').create(); page.viewportSize = { width: "+str(width)+", height: "+str(height)+" }; page.open('"+ web_url+"', function(status) { setTimeout(function(){ page.render('"+img_url+"'); console.log('completed'); phantom.exit(); },1000); });"
         fo.write(code)
         fo.close()
         os.system('phantomjs screenshot.js')
+        return "http://0.0.0.0:8000/"+img_name+".png"
 
 # instantiate the application
 app = web.application(urls, locals())
