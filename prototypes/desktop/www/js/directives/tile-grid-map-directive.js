@@ -30,7 +30,7 @@ angular.module("tile-grid-map-directive", [])
             var colorIndex = 0;
             var colorLookup = {};
             var colors = ["#0044CC", "#51A351", "#EC4E20", "#1C3A13", "#1098F7", "#F89406", "#BD362F", "#2E294E", "#6BAA75", "#373F47", "#0088CC"]
-		      
+
             // Hard-coded width and height of geographic hexagons
             var dX = 3.4641016151377;
             var dY = 4.0;
@@ -46,34 +46,35 @@ angular.module("tile-grid-map-directive", [])
                         };
                     },
                     "onEachFeature": function(feature, layer) {
-						
-						// set up class name
+
+                        // set up class name
                         var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
-						
-						// polygon label
+
+                        // polygon label
                         var icon = L.divIcon({
                             "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
-                            "html": "<span style='color:rgba(30,30,30,1.0);'>" + feature.properties.iso + "</span>",
+                            "html": "<span class='tile-grid-label'>" + feature.properties.iso + "</span>",
                         });
 
-						// add polygon label to labels layer
+                        // add polygon label to labels layer
                         L.marker([feature.geometry.coordinates[0][0][1] - (dY/10), feature.geometry.coordinates[0][0][0] - (dX/1.8)], {
                             "icon": icon
                         }).addTo(labelsLayer);
-						
-						// set popup options
-						var popUpOptions = {
-							offset: L.point(0, 10)
-						};
-						
-						// custom popup content
-						var label = feature.properties;
-						var content = "<p>" + label.name + "</p>";
-						
-						// add pop up
-						layer.bindPopup(content, popUpOptions);
-						
-					}
+
+                        var popUpOptions = {
+                            maxWidth: 350,
+                            minWidth: 300,
+                            className: "tile-grid-popup"
+                        };
+
+                        // custom popup content
+                        var label = feature.properties;
+                        var content = "<div class='popup-container'><h3> (" + feature.properties.iso + ") " + label.name + "</h3><hr><ul><li class='popup-item'>" + "test" + "</li><li class='popup-item'>" + "test" + "</li><li class='popup-item'>" + "test" + "</li></ul></div>";
+
+                        // add pop up
+                        layer.bindPopup(content, popUpOptions);
+
+                    }
 
                 };
 
@@ -84,7 +85,7 @@ angular.module("tile-grid-map-directive", [])
 
                 // use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
-                
+
                 function draw(data, map, interactive, styleUrl) {
                     labelsLayer = L.layerGroup().addTo(map);
                     geoJsonLayer = L.geoJson(data, defaultLayerOpts).addTo(map);
@@ -94,7 +95,7 @@ angular.module("tile-grid-map-directive", [])
                 };
 
                 function emphasizeData() {
-                    
+
                     // Remove deemphasis class from existing map elements
                     var mapElements = document.getElementsByClassName("countryHex");
                     Array.prototype.forEach.call(mapElements, function (targetElement) {
@@ -178,7 +179,6 @@ angular.module("tile-grid-map-directive", [])
                             }
                         };
 
-                        map.removeLayer(geoJsonLayer);
                         map.removeLayer(labelsLayer);
 
                         labelsLayer = L.layerGroup().addTo(map);
@@ -202,7 +202,6 @@ angular.module("tile-grid-map-directive", [])
                     } else {
                         colorLookup[groupId] = colors[(colorIndex % colors.length)];
                         colorIndex += 1;
-
                         return colorLookup[groupId];
                     }
                 }
@@ -284,7 +283,7 @@ angular.module("tile-grid-map-directive", [])
                         categoryLabelsLayer = L.geoJson(labelFeatures, {
                             pointToLayer: function(feature, latlng) {
                                 var icon = L.divIcon({
-                                    "html": "<span style='font-size:2em;font-weight:700;'>" + feature.properties.name + "</span>",
+                                    "html": "<span class='font-size:2em;font-weight:700;'>" + feature.properties.name + "</span>",
                                 });
 
                                 return L.marker(latlng, {

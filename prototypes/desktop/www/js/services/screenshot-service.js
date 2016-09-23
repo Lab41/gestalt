@@ -13,7 +13,7 @@ angular.module("screenshot-service", [])
         var height = window.outerHeight;
         //console.log("----------------------");
 		//console.log(width);
-        //console.log(height);	
+        //console.log(height);
         // set up a valid object
         var obj = {
         	"width": width,
