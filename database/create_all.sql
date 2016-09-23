@@ -180,37 +180,37 @@ CREATE TABLE gestalt_vis (
     max_limit INTEGER NOT NULL,
     UNIQUE (name)
 );
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (1, 1, 'bar chart (horizontal)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (5, 2, 'group nodes', 500);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (null, 4, 'tbd', 500);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (2, 5, 'spark line', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (1, 1, 'bar chart (vertical)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (3, 6, 'dendrogram (radial)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (3, 6, 'dendrogram (linear)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (3, 7, 'packed circles', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (3, 8, 'tree list', 500);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (2, 5, 'line chart', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (2, 9, 'heatmap grid', 50);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (4, 10, 'pie chart', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (4, 10, 'donut chart', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (5, 11, 'node link diagram', 200);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (5, 12, 'adjacency matrix', 200);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
+INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (6, 13, 'tile grid map', 300);
 select * from gestalt_vis;
 drop table if exists gestalt_vis_do_attr;
@@ -401,7 +401,7 @@ drop table if exists gestalt_vis_alt_attr;
 CREATE TABLE gestalt_vis_alt_attr (
     vis_id INTEGER,
     alt_vis_directive_id INTEGER NOT NULL
-);  
+);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (6, 7);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (6, 8);
 INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (7, 7);
