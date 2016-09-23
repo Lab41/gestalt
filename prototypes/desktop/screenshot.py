@@ -31,6 +31,7 @@ class postViewport:
         width = url_data["width"]
         print width
         height = url_data["height"]
+        print height
         url = url_data["url"]
         print url
         # insert code into screenshot.js
