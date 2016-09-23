@@ -6,6 +6,7 @@ import web
 import os
 import helper
 import ast
+import time
 
 urls = (
     
@@ -27,19 +28,23 @@ class postViewport:
         
         # get values from post
         url_data = ast.literal_eval(web.data())
-        
         width = url_data["width"]
-        #print width
         height = url_data["height"]
-        #print height
-        url = url_data["url"]
-        #print url
+        web_url = url_data["url"]
+        # create image url
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        current_dir =  os.path.abspath(os.path.dirname(__file__))
+        img_name = "screenshot-"+timestr
+        img_url = current_dir+"/www/screenshots/"+img_name+'.png'
         # insert code into screenshot.js
         fo=open("screenshot.js","wb")
-        code="var page = require('webpage').create(); page.viewportSize = { width: "+str(width)+", height: "+str(height)+" }; page.open('"+ url+"', function(status) { setTimeout(function(){ page.render('viz3.png'); console.log('completed'); phantom.exit(); },1000); });"
+        code="var page = require('webpage').create(); page.viewportSize = { width: "+str(width)+", height: "+str(height)+" }; page.open('"+ web_url+"', function(status) { setTimeout(function(){ page.render('"+img_url+"'); console.log('completed'); phantom.exit(); },1000); });"
         fo.write(code)
         fo.close()
+        # execute command to take screeshot
         os.system('phantomjs screenshot.js')
+        # send back url,so that user can download image.
+        return "http://0.0.0.0:8000/screenshots/"+img_name+".png"
 
 # instantiate the application
 app = web.application(urls, locals())
