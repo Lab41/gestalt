@@ -251,8 +251,8 @@ function set_env_var_postgres {
         echo "What is the remote database's..."
         read -p 'name (i.e. postgres)? ' db_name
         read -p 'user (i.e. johndoe)? ' db_user
-        read -p 'host (i.e. 0.0.0.0)? ' db_host
         read -p 'password? ' db_password
+        read -p 'host (i.e. 0.0.0.0)? ' db_host
         read -p 'post (i.e. 5432)? ' db_port
     else
         # local
