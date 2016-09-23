@@ -45,17 +45,36 @@ angular.module("tile-grid-map-directive", [])
                             "color": "#202020"
                         };
                     },
-                    "onEachFeature": function(feature) {
+                    "onEachFeature": function(feature, layer) {
+						
+						// set up class name
                         var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+						
+						// polygon label
                         var icon = L.divIcon({
                             "className": "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass,
                             "html": "<span style='color:rgba(30,30,30,1.0);'>" + feature.properties.iso + "</span>",
                         });
 
+						// add polygon label to labels layer
                         L.marker([feature.geometry.coordinates[0][0][1] - (dY/10), feature.geometry.coordinates[0][0][0] - (dX/1.8)], {
                             "icon": icon
                         }).addTo(labelsLayer);
-                    }
+						
+						// set popup options
+						var popUpOptions = {
+							offset: L.point(0, 10)
+						};
+						
+						// custom popup content
+						var label = feature.properties;
+						var content = "<p>" + label.name + "</p>";
+						
+						// add pop up
+						layer.bindPopup(content, popUpOptions);
+						
+					}
+
                 };
 
                 L.mapbox.accessToken = token;
