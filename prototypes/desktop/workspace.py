@@ -19,8 +19,6 @@ urls = (
 
 class getDefaultWorkspaceByPersona:
     """ Extract default workspace for a particular persona.
-    assumption:
-        * return one workspace if inputted correctly
     input:
         * persona.id
     output:
@@ -35,13 +33,12 @@ class getDefaultWorkspaceByPersona:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (w.id) w.id, wn.name, w.url_name
+            SELECT w.id, wn.name, w.url_name
             FROM gestalt_workspace AS w
                 INNER JOIN gestalt_workspace_name AS wn
                 ON w.workspace_name_id = wn.id
             WHERE w.persona_id = """ + persona_id + """ 
-            AND w.is_default IS TRUE
-            ORDER BY wn.name;        
+            AND w.is_default IS TRUE;
         """)
         # obtain the data
         data = self.cursor.fetchall()

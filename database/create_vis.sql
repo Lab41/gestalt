@@ -47,17 +47,20 @@ insert into gestalt_group_type (name) values ('other');
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_vis_type; 
+
 CREATE TABLE gestalt_vis_type (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),
+    url_name TEXT NOT NULL CHECK (name <> '',
     UNIQUE (name)
 );
 
-INSERT INTO gestalt_vis_type (name) VALUES ('comparison');
-INSERT INTO gestalt_vis_type (name) VALUES ('time series');
-INSERT INTO gestalt_vis_type (name) VALUES ('hierarchy');
-INSERT INTO gestalt_vis_type (name) VALUES ('parts of a whole');
-INSERT INTO gestalt_vis_type (name) VALUES ('relatedness');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('comparison', 'comparison');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('time series', 'time-series');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('hierarchy', 'hierarchy');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('parts of a whole', 'parts-of-a-whole');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('relatedness','relatedness');
 
 /* 
    ------------------------------------------------------------------------- 
@@ -68,6 +71,8 @@ INSERT INTO gestalt_vis_type (name) VALUES ('relatedness');
    * name: directive name
    -------------------------------------------------------------------------
  */
+
+DROP TABLE IF EXISTS gestalt_vis_directive;
 
 CREATE TABLE gestalt_vis_directive (
     id SERIAL PRIMARY KEY,
@@ -81,6 +86,13 @@ INSERT INTO gestalt_vis_directive (name) VALUES ('group-nodes');
 INSERT INTO gestalt_vis_directive (name) VALUES ('visualization-standard');
 INSERT INTO gestalt_vis_directive (name) VALUES ('tbd');
 INSERT INTO gestalt_vis_directive (name) VALUES ('line-chart');
+INSERT INTO gestalt_vis_directive (name) VALUES ('dendrogram');
+INSERT INTO gestalt_vis_directive (name) VALUES ('packed-circles');
+INSERT INTO gestalt_vis_directive (name) VALUES ('tree-list');
+INSERT INTO gestalt_vis_directive (name) VALUES ('heatmap-grid');
+INSERT INTO gestalt_vis_directive (name) VALUES ('pie-chart');
+INSERT INTO gestalt_vis_directive (name) VALUES ('node-link');
+INSERT INTO gestalt_vis_directive (name) VALUES ('adjacent-matrix');
 
 /* 
    ------------------------------------------------------------------------- 

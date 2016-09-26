@@ -9,7 +9,7 @@
    -------------------------------------------------------------------------
  */
 
-DROP TABLE IF EXISTS gestalt_story;
+DROP TABLE IF EXISTS gestalt_story CASCADE;
 
 CREATE TABLE gestalt_story (
     id SERIAL PRIMARY KEY,
@@ -23,7 +23,7 @@ INSERT INTO gestalt_story (name, url_name) VALUES
 INSERT INTO gestalt_story (name, url_name) VALUES 
     ('What visual form best communicates your dataset', 'which-form');
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('GDP', 'gdp');
+    ('What the network looks like', 'network');
 INSERT INTO gestalt_story (name, url_name) VALUES 
     ('tbd', 'tbd');
 
@@ -55,7 +55,7 @@ INSERT INTO gestalt_action_name (name) VALUES
 INSERT INTO gestalt_action_name (name) VALUES 
     ('load');
 INSERT INTO gestalt_action_name (name) VALUES 
-    ('color');
+    ('color');q
 INSERT INTO gestalt_action_name (name) VALUES 
     ('filter');
 INSERT INTO gestalt_action_name (name) VALUES 

@@ -60,11 +60,28 @@ INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_defau
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
     (3, 1, 'gestalt', FALSE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (4, 1, 'gestalt', TRUE);
+    (4, 1, 'gestalt', FALSE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
     (1, 2, 'economics', TRUE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
     (2, 2, 'economics', TRUE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
     (3, 2, 'economics', TRUE);
-
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (4, 2, 'economics', TRUE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (1, 3, 'ip', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (2, 3, 'ip', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (3, 3, 'ip', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (4, 3, 'ip', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (1, 4, 'scn', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (2, 4, 'scn', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (3, 4, 'scn', FALSE);
+INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
+    (4, 4, 'scn', FALSE);
