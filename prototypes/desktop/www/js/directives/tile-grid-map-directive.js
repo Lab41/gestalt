@@ -231,7 +231,7 @@ angular.module("tile-grid-map-directive", [])
                             // Reset group geo data nextx, nexty, and y
                             Object.keys(sortingGroupGeoData).forEach(function(key) {
                                 sortingGroupGeoData[key].nextX = sortingGroupGeoData[key].minX + (dX / 2);
-                                sortingGroupGeoData[key].nextY = 60.0 - (dY / 2);
+                                sortingGroupGeoData[key].nextY = sortingGroupGeoData[key].startY - (dY / 2);
                                 sortingGroupGeoData[key].y = 1;
                             });
 
@@ -330,16 +330,27 @@ angular.module("tile-grid-map-directive", [])
                             "features": []
                         };
 
-                        var groupSpan = Math.max(225, grouping.subgroups.length * 25);
-                        var groupWidth = groupSpan / grouping.subgroups.length;
-
-                        grouping.subgroups.forEach(function(subgroup, idx) {
+                        var startX = -80.0;
+                        var startY = 80.0;
+                        var hexesPerRow = Math.floor(Math.abs(startX) / dX);
+                        
+                        sortingGroupGeoData = {};
+                        grouping.subgroups.forEach(function(subgroup) {
                             var groupname = subgroup.name;
                             sortingGroupGeoData[groupname] = {};
-                            sortingGroupGeoData[groupname].minX = (-groupSpan/2) + (idx * groupWidth);
-                            sortingGroupGeoData[groupname].maxX = (-groupSpan/2) + ((idx + 1) * groupWidth);
+                            sortingGroupGeoData[groupname].size = subgroup.nodes.length;
+                            sortingGroupGeoData[groupname].numRows = Math.ceil(sortingGroupGeoData[groupname].size / hexesPerRow);
+                        });
+
+                        console.log(sortingGroupGeoData);
+                
+                        grouping.subgroups.forEach(function(subgroup, idx) {
+                            var groupname = subgroup.name;
+                            sortingGroupGeoData[groupname].minX = startX + dX;
+                            sortingGroupGeoData[groupname].maxX = 0.0;
+                            sortingGroupGeoData[groupname].startY = startY;
                             sortingGroupGeoData[groupname].nextX = sortingGroupGeoData[groupname].minX + (dX / 2);
-                            sortingGroupGeoData[groupname].nextY = 60.0 - (dY / 2);
+                            sortingGroupGeoData[groupname].nextY = sortingGroupGeoData[groupname].startY - (dY / 2);
                             sortingGroupGeoData[groupname].y = 1;
 
                             // Make label feature
@@ -347,13 +358,16 @@ angular.module("tile-grid-map-directive", [])
                                 "type": "Feature",
                                 "geometry": {
                                     "type": "Point",
-                                    "coordinates": [sortingGroupGeoData[groupname].minX, 65.0]
+                                    "coordinates": [sortingGroupGeoData[groupname].minX, startY + (dY/3)]
                                 },
                                 "properties": {
                                     "name": groupname
                                 }
                             };
                             labelFeatures.features.push(labelFeature);
+
+                            // update starting Y location for next feature group
+                            startY = startY - (dY * (sortingGroupGeoData[groupname].numRows + 2));
 
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
