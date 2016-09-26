@@ -97,48 +97,23 @@ tile-grid-map .deemphasizeHex.defaultHexLabel {
 
 }
 
-/* pop-up */
+tile-grid-map .leaflet-label {
 
-/*
-.tile-grid-popup {
-    position: relative;
-    width: 350px;
-    height: 190px;
-    margin-top: -180px;
-    padding: 15px;
-    background: #FFFFFF;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: #7f7f7f solid 1px;
+    border: 0;
+    background: 0;
+    font-size: 1.5em;
+
 }
 
-.tile-grid-popup:after {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 22px 9px 0;
-    border-color: #FFFFFF transparent;
-    display: block;
-    width: 0;
-    z-index: 1;
-    bottom: -22px;
-    left: 175px;
+tile-grid-map .leaflet-label.category-label {
+
+    font-size: 2em;
+
 }
 
-.tile-grid-popup:before {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 22px 9px 0;
-    border-color: #7F7F7F transparent;
-    display: block;
-    width: 0;
-    z-index: 0;
-    bottom: -23px;
-    left: 175px;
+tile-grid-map .leaflet-label:before {
+    border: 0;
 }
-*/
 
 .tile-grid-popup .popup-container {
     padding: 15px;
