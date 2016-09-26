@@ -21,7 +21,7 @@
         var getAllSeriesUrl = economicBackendBaseUrl + "getAllSeriesByTableName";
         // * handling values
         var getValuesByCountryUrl = economicBackendBaseUrl + "extractSeriesValuesByCountry";
-        var getValuesByCountryAndDateUrl = economicBackendBaseUrl + "extractSeriesValuesByCountryAndDate";        
+        var getValuesByCountryAndDateUrl = economicBackendBaseUrl + "extractSeriesValuesByCountryAndDate";
         var getValuesByRegionUrl = economicBackendBaseUrl + "extractSeriesValuesByRegion";
         var getValuesByRegionAndDateUrl = economicBackendBaseUrl + "extractSeriesValuesByRegionAndDate";
         // * handling subgroups
@@ -76,21 +76,21 @@
         }
 
         // ============================
-        // * handling sources         
+        // * handling sources
         // ============================
         function getAllSources() {
             return callBackend(getAllSourcesUrl);
         }
 
         // ============================
-        // * handling series         
+        // * handling series
         // ============================
         function getAllSeries(tableName) {
             return callBackend(getAllSeriesUrl + "/" + tableName);
         }
 
         // ============================
-        // * handling values       
+        // * handling values
         // ============================
         function getValuesByCountry(seriesId, countryId) {
             return callBackend(getValuesByCountryUrl + "/series/" + seriesId + "/country/" + countryId);
@@ -109,7 +109,7 @@
         }
 
         // ============================
-        // * handling subgroups         
+        // * handling subgroups
         // ============================
         function getAllSubgroups(groupId) {
             return callBackend(getAllSubgroupsUrl + "/" + groupId);
@@ -118,9 +118,9 @@
         function getAllCountries(groupId, subgroupId) {
             return callBackend(getAllCountriesUrl + "/group/" + groupId + "/subgroup/" + subgroupId);
         }
-                
+
         // ============================
-        // * handling MV          
+        // * handling MV
         // ============================
         function insertSeries(tableName, seriesId) {
             return callBackend(insertSeriesUrl + "/table_name/" + tableName + "/series/" + seriesId);

@@ -783,11 +783,11 @@ INSERT INTO gestalt_geography (name_id,boundary_polygon,rectangle_polygon,hexago
 INSERT INTO gestalt_geography (name_id,boundary_polygon,rectangle_polygon,hexagon_polygon,hexagon_center_x,hexagon_center_y) VALUES (254,null,null,null,null,null);
 INSERT INTO gestalt_geography (name_id,boundary_polygon,rectangle_polygon,hexagon_polygon,hexagon_center_x,hexagon_center_y) VALUES (249,null,null,null,null,null);
 INSERT INTO gestalt_geography (name_id,boundary_polygon,rectangle_polygon,hexagon_polygon,hexagon_center_x,hexagon_center_y) VALUES (248,null,null,null,null,null);
- 
+
 CREATE TABLE gestalt_subgroup (
     id SERIAL PRIMARY KEY,
-    name_id INTEGER, 
-    group_id INTEGER, 
+    name_id INTEGER,
+    group_id INTEGER,
     country_id INTEGER
 );
 

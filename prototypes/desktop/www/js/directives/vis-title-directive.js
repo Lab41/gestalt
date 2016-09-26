@@ -1,6 +1,6 @@
 angular.module("vis-title-directive", [])
 
-.directive("visTitle", ["$rootScope", "$state", function ($rootScope, $state) {
+.directive("visTitle", ["$rootScope", "highlightService", "$state", function ($rootScope, highlightService, $state) {
     return {
         restrict: "E",
         templateUrl: "templates/directives/vis-title.html",
@@ -12,6 +12,8 @@ angular.module("vis-title-directive", [])
             //filter title uses Notioanl Map of the World as the default
             $scope.filterTitle = "Notional Map of the World";
             $scope.colorTitle = "";
+            $scope.highlight = highlightService.getHighlightMode;
+            $scope.toggleHighlight = highlightService.toggleHighlightMode;
 
         }
     };

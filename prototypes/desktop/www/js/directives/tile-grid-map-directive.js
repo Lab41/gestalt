@@ -51,7 +51,7 @@ angular.module("tile-grid-map-directive", [])
                         var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
                         var fontSize = getHexLabelFontSize(map.getZoom());
-						
+
 						// polygon label
                         var icon = L.divIcon({
                             "html": "<span class='" + className + "' style='color:rgba(30,30,30,1.0);font-size:" + fontSize + ";'>" + feature.properties.iso + "</span>"
@@ -223,11 +223,11 @@ angular.module("tile-grid-map-directive", [])
                                 var popUpOptions = {
                                     offset: L.point(0, 10)
                                 };
-                                
+
                                 // custom popup content
                                 var label = feature.properties;
                                 var content = "<p>" + label.name + "</p>";
-                                
+
                                 // add pop up
                                 layer.bindPopup(content, popUpOptions);
                             }

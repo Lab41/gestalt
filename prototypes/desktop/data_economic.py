@@ -40,9 +40,9 @@ urls = (
 
 )
 
-class getAllSources: 
-    """ Each source is stored in its own individual table. 
-        getAllSources extracts the name of those tables. 
+class getAllSources:
+    """ Each source is stored in its own individual table.
+        getAllSources extracts the name of those tables.
     output:
         * table name
     """
@@ -57,13 +57,13 @@ class getAllSources:
             FROM information_schema.tables
             WHERE table_name LIKE 'gestalt_source%'
             ORDER BY table_name;
-        """)        
+        """)
         # obtain the data
         data = self.cursor.fetchall()
         # convert data to a string
-        return json.dumps(data) 
+        return json.dumps(data)
 
-class getAllSeriesByTableName: 
+class getAllSeriesByTableName:
     """ Each series provides a subset of information (i.e. population) about a country.
         getAllSeriesByTableName extracts all the series from a given source table.
     input:
@@ -87,10 +87,10 @@ class getAllSeriesByTableName:
         # obtain the data
         data = self.cursor.fetchall()
         # convert data to a string
-        return json.dumps(data)    
+        return json.dumps(data)
 
-class insertSeriesToMV: 
-    """ Insert a particular series from a given table into gestalt_frontend_country_data 
+class insertSeriesToMV:
+    """ Insert a particular series from a given table into gestalt_frontend_country_data
         so that we know what data is needed from the front-end.
     input:
         * table name
@@ -103,19 +103,19 @@ class insertSeriesToMV:
         cursor = connection.cursor()
         # execute query
         cursor.execute("""
-            INSERT INTO gestalt_frontend_country_data (source_name, source_id, series_id, country_id, date, date_precision, value) 
-                SELECT '""" + table_name + """' AS source_name, src.id, src.series_id, src.country_id, src.date, src.date_precision, src.value 
+            INSERT INTO gestalt_frontend_country_data (source_name, source_id, series_id, country_id, date, date_precision, value)
+                SELECT '""" + table_name + """' AS source_name, src.id, src.series_id, src.country_id, src.date, src.date_precision, src.value
                 FROM """ + table_name + """ AS src
                 WHERE src.series_id = """ + series_id + """;
-        """)     
+        """)
         # make changes to the database persistent
-        connection.commit()   
-        # close 
+        connection.commit()
+        # close
         cursor.close()
         connection.close()
-        return 
+        return
 
-class extractSeriesValuesByCountry: 
+class extractSeriesValuesByCountry:
     """ Extract all the series information (i.e. the nominal GDP) of a given country.
     input:
         * series.id
@@ -135,7 +135,7 @@ class extractSeriesValuesByCountry:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name, 
+                   country.id AS country_id, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -172,7 +172,7 @@ class extractSeriesValuesByCountryAndDate:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name, 
+                   country.id AS country_id, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -198,7 +198,7 @@ class extractSeriesValuesByRegion:
         * subgroup.name.id (i.e. region.name)
     output:
         * mv.id
-        * country.id 
+        * country.id
         * country.name
         * series.value
         * series.date
@@ -240,7 +240,7 @@ class extractSeriesValuesByRegionAndDate:
         * series.date
     output:
         * mv.id
-        * country.id 
+        * country.id
         * country.name
         * series.value
         * series.date
@@ -275,13 +275,13 @@ class extractSeriesValuesByRegionAndDate:
 
 
 class getAllSubgroupsByGroup:
-    """ Extract all subgroups (i.e. regions) in a given group. 
+    """ Extract all subgroups (i.e. regions) in a given group.
         getAllSubgroupsByGroup == getAllRegionNamesByRegionGroup
     input:
         * group.id (i.e. region.group)
     output:
         * subgroup.id (i.e. region)
-        * subgroup.name.id 
+        * subgroup.name.id
         * subgroup.name
     """
     def GET(self, group_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
@@ -345,13 +345,13 @@ class cleanupMV:
         # execute query
         cursor.execute("""
             TRUNCATE gestalt_frontend_country_data;
-        """)     
+        """)
         # make changes to the database persistent
-        connection.commit()   
-        # close 
+        connection.commit()
+        # close
         cursor.close()
         connection.close()
-        return 
+        return
 
 # instantiate the application
 app = web.application(urls, locals())

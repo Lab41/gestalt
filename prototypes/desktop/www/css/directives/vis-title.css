@@ -23,6 +23,9 @@
     width: 50%;
     margin-left: 25%;
     margin-right: 25%;
+}
+
+.vis-title h1 {
     font-size: 1.8rem;
     line-height: 2.2rem;
     text-align: center;
@@ -33,6 +36,31 @@
     .vis-title {
         position: relative;
     }
+}
+
+.highlight-indicator {
+    background-color: #ffff00;
+    padding: 10px;
+    text-align: center;
+    max-width: 500px;
+    margin-top: 7px;
+}
+
+.highlight-indicator h2 {
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    text-align: center;
+    font-family: "body-copy-light", sans-serif;
+    width: 100%;
+}
+
+.highlight-indicator h3 {
+    font-size: 1rem;
+    line-height: 1.2rem;
+    text-align: center;
+    font-family: "body-copy-light", sans-serif;
+    margin-bottom: 5px;
+    width: 100%
 }
 
 /****************************/

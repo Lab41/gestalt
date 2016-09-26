@@ -1,6 +1,6 @@
 angular.module("story-controls-directive", [])
 
-.directive("storyControls", ["contentService", "$rootScope", "$state", function (contentService, $rootScope, $state) {
+.directive("storyControls", ["contentService", "highlightService", "$rootScope", "$state", function (contentService, highlightService, $rootScope, $state) {
     return {
         restrict: "E",
         templateUrl: "templates/directives/story-controls.html",
@@ -9,6 +9,9 @@ angular.module("story-controls-directive", [])
             visTypeName: "="
         },
         controller: function($scope, $filter) {
+
+            $scope.highlight = highlightService.getHighlightMode;
+            $scope.toggleHighlighting = highlightService.toggleHighlightMode;
 
             // story idea functionality
             $scope.changeOption = function(ideaName, ideaId, controlId) {

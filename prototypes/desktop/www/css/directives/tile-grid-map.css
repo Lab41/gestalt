@@ -65,15 +65,15 @@ tile-grid-map .defaultHex {
 
 tile-grid-map .defaultHexLabel {
 
-	font-weight: 500;
+    font-weight: 500;
 
 }
 
 tile-grid-map .coloredHex {
 
-	stroke-width: 2;
-	stroke-opacity: 0.0;
-	fill-opacity: 1.0;
+    stroke-width: 2;
+    stroke-opacity: 0.0;
+    fill-opacity: 1.0;
 
 }
 

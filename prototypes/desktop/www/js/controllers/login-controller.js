@@ -1,6 +1,6 @@
 angular.module("login-controller", [])
 
-.controller("loginCtrl", ["$scope", "$state", "authenticationService", "layoutService", 
+.controller("loginCtrl", ["$scope", "$state", "authenticationService", "layoutService",
     "economicService", "$rootScope", function ($scope, $state, authenticationService, layoutService, economicService, $rootScope) {
         
 	// get PERSONA CONTENT data stored in service

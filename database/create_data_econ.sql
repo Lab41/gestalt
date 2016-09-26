@@ -10,7 +10,7 @@ CREATE TABLE gestalt_series (
     UNIQUE(code, description)
 );
 
-INSERT INTO gestalt_series (code, description) VALUES 
+INSERT INTO gestalt_series (code, description) VALUES
     ('nominal', 'nominal gdp');
 INSERT INTO gestalt_series (code, description) VALUES
     ('real' , 'real gdp');
@@ -18,7 +18,7 @@ INSERT INTO gestalt_series (code, description) VALUES
     ('area', 'country area');
 
 CREATE TABLE gestalt_source_eiu (
-    id SERIAL PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
     date_inserted DATE DEFAULT CURRENT_DATE,
     series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
@@ -35,7 +35,7 @@ INSERT INTO gestalt_source_eiu (series_id, country_id, date, date_precision, val
     (2, 160, to_date('2015', 'YYYY'), 'YYYY', 13.10);
 
 CREATE TABLE gestalt_source_wdi (
-    id SERIAL PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
     date_inserted DATE DEFAULT CURRENT_DATE,
     series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
@@ -55,7 +55,7 @@ CREATE TABLE gestalt_source_imf (
 );
 
 CREATE TABLE gestalt_source_fvi (
-    id SERIAL PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
     date_inserted DATE DEFAULT CURRENT_DATE,
     series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
@@ -65,7 +65,7 @@ CREATE TABLE gestalt_source_fvi (
 );
 
 CREATE TABLE gestalt_source_country_attribute (
-    id SERIAL PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
     date_inserted DATE DEFAULT CURRENT_DATE,
     series_id INTEGER REFERENCES gestalt_series(id),
     country_id INTEGER REFERENCES gestalt_country(id),
@@ -74,7 +74,7 @@ CREATE TABLE gestalt_source_country_attribute (
     value DECIMAL
 );
 
-INSERT INTO gestalt_source_country_attribute (series_id, country_id, value) VALUES 
+INSERT INTO gestalt_source_country_attribute (series_id, country_id, value) VALUES
     (3, 160, 100);
 
 CREATE TABLE gestalt_frontend_country_data (
@@ -91,5 +91,5 @@ CREATE TABLE gestalt_frontend_country_data (
 );
 
 # deleting content of tables  
-TRUNCATE gestalt_series, gestalt_source_eiu, gestalt_source_wdi, 
+TRUNCATE gestalt_series, gestalt_source_eiu, gestalt_source_wdi,
          gestalt_source_imf, gestalt_source_fathom, gestalt_source_country_attribute;
