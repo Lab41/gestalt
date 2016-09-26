@@ -9,11 +9,13 @@
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_story;
+
 CREATE TABLE gestalt_story (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),
-    url_name TEXT UNIQUE NOT NULL CHECK (url_name <> ''),
-    UNIQUE (name, url_name)
+    url_name TEXT NOT NULL CHECK (url_name <> ''),
+    UNIQUE (name)
 );
 
 INSERT INTO gestalt_story (name, url_name) VALUES 
@@ -21,7 +23,7 @@ INSERT INTO gestalt_story (name, url_name) VALUES
 INSERT INTO gestalt_story (name, url_name) VALUES 
     ('What visual form best communicates your dataset', 'which-form');
 INSERT INTO gestalt_story (name, url_name) VALUES 
-    ('What the network looks like', 'network');
+    ('GDP', 'gdp');
 INSERT INTO gestalt_story (name, url_name) VALUES 
     ('tbd', 'tbd');
 
@@ -36,6 +38,8 @@ INSERT INTO gestalt_story (name, url_name) VALUES
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_action_group;
+
 CREATE TABLE gestalt_action_group (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),
@@ -49,7 +53,13 @@ INSERT INTO gestalt_action_name (name) VALUES
 INSERT INTO gestalt_action_name (name) VALUES 
     ('link');
 INSERT INTO gestalt_action_name (name) VALUES 
-    ('demo');
+    ('load');
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('color');
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('filter');
+INSERT INTO gestalt_action_name (name) VALUES 
+    ('emphasize');
 
 /* 
    ------------------------------------------------------------------------- 

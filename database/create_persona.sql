@@ -7,6 +7,8 @@
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_persona CASCADE;
+
 CREATE TABLE gestalt_persona (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),

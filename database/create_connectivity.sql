@@ -10,6 +10,8 @@
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_workspace_panel CASCADE;
+
 CREATE TABLE gestalt_workspace_panel (
     id SERIAL PRIMARY KEY,
     workspace_id INTEGER REFERENCES gestalt_workspace(id),
@@ -18,46 +20,32 @@ CREATE TABLE gestalt_workspace_panel (
     UNIQUE (workspace_id, panel_id)
 );
 
+CREATE UNIQUE INDEX only_one_default_panel_check
+  ON gestalt_workspace_panel(workspace_id)
+  WHERE is_default = TRUE;
+
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
     (1, 1, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
     (1, 2, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (2, 3, TRUE);
+    (2, 1, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (3, 4, TRUE);
+    (2, 2, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (4, 5, TRUE);
+    (3, 1, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (5, 1, FALSE);
+    (3, 2, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (5, 2, FALSE);
+    (4, 1, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (6, 3, FALSE);
+    (4, 2, FALSE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (7, 4, TRUE);
+    (5, 3, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (8, 5, TRUE);
+    (6, 3, TRUE);
 INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (9, 1, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (9, 2, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (10, 3, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (11, 4, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (12, 5, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (13, 1, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (13, 2, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (14, 3, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (15, 4, TRUE);
-INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
-    (16, 5, TRUE);
+    (7, 3, TRUE);
 
 /* 
    ------------------------------------------------------------------------- 
@@ -71,6 +59,8 @@ INSERT INTO gestalt_workspace_panel(workspace_id, panel_id, is_default) VALUES
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_wp_story;
+
 CREATE TABLE gestalt_wp_story ( 
     id SERIAL PRIMARY KEY,
     wp_id INTEGER REFERENCES gestalt_workspace_panel(id),
@@ -78,47 +68,33 @@ CREATE TABLE gestalt_wp_story (
     is_default BOOLEAN DEFAULT FALSE,
     UNIQUE (wp_id, story_id)
 );
+
+CREATE UNIQUE INDEX only_one_default_story_check
+  ON gestalt_wp_story(wp_id)
+  WHERE is_default = TRUE;
  
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
     (1, 2, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (2, 4, TRUE);
+    (2, 1, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (3, 3, TRUE);
+    (3, 2, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (4, 4, TRUE);
+    (4, 1, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (5, 4, TRUE);
+    (5, 2, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (6, 2, TRUE);
+    (6, 1, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (7, 4, TRUE);
+    (7, 2, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (8, 3, TRUE);
+    (8, 1, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (9, 4, TRUE);
+    (9, 3, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (10, 4, TRUE);
+    (10, 3, TRUE);
 INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (11, 2, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (12, 4, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (13, 3, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (14, 4, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (15, 4, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (16, 2, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (17, 4, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (18, 3, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (19, 4, TRUE);
-INSERT INTO gestalt_wp_story (wp_id, story_id, is_default) VALUES
-    (20, 4, TRUE);
+    (11, 3, TRUE);
 
 /* 
    ------------------------------------------------------------------------- 

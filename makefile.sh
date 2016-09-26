@@ -24,6 +24,8 @@
 # >> deactivate
 # 3. Access local database 
 # >> source makefile.sh && run_postgres
+# 4. Build (local or remote) database
+# >> source makefile.sh && setup_db
 
 # -----------------------------------------------------------------------------
 #   Directories
@@ -309,7 +311,7 @@ function run_tablet {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start tablet prototype"
-    echo ">> Please browse to http://0.0.0.0:8000"
+    echo ">> Please browse to"
     cd ${TABLET_DIR} && node app.js
 
     # return to base directory
@@ -321,7 +323,7 @@ function run_desktop {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start desktop prototype"
-    echo ">> Please browse to http://0.0.0.0:8000"
+    echo ">> Please browse to"
     cd ${DESKTOP_DIR} && python ${DESKTOP_DIR}/app.py
 
     # return to base directory

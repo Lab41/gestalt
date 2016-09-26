@@ -9,11 +9,13 @@
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_panel;
+
 CREATE TABLE gestalt_panel (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),
-    url_name TEXT UNIQUE NOT NULL CHECK (url_name <> ''),
-    UNIQUE (name, url_name)
+    url_name TEXT NOT NULL CHECK (url_name <> ''),
+    UNIQUE (name)
 );
  
 INSERT INTO gestalt_panel (name, url_name) VALUES
@@ -26,7 +28,4 @@ INSERT INTO gestalt_panel (name, url_name) VALUES
     ('routers','routers');
 INSERT INTO gestalt_panel (name, url_name) VALUES
     ('classification','classification');
-
-
-
 

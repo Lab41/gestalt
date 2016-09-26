@@ -7,6 +7,8 @@
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_workspace_name CASCADE;
+
 CREATE TABLE gestalt_workspace_name (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),
@@ -36,46 +38,33 @@ INSERT INTO gestalt_workspace_name (name) VALUES
    *     which workspace to show first. 
    -------------------------------------------------------------------------
  */
+DROP TABLE IF EXISTS gestalt_workspace CASCADE;
 
 CREATE TABLE gestalt_workspace (
     id SERIAL PRIMARY KEY,
     persona_id INTEGER REFERENCES gestalt_persona(id),
     workspace_name_id INTEGER REFERENCES gestalt_workspace_name(id),
-    url_name TEXT UNIQUE NOT NULL CHECK (url_name <> ''),
+    url_name TEXT NOT NULL CHECK (url_name <> ''),
     is_default BOOLEAN DEFAULT FALSE,
-    UNIQUE (workspace_name_id, persona_id, url_name)
+    UNIQUE (persona_id, workspace_name_id)
 );
 
+CREATE UNIQUE INDEX only_one_default_workspace_check 
+  ON gestalt_workspace(persona_id) 
+  WHERE is_default = TRUE;
+
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (1, 1, substring(md5(random()::text),0,6), TRUE);
+    (1, 1, 'gestalt', FALSE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (1, 2, substring(md5(random()::text),0,6), FALSE);
+    (2, 1, 'gestalt', FALSE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (1, 3, substring(md5(random()::text),0,6), FALSE);
+    (3, 1, 'gestalt', FALSE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (1, 4, substring(md5(random()::text),0,6), FALSE);
+    (4, 1, 'gestalt', TRUE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (2, 1, substring(md5(random()::text),0,6), TRUE);
+    (1, 2, 'economics', TRUE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (2, 2, substring(md5(random()::text),0,6), FALSE);
+    (2, 2, 'economics', TRUE);
 INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (2, 3, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (2, 4, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (3, 1, substring(md5(random()::text),0,6), TRUE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (3, 2, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (3, 3, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (3, 4, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (4, 1, substring(md5(random()::text),0,6), TRUE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (4, 2, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (4, 3, substring(md5(random()::text),0,6), FALSE);
-INSERT INTO gestalt_workspace (persona_id, workspace_name_id, url_name, is_default) VALUES 
-    (4, 4, substring(md5(random()::text),0,6), FALSE);
+    (3, 2, 'economics', TRUE);
 
