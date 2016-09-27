@@ -1,0 +1,38 @@
+.tile-grid-popup .popup-container {
+    padding: 15px;
+}
+
+.tile-grid-popup hr {
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.popup-item {
+    font-size: 1.1rem;
+    font-family: "body-copy-light", sans-serif;
+}
+
+.popup-item strong {
+    font-family: "body-copy-regular", sans-serif;
+}
+
+.tile-grid-popup h3 {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+}
+
+.leaflet-popup-close-button+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    padding: 0;
+    margin: 0;
+}
+
+.leaflet-popup-content-wrapper {
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
+}
