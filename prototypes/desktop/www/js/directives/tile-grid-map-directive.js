@@ -26,10 +26,9 @@ angular.module("tile-grid-map-directive", [])
             var emphasizedGrouping = {};
             var emphasizedValue = "default";
             var emphasizedGroupMembers = [];
-
-            var colorIndex = 0;
-            var colorLookup = {};
-            var colors = ["#0044CC", "#51A351", "#EC4E20", "#1C3A13", "#1098F7", "#F89406", "#BD362F", "#2E294E", "#6BAA75", "#373F47", "#0088CC", "#000000"]
+            var sortingGroupGeoData = {};
+            var sortingGroupLookup = {};
+            var colorGroupLookup = {};
 
             // Hard-coded width and height of geographic hexagons
             var dX = 3.4641016151377;
@@ -90,13 +89,6 @@ angular.module("tile-grid-map-directive", [])
                 map.on("zoomend", scaleLabels);
 
                 function scaleLabels() {
-                    // rescale category labels
-                    var labelElements = document.getElementsByClassName("categoryLabel");
-                    var newFontSize = getCategoryLabelFontSize(map.getZoom());
-                    Array.prototype.forEach.call(labelElements, function (targetElement) {
-                        targetElement.style.fontSize = newFontSize;
-                    });
-
                     // rescale hex labels
                     labelElements = document.getElementsByClassName("defaultHexLabel");
                     newFontSize = getHexLabelFontSize(map.getZoom());
@@ -104,10 +96,6 @@ angular.module("tile-grid-map-directive", [])
                         targetElement.style.fontSize = newFontSize;
                     });
                 };
-
-                function getCategoryLabelFontSize(zoomLevel) {
-                    return 1.2 * (zoomLevel - 2) + "em";
-                }
 
                 function getHexLabelFontSize(zoomLevel) {
                     return 1.0 * (zoomLevel - 2) + "em";
@@ -167,6 +155,9 @@ angular.module("tile-grid-map-directive", [])
                 };
 
                 function recolorData(grouping) {
+
+                    colorGroupLookup = {};
+
                     if(grouping.name !== "default") {
                         // Generate legend data
                         var legendData = {};
@@ -176,7 +167,6 @@ angular.module("tile-grid-map-directive", [])
 
                         // Generate lookup structure to quickly
                         // match a node to its group
-                        var groupLookup = {};
                         grouping.subgroups.forEach(function(subgroup) {
                             var groupColor = getGroupColor(subgroup.name);
                             legendData.legend_lookup[subgroup.name] = groupColor;
@@ -188,7 +178,7 @@ angular.module("tile-grid-map-directive", [])
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
                                     if(node.hasOwnProperty('iso')) {
-                                        groupLookup[node.iso] = subgroup.name;
+                                        colorGroupLookup[node.iso] = subgroup.name;
                                     } else {
                                         // Just print a little warning
                                         console.log("Node without iso property found!");
@@ -203,7 +193,7 @@ angular.module("tile-grid-map-directive", [])
                                 var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 return {
                                     "className": "countryHex coloredHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
-                                    "fillColor": legendData.legend_lookup[groupLookup[feature.properties.iso]]
+                                    "fillColor": legendData.legend_lookup[colorGroupLookup[feature.properties.iso]]
                                 };
                             },
                             "onEachFeature": function(feature, layer) {
@@ -219,9 +209,10 @@ angular.module("tile-grid-map-directive", [])
                                     "icon": icon
                                 }).addTo(labelsLayer);
 
-                                // set popup options
                                 var popUpOptions = {
-                                    offset: L.point(0, 10)
+                                    maxWidth: 350,
+                                    minWidth: 300,
+                                    className: "tile-grid-popup"
                                 };
 
                                 // custom popup content
@@ -233,39 +224,100 @@ angular.module("tile-grid-map-directive", [])
                             }
                         };
 
-                        map.removeLayer(geoJsonLayer);
-                        map.removeLayer(labelsLayer);
+                        if(Object.keys(sortingGroupGeoData).length === 0) {
+                            // Data is not sorted into bins, just redraw
+                            redraw();
+                        } else {
+                            // Reset group geo data nextx, nexty, and y
+                            Object.keys(sortingGroupGeoData).forEach(function(key) {
+                                sortingGroupGeoData[key].nextX = sortingGroupGeoData[key].minX + (dX / 2);
+                                sortingGroupGeoData[key].nextY = sortingGroupGeoData[key].startY - (dY / 2);
+                                sortingGroupGeoData[key].y = 1;
+                            });
 
-                        labelsLayer = L.layerGroup().addTo(map);
-                        geoJsonLayer = L.geoJson(currentData, customLayerOpts).addTo(map);
+                            // Sort features by color group
+                            var sortedFeatures = {};
+                            currentData[0].features.forEach(function(feature) {
+                                var targetGroup = colorGroupLookup[feature.properties.iso];
+                                if(!sortedFeatures.hasOwnProperty(targetGroup)) {
+                                    sortedFeatures[targetGroup] = [];
+                                }
 
+                                sortedFeatures[targetGroup].push(feature);
+                            });
+
+                            // Calculate feature placement by group
+                            var featureDeltas = {};
+                            var STEPS = 6;
+                            Object.keys(sortedFeatures).forEach(function(key) {
+                                sortedFeatures[key].forEach(function(feature) {
+                                    addNewDelta(featureDeltas, feature, STEPS);
+                                });
+                            });
+
+                            // Animate features based on target state and steps
+                            animateFeatures(featureDeltas, 1, STEPS);
+                        }
+
+                        // Broadcast update event with new legend data
                         $rootScope.$broadcast("legendDataChange", { val: legendData });
                     } else {
                         // Clear out custom layer options
                         customLayerOpts = {};
 
-                        map.removeLayer(geoJsonLayer);
-                        map.removeLayer(labelsLayer);
-
-                        // Create layers with default layer options
-                        labelsLayer = L.layerGroup().addTo(map);
-                        geoJsonLayer = L.geoJson(currentData, defaultLayerOpts).addTo(map);
+                        redraw();
 
                         $rootScope.$broadcast("legendDataClear");
                     }
                 }
 
-                function getGroupColor(groupId) {
-                    if(colorLookup.hasOwnProperty(groupId)) {
-                        return colorLookup[groupId];
-                    } else {
-                        colorLookup[groupId] = colors[(colorIndex % colors.length)];
-                        colorIndex += 1;
-                        return colorLookup[groupId];
+                function addNewDelta(featureDeltas, feature, numSteps) {
+                    var group = sortingGroupLookup[feature.properties.iso];
+                    if(sortingGroupGeoData.hasOwnProperty(group)) {
+                        var centerX = feature.geometry.coordinates[0][0][0] + (dX / 2);
+                        var centerY = feature.geometry.coordinates[0][0][1] + (dY / 4);
+
+                        // Velocity for feature to move to target location in the given steps
+                        var deltaX = (centerX - sortingGroupGeoData[group].nextX) / numSteps;
+                        var deltaY = (centerY - sortingGroupGeoData[group].nextY) / numSteps;
+
+                        featureDeltas[feature.properties.iso] = {};
+                        featureDeltas[feature.properties.iso].dX = deltaX;
+                        featureDeltas[feature.properties.iso].dY = deltaY;
+
+                        // Reset geo data for a "new line" if end of current row is reached
+                        sortingGroupGeoData[group].nextX += dX;
+                        if((sortingGroupGeoData[group].nextX + dX) >= (sortingGroupGeoData[group].maxX - (dX/3))) {
+                            sortingGroupGeoData[group].y += 1;
+                            sortingGroupGeoData[group].nextX = sortingGroupGeoData[group].minX + ((dX / 2) * (sortingGroupGeoData[group].y % 2));
+                            sortingGroupGeoData[group].nextY -= dY * 0.75;
+                        }
                     }
                 }
 
+                function getGroupColor(groupId) {
+                    var colorSum = 0;
+                    var r = 0;
+                    var g = 0;
+                    var b = 0;
+                    while(colorSum < 75) {
+                        r = getRandomColorNumber();
+                        g = getRandomColorNumber();
+                        b = getRandomColorNumber();
+                        colorSum = r + g + b;
+                    }
+
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                }
+
+                function getRandomColorNumber() {
+                    return Math.floor((Math.random() * 255) + 1);
+                }
+
                 function regroupData(grouping) {
+                    sortingGroupGeoData = {};
+                    sortingGroupLookup = {};
+
                     var featureDeltas = {};
                     var STEPS = 10;
 
@@ -278,38 +330,49 @@ angular.module("tile-grid-map-directive", [])
                             "features": []
                         };
 
-                        var groupSpan = Math.max(225, grouping.subgroups.length * 25);
-                        var groupWidth = groupSpan / grouping.subgroups.length;
+                        var startX = -80.0;
+                        var startY = 80.0;
+                        var hexesPerRow = Math.floor(Math.abs(startX) / dX);
+                        
+                        sortingGroupGeoData = {};
+                        grouping.subgroups.forEach(function(subgroup) {
+                            var groupname = subgroup.name;
+                            sortingGroupGeoData[groupname] = {};
+                            sortingGroupGeoData[groupname].size = subgroup.nodes.length;
+                            sortingGroupGeoData[groupname].numRows = Math.ceil(sortingGroupGeoData[groupname].size / hexesPerRow);
+                        });
 
-                        var groupGeoData = {};
-                        var groupLookup = {};
-
+                        console.log(sortingGroupGeoData);
+                
                         grouping.subgroups.forEach(function(subgroup, idx) {
-                            groupGeoData[idx] = {};
-                            groupGeoData[idx].name = subgroup.name;
-                            groupGeoData[idx].minX = (-groupSpan/2) + (idx * groupWidth);
-                            groupGeoData[idx].maxX = (-groupSpan/2) + ((idx + 1) * groupWidth);
-                            groupGeoData[idx].nextX = groupGeoData[idx].minX + (dX / 2);
-                            groupGeoData[idx].nextY = 60.0 - (dY / 2);
-                            groupGeoData[idx].y = 1;
+                            var groupname = subgroup.name;
+                            sortingGroupGeoData[groupname].minX = startX + dX;
+                            sortingGroupGeoData[groupname].maxX = 0.0;
+                            sortingGroupGeoData[groupname].startY = startY;
+                            sortingGroupGeoData[groupname].nextX = sortingGroupGeoData[groupname].minX + (dX / 2);
+                            sortingGroupGeoData[groupname].nextY = sortingGroupGeoData[groupname].startY - (dY / 2);
+                            sortingGroupGeoData[groupname].y = 1;
 
                             // Make label feature
                             var labelFeature = {
                                 "type": "Feature",
                                 "geometry": {
                                     "type": "Point",
-                                    "coordinates": [groupGeoData[idx].minX, 65.0]
+                                    "coordinates": [sortingGroupGeoData[groupname].minX, startY + (dY/3)]
                                 },
                                 "properties": {
-                                    "name": subgroup.name
+                                    "name": groupname
                                 }
                             };
                             labelFeatures.features.push(labelFeature);
 
+                            // update starting Y location for next feature group
+                            startY = startY - (dY * (sortingGroupGeoData[groupname].numRows + 2));
+
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
                                     if(node.hasOwnProperty('iso')) {
-                                        groupLookup[node.iso] = idx;
+                                        sortingGroupLookup[node.iso] = groupname;
                                     } else {
                                         // Just print a little warning
                                         console.log("Node without iso property found!");
@@ -319,39 +382,45 @@ angular.module("tile-grid-map-directive", [])
                             });
                         });
 
-                        // Calculate centroid of existing feature
-                        currentData[0].features.forEach(function(feature) {
-                            var group = groupLookup[feature.properties.iso];
-                            if(groupGeoData.hasOwnProperty(group)) {
-                                var centerX = feature.geometry.coordinates[0][0][0] + (dX / 2);
-                                var centerY = feature.geometry.coordinates[0][0][1] + (dY / 4);
-
-                                var deltaX = (centerX - groupGeoData[group].nextX) / STEPS;
-                                var deltaY = (centerY - groupGeoData[group].nextY) / STEPS;
-
-                                featureDeltas[feature.properties.iso] = {};
-                                featureDeltas[feature.properties.iso].dX = deltaX;
-                                featureDeltas[feature.properties.iso].dY = deltaY;
-
-                                groupGeoData[group].nextX += dX;
-                                if((groupGeoData[group].nextX + dX) >= (groupGeoData[group].maxX - (dX/3))) {
-                                    groupGeoData[group].y += 1;
-                                    groupGeoData[group].nextX = groupGeoData[group].minX + ((dX / 2) * (groupGeoData[group].y % 2));
-                                    groupGeoData[group].nextY -= dY * 0.75;
+                        // Calculate target location for each feature     
+                        if(Object.keys(colorGroupLookup).length === 0) {
+                            // If no color grouping is set just do a single pass
+                            currentData[0].features.forEach(function(feature) {
+                                addNewDelta(featureDeltas, feature, STEPS);
+                            });
+                        } else {
+                            // Pre-sort features based on color grouping
+                            var sortedFeatures = {};
+                            currentData[0].features.forEach(function(feature) {
+                                var targetGroup = colorGroupLookup[feature.properties.iso];
+                                if(!sortedFeatures.hasOwnProperty(targetGroup)) {
+                                    sortedFeatures[targetGroup] = [];
                                 }
-                            }
-                        });
+
+                                sortedFeatures[targetGroup].push(feature);
+                            });
+
+                            // Calculate feature placement by group
+                            Object.keys(sortedFeatures).forEach(function(key) {
+                                sortedFeatures[key].forEach(function(feature) {
+                                    addNewDelta(featureDeltas, feature, STEPS);
+                                });
+                            });
+                        }
 
                         categoryLabelsLayer = L.geoJson(labelFeatures, {
                             pointToLayer: function(feature, latlng) {
-                                var fontSize = getCategoryLabelFontSize(map.getZoom());
                                 var icon = L.divIcon({
-                                    "html": "<span class='categoryLabel' style='font-size:" + fontSize + ";font-weight:500;'>" + feature.properties.name + "</span>",
+                                    "html": ""
                                 });
 
-                                return L.marker(latlng, {
-                                    "icon": icon
+                                var marker = L.marker(latlng, { "icon": icon }).bindLabel(feature.properties.name, {
+                                    "noHide": true,
+                                    "direction": "right",
+                                    "offset": [-16,0]
                                 });
+
+                                return marker;
                             }
                         }).addTo(map);
                     } else {
@@ -375,11 +444,12 @@ angular.module("tile-grid-map-directive", [])
                         });
                     }
 
-                    drawStep(currentData, featureDeltas, 1, STEPS);
+                    // Animate steps to new state based on deltas and number of steps
+                    animateFeatures(featureDeltas, 1, STEPS);
                 };
 
-                function drawStep(data, featureDeltas, currentStep, maxSteps) {
-                    data[0].features.forEach(function(feature) {
+                function animateFeatures(featureDeltas, currentStep, maxSteps) {
+                    currentData[0].features.forEach(function(feature) {
                         if(featureDeltas.hasOwnProperty(feature.properties.iso)) {
                             feature.geometry.coordinates[0].forEach(function(coordinate) {
                                 var deltas = featureDeltas[feature.properties.iso];
@@ -389,6 +459,19 @@ angular.module("tile-grid-map-directive", [])
                         }
                     });
 
+                    redraw();
+
+                    currentStep += 1;
+                    if(currentStep <= maxSteps) {
+                        $timeout(function() {
+                            animateFeatures(featureDeltas, currentStep, maxSteps);
+                        }, 50);
+                    } else {
+                        map.fitBounds(geoJsonLayer.getBounds());
+                    }
+                }
+
+                function redraw() {
                     map.removeLayer(geoJsonLayer);
                     map.removeLayer(labelsLayer);
 
@@ -396,16 +479,7 @@ angular.module("tile-grid-map-directive", [])
                     var layerOpts = Object.keys(customLayerOpts).length === 0 ? defaultLayerOpts : customLayerOpts;
 
                     labelsLayer = L.layerGroup().addTo(map);
-                    geoJsonLayer = L.geoJson(data, layerOpts).addTo(map);
-
-                    currentStep += 1;
-                    if(currentStep <= maxSteps) {
-                        $timeout(function() {
-                            drawStep(data, featureDeltas, currentStep, maxSteps);
-                        }, 10);
-                    } else {
-                        map.fitBounds(geoJsonLayer.getBounds());
-                    }
+                    geoJsonLayer = L.geoJson(currentData, layerOpts).addTo(map);
                 }
 
                 // bind data
@@ -415,6 +489,10 @@ angular.module("tile-grid-map-directive", [])
                     if (newData[0] !== undefined) {
 
                         currentData = JSON.parse(JSON.stringify(newData[0]));
+
+                        currentData[0].features = currentData[0].features.filter(function(feature) {
+                            return feature.properties.iso !== null;
+                        });
 
                         draw(currentData, map, interactivity, newData[1]);
 
@@ -430,7 +508,6 @@ angular.module("tile-grid-map-directive", [])
                             return group.name === args.val.control_name;
                         });
                         if(newGrouping !== undefined) {
-                            console.log(newGrouping);
                             regroupData(newGrouping);
                         }
                     }
