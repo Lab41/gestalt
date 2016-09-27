@@ -2,8 +2,6 @@ angular.module("content-service", [])
 
 .factory("contentService", ["$http", "$q", function($http, $q) {
 	
-	var urlBase = api_config.content_service_uri;
-	
 	return {
 		
 		// data storage
@@ -14,6 +12,9 @@ angular.module("content-service", [])
 			
 			// create deferred object
 			var deferred = $q.defer();
+            
+            // set up url base to work with or without established API
+            var urlBase = url.match(/json$/) ? "" : api_config.content_service_uri;
 			
 			// make $http request
 			$http.get(urlBase + url).then(function(response) {

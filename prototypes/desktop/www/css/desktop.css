@@ -13,6 +13,7 @@
 /* --- !login
 /* --- !visual form
 /* --- !heuristic
+/* --- !classification
 /* !MEDIA QUERIES
 
 /******************************* !IMPORTS *******************************/
@@ -604,6 +605,19 @@ button:focus {
 
     font-weight: 700;
 
+}
+
+/****************************/
+/***** !classification ******/
+/****************************/
+
+/* heatmap grid */
+.classification heatmap-grid {
+    
+    display: block;
+    min-width: 500px;
+    width: 20%;
+    
 }
 
 /******************************* !MEDIA QUERIES *******************************/

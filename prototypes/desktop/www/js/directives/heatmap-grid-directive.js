@@ -39,10 +39,11 @@ angular.module("heatmap-grid-directive", [])
                 
                 // format the date
                 // d3 wants very specific date format and this is easiest way to get there
-                var parseDate = d3.time.format("%Y-%m-%d").parse;
+                var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S").parse;
                 
                 // x-scale
-                var xScale = d3.scale.ordinal(); 
+                //var xScale = d3.scale.ordinal(); 
+                var xScale = d3.time.scale();
                 
                 // y-scale
                 var yScale = d3.scale.ordinal();
@@ -97,7 +98,7 @@ angular.module("heatmap-grid-directive", [])
                                 o.values.forEach(function(d) {
                                     
                                     // map new values to data
-                                    d.date = parseDate(d.timestamp.split("T")[0]);
+                                    d.date = parseDate(d.timestamp);
                                     
                                 });
                                 
@@ -110,11 +111,13 @@ angular.module("heatmap-grid-directive", [])
                             var maxPadding = d3.max([fontSize, gutter], function(d) { return d; });
                             var xScaleMin = useLabel ? labelWidth : 0;
                             var xScaleMax = width;
-                                                        
+                            var minDate = new Date("2014-01-01");console.log(minDate);
+                            var maxDate = new Date("2014-01-02");console.log(maxDate);
+                                                     
                             // add data to x-scale layout algorithm
-                            xScale.domain(unest.map(function(d) { return d.date; }));
+                            xScale.domain([minDate, maxDate])
+                            //.ticks(d3.time.minute, 15);
                             xScale.range([xScaleMin, xScaleMax])
-                            xScale.rangeRoundBands([xScaleMin, xScaleMax], gutter);
                             
                             // add data to y-scale layout algorithm
                             yScale.domain(data.map(function(d) { return d.name; }));
@@ -187,7 +190,8 @@ angular.module("heatmap-grid-directive", [])
                                         .attr({
                                             x: function(d) { return xScale(d.date); },
                                             y: yScale(groupD.name),
-                                            width: xScale.rangeBand(),
+                                            //width: xScale.rangeBand(),
+                                            width: 10,
                                             height: yScale.rangeBand()
                                         })
                                         .style({
@@ -201,9 +205,11 @@ angular.module("heatmap-grid-directive", [])
                                         .transition()
                                         .duration(transition.time)
                                         .attr({
-                                            x: function(d) { return xScale(d.date); },
+                                            x: function(d) { console.log(d.date);return xScale(d.date); },
                                             y: yScale(groupD.name),
-                                            width: xScale.rangeBand(),
+                                            //width: xScale.rangeBand(),
+                                            //width: function() { return fakeOrdinalXScale.rangeBand(); },
+                                            width: 10,
                                             height: yScale.rangeBand()
                                         })
                                         .style({
