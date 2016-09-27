@@ -8,7 +8,7 @@ angular.module("tile-grid-map-directive", [])
             grouping: "=",
             theme: "="
         },
-        template: "<div data-tap-disabled='true' style='height: 400px; width: 100%; background: none;'></div>",
+        template: "<div data-tap-disabled='true' style='height: 600px; width: 100%; background: none;'></div>",
         link: function(scope, element, attrs) {
 
             var canvas = element.find("div")[0];
