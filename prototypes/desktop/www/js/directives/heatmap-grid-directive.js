@@ -115,9 +115,9 @@ angular.module("heatmap-grid-directive", [])
                             var maxDate = new Date("2014-01-02");console.log(maxDate);
                                                      
                             // add data to x-scale layout algorithm
-                            xScale.domain([minDate, maxDate])
+                            xScale.domain([minDate, maxDate]);console.log("min", xScaleMin); console.log("max",xScaleMax);
                             //.ticks(d3.time.minute, 15);
-                            xScale.range([xScaleMin, xScaleMax])
+                            xScale.range([0, xScaleMax])
                             
                             // add data to y-scale layout algorithm
                             yScale.domain(data.map(function(d) { return d.name; }));
@@ -191,7 +191,7 @@ angular.module("heatmap-grid-directive", [])
                                             x: function(d) { return xScale(d.date); },
                                             y: yScale(groupD.name),
                                             //width: xScale.rangeBand(),
-                                            width: 10,
+                                            width: 4,
                                             height: yScale.rangeBand()
                                         })
                                         .style({
@@ -209,7 +209,7 @@ angular.module("heatmap-grid-directive", [])
                                             y: yScale(groupD.name),
                                             //width: xScale.rangeBand(),
                                             //width: function() { return fakeOrdinalXScale.rangeBand(); },
-                                            width: 10,
+                                            width: 4,
                                             height: yScale.rangeBand()
                                         })
                                         .style({
