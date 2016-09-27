@@ -29,6 +29,7 @@ ui-view[name="panel"] {
 ui-view[name="panel"] section {
 
     padding: 1em;
+    width: 100%;
 
 }
 

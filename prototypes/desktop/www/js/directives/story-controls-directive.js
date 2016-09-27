@@ -18,7 +18,7 @@ angular.module("story-controls-directive", [])
             $scope.changeOption = function(ideaName, ideaId, controlId) {
 
                 // TODO abstract so functionality is data driven not hardcoded here
-console.log($scope.visTypeName)
+
                 // check control id
                 if ($scope.visTypeName == undefined) {
 
