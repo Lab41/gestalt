@@ -140,14 +140,29 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
                     // url_name is linked to the template being used
                     console.log("getting vis " + $stateParams.currentVisualUrl + ".html");
                     //return $http.get("templates/visualizations/" + $stateParams.currentVisualUrl + ".html").then(function(template) {
-                    return $http.get("templates/visualizations/visual-standard.html").then(function(template) {
+                    return $http.get("templates/visualizations/" + $stateParams.currentVisualUrl + ".html").then(function(template) {
+                        console.log("getting vis: " + template.data);
                         return template.data;
                     });
                 },
 				controller: "visController"
 			}
     	}
-    });
+    })
+
+    // heuristics visual
+    .state("app.heuristics", {
+        url:"/{currentPanelUrl}/{currentVisualUrl}/{currentHeuristicUrl}",
+        views: {
+            "panel" : {
+                templateUrl: "templates/visualizations/visualization-standard.html",
+                controller: "visController"
+            },
+            "slide":  {
+                templateUrl: "templates/slide-panel.html"
+            }
+        }
+    })
 
     $urlRouterProvider.otherwise("/login?t=" + themeConfig.ui.start);
 
