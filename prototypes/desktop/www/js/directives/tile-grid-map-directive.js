@@ -426,6 +426,9 @@ angular.module("tile-grid-map-directive", [])
                     } else {
                         var targetLocs = {};
                         scope.vizData[0].features.forEach(function(feature) {
+                            if(feature.properties.hasOwnProperty("sortBy")) {
+                                featue.properties.sortBy = {};
+                            }
                             targetLocs[feature.properties.iso] = {};
                             targetLocs[feature.properties.iso].x = feature.geometry.coordinates[0][0][0] + (dX / 2);
                             targetLocs[feature.properties.iso].y = feature.geometry.coordinates[0][0][1] + (dY / 4);
