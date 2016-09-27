@@ -1,92 +1,91 @@
-drop table if exists gestalt_persona; create table gestalt_persona (id serial primary key, name text, description text);
- insert into gestalt_persona (name,description) values ('general','Use for a high-level overview with information meant to be understood by anyone.');
- insert into gestalt_persona (name,description) values ('corporate','Use for a high-level overview with information curated for helping you make high-level decisions.');
- insert into gestalt_persona (name,description) values ('subject matter expert','Use for aggregate and detailed information meant to help you gain deeper understanding of the subject already familiar to you.');
- insert into gestalt_persona (name,description) values ('peer','Use for aggregate and detailed information meant to help you understand the data science.');
+drop table if exists gestalt_persona_type; create table gestalt_persona_type (id serial primary key, name text, description text);
+ insert into gestalt_persona_type (name,description) values ('general','Use for a high-level overview with information meant to be understood by anyone.');
+ insert into gestalt_persona_type (name,description) values ('corporate','Use for a high-level overview with information curated for helping you make high-level decisions.');
+ insert into gestalt_persona_type (name,description) values ('sme','Use for aggregate and detailed information meant to help you gain deeper understanding of the subject already familiar to you.');
+ insert into gestalt_persona_type (name,description) values ('peer','Use for aggregate and detailed information meant to help you understand the data science.');
+select * from gestalt_persona_type;
+drop table if exists gestalt_persona; create table gestalt_persona (id serial primary key, name text, persona_type integer, description text);
+ insert into gestalt_persona (name,persona_type,description) values ('layperson',1,'No background or supplemental information is needed for comprehension.');
+ insert into gestalt_persona (name,persona_type,description) values ('economist',3,'A background in economics or statistics is required for comprehension.');
+ insert into gestalt_persona (name,persona_type,description) values ('cyber security analyst',3,'A background in cyber security is required for comprehension.');
+ insert into gestalt_persona (name,persona_type,description) values ('visualization specialist',3,'A background in visual design or data visualization is required for comprehension.');
+ insert into gestalt_persona (name,persona_type,description) values ('cyber security manager',2,'A background in cyber security and IT management is required for comprehension.');
+ insert into gestalt_persona (name,persona_type,description) values ('data scientist',4,'A background in data science is required for comprehension.');
 select * from gestalt_persona;
-drop table if exists gestalt_workspace; create table gestalt_workspace (id serial primary key, workspace_name_id integer,persona_id integer,url_name text,is_default boolean);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,1,'gestalt',false);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,2,'gestalt',false);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,3,'gestalt',false);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,4,'gestalt',false);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,1,'econ',true);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,2,'econ',true);
- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,3,'econ',true);
--- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,4,substring(md5(random()::text),0,6),true);
--- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,1,substring(md5(random()::text),0,6),false);
--- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,2,substring(md5(random()::text),0,6),false);
--- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,3,substring(md5(random()::text),0,6),false);
--- insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,4,substring(md5(random()::text),0,6),false);
- --insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (4,1,substring(md5(random()::text),0,6),false);
- --insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (4,2,substring(md5(random()::text),0,6),false);
- --insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (4,3,substring(md5(random()::text),0,6),false);
- --insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (4,4,substring(md5(random()::text),0,6),false);
-select * from gestalt_workspace;
 drop table if exists gestalt_workspace_name; create table gestalt_workspace_name (id serial primary key,name text);
  insert into gestalt_workspace_name (name) values ('Gestalt');
  insert into gestalt_workspace_name (name) values ('Economics');
- insert into gestalt_workspace_name (name) values ('IP autonomous systems');
- insert into gestalt_workspace_name (name) values ('SDN anomolies');
+ insert into gestalt_workspace_name (name) values ('SDN Anomolies');
 select * from gestalt_workspace_name;
+drop table if exists gestalt_workspace; create table gestalt_workspace (id serial primary key, workspace_name_id integer,persona_id integer,url_name text,is_default boolean);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,1,'gestalt',true);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,4,'gestalt',true);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (1,6,'gestalt',true);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,1,'economics',false);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,2,'economics',true);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (2,6,'economics',false);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,3,'software-defined-networking',true);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,5,'software-defined-networking',true);
+ insert into gestalt_workspace (workspace_name_id,persona_id,url_name,is_default) values (3,6,'software-defined-networking',false);
+select * from gestalt_workspace where persona_id = 5;
+drop table if exists gestalt_panel; create table gestalt_panel (id serial primary key,name text,url_name text);
+ insert into gestalt_panel (name,url_name) values ('form','visual-form');
+ insert into gestalt_panel (name,url_name) values ('tools','visual-tool');
+ insert into gestalt_panel (name,url_name) values ('contagion','contagion');
+ insert into gestalt_panel (name,url_name) values ('classification','classification');
+ insert into gestalt_panel (name,url_name) values ('activity','activity');
+select * from gestalt_panel;
 drop table if exists gestalt_workspace_panel; create table gestalt_workspace_panel (id serial primary key,workspace_id integer,panel_id integer,is_default boolean);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (1,1,true);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (2,1,true);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (3,1,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (4,1,true);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (1,2,false);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (2,2,false);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (3,2,false);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (4,2,false);
+ insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (4,3,true);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (5,3,true);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (6,3,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (7,3,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (8,3,true);
+ insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (7,4,true);
+ insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (8,4,true);
  insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (9,4,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (10,4,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (11,4,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (12,4,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (13,5,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (14,5,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (15,5,true);
- insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (16,5,true);
+ insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (7,5,false);
+ insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (8,5,false);
+ insert into gestalt_workspace_panel (workspace_id,panel_id,is_default) values (9,5,false);
 select * from gestalt_workspace_panel;
-drop table if exists gestalt_panel; create table gestalt_panel (id serial primary key,name text,url_name text);
- insert into gestalt_panel (name,url_name) values ('forms','visual-form');
- insert into gestalt_panel (name,url_name) values ('tools','visual-tool');
- insert into gestalt_panel (name,url_name) values ('contagion','contagion');
- insert into gestalt_panel (name,url_name) values ('routers','routers');
- insert into gestalt_panel (name,url_name) values ('classification','classification');
-select * from gestalt_panel;
+drop table if exists gestalt_story; create table gestalt_story (id serial primary key,name text,url_name text,vis_id integer, action_id integer, story_order integer, intro text);
+ insert into gestalt_story (story_order,name,url_name, vis_id, intro) values (1,'What tool to use for which data visualization task','visualization-standard',15, 'The proliferation of data visualization tools makes it difficult to know what tool is best suited for what point of the overall visualization workflow. We''ve experimented with many of the available technologies in various environments with varied visualization goals. This is our collection of what we found.');
+ insert into gestalt_story (story_order,name,url_name, vis_id, intro) values (1,'What visual form best communicates your dataset','tbd',3, 'Choosing the right form for what kind of visual data story you''re trying to craft is vital to comprehension. We''ve experiemented with several different visual forms for different meanings in visual data stories and these are the results.');
+ insert into gestalt_story (story_order,name,url_name, vis_id, intro) values (2,'Global dependencies and connections in econominc networks.','economic-networks',16,'Global financial systems are interconnected and a series of dependencies and influence. Notice how these groups do something interesting, will put lorem ipsum here if I can''t get info from econ team.');
+ insert into gestalt_story (story_order,name,url_name, vis_id) values (1,'tbd','tbd',3);
+ insert into gestalt_story (story_order,name,url_name, vis_id, intro) values (1,'What is economic contagion?','contagion-background',16,'In economics and finance, a contagion can be explained as a situation where a shock in a particular economy or region spreads out and affects others by way of, say, price movements. Description: The contagion effect explains the possibility of spread of economic crisis or boom across countries or regions.');
+ insert into gestalt_story (story_order,name,url_name, intro) values (3,'A scenario for economic contagion to spread.','contagion-spread', 'In this scenario a shock is introduced to low income oil exporters and note the spread and quarentine boundaries of the crisis.');
+ insert into gestalt_story (story_order, vis_id, name,url_name, intro) values (1,11,'Classifying anomolies and stuff.','anomolies', 'Some kind of intro/description? More text here to just fill the space assuming there is enough to say about this story.');
+  insert into gestalt_story (story_order, vis_id, name,url_name, intro) values (1,14,'Here''s some activity.','networks', 'Some kind of intro/description? More text here to just fill the space assuming there is enough to say about this story.');
+select * from gestalt_story;
 drop table if exists gestalt_persona_panel_story; create table gestalt_persona_panel_story (id serial primary key,persona_id integer,panel_id integer,story_id integer);
  insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,1,2);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (2,1,2);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,1,2);
  insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (4,1,2);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,1,2);
  insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,2,1);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (2,2,1);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,2,1);
  insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (4,2,1);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,2,1);
  insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,3,3);
  insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (2,3,3);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,3,3);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (4,3,3);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,4,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (2,4,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,4,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (4,4,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,5,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (2,5,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,5,4);
- insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (4,5,4);
-select * from gestalt_persona_panel_story;
-drop table if exists gestalt_story; create table gestalt_story (id serial primary key,name text,url_name text,vis_id integer, action_id integer);
- insert into gestalt_story (name,url_name, vis_id) values ('What tool to use for which data visualization task',substring(md5(random()::text),0,6),3);
- insert into gestalt_story (name,url_name, vis_id) values ('What visual form best communicates your dataset',substring(md5(random()::text),0,6),3);
- insert into gestalt_story (name,url_name, vis_id, action_id) values ('GDP',substring(md5(random()::text),0,6),16,5);
- insert into gestalt_story (name,url_name, vis_id) values ('tbd',substring(md5(random()::text),0,6),3);
-select * from gestalt_story;
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,3,3);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,3,5);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,3,5);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (1,3,6);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (2,3,6);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,3,6);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,4,7);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (5,4,7);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,4,7);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (3,5,8);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (5,5,8);
+ insert into gestalt_persona_panel_story (persona_id,panel_id,story_id) values (6,5,8);
+select * from gestalt_persona_panel_story where panel_id = 1;
 drop table if exists gestalt_story_idea; create table gestalt_story_idea (id serial primary key,vis_type_id integer,name text,label text,description text, story_id integer, action_id integer, svg_icon text);
- insert into gestalt_story_idea (name,label,description,story_id,action_id) values ('Neque lorem cursus curabitur vulputate quis iaculis', 'emphasize', 'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',3,7);
+ insert into gestalt_story_idea (name,label,description,story_id,action_id) values ('Neque lorem cursus curabitur vulputate quis iaculis', 'filter', 'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',3,6);
  insert into gestalt_story_idea (name,label,description,story_id,action_id) values ('Etiam felis nostra', 'color', 'Velit risus.Magna justo.Curae etiam scelerisque per.Metus ipsum.Dolor morbi neque vel velit fermentum.',3,5);
  insert into gestalt_story_idea (name,label,description,story_id,action_id) values ('Purus nulla lectus', 'cluster', 'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',3,1);
  insert into gestalt_story_idea (vis_type_id, name,label,description,story_id,action_id,svg_icon) values (1,'Comparison', 'comparison', 'Datasets should compare at least 2 values against each other.',2,4, '<svg viewBox="0 0 100 100"><path d="M79.8,39.1c-7.6,0-13.8,6.2-13.8,13.8s6.2,13.8,13.8,13.8c7.6,0,13.8-6.2,13.8-13.8S87.4,39.1,79.8,39.1z M75.7,41.9  l-6.9,6.9C70,45.6,72.5,43.1,75.7,41.9z M68,52.9c0-0.5,0-0.9,0.1-1.4l10.4-10.4c0.4-0.1,0.9-0.1,1.4-0.1c0.3,0,0.7,0,1,0.1  L68.1,53.9C68,53.6,68,53.3,68,52.9z M68.4,55.8l14.3-14.3c0.6,0.1,1.2,0.3,1.7,0.6L68.9,57.5C68.7,56.9,68.5,56.4,68.4,55.8z   M69.6,58.9l16.1-16.1c0.5,0.3,1,0.7,1.5,1L70.7,60.4C70.3,59.9,70,59.4,69.6,58.9z M71.7,61.5l16.7-16.7c0.4,0.4,0.7,0.8,1.1,1.3  L73,62.6C72.5,62.2,72.1,61.9,71.7,61.5z M74.3,63.4l15.9-15.9c0.3,0.6,0.6,1.2,0.8,1.8L76.1,64.1C75.5,63.9,74.9,63.7,74.3,63.4z   M82.9,64.3l8.2-8.2C90.1,60.1,86.9,63.2,82.9,64.3z M80.4,64.7c-0.2,0-0.4,0-0.6,0c-0.7,0-1.3-0.1-2-0.2l13.6-13.6  c0.1,0.7,0.2,1.3,0.2,2c0,0.2,0,0.4,0,0.6L80.4,64.7z M20.3,39.1c-7.6,0-13.8,6.2-13.8,13.8s6.2,13.8,13.8,13.8  c7.6,0,13.8-6.2,13.8-13.8S28,39.1,20.3,39.1z M20.3,64.7c-6.5,0-11.8-5.3-11.8-11.8s5.3-11.8,11.8-11.8s11.8,5.3,11.8,11.8  S26.9,64.7,20.3,64.7z M48.2,52.1c0.1,0.1,0.2,0.2,0.2,0.4c0,0.2-0.1,0.3-0.2,0.4l-4,2.7c-0.1,0.1-0.2,0.1-0.3,0.1  c-0.1,0-0.2,0-0.2-0.1c-0.2-0.1-0.3-0.3-0.3-0.4V54h-7.5c-0.2,0-0.4-0.2-0.4-0.4v-2.3c0-0.2,0.2-0.4,0.4-0.4h7.5v-1.2  c0-0.2,0.1-0.4,0.3-0.4c0.2-0.1,0.4-0.1,0.5,0L48.2,52.1z M64.2,51.3v2.3c0,0.2-0.2,0.4-0.4,0.4h-7.5v1.2c0,0.2-0.1,0.4-0.3,0.4  c-0.1,0-0.2,0.1-0.2,0.1c-0.1,0-0.2,0-0.3-0.1l-4-2.7c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.2,0.1-0.3,0.2-0.4l4-2.7c0.2-0.1,0.4-0.1,0.5,0  c0.2,0.1,0.3,0.3,0.3,0.4V51h7.5C64.1,51,64.2,51.1,64.2,51.3z"></path></svg>');
@@ -111,423 +110,8 @@ drop table if exists gestalt_vertex; create table gestalt_vertex (id serial prim
 select * from gestalt_vertex;
 drop table if exists gestalt_flow; create table gestalt_flow (id serial primary key,name text);
  insert into gestalt_flow (name) values ('option 1');
+ insert into gestalt_flow (name) values ('option 2');
 select * from gestalt_flow;
 drop table if exists gestalt_heuristic; create table gestalt_heuristic (id serial primary key,name text);
  insert into gestalt_heuristic (name) values ('more');
 select * from gestalt_heuristic;
-drop table if exists gestalt_color; create table gestalt_color (id serial primary key,name text);
- insert into gestalt_color (name) values ('option 1');
-select * from gestalt_color;
-drop table if exists gestalt_emphasis; create table gestalt_emphasis (id serial primary key,name text);
- insert into gestalt_emphasis (name) values ('option 1');
- insert into gestalt_emphasis (name) values ('option 2');
-select * from gestalt_emphasis;
-drop table if exists gestalt_story_action_control; create table gestalt_story_action_control (id serial primary key,name_id integer,story_action_id integer);
-insert into gestalt_story_action_control (name_id,story_action_id) values (1,1);
- insert into gestalt_story_action_control (name_id,story_action_id) values (2,1);
- insert into gestalt_story_action_control (name_id,story_action_id) values (3,1);
- insert into gestalt_story_action_control (name_id,story_action_id) values (4,1);
-insert into gestalt_story_action_control (name_id,story_action_id) values (1,5);
- insert into gestalt_story_action_control (name_id,story_action_id) values (2,5);
- insert into gestalt_story_action_control (name_id,story_action_id) values (3,5);
- insert into gestalt_story_action_control (name_id,story_action_id) values (4,5);
-insert into gestalt_story_action_control (name_id,story_action_id) values (1,7);
- insert into gestalt_story_action_control (name_id,story_action_id) values (2,7);
- insert into gestalt_story_action_control (name_id,story_action_id) values (3,7);
- insert into gestalt_story_action_control (name_id,story_action_id) values (4,7);
- -- end dummy groups
-select * from gestalt_story_action_control where story_action_id = 1;
-drop table if exists gestalt_vis_type; CREATE TABLE gestalt_vis_type (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL CHECK (name <> ''),
-    url_name text,
-    UNIQUE (name)
-);
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('comparison', 'comparison');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('time series', 'time-series');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('hierarchy', 'hierarchy');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('parts of a whole', 'parts-of-a-whole');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('relatedness','relatedness');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('geospatial','geospatial');
-select * from gestalt_vis_type;
-drop table if exists gestalt_vis_directive;
-CREATE TABLE gestalt_vis_directive (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL CHECK (name <> ''),
-    UNIQUE (name)
-
-);
-INSERT INTO gestalt_vis_directive (name) VALUES ('bar-chart');
-INSERT INTO gestalt_vis_directive (name) VALUES ('group-nodes');
-INSERT INTO gestalt_vis_directive (name) VALUES ('visualization-standard');
-INSERT INTO gestalt_vis_directive (name) VALUES ('tbd');
-INSERT INTO gestalt_vis_directive (name) VALUES ('line-chart');
-INSERT INTO gestalt_vis_directive (name) VALUES ('dendrogram');
-INSERT INTO gestalt_vis_directive (name) VALUES ('packed-circles');
-INSERT INTO gestalt_vis_directive (name) VALUES ('tree-list');
-INSERT INTO gestalt_vis_directive (name) VALUES ('heatmap-grid');
-INSERT INTO gestalt_vis_directive (name) VALUES ('pie-chart');
-INSERT INTO gestalt_vis_directive (name) VALUES ('node-link');
-INSERT INTO gestalt_vis_directive (name) VALUES ('adjacent-matrix');
-INSERT INTO gestalt_vis_directive (name) VALUES ('tile-grid-map');
-select * from gestalt_vis_directive;
-drop table if exists gestalt_vis;
-CREATE TABLE gestalt_vis (
-    id SERIAL PRIMARY KEY,
-    vis_type_id INTEGER,
-    vis_directive_id INTEGER,
-    name TEXT NOT NULL CHECK (name <> ''),
-    max_limit INTEGER NOT NULL,
-    UNIQUE (name)
-);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (1, 1, 'bar chart (horizontal)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (5, 2, 'group nodes', 500);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (null, 4, 'tbd', 500);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (2, 5, 'spark line', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (1, 1, 'bar chart (vertical)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (3, 6, 'dendrogram (radial)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (3, 6, 'dendrogram (linear)', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (3, 7, 'packed circles', 100);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (3, 8, 'tree list', 500);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (2, 5, 'line chart', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (2, 9, 'heatmap grid', 50);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (4, 10, 'pie chart', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (4, 10, 'donut chart', 10);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (5, 11, 'node link diagram', 200);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (5, 12, 'adjacency matrix', 200);
-INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
-    (6, 13, 'tile grid map', 300);
-select * from gestalt_vis;
-drop table if exists gestalt_vis_do_attr;
-CREATE TABLE gestalt_vis_do_attr (
-    id  serial PRIMARY KEY,
-    vis_id integer,
-    do_value TEXT NOT NULL CHECK (do_value <> '')
-);
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (1, 'Use when you want to compare series of values against one another.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (1, 'Use when you have small differences between each series value.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (1, 'Use when you have greater than 10 series to compare.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (5, 'Use when you want to compare series of values against one another.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (5, 'Use when you have small differences between each series value.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (5, 'Use when you have greater than 10 series to compare.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (6, 'Use for data that is hierarchial.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (6, 'Use when space is restricted and generally square shaped.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (7, 'Use for data that is hierarchial.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (7, 'Use when data is more than 6 layers deep or data has more than 100 nodes.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (8, 'Use for data that is hierarchial.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (8, 'Use when data is more than 6 layers deep or data has more than 100 nodes.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (9, 'Use for data that is hierarchial.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (9, 'Use when data is more than 6 layers deep or data has more than 100 nodes.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (9, 'Use when space is extremely limited and/or extremely tall/skinny.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (4, 'Use for data that changes over time.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (4, 'Use when space is restricted and generally wider than it is tall.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (4, 'Use for a high-level understanding of a trend or drastic change.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (10, 'Use for data that changes over time.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (10, 'Use when space is restricted and generally wider than it is tall.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (10, 'Use for a high-level understanding of a trend or drastic change.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (11, 'Use for data that changes over time.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (11, 'Use for a high-level understanding of a trend or drastic change.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (11, 'Use when data has more than 10 categories.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (12, 'Use when you want to show a difference between series whose values add up to 100%.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (12, 'Use when available space is generally squared shaped.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (12, 'Use when space available is limited.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (13, 'Use when you want to show a difference between series whose values add up to 100%.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (13, 'Use when available space is generally squared shaped.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (13, 'Use when space available is limited.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (14, 'Use when you want to show entities are related to one another.');
-INSERT INTO gestalt_vis_do_attr (vis_id, do_value) VALUES
-    (15, 'Use when you want to show entities are related to one another.');
-select * from gestalt_vis_do_attr;
-drop table if exists gestalt_vis_dont_attr;
-CREATE TABLE gestalt_vis_dont_attr (
-    id  serial PRIMARY KEY,
-    vis_id integer,
-    dont_value TEXT NOT NULL CHECK (dont_value <> '')
-);
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (1, 'Draw the height of the chart to exceed 500 pixels.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (5, 'Draw the height of the chart to exceed 500 pixels.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (6, 'Use if data is more than 6 layers deep.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (6, 'Use if node labels are longer than 2 words.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (6, 'Use if the difference between the number of nodes between layers is drastic.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (7, 'Use if entire visual does not fit in available space without scrolling.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (8, 'Use if interactivity is not available or when all labels must be visible at once.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (9, 'Use if interactivity is not available or when all labels must be visible at once.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (4, 'Use if data has more than 5 series.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (4, 'Use if difference between each series is less than 10% of the canvas height.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (4, 'Use if exact values of every value in the series is critical to comprehension.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (10, 'Use if data has more than 5 series.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (10, 'Use if difference between each series is less than 10% of the canvas height.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (10, 'Use if exact values of every value in the series is critical to comprehension.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (11, 'Use if exact values of every value in the series is critical to comprehension.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (12, 'Use if the total of all series'' values does not equal 100%.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (12, 'Use if the number of series is greater than 10.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (13, 'Use if the total of all series'' values does not equal 100%.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (13, 'Use if the number of series is greater than 10.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (14, 'Use interactivity is not available.');
-INSERT INTO gestalt_vis_dont_attr (vis_id, dont_value) VALUES
-    (15, 'Use if data has redudancy in it not important to the story.');
-select * from gestalt_vis_dont_attr;
-drop table if exists gestalt_vis_attr; create table gestalt_vis_attr (id serial primary key, name text, value text);
-insert into gestalt_vis_attr (name,value) values ('orientation', 'horizontal | vertical');
-insert into gestalt_vis_attr (name,value) values ('canvas-height', 'integer');
-insert into gestalt_vis_attr (name,value) values ('canvas-width', 'integer');
-insert into gestalt_vis_attr (name,value) values ('format', 'radial | linear');
-insert into gestalt_vis_attr (name,value) values ('viz-data', 'dataset');
-insert into gestalt_vis_attr (name) values ('start-group');
-insert into gestalt_vis_attr (name) values ('grouping');
-insert into gestalt_vis_attr (name,value) values ('stroke-size', 'integer');
-insert into gestalt_vis_attr (name,value) values ('use-labels', 'bool');
-insert into gestalt_vis_attr (name,value) values ('spark', 'bool');
-insert into gestalt_vis_attr (name,value) values ('format', 'donut | pie');
-select * from gestalt_vis_attr;
-drop table if exists gestalt_vis_code_attr; create table gestalt_vis_code_attr (id serial primary key, vis_id integer, attr_id integer, is_required boolean, attr_value text);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (1,1,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (1,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (1,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (1,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required, attr_value) values (5,1,false, 'vertical');
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (5,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (5,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (5,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (6,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (6,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (6,4,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (6,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (7,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (7,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (7,4,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (7,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (8,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (8,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (8,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (9,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (4,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (4,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (4,8,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (4,9,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required, attr_value) values (4,10,false, true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (4,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (10,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (10,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (10,8,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (10,9,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (10,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (11,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (11,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (11,8,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (11,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (12,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (12,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (12,11,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (12,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (13,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (13,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required, attr_value) values (13,11,false, 'donut');
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (13,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (14,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (14,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (14,5,true);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (15,2,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (15,3,false);
-insert into gestalt_vis_code_attr (vis_id, attr_id, is_required) values (15,5,true);
-select * from gestalt_vis_code_attr;
-drop table if exists gestalt_vis_alt_attr;
-CREATE TABLE gestalt_vis_alt_attr (
-    vis_id INTEGER,
-    alt_vis_directive_id INTEGER NOT NULL
-);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (6, 7);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (6, 8);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (7, 7);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (7, 8);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (8, 6);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (8, 8);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (9, 6);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (9, 7);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (4, 9);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (10, 9);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (11, 5);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (14, 12);
-INSERT INTO gestalt_vis_alt_attr (vis_id, alt_vis_directive_id) VALUES (15, 11);
-select * from gestalt_vis_alt_attr;
-drop table if exists gestalt_vis_dummy_data_label; create table gestalt_vis_dummy_data_label (id serial primary key, name text);
-insert into gestalt_vis_dummy_data_label (name) values ('south');
-insert into gestalt_vis_dummy_data_label (name) values ('west');
-insert into gestalt_vis_dummy_data_label (name) values ('northeast');
-insert into gestalt_vis_dummy_data_label (name) values ('midwest');
-insert into gestalt_vis_dummy_data_label (name) values ('alabama');
-insert into gestalt_vis_dummy_data_label (name) values ('arkansas');
-insert into gestalt_vis_dummy_data_label (name) values ('florida');
-insert into gestalt_vis_dummy_data_label (name) values ('alaska');
-insert into gestalt_vis_dummy_data_label (name) values ('arizona');
-insert into gestalt_vis_dummy_data_label (name) values ('california');
-insert into gestalt_vis_dummy_data_label (name) values ('connecticut');
-insert into gestalt_vis_dummy_data_label (name) values ('delaware');
-insert into gestalt_vis_dummy_data_label (name) values ('illinois');
-insert into gestalt_vis_dummy_data_label (name) values ('iowa');
-insert into gestalt_vis_dummy_data_label (name) values ('kansas');
-select * from gestalt_vis_dummy_data_label;
-drop table if exists gestalt_vis_dummy_data; create table gestalt_vis_dummy_data (id serial primary key, name_id integer, value float, date text, vis_id integer);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (1, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 1);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (2, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 1);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (4, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 1);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (3, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 1);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (1, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 5);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (2, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 5);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (4, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 5);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (3, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 5);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (1, 4);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (2, 4);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (3, 4);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (4, 4);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (1, 10);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (2, 10);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (3, 10);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (4, 10);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (1, 11);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (2, 11);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (3, 11);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (4, 11);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (5, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (6, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (7, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (8, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (9, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (10, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (11, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (12, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (13, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (14, 14);
-insert into gestalt_vis_dummy_data (name_id, vis_id) values (15, 14);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (1, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 12);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (2, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 12);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (4, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 12);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (3, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 12);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (1, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 13);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (2, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 13);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (4, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 13);
-insert into gestalt_vis_dummy_data (name_id, value, date, vis_id) values (3, trunc(random() * 49 + 1), '2014-01-04T00:00:00Z+00:00', 13);
-select * from gestalt_vis_dummy_data;
-drop table if exists gestalt_vis_dummy_data_values; create table gestalt_vis_dummy_data_values (id serial primary key, data_id integer, value float, date text);
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (9, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (9, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (9, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (9, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (10, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (10, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (10, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (10, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (11, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (11, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (11, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (11, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (12, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (12, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (12, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (12, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (13, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (13, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (13, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (13, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (14, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (14, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (14, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (14, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (15, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (15, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (15, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (15, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (16, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (16, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (16, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (16, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (17, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (17, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (17, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (17, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (18, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (18, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (18, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (18, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (19, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (19, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (19, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (19, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (20, trunc(random() * 49 + 1), '2014-01-01T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (20, trunc(random() * 49 + 1), '2014-01-02T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (20, trunc(random() * 49 + 1), '2014-01-03T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value, date) values (20, trunc(random() * 49 + 1), '2014-01-04T08:00:00.000Z+00:00');
-insert into gestalt_vis_dummy_data_values (data_id, value) values (21, trunc(random() * 15 + 5));
-insert into gestalt_vis_dummy_data_values (data_id, value) values (22, trunc(random() * 15 + 5));
-insert into gestalt_vis_dummy_data_values (data_id, value) values (23, trunc(random() * 15 + 5));
-insert into gestalt_vis_dummy_data_values (data_id, value) values (24, trunc(random() * 15 + 5));
-insert into gestalt_vis_dummy_data_values (data_id, value) values (25, trunc(random() * 15 + 5));
-insert into gestalt_vis_dummy_data_values (data_id, value) values (26, trunc(random() * 15 + 5));
-insert into gestalt_vis_dummy_data_values (data_id, value) values (27, trunc(random() * 15 + 5));
-select * from gestalt_vis_dummy_data_values;

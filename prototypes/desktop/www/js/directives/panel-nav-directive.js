@@ -6,6 +6,7 @@ angular.module("panel-nav-directive", [])
 		scope: {
 			panels: "="
 		},
+        templateUrl: "templates/app-global/panel-nav.html",
 	    controller: function($scope) {
 	   
 			// data objects
@@ -70,7 +71,6 @@ angular.module("panel-nav-directive", [])
             };
 	    	
 	    },
-		templateUrl: "templates/panel-nav.html",
 		link: function(scope, element, attr) {
 			
 			// watch for panel change

@@ -94,14 +94,13 @@ class persona_workspaces:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-		select w.id,
+		select distinct on (p.url_name) w.id,
 		w.persona_id,
 		w.url_name,
 		w.is_default,
 		wn.name,
 		p.url_name as default_panel,
-		vd.name as default_vis,
-		array_agg(row_to_json(pl)) as panels
+		vd.name as default_vis
 		from """ + helper.table_prefix + """workspace w
 		left join """ + helper.table_prefix + """workspace_name wn on wn.id = w.workspace_name_id
 		left join """ + helper.table_prefix + """workspace_panel wp on wp.workspace_id = w.id
@@ -110,18 +109,6 @@ class persona_workspaces:
 		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
 		left join """ + helper.table_prefix + """vis v on v.id = s.vis_id
 		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
-		left join (
-		select wp.panel_id, wp.workspace_id, wp.is_default, pl.name, pl.url_name, w.persona_id, vd.name as visualization
-		from """ + helper.table_prefix + """workspace_panel wp
-		left join """ + helper.table_prefix + """persona_panel_story pps on pps.panel_id = wp.panel_id and pps.persona_id = """ + persona_id + """
-		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
-		left join """ + helper.table_prefix + """vis v on v.id = s.vis_id
-		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
-		left join """ + helper.table_prefix + """panel pl
-		on pl.id = wp.panel_id
-		left join """ + helper.table_prefix + """workspace w
-		on w.id = wp.workspace_id
-		) pl on pl.workspace_id = w.id
 		where w.persona_id = """ + persona_id + """ and wp.is_default = true
 		group by w.id,
 		w.persona_id,
@@ -130,7 +117,8 @@ class persona_workspaces:
 		wn.name,
 		p.url_name,
 		vd.name
-		order by wn.name asc;
+		order by default_panel,
+        wn.name asc;
         """)
 
         # obtain the data
@@ -165,7 +153,8 @@ class workspace_panels:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-		select pps.panel_id,
+		select distinct on (p.name, vd.name) 
+        pps.panel_id,
 		p.url_name,
 		w.url_name as workspace_url_name,
 		p.name,
@@ -178,7 +167,11 @@ class workspace_panels:
 		left join """ + helper.table_prefix + """vis_directive vd on vd.id = v.vis_directive_id
 		left join """ + helper.table_prefix + """panel p on p.id = wp.panel_id
 		left join """ + helper.table_prefix + """workspace w on w.id = wp.workspace_id
-		where w.url_name = '""" + workspace_url_name + """' and pps.persona_id = """ + persona_id + """;
+		where w.url_name = '""" + workspace_url_name + """' 
+        and pps.persona_id = """ + persona_id + """ 
+        and vd.name is not null
+        order by p.name asc,
+        vd.name;
         """)
         # obtain the data
         data = self.cursor.fetchall()

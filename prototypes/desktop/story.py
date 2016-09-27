@@ -117,6 +117,7 @@ class persona_panel_stories:
 		select pps.*,
 		s.name,
 		s.url_name,
+        s.intro,
 		array_agg(row_to_json(si)) as ideas
 		from """ + helper.table_prefix + """persona_panel_story pps
 		left join """ + helper.table_prefix + """story s on s.id = pps.story_id
@@ -131,7 +132,7 @@ class persona_panel_stories:
 		case
 		when sac.story_action_id = 1 then g.name
 		when sac.story_action_id = 2 then g.name
-		when sac.story_action_id = 3 then f.name
+		when sac.story_action_id = 3 then g.name
 		when sac.story_action_id = 4 then h.name
         when sac.story_action_id = 5 then g.name
         when sac.story_action_id = 6 then g.name
@@ -140,11 +141,7 @@ class persona_panel_stories:
 		as name
 		from """ + helper.table_prefix + """story_action_control sac
 		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
-		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
-		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
 		left join """ + helper.table_prefix + """heuristic h on h.id = sac.name_id
-        left join """ + helper.table_prefix + """color c on c.id = sac.name_id
-        left join """ + helper.table_prefix + """emphasis e on e.id = sac.name_id
 		) c on c.story_action_id = sti.action_id
 		group by sti.id,
 		vt.url_name
@@ -152,7 +149,10 @@ class persona_panel_stories:
 		where pps.persona_id = """ + persona_id + """ and pps.panel_id = """ + panel_id + """
 		group by pps.id,
 		s.name,
-		s.url_name;
+		s.url_name,
+        s.intro,
+        s.story_order
+        order by s.story_order;
         """)
         # obtain the data
         data = self.cursor.fetchall()
@@ -189,8 +189,6 @@ class story_idea_metrics:
 		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
 		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
 		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
-        left join """ + helper.table_prefix + """color c on c.id = sac.name_id
-        left join """ + helper.table_prefix + """emphasis e on e.id = sac.name_id
 		left join """ + helper.table_prefix + """story_idea_metric sim on sim.control_id = sac.id
 		left join (
 		select * from """ + helper.table_prefix + """story_idea_metric_value
@@ -203,8 +201,6 @@ class story_idea_metrics:
 		g.name,
 		v.name,
 		f.name,
-        c.name,
-        e.name,
 		sa.name,
 		sim.name;
         """)

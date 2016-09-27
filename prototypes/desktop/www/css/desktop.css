@@ -12,6 +12,7 @@
 /* --- !menu
 /* --- !login
 /* --- !heuristic
+/* !MEDIA QUERIES
 
 /******************************* !IMPORTS *******************************/
 @import url("reset.css");
@@ -21,7 +22,6 @@
 html, body {
 
     font-size: 16px;
-    background-image: url("images/img-noise-361x370.png") !important;
 
 }
 
@@ -42,6 +42,16 @@ a {
 
 }
 
+hgroup,
+h2,
+h3 {
+    
+    margin-bottom: 2em;
+    max-width: 500px;
+    width: 60%;
+    
+}
+
 h1, h2, h3 {
 
     font-family: "header-regular", "Source Sans Pro Light", sans-serif;
@@ -52,9 +62,14 @@ h1, h2, h3 {
 h2, h3 {
 
     font-size: 1.5em;
-    max-width: 500px;
-    width: 60%;
 
+}
+
+hgroup h2 {
+    
+    margin-bottom: 0.5em;
+    width: 100%;
+    
 }
 
 p {
@@ -364,7 +379,7 @@ button:focus {
 
 }
 
-/* wrap personas */
+/* all personas wrap */
 .login section {
 
     display: flex;
@@ -373,20 +388,32 @@ button:focus {
 
 }
 
-/* persona */
+/* persona wrap */
 .login section div {
 
     cursor: pointer;
-    padding: 2em;
+    position: relative;
     width: calc(50% - 4em);
 
 }
 
-.login section div p:first-child {
+/* persona name */
+.login section div p:first-of-type {
 
-    font-weight: 700;
+    font-family: body-copy-regular;
     text-transform: capitalize;
 
+}
+
+/* persona type */
+.login section div span {
+    
+    font-size: 0.8em;
+    display: inline-block;
+    margin-bottom: 1em;
+    padding: 0.25em;
+    text-transform: uppercase;
+    
 }
 
 /***********************/
@@ -511,4 +538,10 @@ button:focus {
 
     font-weight: 700;
 
+}
+
+/******************************* !MEDIA QUERIES *******************************/
+
+@media (max-width: 600px) {
+    
 }
