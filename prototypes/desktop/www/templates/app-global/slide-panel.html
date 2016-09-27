@@ -11,6 +11,12 @@
     <span ng-click="logout();">Logout</span>
 </p>
 
+<!-- OTHER PERSONAS -->
+<div ng-repeat="persona in personas" ng-click="login(persona.name, persona.id);">
+    <span data-persona-type="{{ persona.persona_type }}">{{ persona.persona_type }}</span>
+    <p>{{ persona.name }}</p>
+</div>
+
 <!-- UPDATE -->
 <div class="item item-divider">Update</div>
 

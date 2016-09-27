@@ -72,7 +72,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     // login
     .state("login", {
         url: "/login?:t",
-        templateUrl: "templates/login.html",
+        templateUrl: "templates/app-global/login.html",
         controller: "loginCtrl",
         params: {
             t: theme_config.ui.start
@@ -83,15 +83,15 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     .state("app", {
         url: "/{workspace}?:t",
         abstract: true,
-        templateUrl: "templates/app.html",
+        templateUrl: "templates/app-global/app.html",
         controller: "appCtrl",
-        /*resolve: {
+        resolve: {
             authorized: ["$q", function($q) {
                 if(localStorage.getItem("gestaltUser") === null) {
                     return $q.reject("requires login");
                 };
             }]
-        },*/
+        },
         params: {
             t: theme_config.ui.start
         }
@@ -110,7 +110,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
                 controller: "panelCtrl"
             },
             "slide": {
-                templateUrl: "templates/slide-panel.html"
+                templateUrl: "templates/app-global/slide-panel.html"
             }
         }
     })
@@ -139,11 +139,11 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
                 controller: "vizCtrl"
             },
             "slide": {
-                templateUrl: "templates/slide-panel.html"
+                templateUrl: "templates/app-global/slide-panel.html"
             }
         }
-    })
+    });
 
-    $urlRouterProvider.otherwise("/econ/contagion/tile-grid-map?t=" + theme_config.ui.start);
+    $urlRouterProvider.otherwise("/login?t=" + theme_config.ui.start);
 
 });
