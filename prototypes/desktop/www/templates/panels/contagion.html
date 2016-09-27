@@ -1,25 +1,25 @@
-<section>
+<!-- STORIES -->
+<section ng-repeat="story in content">
+      
+    <hgroup>
+        
+        <!-- STORY TITLE -->
+        <h2>{{ story.name }}</h2>
+        <p>{{ story.intro }}</p>
+    
+    </hgroup>
+      
+    <!-- STORY IDEAS -->
+    <!--<div ng-repeat="idea in story.ideas" style="margin-right: 2em; display: inline;">
 
-    <story-controls controls="content[0].ideas"></story-controls>
+        <strong style="font-weight: 700;">{{ idea.name }}</strong>-->
 
-    <vis-title></vis-title>
-
-    <detail-overlay></detail-overlay>
-
-    <vis-key class="position-fix"></vis-key>
-
-    <!-- Animation for downloading the screenshot of the visulization. Look at panel-controller.js for more info. -->
-    <div ng-hide="hideLoader" class="loading">
-        <div class="loader"></div>
-        <div>saving<br>visualization</div>
-    </div>
-
-    <!-- Button for taking a screenshot. Downloading animation will show up. Panel-controller will contact via POST to screenshot.py. Screenshot.py will execute PhantomJS screenshot.js to actually take the screenshot -->
-    <button ng-click="takeScreenshot(); hideLoader=!hideLoader;" class="btn btn-default capture-button">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve"><g><g><polygon points="2,2 6,2 6,0 0,0 0,6 2,6   "></polygon><polygon points="2,14 2,10 0,10 0,16 6,16 6,14   "></polygon><polygon points="10,0 10,2 14,2 14,6 16,6 16,0   "></polygon><polygon points="14,14 10,14 10,16 16,16 16,10 14,10   "></polygon></g><path d="M8,4C5.791,4,4,5.791,4,8c0,2.209,1.791,4,4,4s4-1.791,4-4C12,5.791,10.209,4,8,4z M8,10c-1.103,0-2-0.897-2-2s0.897-2,2-2   s2,0.897,2,2S9.103,10,8,10z"></path></g></svg>
-        Capture
-    </button>
-
+    <!--</div>-->
+    
+    <!-- STORY CONTROLS -->
+    <story-controls controls="story.ideas" control-type="drop-down"></story-controls>
+        	    
+    <!-- VISUALIZATION -->
     <ui-view name="visual"></ui-view>
 
 </section>

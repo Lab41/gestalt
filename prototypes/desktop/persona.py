@@ -21,6 +21,7 @@ class all_personas:
         * persona.id
         * persona.name
         * persona.description
+        * persona.type
     """
     def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -29,10 +30,16 @@ class all_personas:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT * FROM gestalt_persona;
+            SELECT p.*,
+                pt.name as persona_type
+            FROM gestalt_persona p
+            LEFT JOIN gestalt_persona_type pt on pt. id = p.persona_type;
         """)
         # obtain the data
         data = self.cursor.fetchall()
+        # close cursor and connection
+        connection.close()
+        self.cursor.close()
         # convert data to a string
         return json.dumps(data)
 

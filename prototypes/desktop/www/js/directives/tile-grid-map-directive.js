@@ -8,7 +8,7 @@ angular.module("tile-grid-map-directive", [])
             grouping: "=",
             theme: "="
         },
-        template: "<div data-tap-disabled='true' style='height: 100%; width: 100%; background: none;'></div>",
+        template: "<div data-tap-disabled='true' style='height: 600px; width: 100%; background: none;'></div>",
         link: function(scope, element, attrs) {
 
             var canvas = element.find("div")[0];
@@ -53,7 +53,7 @@ angular.module("tile-grid-map-directive", [])
 
 						// polygon label
                         var icon = L.divIcon({
-                            "html": "<span class='" + className + "' style='color:rgba(30,30,30,1.0);font-size:" + fontSize + ";'>" + feature.properties.iso + "</span>"
+                            "html": "<p class='" + className + "' style='font-size:" + fontSize + ";'>" + feature.properties.iso + "</p>"
                         });
 
                         // popup directive

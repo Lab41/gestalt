@@ -11,6 +11,7 @@
             <!-- PERSONA -->
             <div ng-repeat="persona in content"
                  ng-click="login(persona.name, persona.id);">
+                <span data-persona-type="{{ persona.persona_type }}">{{ persona.persona_type }}</span>
                 <p>{{ persona.name }}</p>
                 <p>{{ persona.description }}</p>
             </div>

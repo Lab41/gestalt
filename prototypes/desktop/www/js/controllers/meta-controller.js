@@ -1,11 +1,13 @@
 angular.module("meta-controller", [])
 
-.controller("metaCtrl", ["$scope", "$timeout", "$rootScope", function($scope, $timeout, $rootScope) {
-	    
+.controller("metaCtrl", ["$scope", "$timeout", "$rootScope", "$state", "$location", function($scope, $timeout, $rootScope, $state, $location) {
+    
+    var stateTheme = $location.$$url.split("t=")[1];
+
     // data objects
 	$scope.theme = {
-		current: theme_config.ui.start,
-		opposite: theme_config.ui.opposite
+		current: stateTheme,
+		opposite: stateTheme == theme_config.ui.start ? theme_config.ui.opposite : theme_config.ui.start
 	};
 	
 	// change theme
@@ -39,6 +41,16 @@ angular.module("meta-controller", [])
             menu.style.transition = originalTransition;
             
         }, 1000);
+        
+        // update state params obj
+        var params = $state.params;
+        params["t"] = current;
+        
+        // transition state url
+        $state.go($state.current.name, params, {
+            reload: false,
+            notify: false
+        });
         
         // broadcast so menu theme text will update
         $rootScope.$broadcast("themeChange", { theme: $scope.theme });

@@ -22,30 +22,8 @@
 
 
 /***************************/
-
-
 /***** !tile grid map ******/
-
-
 /***************************/
-
-.vis-container {
-    z-index: -1000;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    /* Padding When Main Menu Is Hidden */
-    padding-top: 4.7rem;
-    /* Padding When Main Menu Is Shown */
-    /* padding-top: 8.1rem; */
-}
-.vis-container-inside {
-    position: relative;
-    height: 100%;
-    width: 100%;
-}
 
 tile-grid-map .leaflet-div-icon {
     background: none;
@@ -56,10 +34,10 @@ tile-grid-map .leaflet-div-icon {
 
 tile-grid-map .defaultHex {
 
+    fill-opacity: 1;
+    stroke: currentColor;
     stroke-width: 2;
     stroke-opacity: 1.0;
-    fill-opacity: 1;
-    fill: white;
 
 }
 
