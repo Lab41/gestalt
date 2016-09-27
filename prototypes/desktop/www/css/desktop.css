@@ -11,6 +11,7 @@
 /* --- !item
 /* --- !menu
 /* --- !login
+/* --- !visual form
 /* --- !heuristic
 /* !MEDIA QUERIES
 
@@ -18,12 +19,6 @@
 @import url("reset.css");
 
 /******************************* !GLOBALS *******************************/
-
-html, body {
-
-    font-size: 16px;
-
-}
 
 html,
 body,
@@ -74,7 +69,7 @@ hgroup h2 {
 
 p {
 
-    line-height: 1.2;
+    line-height: 1.4;
     margin-bottom: 1em;
     font-family: "body-copy-light"
 
@@ -359,8 +354,7 @@ button:focus {
 .login {
 
     left: 50%;
-    max-width: 900px;
-    padding: 5em;
+    max-width: 1500px;
     position: absolute;
     top: 50%;
     -webkit-transform: translate(-50%,-50%);
@@ -372,11 +366,36 @@ button:focus {
 
 }
 
-/* login headline subtext */
-.login h2 + p {
+/* headline */
+.login hgroup h2 {
+    
+    margin-bottom: 1em;
+    
+}
 
-    margin-bottom: 2em;
+/* intro text */
+.login hgroup p:first-of-type {
+    
+    font-size: 1.15em;
+    margin-top: 2em;
+    
+}
 
+/* inline menu icon */
+.login hgroup i {
+    
+    margin-left: 0.45em;
+    margin-right: 0.45em;
+    
+}
+
+/* intro call to action */
+.login hgroup p:last-child {
+    
+    font-family: "body-copy-regular";
+    font-weight: 700;
+    margin-top: 2em;
+    
 }
 
 /* all personas wrap */
@@ -384,7 +403,9 @@ button:focus {
 
     display: flex;
     flex-wrap: wrap;
+    margin-top: 3em;
     padding: 0;
+    width: 100%;
 
 }
 
@@ -392,16 +413,32 @@ button:focus {
 .login section div {
 
     cursor: pointer;
-    position: relative;
-    width: calc(50% - 4em);
+    margin-right: 25px;
+    margin-top: 2em;
+    width: calc(33% - 12.5px);
 
+}
+
+/* persona wrap far-right elements (every third) */
+.login section div:nth-child(3n + 3) {
+    
+    margin-right: 0;
+    
 }
 
 /* persona name */
 .login section div p:first-of-type {
 
-    font-family: body-copy-regular;
+    font-family: "body-copy-regular";
+    font-size: 1.5em;
     text-transform: capitalize;
+
+}
+
+/* persona description */
+.login section div p:last-of-type {
+
+    max-width: 400px;
 
 }
 
@@ -413,6 +450,35 @@ button:focus {
     margin-bottom: 1em;
     padding: 0.25em;
     text-transform: uppercase;
+    
+}
+
+/*************************/
+/***** !visual form ******/
+/*************************/
+
+/* wrap all cards */
+.visual-form > div {
+    
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+    
+}
+
+/* individual idea div */
+.visual-form > div > div {
+    
+    margin-bottom: 2em;
+    margin-right: 50px;
+    width: calc(15% - 40px);
+    
+}
+
+/* last individual idea div */
+.visual-form > div > div:last-of-type {
+    
+    margin-right: 0;
     
 }
 
