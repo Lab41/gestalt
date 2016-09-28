@@ -14,7 +14,7 @@
     function storyController($scope, contentService) {
         // --------------------------------------------------------------------
         // define bindable members
-        $scope.listOfIdeas;
+        $scope.listOfIdeas;        
 
         // --------------------------------------------------------------------
         // call functions   
@@ -24,7 +24,6 @@
         // define functions    
         function activate() {
             var currentStoryId = contentService.getCurrentStory().id;
-            
             // get all ideas from a story
             getListOfIdeas(currentStoryId);
         }
@@ -34,10 +33,8 @@
                 .getAllIdeas(storyId)
                 .then(function (listOfIdeas) {
                     $scope.listOfIdeas = listOfIdeas;
-                    console.log("listOfIdeas: " + angular.toJson($scope.listOfIdeas));
                 });
         }
-
 
     }
 

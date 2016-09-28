@@ -40,30 +40,6 @@ insert into gestalt_group_type (name) values ('other');
 
 /* 
    ------------------------------------------------------------------------- 
-   gestalt_vis_type
-   This table lists the types of visualizations
-   * id: vis type id
-   * name: vis type name
-   -------------------------------------------------------------------------
- */
-
-DROP TABLE IF EXISTS gestalt_vis_type; 
-
-CREATE TABLE gestalt_vis_type (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL CHECK (name <> ''),
-    url_name TEXT NOT NULL CHECK (name <> '',
-    UNIQUE (name)
-);
-
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('comparison', 'comparison');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('time series', 'time-series');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('hierarchy', 'hierarchy');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('parts of a whole', 'parts-of-a-whole');
-INSERT INTO gestalt_vis_type (name,url_name) VALUES ('relatedness','relatedness');
-
-/* 
-   ------------------------------------------------------------------------- 
    gestalt_vis_directive 
    This table lists the front-end directives. A directive builds a 
    visualization.
@@ -123,6 +99,21 @@ INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES
     (2, 5, 'spark line', 500);
 INSERT INTO gestalt_vis (vis_type_id, vis_directive_id, name, max_limit) VALUES 
     (1, 1, 'column chart', 100);
+
+DROP TABLE IF EXISTS gestalt_vis_type; 
+
+CREATE TABLE gestalt_vis_type (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL CHECK (name <> ''),
+    url_name TEXT NOT NULL CHECK (name <> '',
+    UNIQUE (name)
+);
+
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('comparison', 'comparison');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('time series', 'time-series');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('hierarchy', 'hierarchy');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('parts of a whole', 'parts-of-a-whole');
+INSERT INTO gestalt_vis_type (name,url_name) VALUES ('relatedness','relatedness');
 
 /* 
    ------------------------------------------------------------------------- 

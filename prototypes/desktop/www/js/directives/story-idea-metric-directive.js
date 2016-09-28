@@ -6,6 +6,8 @@ angular.module("story-idea-metric-directive", [])
         templateUrl: "templates/stories/idea-metric.html",
         controller: function($scope) {
             
+            console.log("in story-idea-metric-directive");
+
 			var storyideaId = $state.params.si;
 			var controlId = $state.params.sc;
 

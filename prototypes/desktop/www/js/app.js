@@ -101,7 +101,6 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     		"panel": {
     			templateProvider: function($http, $stateParams) {
                     // url_name is linked to the template being used
-                    console.log("getting panel " + $stateParams.currentPanelUrl + ".html");
                     return $http.get("templates/panels/" + $stateParams.currentPanelUrl + ".html").then(function(template) {
                         return template.data;
                     });
@@ -121,7 +120,6 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
             "story": {
                 templateProvider: function($http, $stateParams) {
                     // url_name is linked to the template being used
-                    console.log("getting story " + $stateParams.currentStoryUrl + ".html");
                     return $http.get("templates/stories/" + $stateParams.currentStoryUrl + ".html").then(function(template) {
                         return template.data;
                     });                   
@@ -138,10 +136,7 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     		"visual": {
 				templateProvider: function($http, $stateParams) {
                     // url_name is linked to the template being used
-                    console.log("getting vis " + $stateParams.currentVisualUrl + ".html");
-                    //return $http.get("templates/visualizations/" + $stateParams.currentVisualUrl + ".html").then(function(template) {
                     return $http.get("templates/visualizations/" + $stateParams.currentVisualUrl + ".html").then(function(template) {
-                        console.log("getting vis: " + template.data);
                         return template.data;
                     });
                 },

@@ -20,6 +20,8 @@
         var getAllStoriesUrl = storyBackendBaseUrl + "getAllStoriesByWorkspaceAndPanel";
         // * idea
         var getAllIdeasUrl = storyBackendBaseUrl + "getAllIdeasByStory";
+        // * action
+        var getAllActionsUrl = storyBackendBaseUrl + "getAllActionsByActionGroup";
         // * vis
         var visBackendBaseUrl = apiConfig.contentVisUri;
         var getDirectiveNameUrl = visBackendBaseUrl + "getDirectiveNameByVis";
@@ -40,6 +42,8 @@
             getCurrentStory: getCurrentStory,
             // * idea
             getAllIdeas: getAllIdeas,
+            // * action
+            getAllActions: getAllActions,
             // * vis
             getDirectiveName: getDirectiveName,
             setCurretVis: setCurrentVis,
@@ -96,6 +100,14 @@
 
         function getAllIdeas(storyId) {
             return callBackend(getAllIdeasUrl + "/" + storyId);
+        }
+
+        // ============================
+        // * action           
+        // ============================
+        
+        function getAllActions(actionGroupId) {
+            return callBackend(getAllActionsUrl + "/" + actionGroupId);
         }
 
         // ============================

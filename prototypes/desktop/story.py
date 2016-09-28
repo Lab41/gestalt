@@ -24,7 +24,9 @@ urls = (
     # 0.0.0.0:8000/api/story/getAllIdeasByStory/#
     #   where # == story.id
     "getAllIdeasByStory/(\d+)", "getAllIdeasByStory",
-    
+    # 0.0.0.0:8000/api/story/getAllActionsByActionGroup/#
+    #   where # == action_group.id
+    "getAllActionsByActionGroup/(\d+)", "getAllActionsByActionGroup",    
 )
 
 class getAllStories:
@@ -151,7 +153,7 @@ class getAllIdeasByStory:
         * idea.title
         * idea.subtitle
         * idea.description
-        * idea.action_id
+        * idea.action_group_id
     """
     def GET(self, story_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -160,10 +162,35 @@ class getAllIdeasByStory:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (idea.id) idea.title, idea.subtitle, idea.description, idea.action_id
+            SELECT DISTINCT ON (idea.id) idea.title, idea.subtitle, idea.description, idea.action_group_id
             FROM gestalt_idea AS idea
             WHERE idea.story_id = """ + story_id + """
             ORDER BY idea.id;
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+class getAllActionsByActionGroup:
+    """ Extract all the actions in an action group.
+    input:
+        * action_group.id
+    output:
+        * action.id
+        * action.name
+    """
+    def GET(self, action_group_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
+        # execute query
+        self.cursor.execute("""
+            SELECT action.id, action.name
+            FROM gestalt_action AS action
+            WHERE action.action_group_id = """ + action_group_id + """
+            ORDER BY action.name;
         """)
         # obtain the data
         data = self.cursor.fetchall()

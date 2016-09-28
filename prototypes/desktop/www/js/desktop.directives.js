@@ -4,7 +4,7 @@ var app = angular.module("desktop.directives", [
     "group-nodes-directive",
     "tile-grid-map-directive",
     "bar-chart-directive",
-    "story-controls-directive",
+    "story-actions-directive",
     "story-idea-metric-directive",
     "dynamic-directive-directive",
     "heatmap-grid-directive"

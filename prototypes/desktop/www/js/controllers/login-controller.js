@@ -42,6 +42,7 @@
                         .then(function(defaultWorkspace) {
                             // set current workspace
                             layoutService.setCurrentWorkspace(defaultWorkspace.id, defaultWorkspace.url_name);
+                            console.log("defaultWorkspace: " + angular.toJson(defaultWorkspace));
                             return defaultWorkspace.id;
                         });
             };
@@ -52,6 +53,7 @@
                         .then(function(defaultPanel) {
                             // set current panel
                             layoutService.setCurrentPanel(defaultPanel.id, defaultPanel.url_name);
+                            console.log("defaultPanel: " + angular.toJson(defaultPanel));
                             return { workspaceId: workspaceId, panelId: defaultPanel.id };
                         });
             };
@@ -62,11 +64,21 @@
                        .then(function(defaultStory) {
                             // set current story
                             contentService.setCurrentStory(defaultStory.id, defaultStory.url_name);
-                            console.log("currentStory: " + angular.toJson(contentService.getCurrentStory()));
-                            console.log(angular.toJson(defaultStory));
                             return defaultStory.id;
                        });
             };
+            /*
+            var getDefaultVisual = function(storyId) {
+                return contentService
+                       .getDefaultVisual(storyId) 
+                       .then(function defaultVisual) {
+                            // set current visual
+                            contentService.setCurrentVisual(defaultVisual.id, defaultVisual.url_name);
+                            console.log("defaultVisual: " + angular.toJson(defaultVisual));
+                            return defaultVisual.id;
+                       }
+            };
+            */
             var transition = function() {                
                 // transition to the persona's default workspace and the workspace's default panel
                 $state.go("app.panel.story.visual", {
@@ -74,7 +86,7 @@
                     currentPanelUrl: layoutService.getCurrentPanel().url_name,
                     currentStoryUrl: contentService.getCurrentStory().url_name,
                     // TODO: figure out which visual template to use?
-                    currentVisualUrl: "visual-standard"
+                    currentVisualUrl: "group-nodes"
                 });
 
             };
@@ -87,6 +99,7 @@
             getDefaultWorkspace(personaId)
                 .then(getDefaultPanel)
                 .then(getDefaultStory)
+                //.then(getDefaultVisual)
                 .then(transition);
         }
 

@@ -38,7 +38,7 @@ INSERT INTO gestalt_story (name, url_name) VALUES
    -------------------------------------------------------------------------
  */
 
-DROP TABLE IF EXISTS gestalt_action_group;
+DROP TABLE IF EXISTS gestalt_action_group CASCADE;
 
 CREATE TABLE gestalt_action_group (
     id SERIAL PRIMARY KEY,
@@ -46,20 +46,23 @@ CREATE TABLE gestalt_action_group (
     UNIQUE (name)
 );
 
-INSERT INTO gestalt_action_name (name) VALUES 
+INSERT INTO gestalt_action_group (name) VALUES 
     ('cluster');
-INSERT INTO gestalt_action_name (name) VALUES 
+INSERT INTO gestalt_action_group (name) VALUES 
     ('size');
-INSERT INTO gestalt_action_name (name) VALUES 
+INSERT INTO gestalt_action_group (name) VALUES 
     ('link');
-INSERT INTO gestalt_action_name (name) VALUES 
+
+/*
+INSERT INTO gestalt_action_group (name) VALUES 
     ('load');
-INSERT INTO gestalt_action_name (name) VALUES 
-    ('color');q
-INSERT INTO gestalt_action_name (name) VALUES 
+INSERT INTO gestalt_action_group (name) VALUES 
+    ('color');
+INSERT INTO gestalt_action_group (name) VALUES 
     ('filter');
-INSERT INTO gestalt_action_name (name) VALUES 
+INSERT INTO gestalt_action_group (name) VALUES 
     ('emphasize');
+*/
 
 /* 
    ------------------------------------------------------------------------- 
@@ -71,34 +74,36 @@ INSERT INTO gestalt_action_name (name) VALUES
    -------------------------------------------------------------------------
  */
 
+DROP TABLE IF EXISTS gestalt_action;
+
 CREATE TABLE gestalt_action (
     id SERIAL PRIMARY KEY,
     action_group_id INTEGER REFERENCES gestalt_action(id),
     name TEXT NOT NULL CHECK (name <> ''),
-    UNIQUE (action_name_id, name)
+    UNIQUE (action_group_id, name)
 );
 
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (1, 'region');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (1, 'investment');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (1, 'trade');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (1, 'export');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (1, 'default');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (1, 'country');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (2, 'equal');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (2, 'high degree');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (2, 'high centrality');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (3, 'none');
-INSERT INTO gestalt_action (action_name_id, name) VALUES
+INSERT INTO gestalt_action (action_group_id, name) VALUES
     (3, 'unique targets');
  
 
@@ -108,7 +113,8 @@ INSERT INTO gestalt_action (action_name_id, name) VALUES
    This table lists the ideas that make up a story. An idea can only fall
    under one story. An idea can only perform one collective actions. For 
    this reason, gestalt_story_idea table contains information about the 
-   ideas as well as their respective story and action.
+   ideas as well as which story they belong to and what actions they 
+   can perform onto the visualization.
    * id: story idea id
    * title: title of the idea
    * subtitle: subtitle of the idea; it can be NULL
@@ -118,49 +124,48 @@ INSERT INTO gestalt_action (action_name_id, name) VALUES
    -------------------------------------------------------------------------
  */
 
--- TODO: figure out what vis_type_id is used for
+DROP TABLE IF EXISTS gestalt_idea CASCADE;
 
 CREATE TABLE gestalt_idea (
     id SERIAL PRIMARY KEY,
-    vis_type_id INTEGER REFERENCES gestalt_vis_type(id),
     title TEXT NOT NULL CHECK (title <> ''),
     subtitle TEXT,
     description TEXT, 
     story_id INTEGER REFERENCES gestalt_story(id), 
-    action_id INTEGER REFERENCES gestalt_action(id),
+    action_group_id INTEGER REFERENCES gestalt_action_group(id),
     svg_icon TEXT,
-    UNIQUE (title, story_id, action_id)
+    UNIQUE (story_id, title, action_group_id)
 );
 
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_group_id) VALUES 
     ('Neque lorem cursus curabitur vulputate quis iaculis', 
      'grouping', 
      'Augue proin non augue gravida sed eleifend lacinia imperdiet dictum aptent venenatis ad malesuada.Nulla etiam magna suscipit nam donec consequat parturient enim.Fames neque scelerisque pede consequat tortor fusce at aptent pede ve.',
       3,
       1);
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_group_id) VALUES 
     ('Etiam felis nostra', 'degree/centrality', 
      'Velit risus.Magna justo.Curae etiam scelerisque per.Metus ipsum.Dolor morbi neque vel velit fermentum.',
       3,
       2);
-INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id) VALUES 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_group_id) VALUES 
     ('Purus nulla lectus', 
      'connectedness', 
      'Justo porta senectus purus lectus.Vitae lacus dapibus et mi ut.Lacus metus tortor accumsan parturient laoreet orci eni velit.Augue proin sit urna vestibulum ultricies enim hymenaeos congue volutpat ipsum.Etiam felis nostra.',
       3,
       3);
-INSERT INTO gestalt_idea (vis_type_id, title, subtitle, description, story_id, action_id, svg_icon) VALUES 
-    ( 1,
-     'Comparison', 
+
+/*
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id, svg_icon) VALUES 
+    ( 'Comparison', 
      'comparison', 
      'Datasets should compare at least 2 values against each other.',
       2,
       4, 
       '<svg viewBox="0 0 100 100"><path d="M79.8,39.1c-7.6,0-13.8,6.2-13.8,13.8s6.2,13.8,13.8,13.8c7.6,0,13.8-6.2,13.8-13.8S87.4,39.1,79.8,39.1z M75.7,41.9  l-6.9,6.9C70,45.6,72.5,43.1,75.7,41.9z M68,52.9c0-0.5,0-0.9,0.1-1.4l10.4-10.4c0.4-0.1,0.9-0.1,1.4-0.1c0.3,0,0.7,0,1,0.1  L68.1,53.9C68,53.6,68,53.3,68,52.9z M68.4,55.8l14.3-14.3c0.6,0.1,1.2,0.3,1.7,0.6L68.9,57.5C68.7,56.9,68.5,56.4,68.4,55.8z   M69.6,58.9l16.1-16.1c0.5,0.3,1,0.7,1.5,1L70.7,60.4C70.3,59.9,70,59.4,69.6,58.9z M71.7,61.5l16.7-16.7c0.4,0.4,0.7,0.8,1.1,1.3  L73,62.6C72.5,62.2,72.1,61.9,71.7,61.5z M74.3,63.4l15.9-15.9c0.3,0.6,0.6,1.2,0.8,1.8L76.1,64.1C75.5,63.9,74.9,63.7,74.3,63.4z   M82.9,64.3l8.2-8.2C90.1,60.1,86.9,63.2,82.9,64.3z M80.4,64.7c-0.2,0-0.4,0-0.6,0c-0.7,0-1.3-0.1-2-0.2l13.6-13.6  c0.1,0.7,0.2,1.3,0.2,2c0,0.2,0,0.4,0,0.6L80.4,64.7z M20.3,39.1c-7.6,0-13.8,6.2-13.8,13.8s6.2,13.8,13.8,13.8  c7.6,0,13.8-6.2,13.8-13.8S28,39.1,20.3,39.1z M20.3,64.7c-6.5,0-11.8-5.3-11.8-11.8s5.3-11.8,11.8-11.8s11.8,5.3,11.8,11.8  S26.9,64.7,20.3,64.7z M48.2,52.1c0.1,0.1,0.2,0.2,0.2,0.4c0,0.2-0.1,0.3-0.2,0.4l-4,2.7c-0.1,0.1-0.2,0.1-0.3,0.1  c-0.1,0-0.2,0-0.2-0.1c-0.2-0.1-0.3-0.3-0.3-0.4V54h-7.5c-0.2,0-0.4-0.2-0.4-0.4v-2.3c0-0.2,0.2-0.4,0.4-0.4h7.5v-1.2  c0-0.2,0.1-0.4,0.3-0.4c0.2-0.1,0.4-0.1,0.5,0L48.2,52.1z M64.2,51.3v2.3c0,0.2-0.2,0.4-0.4,0.4h-7.5v1.2c0,0.2-0.1,0.4-0.3,0.4  c-0.1,0-0.2,0.1-0.2,0.1c-0.1,0-0.2,0-0.3-0.1l-4-2.7c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.2,0.1-0.3,0.2-0.4l4-2.7c0.2-0.1,0.4-0.1,0.5,0  c0.2,0.1,0.3,0.3,0.3,0.4V51h7.5C64.1,51,64.2,51.1,64.2,51.3z"></path></svg>'
       );
-INSERT INTO gestalt_idea (vis_type_id, title, subtitle, description, story_id, action_id, svg_icon) VALUES
-    ( 3,
-     'Hierarchy', 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id, svg_icon) VALUES
+    ( 'Hierarchy', 
      'hierarchy', 
      'Datasets should compare levels of association between values.',
       2,
@@ -183,12 +188,12 @@ INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id, svg
       4,
      '<svg viewBox="0 0 100 100"><path d="M49.5,11c-21.5,0-39,17.5-39,39s17.5,39,39,39s39-17.5,39-39S71,11,49.5,11z M24.7,62c0-1.5,0.1-3,0.4-4.5l19.7-19.9  c1.5-0.3,3.1-0.4,4.7-0.4c0.2,0,0.5,0,0.7,0L24.8,62.7C24.7,62.5,24.7,62.2,24.7,62z M25.8,54.7c2.4-7.8,8.5-13.9,16.2-16.4  L25.8,54.7z M52.2,37.4c1.5,0.2,3,0.5,4.4,0.9L25.8,69.1c-0.4-1.4-0.7-2.9-0.9-4.4L52.2,37.4z M58.2,38.8c1.2,0.5,2.4,1,3.5,1.7  L47.3,54.9c-7.6,1-13.6,7.1-14.7,14.7L28,74.2c-0.6-1.1-1.2-2.3-1.7-3.5L58.2,38.8z M36.8,83.3c-0.2-0.1-0.3-0.2-0.5-0.3l0.1-0.1  C36.6,83,36.7,83.2,36.8,83.3z M66,76.6l7.3-7.3c-1.8,5.9-5.8,10.9-11,14C64,81.4,65.3,79.1,66,76.6z M74.3,62  c0,1.5-0.1,3.1-0.4,4.5l-7.4,7.4c0.1-0.7,0.1-1.4,0.1-2.1c0-1.1-0.1-2.1-0.3-3.2l7.9-7.9C74.3,61.2,74.3,61.6,74.3,62z M65.9,67  c-0.4-1.4-1-2.7-1.7-3.9l8.9-8.9c0.5,1.5,0.8,3,1,4.6L65.9,67z M63.4,61.8c-0.8-1.1-1.7-2.1-2.8-3l10-10c0.8,1.2,1.4,2.5,2,3.8  L63.4,61.8z M59.4,57.9c-1-0.7-2.2-1.4-3.4-1.9l11.3-11.3c0.9,0.9,1.7,1.8,2.4,2.9L59.4,57.9z M54.4,55.5c-1.6-0.5-3.2-0.7-4.9-0.7  L63,41.2c1.1,0.7,2.2,1.5,3.2,2.4L54.4,55.5z M32.4,71.9c0,1.7,0.3,3.3,0.7,4.9l-1.9,1.9c-0.9-1-1.7-2.1-2.4-3.2L32.4,71.9z   M33.7,78.3c0.5,1.2,1.1,2.3,1.9,3.4l-0.4,0.4c-1-0.7-2-1.5-2.9-2.4L33.7,78.3z M66.1,83c6.2-4.9,10.2-12.5,10.2-21  c0-14.8-12-26.8-26.8-26.8S22.7,47.2,22.7,62c0,8.5,4,16.1,10.2,21c-12.1-6.1-20.4-18.6-20.4-33c0-20.4,16.6-37,37-37s37,16.6,37,37  C86.5,64.4,78.2,76.9,66.1,83z"></path></svg>'
     );
-INSERT INTO gestalt_idea (vis_type_id, title, subtitle, description, story_id, action_id, svg_icon) VALUES
-    ( 2,
-     'Time Series', 
+INSERT INTO gestalt_idea (title, subtitle, description, story_id, action_id, svg_icon) VALUES
+    ('Time Series', 
      'time series',
      'Datasets should compare changes in values across time.',
       2,
       4,
      '<svg viewBox="0 0 100 100"><path d="M14.7,45.1c-5.5,0-10,4.5-10,10s4.5,10,10,10s10-4.5,10-10S20.3,45.1,14.7,45.1z M14.7,63.1c-4.4,0-8-3.6-8-8s3.6-8,8-8 s8,3.6,8,8S19.2,63.1,14.7,63.1z M95,55.1c0,5.4-4.4,9.8-9.8,9.8s-9.8-4.4-9.8-9.8s4.4-9.8,9.8-9.8S95,49.7,95,55.1z M38.8,54.7 c0.1,0.1,0.2,0.2,0.2,0.4s-0.1,0.3-0.2,0.4l-4,2.7c-0.1,0.1-0.2,0.1-0.3,0.1s-0.2,0-0.2-0.1c-0.2-0.1-0.3-0.3-0.3-0.4v-1.2h-7.5 c-0.2,0-0.4-0.2-0.4-0.4v-2.3c0-0.2,0.2-0.4,0.4-0.4H34v-1.2c0-0.2,0.1-0.4,0.3-0.4c0.2-0.1,0.4-0.1,0.5,0L38.8,54.7z M60.9,54 c0-0.2,0.2-0.4,0.4-0.4h7.5v-1.2c0-0.2,0.1-0.4,0.3-0.4c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.2,0,0.3,0.1l4,2.7c0.1,0.1,0.2,0.2,0.2,0.4 c0,0.2-0.1,0.3-0.2,0.4l-4,2.7c-0.2,0.1-0.4,0.1-0.5,0c-0.2-0.1-0.3-0.3-0.3-0.4v-1.2h-7.5c-0.2,0-0.4-0.2-0.4-0.4V54z M49.9,45.3 c-5.4,0-9.7,4.4-9.7,9.7s4.4,9.7,9.7,9.7s9.7-4.4,9.7-9.7S55.3,45.3,49.9,45.3z M48.7,62.7c-0.8-0.1-1.6-0.4-2.3-0.7l10.3-10.3 c0.4,0.7,0.6,1.5,0.7,2.3L48.7,62.7z M51.2,47.4c0.7,0.1,1.5,0.4,2.1,0.7L43,58.5c-0.3-0.7-0.6-1.4-0.7-2.1L51.2,47.4z M49.2,47.4 l-7,7C42.5,50.6,45.5,47.7,49.2,47.4z M43.8,59.8L54.6,49c0.5,0.4,1,0.8,1.4,1.3L45.1,61.1C44.6,60.7,44.2,60.3,43.8,59.8z M50.8,62.7l6.8-6.8C57.2,59.5,54.3,62.3,50.8,62.7z"/></svg>'
     );
+*/

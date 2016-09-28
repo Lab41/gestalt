@@ -11,6 +11,8 @@ angular.module("group-nodes-directive", [])
             canvasHeight: "="
         },
         link: function(scope, element, attrs) {
+
+            console.log("inside group-nodes-directive");
             
             // get d3 promise
             d3Service.d3().then(function(d3) {

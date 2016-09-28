@@ -17,8 +17,7 @@
                 alignment: "@",
                 content: "="
             },
-            controller: slidePanelController,
-                		
+            controller: slidePanelController,         		
     	};
         return slidePanelDirective;
         
