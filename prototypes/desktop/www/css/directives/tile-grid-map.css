@@ -79,13 +79,21 @@ tile-grid-map .leaflet-label {
 
     border: 0;
     background: 0;
-    font-size: 1.5em;
 
 }
 
-tile-grid-map .leaflet-label.category-label {
+tile-grid-map .leaflet-label.sortingGroupLabel {
 
+    font-family: "header-regular", "Source Sans Pro Light", sans-serif;
+    font-weight: 300;
     font-size: 2em;
+
+}
+
+tile-grid-map .leaflet-label.colorGroupLabel {
+
+    font-family: "body-copy-regular";
+    font-size: 1.5em;
 
 }
 

@@ -6,18 +6,20 @@ angular.module("tile-grid-map-directive", [])
         scope: {
             vizData: "=",
             grouping: "=",
+            boundaries: "=",
             theme: "="
         },
-        template: "<div data-tap-disabled='true' style='height: 800px; width: 100%; background: none;'></div>",
+        template: "<div><div data-tap-disabled='true' style='height: 800px; width: 100%; background: none;'></div></div>",
         link: function(scope, element, attrs) {
 
-            var canvas = element.find("div")[0];
+            var canvas = element.find("div")[1];
             var token = mapbox_config.token;
             var radius = 7;
             var blur = 1;
             var opacity = 0.5;
             var interactivity = true;
             var map = {};
+            var boundsLayer = {};
             var geoJsonLayer = {};
             var labelsLayer = {};
             var categoryLabelsLayer = {};
@@ -29,6 +31,7 @@ angular.module("tile-grid-map-directive", [])
             var sortingGroupGeoData = {};
             var sortingGroupLookup = {};
             var colorGroupLookup = {};
+            var currentSortGrouping = {};
 
             // Hard-coded width and height of geographic hexagons
             var dX = 3.4641016151377;
@@ -40,8 +43,7 @@ angular.module("tile-grid-map-directive", [])
                     "style": function(feature) {
                         var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         return {
-                            "className": "countryHex defaultHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
-                            "color": "#202020"
+                            "className": "countryHex defaultHex hex-feature-" + feature.properties.iso + " " + emphasisClass
                         };
                     },
                     "onEachFeature": function(feature, layer) {
@@ -74,13 +76,28 @@ angular.module("tile-grid-map-directive", [])
 
                 };
 
+                var boundaryLayerOpts = {
+                    "style": {
+                        "stroke": true,
+                        "weight": 1,
+                        "opacity": 0.5,
+                        "fill": false,
+                        "className": "boundaryPolygon"
+                    }
+                };
+
+                // Initialize the map
                 L.mapbox.accessToken = token;
-
-                // initialize map object
                 var map = L.mapbox.map(canvas);
-
-                // use standard non-geographic coordinate system
                 map.options.crs = L.CRS.Simple;
+                map.options.minZoom = 2;
+                map.options.maxZoom = 5;
+                map.options.zoom = 3;
+
+                // Dynamically compile and append legend element
+                var legendDirective = angular.element("<vis-key class='position-fix'></vis-key>");
+                $compile(legendDirective)(scope);
+                element.prepend(legendDirective);
 
                 map.on("zoomend", scaleLabels);
 
@@ -97,12 +114,34 @@ angular.module("tile-grid-map-directive", [])
                     return 1.0 * (zoomLevel - 2) + "em";
                 };
 
-                function draw(data, map, interactive, styleUrl) {
+                function addHexLayer(hexData, map) {
                     labelsLayer = L.layerGroup().addTo(map);
-                    geoJsonLayer = L.geoJson(data, defaultLayerOpts).addTo(map);
+                    geoJsonLayer = L.geoJson(hexData, defaultLayerOpts).addTo(map);
 
                     // center and zoom map based on markers
                     map.fitBounds(geoJsonLayer.getBounds());
+                };
+
+                function addBoundaryLayer(boundaryData, map) {
+                    boundsLayer = L.geoJson(boundaryData, boundaryLayerOpts).addTo(map);
+                };
+
+                function setBoundaryLayerVisiblity(isVisible) {
+                    // There's not a default way to show/hide  layer in leaflet
+                    // so instead we have to write some css
+                    var boundaryPolys = document.getElementsByClassName("boundaryPolygon");
+
+                    // Add/remove 'hidden' class from boundary features based on if you
+                    // want them visible or not
+                    if(isVisible) {
+                        Array.prototype.forEach.call(boundaryPolys, function (boundaryPoly) {
+                            boundaryPoly.classList.remove("hidden");
+                        });
+                    } else {
+                        Array.prototype.forEach.call(boundaryPolys, function (boundaryPoly) {
+                            boundaryPoly.classList.add("hidden");
+                        });
+                    }
                 };
 
                 function getPopupHTML(feature) {
@@ -201,6 +240,7 @@ angular.module("tile-grid-map-directive", [])
                             });
                         });
 
+                        // Setup layer options for custom rendering based on color group
                         customLayerOpts = {
                             "style": function(feature) {
                                 var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
@@ -239,39 +279,13 @@ angular.module("tile-grid-map-directive", [])
                             addColorByProperties(feature, grouping.name, subgroupName, legendData.legend_lookup[subgroupName]);
                         });
 
-                        if(Object.keys(sortingGroupGeoData).length === 0) {
+                        if(Object.keys(currentSortGrouping).length === 0) {
                             // Data is not sorted into bins, just redraw
                             redraw();
                         } else {
-                            // Reset group geo data nextx, nexty, and y
-                            Object.keys(sortingGroupGeoData).forEach(function(key) {
-                                sortingGroupGeoData[key].nextX = sortingGroupGeoData[key].minX;
-                                sortingGroupGeoData[key].nextY = sortingGroupGeoData[key].startY - (dY / 2);
-                                sortingGroupGeoData[key].y = 0;
-                            });
-
-                            // Sort features by color group
-                            var sortedFeatures = {};
-                            currentData[0].features.forEach(function(feature) {
-                                var targetGroup = colorGroupLookup[feature.properties.iso];
-                                if(!sortedFeatures.hasOwnProperty(targetGroup)) {
-                                    sortedFeatures[targetGroup] = [];
-                                }
-
-                                sortedFeatures[targetGroup].push(feature);
-                            });
-
-                            // Calculate feature placement by group
-                            var featureDeltas = {};
-                            var STEPS = 6;
-                            Object.keys(sortedFeatures).forEach(function(key) {
-                                sortedFeatures[key].forEach(function(feature) {
-                                    addNewDelta(featureDeltas, sortingGroupLookup[feature.properties.iso], feature, STEPS);
-                                });
-                            });
-
-                            // Animate features based on target state and steps
-                            animateFeatures(featureDeltas, 1, STEPS);
+                            // Re-run the entire grouping process with new
+                            // color rules
+                            regroupData(currentSortGrouping);
                         }
 
                         // Broadcast update event with new legend data
@@ -287,7 +301,14 @@ angular.module("tile-grid-map-directive", [])
                             }
                         });
 
-                        redraw();
+                        // If data isn't currently grouped just redraw with
+                        // new style applied, otherwise regroup data since
+                        // no color is set
+                        if(Object.keys(currentSortGrouping).length === 0) {
+                            redraw();
+                        } else {
+                            regroupData(currentSortGrouping);
+                        }
 
                         $rootScope.$broadcast("legendDataClear");
                     }
@@ -322,6 +343,7 @@ angular.module("tile-grid-map-directive", [])
                 };
 
                 function regroupData(grouping) {
+                    currentSortGrouping  = grouping;
                     sortingGroupGeoData = {};
                     sortingGroupLookup = {};
 
@@ -332,16 +354,19 @@ angular.module("tile-grid-map-directive", [])
 
                     // Cook the data for the selected group
                     if(grouping.name !== 'default') {
+                        setBoundaryLayerVisiblity(false);
+
                         var labelFeatures = {
                             "type": "FeatureCollection",
                             "features": []
                         };
 
-                        var startX = -80.0;
                         var startY = 80.0;
-                        var hexesPerRow = Math.floor(Math.abs(startX) / dX) - 1;
-                        sortingGroupGeoData = {};
+                        var groupSpan = Math.min(240, grouping.subgroups.length * 40);
+                        var groupWidth = groupSpan / grouping.subgroups.length;
+                        var hexesPerRow = Math.floor(Math.abs(groupWidth) / dX) - 1;
 
+                        sortingGroupGeoData = {};
 
                         if(Object.keys(colorGroupLookup).length !== 0) {
 
@@ -369,24 +394,19 @@ angular.module("tile-grid-map-directive", [])
                                 sortingGroupGeoData[key].numRows = Math.ceil(sortingGroupGeoData[key].size / hexesPerRow);
                             });
 
-                            grouping.subgroups.forEach(function(subgroup) {
-                                var initY = startY;
+                            grouping.subgroups.forEach(function(subgroup, idx) {
+                                var currentY = startY;
+                                var startX = (-groupSpan/2) + (idx * groupWidth);
 
                                 groupColorsMapping[subgroup.name].forEach(function(colorGroup) {
                                     var groupname = subgroup.name + "." + colorGroup;
-                                    sortingGroupGeoData[groupname].minX = startX;
-                                    sortingGroupGeoData[groupname].maxX = 0.0;
-                                    sortingGroupGeoData[groupname].startY = startY;
-                                    sortingGroupGeoData[groupname].nextX = sortingGroupGeoData[groupname].minX;
-                                    sortingGroupGeoData[groupname].nextY = sortingGroupGeoData[groupname].startY - (dY / 2);
-                                    sortingGroupGeoData[groupname].y = 0;
 
                                     // Generate a label for this group
                                     var colorGroupLabelFeature = {
                                         "type": "Feature",
                                         "geometry": {
                                             "type": "Point",
-                                            "coordinates": [startX - 20, startY - dY]
+                                            "coordinates": [startX - dX, currentY]
                                         },
                                         "properties": {
                                             "name": colorGroup + " " + sortingGroupGeoData[groupname].size,
@@ -395,20 +415,29 @@ angular.module("tile-grid-map-directive", [])
                                     };
                                     labelFeatures.features.push(colorGroupLabelFeature);
 
+                                    // Decrement space for label
+                                    currentY -= dY/3;
+
+                                    sortingGroupGeoData[groupname].minX = startX
+                                    sortingGroupGeoData[groupname].maxX = startX + groupWidth;
+                                    sortingGroupGeoData[groupname].startY = currentY;
+                                    sortingGroupGeoData[groupname].nextX = sortingGroupGeoData[groupname].minX;
+                                    sortingGroupGeoData[groupname].nextY = sortingGroupGeoData[groupname].startY - (dY / 2);
+                                    sortingGroupGeoData[groupname].y = 0;
+
                                     // update starting Y location for next feature group
-                                    startY = startY - (dY * sortingGroupGeoData[groupname].numRows) - (dY/3);
+                                    // Distance is 1 dY for 1st row, plus 0.75 dy for subsequent rows (since hexes intersect partially)
+                                    // plus some padding
+                                    currentY = currentY - ((2.5 * dY) + ((dY * 0.75) * (sortingGroupGeoData[groupname].numRows - 1)));
                                 });
 
-
-                                // Decrement DY for the next major subgroup 
-                                startY = startY - (dY * 1.5);
 
                                 // Make label feature
                                 var labelFeature = {
                                     "type": "Feature",
                                     "geometry": {
                                         "type": "Point",
-                                        "coordinates": [startX, initY + (dY/3)]
+                                        "coordinates": [startX, startY + dY]
                                     },
                                     "properties": {
                                         "name": subgroup.name,
@@ -439,11 +468,12 @@ angular.module("tile-grid-map-directive", [])
                                 sortingGroupGeoData[groupname].numRows = Math.ceil(sortingGroupGeoData[groupname].size / hexesPerRow);
                             });
                     
-                            grouping.subgroups.forEach(function(subgroup) {
+                            grouping.subgroups.forEach(function(subgroup, idx) {
+                                var startX = (-groupSpan/2) + (idx * groupWidth);
 
                                 var groupname = subgroup.name;
                                 sortingGroupGeoData[groupname].minX = startX;
-                                sortingGroupGeoData[groupname].maxX = 0.0;
+                                sortingGroupGeoData[groupname].maxX = startX + groupWidth;
                                 sortingGroupGeoData[groupname].startY = startY;
                                 sortingGroupGeoData[groupname].nextX = sortingGroupGeoData[groupname].minX;
                                 sortingGroupGeoData[groupname].nextY = sortingGroupGeoData[groupname].startY - (dY / 2);
@@ -454,7 +484,7 @@ angular.module("tile-grid-map-directive", [])
                                     "type": "Feature",
                                     "geometry": {
                                         "type": "Point",
-                                        "coordinates": [sortingGroupGeoData[groupname].minX, startY + (dY/3)]
+                                        "coordinates": [startX, startY + (dY/3)]
                                     },
                                     "properties": {
                                         "name": groupname,
@@ -462,9 +492,6 @@ angular.module("tile-grid-map-directive", [])
                                     }
                                 };
                                 labelFeatures.features.push(labelFeature);
-
-                                // update starting Y location for next feature group
-                                startY = startY - (dY * (sortingGroupGeoData[groupname].numRows + 2));
 
                                 subgroup.nodes.forEach(function(node) {
                                     if(node !== null) {
@@ -505,6 +532,8 @@ angular.module("tile-grid-map-directive", [])
                             }
                         }).addTo(map);
                     } else {
+                        setBoundaryLayerVisiblity(true);
+                        
                         var targetLocs = {};
                         scope.vizData[0].features.forEach(function(feature) {
                             if(feature.properties.hasOwnProperty("sortBy")) {
@@ -527,8 +556,6 @@ angular.module("tile-grid-map-directive", [])
                             featureDeltas[feature.properties.iso].dY = deltaY;
                         });
                     }
-
-                    console.log(featureDeltas);
 
                     // Animate steps to new state based on deltas and number of steps
                     animateFeatures(featureDeltas, 1, STEPS);
@@ -557,7 +584,7 @@ angular.module("tile-grid-map-directive", [])
 
                         // Reset geo data for a "new line" if end of current row is reached
                         sortingGroupGeoData[group].nextX += dX;
-                        if((sortingGroupGeoData[group].nextX + dX) >= (sortingGroupGeoData[group].maxX - (dX/3))) {
+                        if((sortingGroupGeoData[group].nextX + dX) >= (sortingGroupGeoData[group].maxX - dX)) {
                             sortingGroupGeoData[group].y += 1;
                             sortingGroupGeoData[group].nextX = sortingGroupGeoData[group].minX + ((dX / 2) * (sortingGroupGeoData[group].y % 2));
                             sortingGroupGeoData[group].nextY -= dY * 0.75;
@@ -599,9 +626,8 @@ angular.module("tile-grid-map-directive", [])
                     geoJsonLayer = L.geoJson(currentData, layerOpts).addTo(map);
                 };
 
-                // bind data
-                scope.$watchGroup(["vizData", "theme"], function(newData, oldData) {
-
+                // watch for hexagon data
+                scope.$watchGroup(["vizData"], function(newData, oldData) {
                     // async check
                     if (newData[0] !== undefined) {
 
@@ -611,9 +637,16 @@ angular.module("tile-grid-map-directive", [])
                             return feature.properties.iso !== null;
                         });
 
-                        draw(currentData, map, interactivity, newData[1]);
-
+                        addHexLayer(currentData, map);
                     };
+                });
+
+                // watch for boundary data
+                scope.$watchGroup(["boundaries"], function(newData, oldData) {
+                    // async check
+                    if (newData[0] !== undefined) {
+                        addBoundaryLayer(newData[0], map);
+                    }
                 });
 
                 // watch for story idea changes

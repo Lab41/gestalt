@@ -7,6 +7,7 @@ angular.module("viz-controller", [])
 	$scope.nodeGroups;
 	$scope.heuristics;
 	$scope.tileGridData;
+	$scope.boundaryData;
     
     // country nodes
 	contentService.getData("visualization/cdis/").then(function(data) {console.log(data);
@@ -31,7 +32,15 @@ angular.module("viz-controller", [])
 		$scope.tileGridData = data;
 		
 	});
-	
+
+	// geojson
+	contentService.getData("visualization/geography/geojson/boundary/").then(function(data) {
+		
+		// set scope
+		$scope.boundaryData = data;
+		
+	});
+
 	// check for heuristic url param
 	if ($state.params.heuristic) {
 	
