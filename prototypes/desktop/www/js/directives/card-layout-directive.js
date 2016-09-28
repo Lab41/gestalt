@@ -17,7 +17,7 @@ angular.module("card-layout-directive", [])
             $scope.changeOption = function() {
 
                 // get current set of heuristics
-                contentService.getData("visualization/heuristics/" + $scope.headline +  "/").then(function(data) {
+                contentService.getData("visualization/heuristics/" + $scope.headline.replace(/ /g, "-") +  "/").then(function(data) {
 
                     // transition state url
                     $state.go("app.heuristic", {

@@ -9,7 +9,7 @@ angular.module("viz-controller", [])
 	$scope.tileGridData;
     
     // country nodes
-	contentService.getData("visualization/cdis/").then(function(data) {
+	contentService.getData("visualization/cdis/").then(function(data) {console.log(data);
 		
 		// set scope
 		$scope.nodes = data;
@@ -46,6 +46,4 @@ angular.module("viz-controller", [])
 		
 	};
     
-
-																																  
 }]);

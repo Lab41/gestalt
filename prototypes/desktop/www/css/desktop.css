@@ -620,6 +620,13 @@ button:focus {
     
 }
 
+/* TEMP bootsrap overrides */
+.label {
+    
+    color: currentColor;
+    
+}
+
 /******************************* !MEDIA QUERIES *******************************/
 
 @media (max-width: 600px) {

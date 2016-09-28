@@ -23,7 +23,7 @@ angular.module("group-nodes-directive", [])
                 // if not attributes present - use default
 				var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
-                var radius = 4;
+                var radius = 1;
 				var maxRadius = height * 0.5;
                 var diameter = radius * 2;
                 var	center = { x: (width / 2), y: (height/ 2) };
@@ -112,7 +112,7 @@ angular.module("group-nodes-directive", [])
                             function startForce(e) {
                                 
                                 // update cluster labels
-                                updateLabels(currentGroup, groups);
+                                //updateLabels(currentGroup, groups);
                                 
                             };
                             
@@ -507,18 +507,8 @@ angular.module("group-nodes-directive", [])
 											class: "shape",
 											r: function(d) { return d.r; }
 										});
-
-									// label
-									currentGroup
-										.append("text")
-										.attr({
-											class: "label",
-											dx: 0,
-											dy: "0.35em"
-										})
-										.text(function(d) { return d.iso });
+                                
 								})
-								.on("click", drawFlows);
 
 							// exit selection
 							node
@@ -752,7 +742,7 @@ angular.module("group-nodes-directive", [])
                                 clusterNodes(controlName, groups);
 
                                 // update labels
-                                updateLabels(controlName, groups);
+                                //updateLabels(controlName, groups);
                                 
                             } else {
 								

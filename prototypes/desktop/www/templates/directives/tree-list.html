@@ -1,0 +1,15 @@
+<li class="collapsed" ng-click="expandBranch($event);">
+    
+    <div>
+        
+        <!-- ARROW -->
+        <span ng-if="branch.children.length !== undefined" class="arrow">&#x25BE;</span>
+    
+        <!-- NAME -->
+        <span class="name">{{ branch.name }}</span>
+    
+        <!-- CHILD COUNT -->
+        <span ng-if="branch.children.length !== undefined" class="count">{{ branch.children.length }}</span>
+    
+    </div>
+</li>
