@@ -1,0 +1,207 @@
+
+{
+    "name": "america",
+    "type": "country",
+    "children": [
+        {
+            "name": "south",
+            "type": "region",
+            "children": [
+                {
+                    "name": "alabama",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "montgomery",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "arkansas",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "little rock",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "florida",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "tallahassee",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "georgia",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "atlanta",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "kentucky",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "frankfort",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "west",
+            "type": "region",
+            "children": [
+                {
+                    "name": "alaska",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "juneau",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "arizona",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "phonix",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "california",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "sacramento",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "colorado",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "denver",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "hawaii",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "honolulu",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "idaho",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "boise",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "northeast",
+            "type": "region",
+            "children": [
+                {
+                    "name": "connecticut",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "hartford",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "delaware",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "dover",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "midwest",
+            "type": "region",
+            "children": [
+                {
+                    "name": "illinois",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "springfield",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "iowa",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "des moines",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "name": "kansas",
+                    "type": "state",
+                    "children": [
+                        {
+                            "name": "topeka",
+                            "type": "city",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** voronoi-diagram directive STYLE ***************************************/
+
+/* voronoi diagram directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !voronoi diagram
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/*****************************/
+/***** !voronoi diagram ******/
+/*****************************/
+
+voronoi-diagram path {
+    
+    fill: transparent;
+    
+}
+
+voronoi-diagram .links {
+  stroke: #000;
+  stroke-opacity: 0.2;
+}
+
+voronoi-diagram .polygons {
+  fill: none;
+  stroke: #000;
+}

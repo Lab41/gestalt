@@ -102,7 +102,7 @@ angular.module("tree-list-directive", [])
             };
             
         },
-        templateUrl: "templates/tree-list.html",
+        templateUrl: "templates/directives/tree-list.html",
         link: function(scope, element, attrs) {
 
             var branch = scope.branch;                

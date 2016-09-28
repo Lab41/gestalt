@@ -22,6 +22,9 @@ class all_personas:
         * persona.name
         * persona.description
         * persona.type
+        * workspace.id
+        * workspace.url_name
+        * default_vis in default_story in default_panel in default_workspace
     """
     def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -30,10 +33,26 @@ class all_personas:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)    
         # execute query
         self.cursor.execute("""
-            SELECT p.*,
-                pt.name as persona_type
-            FROM gestalt_persona p
-            LEFT JOIN gestalt_persona_type pt on pt. id = p.persona_type;
+            select distinct on (w.persona_id)
+            w.id as workspace_id,
+            w.url_name as workspace_url_name,
+            p.id,
+            p.name,
+            p.description,
+            pt.name as persona_type,
+            pl.url_name as default_panel,
+            vd.name as default_vis
+            from gestalt_workspace w
+            left join gestalt_persona p on p.id = w.persona_id
+            left join gestalt_persona_type pt on pt.id = p.persona_type
+            left join gestalt_workspace_panel wp on wp.workspace_id = w.id
+            left join gestalt_panel pl on pl.id = wp.panel_id
+            left join gestalt_persona_panel_story pps on pps.panel_id = wp.panel_id
+            left join gestalt_story s on s.id = pps.story_id
+            left join gestalt_vis v on v.id = s.vis_id
+            left join gestalt_vis_directive vd on vd.id = v.vis_directive_id
+            where w.is_default = true
+            order by w.persona_id;
         """)
         # obtain the data
         data = self.cursor.fetchall()

@@ -22,5 +22,6 @@ var app = angular.module("desktop.directives", [
     "line-chart-directive",
     "pie-chart-directive",
     "node-link-directive",
-    "adjacent-matrix-directive"
+    "adjacent-matrix-directive",
+    "voronoi-diagram-directive"
 ]);
