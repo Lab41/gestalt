@@ -24,6 +24,8 @@
 voronoi-diagram path {
     
     fill: transparent;
+    stroke: currentColor;
+    stroke-opacity: 0.3;
     
 }
 
