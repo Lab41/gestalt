@@ -43,7 +43,7 @@ tile-grid-map .defaultHex {
 
 tile-grid-map .defaultHexLabel {
 
-    font-weight: 500;
+    font-family:  body-copy-regular;
 
 }
 
@@ -79,13 +79,21 @@ tile-grid-map .leaflet-label {
 
     border: 0;
     background: 0;
-    font-size: 1.5em;
 
 }
 
-tile-grid-map .leaflet-label.category-label {
+tile-grid-map .leaflet-label.sortingGroupLabel {
 
+    font-family: "header-regular", "Source Sans Pro Light", sans-serif;
+    font-weight: 300;
     font-size: 2em;
+
+}
+
+tile-grid-map .leaflet-label.colorGroupLabel {
+
+    font-family: "body-copy-regular";
+    font-size: 1.5em;
 
 }
 
@@ -103,12 +111,18 @@ tile-grid-map .leaflet-label:before {
 }
 
 .popup-item {
-    font-size: 1.1rem;
+    font-size: 1.0rem;
     font-family: "body-copy-light", sans-serif;
 }
 
 .popup-item strong {
     font-family: "body-copy-regular", sans-serif;
+    font-weight: bold;
+}
+
+.popup-item svg {
+    display: inline;
+    margin-left: 0.5em;
 }
 
 .tile-grid-popup h3 {

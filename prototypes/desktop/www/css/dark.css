@@ -210,6 +210,18 @@ tile-grid-map .defaultHex {
 
 }
 
+tile-grid-map .leaflet-label {
+    
+    color: #fff;
+
+}
+
+tile-grid-map path.boundaryPolygon {
+
+    stroke: #fff;
+    
+}
+
 /***********************/
 /***** !bar chart ******/
 /***********************/
