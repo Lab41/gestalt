@@ -13,20 +13,21 @@ angular.module("card-layout-directive", [])
         },
         controller: function($scope) {
             
-            // load a story idea
-            $scope.changeIdea = function(id) {
-                
-                // heuristics
-                contentService.getData("visualization/heuristics/" + id + "/").then(function(data) {console.log(data);
+            // story idea functionality
+            $scope.changeOption = function() {
 
-                    // set scope
-                    $scope.heuristics = data;
+                // get current set of heuristics
+                contentService.getData("visualization/heuristics/" + $scope.headline.replace(/ /g, "-") +  "/").then(function(data) {
 
-                });
-                
-                // transition state/URL
-                $state.go("app.panel.visual", {
-                    si: id
+                    // transition state url
+                    $state.go("app.heuristic", {
+
+                        panel: $state.params.panel,
+                        visual: $state.params.visual,
+                        heuristic: data[0].vis_type_urlname
+
+                    });
+
                 });
                 
             };

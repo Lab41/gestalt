@@ -11,12 +11,14 @@ angular.module("dendrogram-directive", [])
         },
         link: function(scope, element, attrs){
             
+            element.append(angular.element("<div style='width: 100%; height: 100%;'></div>"));
+            
             // set up the dom node to attach the d3 to
             // this could be any valid d3 selector like a class
-            var domNode = element[0];
+            var domNode = element.find("div")[0];
             
             // get window dimensions
-            var dnStyle = $window.getComputedStyle(domNode.parentNode);
+            var dnStyle = $window.getComputedStyle(domNode);
             var dnWidth = dnStyle.getPropertyValue("width");
             var windowWidth = parseInt(dnWidth.split("px")[0]);
             
@@ -25,7 +27,7 @@ angular.module("dendrogram-directive", [])
                 
             // set sizes from attributes in html element
             // if not attributes present - use default based on window aspect ratio
-            var width = parseInt(attrs.canvasWidth) || windowWidth;
+            var width = parseInt(attrs.canvasWidth) || 400;
             var height = parseInt(attrs.canvasHeight) || width;
             
             // get the format type
