@@ -390,6 +390,12 @@ angular.module("tile-grid-map-directive", [])
                                 });
                             });
 
+                            // Sort the color groups by alphabetical order, this affects
+                            // how the end up beind displayed
+                            Object.keys(groupColorsMapping).forEach(function(key) {
+                                groupColorsMapping[key].sort();
+                            });
+
                             Object.keys(sortingGroupGeoData).forEach(function(key) {
                                 sortingGroupGeoData[key].numRows = Math.ceil(sortingGroupGeoData[key].size / hexesPerRow);
                             });
@@ -533,7 +539,7 @@ angular.module("tile-grid-map-directive", [])
                         }).addTo(map);
                     } else {
                         setBoundaryLayerVisiblity(true);
-                        
+
                         var targetLocs = {};
                         scope.vizData[0].features.forEach(function(feature) {
                             if(feature.properties.hasOwnProperty("sortBy")) {
