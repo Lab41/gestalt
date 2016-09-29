@@ -26,7 +26,6 @@ angular.module("tile-grid-map-directive", [])
             var currentData = {};
             var customLayerOpts = {};
             var emphasizedGrouping = {};
-            var emphasizedValue = "default";
             var emphasizedGroupMembers = [];
             var sortingGroupGeoData = {};
             var sortingGroupLookup = {};
@@ -41,7 +40,7 @@ angular.module("tile-grid-map-directive", [])
             mapboxService.L().then(function(L) {
                 var defaultLayerOpts = {
                     "style": function(feature) {
-                        var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                        var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         return {
                             "className": "countryHex defaultHex hex-feature-" + feature.properties.iso + " " + emphasisClass
                         };
@@ -49,7 +48,7 @@ angular.module("tile-grid-map-directive", [])
                     "onEachFeature": function(feature, layer) {
 
                         // set up class name
-                        var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                        var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
                         var fontSize = getHexLabelFontSize(map.getZoom());
 
@@ -161,7 +160,7 @@ angular.module("tile-grid-map-directive", [])
                     return listItems;
                 }
 
-                function emphasizeData() {
+                function emphasizeData(grouping) {
 
                     // Remove deemphasis class from existing map elements
                     var mapElements = document.getElementsByClassName("countryHex");
@@ -173,23 +172,23 @@ angular.module("tile-grid-map-directive", [])
                         targetElement.classList.remove("deemphasizeHex");
                     });
 
-                    if(emphasizedValue !== "default") {
+                    if(grouping.name !== "default") {
+                        emphasizedGrouping = grouping;
+
                         // Make a structure for looking up group membership by iso
                         emphasizedGroupMembers = []
                         emphasizedGrouping.subgroups.forEach(function(subgroup) {
-                            if(subgroup.name === emphasizedValue) {
-                                subgroup.nodes.forEach(function(node) {
-                                    if(node !== null) {
-                                        if(node.hasOwnProperty('iso')) {
-                                            emphasizedGroupMembers.push(node.iso);
-                                        } else {
-                                            // Just print a little warning
-                                            console.log("Node without iso property found!");
-                                            console.log(node);
-                                        }
+                            subgroup.nodes.forEach(function(node) {
+                                if(node !== null) {
+                                    if(node.hasOwnProperty('iso')) {
+                                        emphasizedGroupMembers.push(node.iso);
+                                    } else {
+                                        // Just print a little warning
+                                        console.log("Node without iso property found!");
+                                        console.log(node);
                                     }
-                                });
-                            }
+                                }
+                            });
                         });
 
                         currentData[0].features.forEach(function(feature) {
@@ -203,6 +202,8 @@ angular.module("tile-grid-map-directive", [])
                                 targetLabel.classList.add("deemphasizeHex");
                             }
                         });
+                    } else {
+                        emphasizedGrouping = {};
                     }
                 };
 
@@ -243,14 +244,14 @@ angular.module("tile-grid-map-directive", [])
                         // Setup layer options for custom rendering based on color group
                         customLayerOpts = {
                             "style": function(feature) {
-                                var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                                var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 return {
                                     "className": "countryHex coloredHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
                                     "fillColor": legendData.legend_lookup[colorGroupLookup[feature.properties.iso]]
                                 };
                             },
                             "onEachFeature": function(feature, layer) {
-                                var emphasisClass = emphasizedValue !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                                var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
                                 var fontSize = getHexLabelFontSize(map.getZoom());
 
@@ -676,15 +677,14 @@ angular.module("tile-grid-map-directive", [])
                             recolorData(newGrouping);
                         }
                     }
-                    if(args.val.action_name === 'emphasize') {
-                        // Select grouping based on metric value
-                        var groupingName = args.val.metrics[0].name;
-                        emphasizedGrouping = scope.grouping.find(function(group) {
-                            return group.name === groupingName;
+                    if(args.val.action_name === 'filter') {
+                        // Emphasize the selected group
+                        var newFilter = scope.grouping.find(function(group) {
+                            return group.name === args.val.control_name;
                         });
-                        emphasizedValue = args.val.metric_name;
-
-                        emphasizeData();
+                        if(newFilter !== undefined) {
+                            emphasizeData(newFilter);
+                        }
                     }
                 });
 
