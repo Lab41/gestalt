@@ -10,7 +10,7 @@ angular.module("viz-controller", [])
 	$scope.boundaryData;
     
     // country nodes
-	contentService.getData("visualization/cdis/").then(function(data) {console.log(data);
+	contentService.getData("visualization/cdis/").then(function(data) {
 		
 		// set scope
 		$scope.nodes = data;
