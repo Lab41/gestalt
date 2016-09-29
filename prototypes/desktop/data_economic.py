@@ -17,15 +17,27 @@ urls = (
     # 0.0.0.0:8000/api/data/economic/insertSeriesToMV/table_name/#/series/#
     #   where first # == table name, second # == series id
     "insertSeriesToMV/table_name/(\w+)/series/(\d+)", "insertSeriesToMV",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeries/#
+    #   where # == series id
+    "extractSeriesValuesBySeries/(\d+)", "extractSeriesValuesBySeries",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDate/#
+    #   where # == series id
+    "extractSeriesValuesBySeriesAndMostRecentDate/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDate",
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByCountry/series/#/country/#
     #   where first # == series id, second # == country id
     "extractSeriesValuesByCountry/series/(\d+)/country/(\d+)", "extractSeriesValuesByCountry",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByCountryAndMostRecentDate/series/#/country/#
+    #   where first # == series id, second # == country id
+    "extractSeriesValuesByCountryAndMostRecentDate/series/(\d+)/country/(\d+)", "extractSeriesValuesByCountryAndMostRecentDate",
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByCountryAndDate/series/#/country/#/date/#
     #   where first # == series id, second # == country id, third # == date
     "extractSeriesValuesByCountryAndDate/series/(\d+)/country/(\d+)/date/(\w+)", "extractSeriesValuesByCountryAndDate",
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByRegion/series/#/group/#/subgroup/#
     #   where first # == series id, second # == group id, third # == subgroup id
     "extractSeriesValuesByRegion/series/(\d+)/group/(\d+)/subgroup/(\d+)", "extractSeriesValuesByRegion",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByRegionAndMostRecentDate/series/#/group/#/subgroup/#
+    #   where first # == series id, second # == group id, third # == subgroup id
+    "extractSeriesValuesByRegionAndMostRecentDate/series/(\d+)/group/(\d+)/subgroup/(\d+)", "extractSeriesValuesByRegionAndMostRecentDate",
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByRegionAndDate/series/#/group/#/subgroup/#/date/#
     #   where first # == series id, second # == group id, third # == subgroup id, fourth # == date
     "extractSeriesValuesByRegionAndDate/series/(\d+)/group/(\d+)/subgroup/(\d+)/date/(\w+)", "extractSeriesValuesByRegionAndDate",
@@ -115,6 +127,75 @@ class insertSeriesToMV:
         connection.close()
         return
 
+class extractSeriesValuesBySeries:
+    """ Extract all the series information from a given series.
+    input:
+        * series.id
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
+class extractSeriesValuesBySeriesAndMostRecentDate:
+    """ Extract all the series information from a given series at the most recent date.
+    input:
+        * series.id
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
 class extractSeriesValuesByCountry:
     """ Extract all the series information (i.e. the nominal GDP) of a given country.
     input:
@@ -150,6 +231,44 @@ class extractSeriesValuesByCountry:
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data, default=helper.decimal_encoder)
+
+class extractSeriesValuesByCountryAndMostRecentDate:
+    """ Extract all the series information (i.e. the nominal GDP) of a given country at the most recent date.
+    input:
+        * series.id
+        * country.id
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, country_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.country_id = """ + country_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder)
+
 
 class extractSeriesValuesByCountryAndDate:
     """ Extract the series information (i.e. the nominal GDP) of a given country at a particular date.
@@ -190,8 +309,7 @@ class extractSeriesValuesByCountryAndDate:
         return json.dumps(data, default=helper.decimal_encoder)
 
 class extractSeriesValuesByRegion:
-    """ Extract the series information (i.e. the real GDP) of a given region at a particular date.
-        extractSeriesValuesByRegionAndDate == getAllRealGdpByRegionAndDate
+    """ Extract the series information (i.e. the real GDP) of a given region.
     input:
         * series.id
         * group.id (i.e. region.group)
@@ -223,6 +341,47 @@ class extractSeriesValuesByRegion:
             WHERE mv.series_id = """ + series_id + """
             AND subgroup.group_id = """ + group_id + """
             AND subgroup.name_id = """ + subgroup_name_id + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder)
+
+class extractSeriesValuesByRegionAndMostRecentDate:
+    """ Extract the series information (i.e. the real GDP) of a given region at the most recent date.
+    input:
+        * series.id
+        * group.id (i.e. region.group)
+        * subgroup.name.id (i.e. region.name)
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, group_id, subgroup_name_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+                INNER JOIN gestalt_subgroup AS subgroup
+                ON mv.country_id = subgroup.country_id
+            WHERE mv.series_id = """ + series_id + """
+            AND subgroup.group_id = """ + group_id + """
+            AND subgroup.name_id = """ + subgroup_name_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
             ORDER BY country.name;
         """)        
         # obtain the data
