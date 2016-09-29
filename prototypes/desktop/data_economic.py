@@ -23,6 +23,21 @@ urls = (
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDate/#
     #   where # == series id
     "extractSeriesValuesBySeriesAndMostRecentDate/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDate",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues/#
+    #   where first # == series id, second # == low value to compare, third # == high value to compare
+    "extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues/series/(\d+)/low_value/(\d+)/high_value/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDateAndValueGT/#
+    #   where # == series id, second # == value to compare
+    "extractSeriesValuesBySeriesAndMostRecentDateAndValueGT/series/(\d+)/value/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDateAndValueGT",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE/#
+    #   where # == series id, second # == value to compare
+    "extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE/series/(\d+)/value/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDateAndValueLT/#
+    #   where # == series id, second # == value to compare
+    "extractSeriesValuesBySeriesAndMostRecentDateAndValueLT/series/(\d+)/value/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDateAndValueLT",
+    # 0.0.0.0:8000/api/data/economic/extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE/#
+    #   where # == series id, second # == value to compare
+    "extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE/series/(\d+)/value/(\d+)", "extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE",
     # 0.0.0.0:8000/api/data/economic/extractSeriesValuesByCountry/series/#/country/#
     #   where first # == series id, second # == country id
     "extractSeriesValuesByCountry/series/(\d+)/country/(\d+)", "extractSeriesValuesByCountry",
@@ -154,6 +169,198 @@ class extractSeriesValuesBySeries:
                 INNER JOIN gestalt_series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
+class extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues:
+    """ Extract all the series information from a given series within a range of value.
+        low_val < value <= high_val
+    input:
+        * series.id
+        * low_val
+        * high_val
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, low_val, high_val, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND (CASE WHEN """ + low_val + """ IS NULL THEN 1 ELSE """ + low_val + """ END) < mv.value
+            AND mv.value <= """ + high_val + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
+class extractSeriesValuesBySeriesAndMostRecentDateAndValueGT:
+    """ Extract all the series information from a given series and value is greater than a certain number.
+        value > comp_val
+    input:
+        * series.id
+        * comp_val
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, comp_val, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.value > """ + comp_val + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
+class extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE:
+    """ Extract all the series information from a given series and value is greater than and equal to a certain number.
+        value >= comp_val
+    input:
+        * series.id
+        * comp_val
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, comp_val, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.value >= """ + comp_val + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
+class extractSeriesValuesBySeriesAndMostRecentDateAndValueLT:
+    """ Extract all the series information from a given series and value is less than a certain number.
+        value < comp_val
+    input:
+        * series.id
+        * comp_val
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, comp_val, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.value < """ + comp_val + """
+            ORDER BY country.name;
+        """)        
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data, default=helper.decimal_encoder) 
+
+class extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE:
+    """ Extract all the series information from a given series and value is less than and equal to a certain number.
+        value <= comp_val
+    input:
+        * series.id
+        * comp_val
+    output:
+        * mv.id
+        * country.id
+        * country.name
+        * series.value
+        * series.date
+    """
+    def GET(self, series_id, comp_val, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT mv.id,
+                   country.id AS country_id, country.name AS country_name,
+                   mv.value, to_char(mv.date, mv.date_precision) AS date
+            FROM gestalt_frontend_country_data AS mv
+                INNER JOIN gestalt_country_with_name AS country
+                ON mv.country_id = country.id
+                INNER JOIN gestalt_series AS series
+                ON mv.series_id = series.id
+            WHERE mv.series_id = """ + series_id + """
+            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.value <= """ + comp_val + """
             ORDER BY country.name;
         """)        
         # obtain the data
