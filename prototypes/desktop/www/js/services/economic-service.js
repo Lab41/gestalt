@@ -155,19 +155,28 @@
         }
 
         function getValuesByCountryAndDate(seriesId, countryId, date) {
-            return callBackend(getValuesByCountryAndDateUrl + "/series/" + seriesId + "/country/" + countryId + "/date/" + date);
+            return callBackend(getValuesByCountryAndDateUrl + "/series/" + seriesId + 
+                                                              "/country/" + countryId + 
+                                                              "/date/" + date);
         }
 
         function getValuesByRegion(seriesId, groupId, subgroupId) {
-            return callBackend(getValuesByRegionUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId);
+            return callBackend(getValuesByRegionUrl + "/series/" + seriesId + 
+                                                      "/group/" + groupId + 
+                                                      "/subgroup/" + subgroupId);
         }
 
         function getValuesByRegionAndMostRecentDate(seriesId, groupId, subgroupId) {
-            return callBackend(getValuesByRegionAndMostRecentDateUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId);
+            return callBackend(getValuesByRegionAndMostRecentDateUrl + "/series/" + seriesId + 
+                                                                       "/group/" + groupId + 
+                                                                       "/subgroup/" + subgroupId);
         }
 
         function getValuesByRegionAndDate(seriesId, groupId, subgroupId, date) {
-            return callBackend(getValuesByRegionAndDateUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId + "/date/" + date);
+            return callBackend(getValuesByRegionAndDateUrl + "/series/" + seriesId + 
+                                                             "/group/" + groupId + 
+                                                             "/subgroup/" + subgroupId + 
+                                                             "/date/" + date);
         }
 
         // ============================
@@ -178,14 +187,16 @@
         }
 
         function getAllCountries(groupId, subgroupId) {
-            return callBackend(getAllCountriesUrl + "/group/" + groupId + "/subgroup/" + subgroupId);
+            return callBackend(getAllCountriesUrl + "/group/" + groupId + 
+                                                    "/subgroup/" + subgroupId);
         }
 
         // ============================
         // * handling MV
         // ============================
         function insertSeries(tableName, seriesId) {
-            return callBackend(insertSeriesUrl + "/table_name/" + tableName + "/series/" + seriesId);
+            return callBackend(insertSeriesUrl + "/table_name/" + tableName + 
+                                                 "/series/" + seriesId);
         }
 
         function cleanupMV() {
