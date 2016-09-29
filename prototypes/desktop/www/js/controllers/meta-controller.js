@@ -1,15 +1,24 @@
 angular.module("meta-controller", [])
 
-.controller("metaCtrl", ["$scope", "$timeout", "$rootScope", "$state", "$location", function($scope, $timeout, $rootScope, $state, $location) {
+.controller("metaCtrl", ["$scope", "$timeout", "$rootScope", "$state", function($scope, $timeout, $rootScope, $state) {
     
-    var stateTheme = $location.$$url.split("t=")[1];
-
     // data objects
 	$scope.theme = {
-		current: stateTheme,
-		opposite: stateTheme == theme_config.ui.start ? theme_config.ui.opposite : theme_config.ui.start
+		current: theme_config.ui.start, // inital css so browser doesn't error
+        opposite: theme_config.ui.opposite
 	};
-	
+    
+    // allow state to load then reflect theme in url param
+    $timeout(function() {
+        
+        // data objects
+        $scope.theme = {
+            current: $state.params.t,
+            opposite: $state.params.t == theme_config.ui.start ? theme_config.ui.opposite : theme_config.ui.start
+        };
+        
+    },500);
+    
 	// change theme
 	$scope.changeTheme = function(opposite) {
         
