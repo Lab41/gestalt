@@ -191,6 +191,13 @@ angular.module("tile-grid-map-directive", [])
                             });
                         });
 
+                        // Admittedly a little hacky but this loop re-sorts the list of features so
+                        // that the ones in the emphasized group are first in the list.  They get
+                        // placed in order so this ensures in any sorting state the emphasized ones
+                        // will show up first
+                        var inFeatures = [];
+                        var outFeatures = [];
+
                         currentData[0].features.forEach(function(feature) {
                             if(!emphasizedGroupMembers.includes(feature.properties.iso)) {
                                 // Get feature and label for matching iso
@@ -200,8 +207,23 @@ angular.module("tile-grid-map-directive", [])
                                 // Apply deemphasizeHex class to make features muted
                                 targetFeature.classList.add("deemphasizeHex");
                                 targetLabel.classList.add("deemphasizeHex");
+
+                                // Add feature to the "out group"
+                                outFeatures.push(feature);
+                            } else {
+                                // Add feature to the "in group"
+                                inFeatures.push(feature);
                             }
                         });
+
+                        // Set current data to the new order
+                        currentData[0].features = inFeatures.concat(outFeatures);
+
+                        // Check if a grouping is set, if so we'll need to redraw based
+                        // on new sorting
+                        if(Object.keys(currentSortGrouping).length !== 0) {
+                            regroupData(currentSortGrouping);
+                        }
                     } else {
                         emphasizedGrouping = {};
                     }
