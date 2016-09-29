@@ -1,6 +1,6 @@
 angular.module("tile-grid-map-directive", [])
 
-.directive("tileGridMap", ["mapboxService", "$compile", "$timeout", "$rootScope", function(mapboxService, $compile, $timeout, $rootScope) {
+.directive("tileGridMap", ["mapboxService", "economicService", "$timeout", "$rootScope", function(mapboxService, economicService, $timeout, $rootScope) {
     return {
         restrict: "E",
         scope: {
@@ -9,10 +9,10 @@ angular.module("tile-grid-map-directive", [])
             boundaries: "=",
             theme: "="
         },
-        template: "<div><div data-tap-disabled='true' style='height: 800px; width: 100%; background: none;'></div></div>",
+        templateUrl: "templates/directives/tile-grid-map.html",
         link: function(scope, element, attrs) {
 
-            var canvas = element.find("div")[1];
+            var canvas = element.find("div")[element.find("div").length - 1];
             var token = mapbox_config.token;
             var radius = 7;
             var blur = 1;
@@ -31,10 +31,63 @@ angular.module("tile-grid-map-directive", [])
             var sortingGroupLookup = {};
             var colorGroupLookup = {};
             var currentSortGrouping = {};
+            var populationLookup = {};
 
             // Hard-coded width and height of geographic hexagons
             var dX = 3.4641016151377;
             var dY = 4.0;
+
+
+            scope.selectedFilter = {
+                "name": "All Countries",
+                "shortName": "All",
+                "value": -1
+            };
+
+            scope.filters = [
+                { "name": "All Countries", "shortName": "All", "value": -1 },
+                { "name": "Population Over 10 MIL", "shortName": "+10MIL", "value": 10000000 },
+                { "name": "Population Over 5 MIL", "shortName": "+5MIL", "value": 5000000 },
+                { "name": "Population Over 30 K", "shortName": "+30K", "value": 30000 }
+            ];
+
+            scope.changeFilter = function(filter) {
+                // Async check, make sure other needed data has been set
+                if(Object.keys(currentData).length !== 0 && Object.keys(populationLookup).length !== 0) {
+                    scope.selectedFilter = filter;
+
+                    // Create a new empty feature collection;
+                    var cloneData = {
+                        "type": "FeatureCollection",
+                        "features": []
+                    };
+
+                    scope.vizData[0].features.forEach(function(feature) {
+                        // Iterate thorugh features with valid iso
+                        if(feature.properties.hasOwnProperty("name") && feature.properties.hasOwnProperty("iso") && feature.properties.iso !== null) {
+                            // Add feature to new list if it is above your population threshold
+                            if(populationLookup[feature.properties.name] >= filter.value) {
+                                cloneData.features.push(feature);
+                            }
+                        }
+                    });
+
+                    // Set current data to the filtered clone
+                    currentData = cloneData;
+
+                    // Broadcast a redraw is needed
+                    $rootScope.$broadcast("redrawGridMap");
+                } else {
+                    // Nothing happens, log for dev awareness
+                    console.log("Async data not yet retrieved, not setting filter");
+                }
+            };
+
+            economicService.getAllValuesByMostRecentDate(1017).then(function(result) {
+                result.forEach(function(populationData) {
+                    populationLookup[populationData.country_name] = populationData.value;
+                });
+            });
 
             // get mapbox promise
             mapboxService.L().then(function(L) {
@@ -92,11 +145,6 @@ angular.module("tile-grid-map-directive", [])
                 map.options.minZoom = 2;
                 map.options.maxZoom = 5;
                 map.options.zoom = 3;
-
-                // Dynamically compile and append legend element
-                var legendDirective = angular.element("<vis-key class='position-fix'></vis-key>");
-                $compile(legendDirective)(scope);
-                element.prepend(legendDirective);
 
                 map.on("zoomend", scaleLabels);
 
@@ -180,7 +228,7 @@ angular.module("tile-grid-map-directive", [])
                         emphasizedGrouping.subgroups.forEach(function(subgroup) {
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
-                                    if(node.hasOwnProperty('iso')) {
+                                    if(node.hasOwnProperty('iso') && populationLookup[node.name] > scope.selectedFilter.value) {
                                         emphasizedGroupMembers.push(node.iso);
                                     } else {
                                         // Just print a little warning
@@ -198,7 +246,7 @@ angular.module("tile-grid-map-directive", [])
                         var inFeatures = [];
                         var outFeatures = [];
 
-                        currentData[0].features.forEach(function(feature) {
+                        currentData.features.forEach(function(feature) {
                             if(!emphasizedGroupMembers.includes(feature.properties.iso)) {
                                 // Get feature and label for matching iso
                                 var targetFeature = document.getElementsByClassName("hex-feature-" + feature.properties.iso)[0];
@@ -217,7 +265,7 @@ angular.module("tile-grid-map-directive", [])
                         });
 
                         // Set current data to the new order
-                        currentData[0].features = inFeatures.concat(outFeatures);
+                        currentData.features = inFeatures.concat(outFeatures);
 
                         // Check if a grouping is set, if so we'll need to redraw based
                         // on new sorting
@@ -297,7 +345,7 @@ angular.module("tile-grid-map-directive", [])
                         };
 
                         // Attach color data to the features
-                        currentData[0].features.forEach(function(feature) {
+                        currentData.features.forEach(function(feature) {
                             var subgroupName = colorGroupLookup[feature.properties.iso];
                             addColorByProperties(feature, grouping.name, subgroupName, legendData.legend_lookup[subgroupName]);
                         });
@@ -318,7 +366,7 @@ angular.module("tile-grid-map-directive", [])
                         customLayerOpts = {};
 
                         // Clear out colorBy properties
-                        currentData[0].features.forEach(function(feature) {
+                        currentData.features.forEach(function(feature) {
                             if(feature.properties.hasOwnProperty("colorBy")) {
                                 feature.properties.colorBy = {};
                             }
@@ -537,7 +585,7 @@ angular.module("tile-grid-map-directive", [])
                         }
 
                         // Calculate target location for each feature
-                        currentData[0].features.forEach(function(feature) {
+                        currentData.features.forEach(function(feature) {
                             var sortingGroup = sortingGroupLookup[feature.properties.iso];
                             addSortByProperties(feature, grouping.name, sortingGroup);
 
@@ -573,7 +621,7 @@ angular.module("tile-grid-map-directive", [])
                             targetLocs[feature.properties.iso].y = feature.geometry.coordinates[0][0][1] + (dY / 4);
                         });
 
-                        currentData[0].features.forEach(function(feature) {
+                        currentData.features.forEach(function(feature) {
                             var centerX = feature.geometry.coordinates[0][0][0] + (dX / 2);
                             var centerY = feature.geometry.coordinates[0][0][1] + (dY / 4);
 
@@ -622,7 +670,7 @@ angular.module("tile-grid-map-directive", [])
                 };
 
                 function animateFeatures(featureDeltas, currentStep, maxSteps) {
-                    currentData[0].features.forEach(function(feature) {
+                    currentData.features.forEach(function(feature) {
                         if(featureDeltas.hasOwnProperty(feature.properties.iso)) {
                             var deltas = featureDeltas[feature.properties.iso];
                             feature.geometry.coordinates[0].forEach(function(coordinate) {
@@ -661,8 +709,9 @@ angular.module("tile-grid-map-directive", [])
                     if (newData[0] !== undefined) {
 
                         currentData = JSON.parse(JSON.stringify(newData[0]));
+                        currentData = currentData[0];
 
-                        currentData[0].features = currentData[0].features.filter(function(feature) {
+                        currentData.features = currentData.features.filter(function(feature) {
                             return feature.properties.iso !== null;
                         });
 
@@ -675,6 +724,19 @@ angular.module("tile-grid-map-directive", [])
                     // async check
                     if (newData[0] !== undefined) {
                         addBoundaryLayer(newData[0], map);
+                    }
+                });
+
+                $rootScope.$on("redrawGridMap", function() {
+                    if(Object.keys(emphasizedGrouping).length !== 0) {
+                        // redo emphasis sorting on new filtered data, then this will redraw
+                        emphasizeData(emphasizedGrouping);
+                    } else if(Object.keys(currentSortGrouping).length !== 0) {
+                        // Re-run the entire grouping process with filtering in place
+                        regroupData(currentSortGrouping);
+                    } else {
+                        // just simple redraw will suffice
+                        redraw();
                     }
                 });
 

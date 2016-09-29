@@ -1,0 +1,29 @@
+<div>
+
+	<div class="controls__container position-fix">
+		<div>
+	    	    <div class="story-controls__option filter-select__container">
+			        <div class="btn-group" uib-dropdown>
+			            <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+			                <svg enable-background="new 0 0 36 30" height="1em" width="1.2em" id="Layer_1" version="1.1" viewBox="0 0 36 30" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				            	<polygon fill="#231F20" points="14,30 22,25 22,17 35.999,0 17.988,0 0,0 14,17 "/>
+			            	</svg>
+			            	<span>{{selectedFilter.shortName}}</span> <span class="caret" style="vertical-align:middle;"></span>
+			            </button>
+			            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
+			                <li ng-repeat="filter in filters" role="menuitem">
+			                    <a href="" ng-click="changeFilter(filter);">
+			                        {{filter.name | capitalize}}
+			                    </a>
+			                </li>
+			            </ul>
+			        </div>
+			    </div>
+	    </div>
+
+		<vis-key></vis-key>
+	</div>
+
+	<div data-tap-disabled='true' style='height: 800px; width: 100%; background: none;'>
+	</div>
+</div>
