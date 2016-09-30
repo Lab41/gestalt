@@ -8,13 +8,30 @@ angular.module("node-link-directive", [])
 			grouping: "=",
             startGroup: "=",
             canvasWidth: "=",
-            canvasHeight: "="
+            canvasHeight: "=",
+            selectedVal: "=?bind"
 		},
+        //template: '<select ng-options="option.name for option in selections.availableOptions track by option.id" ng-model="selections.selectedOption" ng-change="dosomething(selections.selectedOption)"></select>',
+        //controller: nodeLinkController,
+        //template: '<select ng-options="option.name for option in selections.availableOptions track by option.id" ng-model="selections.selectedOption"></select>',
+        template:'<label for="singleSelect"> Select High Level Network Stats: </label><br><select name="singleSelect" ng-model="selectedVal"><option value="total_packets">Total Packets Exchanged</option><option value="avg_time">Avg Time Between Packets</option></select><br>',
+        
+        
 		link: function(scope, element, attrs) {
 			
+            console.log("HEYYY heres element",element);
+            console.log("Plssss scope",scope);
+            console.log("ATTRSS",attrs);
 			// set up the dom node to attach the d3 to
             // this could be any valid d3 selector like a class
             var domNode = element[0];
+            var selectElem = null
+            domNode.childNodes.forEach(function(c){
+                if(c instanceof HTMLSelectElement){
+                    selectElem = c;
+                }
+            });
+            //selectElem.onchange()
             
             // set sizes from attributes in html element
             // if not attributes present - use default
@@ -28,6 +45,8 @@ angular.module("node-link-directive", [])
             var transition = {
                 time: 3000
             };
+            
+            //if($scope.singleSelect == "Option 1"){console.log("HEYY",$scope.singleSelect)}
             
             // get d3 promise
             d3Service.d3().then(function(d3) {
@@ -54,8 +73,11 @@ angular.module("node-link-directive", [])
                 /////////////////////////////////////////////
                 
                 // bind data
-                scope.$watchGroup(["vizData", "grouping"], function(newData, oldData) {
+                scope.$watchGroup(["vizData", "grouping","selectedVal"], function(newData, oldData) {
                     
+                    console.log("selected val scope",scope.selectedVal);
+                    console.log("New data",newData);
+                    console.log("Attrs inside watchgroup",attrs);
                     var startGroup = scope.startGroup;
     
                     // async check
@@ -183,7 +205,10 @@ angular.module("node-link-directive", [])
                                     // push to new array
                                     data.push({
                                         source: source,
-                                        target: target
+                                        target: target,
+                                        total_packets: l.total_packets,
+                                        avg_time: l.avg_time,
+                                        //selectedOption:scope.selectedVal
                                     });
                                     
                                 });
@@ -280,12 +305,46 @@ angular.module("node-link-directive", [])
                                 //.on("end", endForce)
                                 .start();
                             
+                            console.log("getting to link");
+                            console.log("Links pls", links);
                             // LINK
                             var link = canvas
                                 .selectAll("line")
                                 .data(links)
+                                .style({
+                                    stroke: "red",
+                                    "stroke-width": function(d) {
+                                        console.log("In prestrokes",d);
+                                        //console.log("PLSSSS",scope.selections.selectedOption.id)
+                                        if(scope.selectedVal== "total_packets"){
+                                            return ((d.total_packets/50)) + 'px';
+                                        }
+                                        
+                                        return ((d.avg_time/50)) + 'px';
+                                        }
+                                })
                                 .enter()
-                                .append("line");
+                                /*.style({
+                                    stroke: "red",
+                                    "stroke-width": function(d) { return d.value + 'px'; }
+                                })*/
+                                .append("line")
+                                /*.style({
+                                    stroke: "red",
+                                    "stroke-width": function(d) {
+                                        console.log("In strokes",d);
+                                        //console.log("PLSSSS",scope.selections.selectedOption.id)
+                                        //if(scope.selections.selectedOption.id == 1){return ((d.value%10)+1) + 'px';}
+                                        //else{return ((d.test%10)+1) + 'px';}
+                                        return ((d.test%10)+1) + 'px';
+                                        }
+                                })*/;
+                            
+                            
+                            /*link.style({
+                                stroke: "red",
+                                "stroke-width": function(d) {return d.value + 'px'; }
+                            });*/
                             
                             // draw node groups
                             var node = canvas
@@ -329,8 +388,42 @@ angular.module("node-link-directive", [])
                 });
 				
 			});
+            
 			
 		}
+        
+        
+       
 		
 	};
+     /*nodeLinkController.$inject = ["$scope"];
+
+        function nodeLinkController($scope) {
+           // --------------------------------------------------------------------
+           // define bindable members  
+           $scope.selections;
+            
+           $scope.dosomething = dosomething;
+            
+           // --------------------------------------------------------------------
+           // call functions
+           activate();    
+
+           // --------------------------------------------------------------------
+           // define functions
+           function activate() {
+               $scope.selections = {
+                   availableOptions: [
+                       {id: "1", name: "total packets"},
+                       {id: "2", name: "total time"},
+                       
+                   ],
+                   selectedOption: {}
+               }; 
+           }
+        function dosomething(s){console.log(s.id + s.name);}    
+
+        }*/
+    
+    
 }]);

@@ -33,6 +33,7 @@ angular.module("viz-controller", [])
 		
 	});
 
+
 	// geojson
 	contentService.getData("visualization/geography/geojson/boundary/").then(function(data) {
 		
@@ -40,6 +41,24 @@ angular.module("viz-controller", [])
 		$scope.boundaryData = data;
 		
 	});
+
+
+    // classification json
+	contentService.getData("tiny_time.json").then(function(data) {
+		
+		// set scope
+		$scope.poseidonData = data;
+		
+	});
+    //node link json 
+	contentService.getData("nodes_file.json").then(function(data) {
+		
+		// set scope
+		$scope.poseidonNodeData = data;
+		
+	});
+    
+    
 
 	// check for heuristic url param
 	if ($state.params.heuristic) {
