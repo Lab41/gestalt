@@ -232,7 +232,7 @@ angular.module("tile-grid-map-directive", [])
                         targetElement.classList.remove("deemphasizeHex");
                     });
 
-                    if(filteredEmphasizedGrouping.name !== "default") {
+                    if(filteredEmphasizedGrouping.hasOwnProperty("name") && filteredEmphasizedGrouping.name !== "default") {
 
                         // Make a structure for looking up group membership by iso
                         emphasizedGroupMembers = []
@@ -291,7 +291,7 @@ angular.module("tile-grid-map-directive", [])
                 function recolorData() {
                     colorGroupLookup = {};
 
-                    if(filteredColorGrouping.name !== "default") {
+                    if(filteredColorGrouping.hasOwnProperty("name") && filteredColorGrouping.name !== "default") {
                         // Generate legend data
                         var legendData = {};
                         legendData.name = filteredColorGrouping.name;
@@ -321,10 +321,6 @@ angular.module("tile-grid-map-directive", [])
                                     }
                                 }
                             });
-                        });
-
-                        legendData.legend_data = legendData.legend_data.sort(function(a,b) {
-                            return a.name.localeCompare(b.name);
                         });
 
                         // Setup layer options for custom rendering based on color group
@@ -748,21 +744,10 @@ angular.module("tile-grid-map-directive", [])
                 });
 
                 $rootScope.$on("redrawGridMap", function() {
-                    /*if(Object.keys(filteredEmphasizedGrouping).length !== 0) {
-                        // redo emphasis sorting on new filtered data, then this will redraw
+                    if(Object.keys(filteredEmphasizedGrouping).length !== 0) {
+                        // Sort data for emphasis, will redraw groups if needed as well (including color options)
                         emphasizeData();
-                    } else if(Object.keys(filteredSortGrouping).length !== 0) {
-                        // Re-run the entire grouping process with filtering in place
-                        regroupData();
-                    } else if(Object.keys(filteredColorGrouping).length !== 0) {
-                        // Re-run the entire grouping process with filtering in place
-                        recolorData();
-                    } else {
-                        // just simple redraw will suffice
-                        redraw();
-                    }*/
-
-                    if(Object.keys(filteredColorGrouping).length !== 0  && Object.keys(filteredSortGrouping) !== 0) {
+                    }else if(Object.keys(filteredColorGrouping).length !== 0  && Object.keys(filteredSortGrouping) !== 0) {
                         // Placement doesn't need to be updated, just the legend logic
                         recolorData();
                     } else if(Object.keys(filteredSortGrouping) !== 0) {
@@ -825,6 +810,16 @@ angular.module("tile-grid-map-directive", [])
 
                     // Set subgroups to filtered state
                     newFilter.subgroups = filteredSubgroups;
+
+                    newFilter.subgroups.sort(function(a,b) {
+                        if(a.name === "no subgroup") {
+                            return 1;
+                        }
+                        if(b.name === "no subgroup") {
+                            return -1;
+                        }
+                        return a.name.localeCompare(b.name);
+                    });
 
                     return newFilter;
                 }
