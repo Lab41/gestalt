@@ -21,12 +21,7 @@
         var getAllSeriesUrl = economicBackendBaseUrl + "getAllSeriesByTableName";
         // * handling values
         var getAllValuesUrl = economicBackendBaseUrl + "extractSeriesValuesBySeries";
-        var getAllValuesByMostRecentDateUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDate";        
-        var getAllValuesByCategoricalValuesUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues";
-        var getAllValuesByValueGTUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDateAndValueGT";
-        var getAllValuesByValueGTEUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE";
-        var getAllValuesByValueLTUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDateAndValueLT";
-        var getAllValuesByValueLTEUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE";
+        var getAllValuesByMostRecentDateUrl = economicBackendBaseUrl + "extractSeriesValuesBySeriesAndMostRecentDate";
         var getValuesByCountryUrl = economicBackendBaseUrl + "extractSeriesValuesByCountry";
         var getValuesByCountryAndMostRecentDateUrl = economicBackendBaseUrl + "extractSeriesValuesByCountryAndMostRecentDate";
         var getValuesByCountryAndDateUrl = economicBackendBaseUrl + "extractSeriesValuesByCountryAndDate";
@@ -51,11 +46,6 @@
             // * handling values
             getAllValues: getAllValues,
             getAllValuesByMostRecentDate: getAllValuesByMostRecentDate,
-            getAllValuesByCategoricalValues: getAllValuesByCategoricalValues,
-            getAllValuesByValueGT: getAllValuesByValueGT,
-            getAllValuesByValueGTE: getAllValuesByValueGTE,
-            getAllValuesByValueLT: getAllValuesByValueLT,
-            getAllVAluesByValueLTE: getAllValuesByValueLTE,
             getValuesByCountry: getValuesByCountry,
             getValuesByCountryAndMostRecentDate: getValuesByCountryAndMostRecentDate,
             getValuesByCountryAndDate: getValuesByCountryAndDate,
@@ -145,38 +135,27 @@
         }
 
         function getValuesByCountry(seriesId, countryId) {
-            return callBackend(getValuesByCountryUrl + "/series/" + seriesId + 
-                                                       "/country/" + countryId);
+            return callBackend(getValuesByCountryUrl + "/series/" + seriesId + "/country/" + countryId);
         }
 
         function getValuesByCountryAndMostRecentDate(seriesId, countryId) {
-            return callBackend(getValuesByCountryAndMostRecentDateUrl + "/series/" + seriesId + 
-                                                                        "/country/" + countryId);
+            return callBackend(getValuesByCountryAndMostRecentDateUrl + "/series/" + seriesId + "/country/" + countryId);
         }
 
         function getValuesByCountryAndDate(seriesId, countryId, date) {
-            return callBackend(getValuesByCountryAndDateUrl + "/series/" + seriesId + 
-                                                              "/country/" + countryId + 
-                                                              "/date/" + date);
+            return callBackend(getValuesByCountryAndDateUrl + "/series/" + seriesId + "/country/" + countryId + "/date/" + date);
         }
 
         function getValuesByRegion(seriesId, groupId, subgroupId) {
-            return callBackend(getValuesByRegionUrl + "/series/" + seriesId + 
-                                                      "/group/" + groupId + 
-                                                      "/subgroup/" + subgroupId);
+            return callBackend(getValuesByRegionUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId);
         }
 
         function getValuesByRegionAndMostRecentDate(seriesId, groupId, subgroupId) {
-            return callBackend(getValuesByRegionAndMostRecentDateUrl + "/series/" + seriesId + 
-                                                                       "/group/" + groupId + 
-                                                                       "/subgroup/" + subgroupId);
+            return callBackend(getValuesByRegionAndMostRecentDateUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId);
         }
 
         function getValuesByRegionAndDate(seriesId, groupId, subgroupId, date) {
-            return callBackend(getValuesByRegionAndDateUrl + "/series/" + seriesId + 
-                                                             "/group/" + groupId + 
-                                                             "/subgroup/" + subgroupId + 
-                                                             "/date/" + date);
+            return callBackend(getValuesByRegionAndDateUrl + "/series/" + seriesId + "/group/" + groupId + "/subgroup/" + subgroupId + "/date/" + date);
         }
 
         // ============================
@@ -187,16 +166,14 @@
         }
 
         function getAllCountries(groupId, subgroupId) {
-            return callBackend(getAllCountriesUrl + "/group/" + groupId + 
-                                                    "/subgroup/" + subgroupId);
+            return callBackend(getAllCountriesUrl + "/group/" + groupId + "/subgroup/" + subgroupId);
         }
 
         // ============================
         // * handling MV
         // ============================
         function insertSeries(tableName, seriesId) {
-            return callBackend(insertSeriesUrl + "/table_name/" + tableName + 
-                                                 "/series/" + seriesId);
+            return callBackend(insertSeriesUrl + "/table_name/" + tableName + "/series/" + seriesId);
         }
 
         function cleanupMV() {
