@@ -108,6 +108,32 @@
             return callBackend(getAllValuesByMostRecentDateUrl + "/" + seriesId);
         }
 
+        function getAllValuesByCategoricalValues(seriesId, low_val, high_val) {
+            return callBackend(getAllValuesByCategoricalValuesUrl + "/series/" + seriesId + 
+                                                                    "/low_value/" + low_val + 
+                                                                    "/high_value/" + high_val);
+        }
+
+        function getAllValuesByValueGT(seriesId, value) {
+            return callBackend(getAllValuesByValueGTUrl + "/series/" + seriesId + 
+                                                          "/value/" + value);
+        }
+
+        function getAllValuesByValueGTE(seriesId, value) {
+            return callBackend(getAllValuesByValueGTEUrl + "/series/" + seriesId + 
+                                                           "/value/" + value);
+        }
+
+        function getAllValuesByValueLT(seriesId, value) {
+            return callBackend(getAllValuesByValueLTUrl + "/series/" + seriesId + 
+                                                          "/value/" + value);
+        }
+
+        function getAllValuesByValueLTE(seriesId, value) {
+            return callBackend(getAllValuesByValueLTEUrl + "/series/" + seriesId + 
+                                                           "/value/" + value);
+        }
+
         function getValuesByCountry(seriesId, countryId) {
             return callBackend(getValuesByCountryUrl + "/series/" + seriesId + "/country/" + countryId);
         }

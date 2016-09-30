@@ -8,12 +8,3 @@
 <div ng-if="$parent.content[$index].persona_id == 6 && $index == 1">
 <tile-grid-map viz-data="tileGridData" grouping="nodeGroups" boundaries="boundaryData"></tile-grid-map>
 </div>
-
-<div ng-if="$parent.content[$index].persona_id == 1 && $index == 0" style="position: relative;">
-<voronoi-diagram canvas-height="400"></voronoi-diagram>
-</div>
-
-
-<div ng-if="$parent.content[$index].persona_id == 1 && $index == 2">
-    <group-nodes viz-data="nodes" grouping="nodeGroups" boundaries="boundaryData" start-group="'default'" canvas-width="360" canvas-height="180"></group-nodes>
-</div>
