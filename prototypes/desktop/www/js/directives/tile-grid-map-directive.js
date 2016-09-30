@@ -67,8 +67,9 @@ angular.module("tile-grid-map-directive", [])
                         // Iterate thorugh features with valid iso
                         if(feature.properties.hasOwnProperty("name") && feature.properties.hasOwnProperty("iso") && feature.properties.iso !== null) {
                             // Add feature to new list if it is above your population threshold
-                            if(populationLookup[feature.properties.name] >= filter.value) {
-                                cloneData.features.push(feature);
+                            if(populationLookup[feature.properties.iso] > scope.selectedFilter.value || !populationLookup.hasOwnProperty(feature.properties.iso)) {
+                                // Push shallow copy, don't want to mess with original data
+                                cloneData.features.push(JSON.parse(JSON.stringify(feature)));
                             }
                         }
                     });
@@ -95,9 +96,8 @@ angular.module("tile-grid-map-directive", [])
             };
 
             economicService.getAllValuesByMostRecentDate(1017).then(function(result) {
-                console.log(result);
                 result.forEach(function(populationData) {
-                    populationLookup[populationData.country_name] = populationData.value;
+                    populationLookup[populationData.iso2code] = populationData.value;
                 });
             });
 
@@ -239,7 +239,7 @@ angular.module("tile-grid-map-directive", [])
                         filteredEmphasizedGrouping.subgroups.forEach(function(subgroup) {
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
-                                    if(node.hasOwnProperty('iso') && populationLookup[node.name] > scope.selectedFilter.value) {
+                                    if(node.hasOwnProperty('iso') && (populationLookup[node.iso] > scope.selectedFilter.value || !populationLookup.hasOwnProperty(node.iso))) {
                                         emphasizedGroupMembers.push(node.iso);
                                     } else {
                                         // Just print a little warning
@@ -308,6 +308,8 @@ angular.module("tile-grid-map-directive", [])
                                 "color": groupColor,
                                 "count": subgroup.nodes.length
                             });
+
+
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
                                     if(node.hasOwnProperty('iso')) {
@@ -319,6 +321,10 @@ angular.module("tile-grid-map-directive", [])
                                     }
                                 }
                             });
+                        });
+
+                        legendData.legend_data = legendData.legend_data.sort(function(a,b) {
+                            return a.name.localeCompare(b.name);
                         });
 
                         // Setup layer options for custom rendering based on color group
@@ -372,6 +378,8 @@ angular.module("tile-grid-map-directive", [])
                         // Broadcast update event with new legend data
                         $rootScope.$broadcast("legendDataChange", { val: legendData });
                     } else {
+                        filteredColorGrouping = {};
+
                         // Clear out custom layer options
                         customLayerOpts = {};
 
@@ -433,7 +441,7 @@ angular.module("tile-grid-map-directive", [])
                     map.removeLayer(categoryLabelsLayer);
 
                     // Cook the data for the selected group
-                    if(filteredSortGrouping.name !== 'default') {
+                    if(filteredSortGrouping.hasOwnProperty("name") && filteredSortGrouping.name !== 'default') {
                         setBoundaryLayerVisiblity(false);
 
                         var labelFeatures = {
@@ -456,7 +464,7 @@ angular.module("tile-grid-map-directive", [])
                                 groupColorsMapping[subgroup.name] = [];
 
                                 subgroup.nodes.forEach(function(node) {
-                                    if(populationLookup[node.name] > scope.selectedFilter.value) {
+                                    if(populationLookup[node.iso] > scope.selectedFilter.value || !populationLookup.hasOwnProperty(node.iso)) {
                                         var colorGroup = colorGroupLookup[node.iso]
                                         var groupname = subgroup.name + "." + colorGroup;
                                         if(!sortingGroupGeoData.hasOwnProperty(groupname)) {
@@ -620,12 +628,13 @@ angular.module("tile-grid-map-directive", [])
                             }
                         }).addTo(map);
                     } else {
+                        filteredSortGrouping = {};
                         setBoundaryLayerVisiblity(true);
 
                         var targetLocs = {};
-                        currentData.features.forEach(function(feature) {
+                        scope.vizData[0].features.forEach(function(feature) {
                             if(feature.properties.hasOwnProperty("sortBy")) {
-                                featue.properties.sortBy = {};
+                                feature.properties.sortBy = {};
                             }
                             targetLocs[feature.properties.iso] = {};
                             targetLocs[feature.properties.iso].x = feature.geometry.coordinates[0][0][0] + (dX / 2);
@@ -739,7 +748,7 @@ angular.module("tile-grid-map-directive", [])
                 });
 
                 $rootScope.$on("redrawGridMap", function() {
-                    if(Object.keys(filteredEmphasizedGrouping).length !== 0) {
+                    /*if(Object.keys(filteredEmphasizedGrouping).length !== 0) {
                         // redo emphasis sorting on new filtered data, then this will redraw
                         emphasizeData();
                     } else if(Object.keys(filteredSortGrouping).length !== 0) {
@@ -750,6 +759,17 @@ angular.module("tile-grid-map-directive", [])
                         recolorData();
                     } else {
                         // just simple redraw will suffice
+                        redraw();
+                    }*/
+
+                    if(Object.keys(filteredColorGrouping).length !== 0  && Object.keys(filteredSortGrouping) !== 0) {
+                        // Placement doesn't need to be updated, just the legend logic
+                        recolorData();
+                    } else if(Object.keys(filteredSortGrouping) !== 0) {
+                        // Need to regroup data (this will also recolor if necessary)
+                        regroupData();
+                    } else {
+                        // simple redraw will suffice, no filters are set
                         redraw();
                     }
                 });
@@ -779,7 +799,8 @@ angular.module("tile-grid-map-directive", [])
                 var newFilter = scope.grouping.find(function(group) {
                     return group.name === filterName;
                 });
-                console.log(newFilter);
+                // Shallow copy
+                var newFilter = JSON.parse(JSON.stringify(newFilter));
                 if(newFilter !== undefined) {
                     // for the grouping, remove countries that have been
                     // filtered out based on population
@@ -791,7 +812,7 @@ angular.module("tile-grid-map-directive", [])
                             cloneSubgroup.nodes = [];
 
                             subgroup.nodes.forEach(function(node) {
-                                if(populationLookup[node.name] >= scope.selectedFilter.value) {
+                                if(populationLookup[node.iso] > scope.selectedFilter.value || !populationLookup.hasOwnProperty(node.iso)) {
                                     cloneSubgroup.nodes.push(node);
                                 }
                             });
