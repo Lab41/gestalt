@@ -149,6 +149,8 @@ class extractSeriesValuesBySeries:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -161,7 +163,7 @@ class extractSeriesValuesBySeries:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -186,6 +188,8 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -198,7 +202,7 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -225,6 +229,8 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueGT:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -237,7 +243,7 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueGT:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -263,6 +269,8 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -275,7 +283,7 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -301,6 +309,8 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueLT:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -313,7 +323,7 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueLT:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -339,6 +349,8 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -351,7 +363,7 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -375,6 +387,8 @@ class extractSeriesValuesBySeriesAndMostRecentDate:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -387,7 +401,7 @@ class extractSeriesValuesBySeriesAndMostRecentDate:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -411,6 +425,8 @@ class extractSeriesValuesByCountry:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -423,7 +439,7 @@ class extractSeriesValuesByCountry:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -447,6 +463,8 @@ class extractSeriesValuesByCountryAndMostRecentDate:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -459,7 +477,7 @@ class extractSeriesValuesByCountryAndMostRecentDate:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -486,6 +504,8 @@ class extractSeriesValuesByCountryAndDate:
     output:
         * mv.id
         * country.id
+        * country.iso2code
+        * country.iso3code
         * country.name
         * series.value
         * series.date
@@ -498,7 +518,7 @@ class extractSeriesValuesByCountryAndDate:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -524,6 +544,8 @@ class extractSeriesValuesByRegion:
     output:
         * mv.id
         * country.id
+        * country.isocode2
+        * country.isocode3
         * country.name
         * series.value
         * series.date
@@ -536,7 +558,7 @@ class extractSeriesValuesByRegion:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -564,6 +586,8 @@ class extractSeriesValuesByRegionAndMostRecentDate:
     output:
         * mv.id
         * country.id
+        * country.isocode2
+        * country.isocode3
         * country.name
         * series.value
         * series.date
@@ -576,7 +600,7 @@ class extractSeriesValuesByRegionAndMostRecentDate:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
@@ -607,6 +631,8 @@ class extractSeriesValuesByRegionAndDate:
     output:
         * mv.id
         * country.id
+        * country.isocode2
+        * country.isocode3
         * country.name
         * series.value
         * series.date
@@ -619,7 +645,7 @@ class extractSeriesValuesByRegionAndDate:
         # execute query
         self.cursor.execute("""
             SELECT mv.id,
-                   country.id AS country_id, country.name AS country_name,
+                   country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
             FROM gestalt_frontend_country_data AS mv
                 INNER JOIN gestalt_country_with_name AS country
