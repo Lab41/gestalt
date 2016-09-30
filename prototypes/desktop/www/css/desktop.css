@@ -516,6 +516,7 @@ button:focus {
 .heuristic figure > div,
 .heuristic figcaption > div {
 
+    margin-right: 100px;
     padding: 1em;
     width: calc(100% / 3);
 
