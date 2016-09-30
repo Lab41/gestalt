@@ -59,7 +59,6 @@
         // ============================
 
         function getDefaultWorkspace(personaId) {
-            // TODO: verify first that there is only one default workspace and handle it if there's none
             return callBackend(getDefaultWorkspaceUrl + "/" + personaId).then(function(listOfDefaultWorkspaces){
                 return listOfDefaultWorkspaces[0];
             });
@@ -91,7 +90,6 @@
         // ============================
 
         function getDefaultPanel(workspaceId) {
-            // TODO: verify first that there is only one default panel and handle it if there's none
             return callBackend(getDefaultPanelUrl + "/" + workspaceId).then(function(listOfDefaultPanels){
                 return listOfDefaultPanels[0];
             });

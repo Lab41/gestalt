@@ -6,6 +6,7 @@
    * id: story id
    * name: story name
    * url_name: the url used to refer to this story
+   *           the url is also used as the template to display the story
    -------------------------------------------------------------------------
  */
 

@@ -42,7 +42,6 @@
                         .then(function(defaultWorkspace) {
                             // set current workspace
                             layoutService.setCurrentWorkspace(defaultWorkspace.id, defaultWorkspace.url_name);
-                            console.log("defaultWorkspace: " + angular.toJson(defaultWorkspace));
                             return defaultWorkspace.id;
                         });
             };
@@ -53,7 +52,6 @@
                         .then(function(defaultPanel) {
                             // set current panel
                             layoutService.setCurrentPanel(defaultPanel.id, defaultPanel.url_name);
-                            console.log("defaultPanel: " + angular.toJson(defaultPanel));
                             return { workspaceId: workspaceId, panelId: defaultPanel.id };
                         });
             };
@@ -67,18 +65,15 @@
                             return defaultStory.id;
                        });
             };
-            /*
             var getDefaultVisual = function(storyId) {
                 return contentService
                        .getDefaultVisual(storyId) 
                        .then(function defaultVisual) {
                             // set current visual
                             contentService.setCurrentVisual(defaultVisual.id, defaultVisual.url_name);
-                            console.log("defaultVisual: " + angular.toJson(defaultVisual));
                             return defaultVisual.id;
                        }
             };
-            */
             var transition = function() {                
                 // transition to the persona's default workspace and the workspace's default panel
                 $state.go("app.panel.story.visual", {

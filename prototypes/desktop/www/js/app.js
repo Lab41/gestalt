@@ -136,7 +136,9 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
     		"visual": {
 				templateProvider: function($http, $stateParams) {
                     // url_name is linked to the template being used
+                    console.log("currentVisualUrl: " + $stateParams.currentVisualUrl);
                     return $http.get("templates/visualizations/" + $stateParams.currentVisualUrl + ".html").then(function(template) {
+                        console.log("template.data: " + template.data);
                         return template.data;
                     });
                 },

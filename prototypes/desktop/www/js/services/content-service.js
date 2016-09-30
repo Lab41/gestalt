@@ -24,6 +24,7 @@
         var getAllActionsUrl = storyBackendBaseUrl + "getAllActionsByActionGroup";
         // * vis
         var visBackendBaseUrl = apiConfig.contentVisUri;
+        var getDefaultVisUrl = visBackendBaseUrl + "getDefaultVisByStory";
         var getDirectiveNameUrl = visBackendBaseUrl + "getDirectiveNameByVis";
         // * vis: econ
         var getCdisUrl = visBackendBaseUrl + "cdis/";
@@ -45,6 +46,7 @@
             // * action
             getAllActions: getAllActions,
             // * vis
+            getDefaultVis: getDefaultVis,
             getDirectiveName: getDirectiveName,
             setCurretVis: setCurrentVis,
             getCurrentVis: getCurrentVis,
@@ -67,7 +69,6 @@
         // ============================
         
         function getDefaultStory(workspaceId, panelId) {
-            // TODO: verify first that there is only one default workspace and handle it if there's none
             return callBackend(getDefaultStoryUrl + "/workspace/" + workspaceId + "/panel/" + panelId).then(function(listOfDefaultStories){
                 return listOfDefaultStories[0];
             });
@@ -114,6 +115,12 @@
         // * vis      
         // ============================
         
+        function getDefaultVis(visId) {
+            return callBackend(getDefaultVisUrl + "/" + visId).then(function(listOfDefaultVis){
+                return listOfDefaultVis[0];
+            });
+        }
+
         function getDirectiveName(visId) {
             // there is only one directive name linked to each vis, but $http call returns a list
             // so this is the hack

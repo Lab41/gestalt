@@ -8,6 +8,9 @@ import helper
 
 urls = (
     
+    # 0.0.0.0:8000/api/visualization/getDefaultVisByStory/#
+    #   where # == story.id   
+    "getDefaultVisByStory/(\d+)", "getDefaultVisByStory",
     # 0.0.0.0:8000/api/visualization/getDirectiveName/#
     #   where # == vis.id
     "getDirectiveNameByVis/(\d+)", "getDirectiveNameByVis",
@@ -22,13 +25,64 @@ urls = (
     
 )
 
+            SELECT DISTINCT ON (st.id) st.id, st.name, st.url_name
+            FROM gestalt_story AS st
+            LEFT JOIN gestalt_wp_story AS wps
+                INNER JOIN gestalt_workspace_panel AS wp
+                ON wps.wp_id = wp.id
+            ON st.id = wps.story_id 
+            WHERE wp.workspace_id = """ + workspace_id + """
+            AND wp.panel_id = """ + panel_id + """
+            AND wps.is_default IS TRUE
+            AND st.id IS NOT NULL
+            ORDER BY st.id;
+
+class getDefaultVisByStory:
+    """ Get the default visualization for a particular story. 
+        The default visualization has the order number 1. 
+    input:
+        * story.id
+    output:
+        * vis.id
+        * vis.name
+        * vis.max_limit
+        * vis_type.id
+        * vis_type.name
+        * vis_directive.name
+    """
+    def GET(self, story_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
+        # connect to postgresql based on configuration in connection_string
+        connection = psycopg2.connect(connection_string)
+        # get a cursor to perform queries
+        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # execute query
+        self.cursor.execute("""
+            SELECT vis.id, vis.name, vis.max_limit, 
+                   vis_type.id AS vis_type_id, vis_type.name AS vis_type_name, 
+                   vis_directive.name AS vis_directive_name
+            FROM gestalt_vis AS vis
+                INNER JOIN gestalt_vis_type AS vis_type
+                ON vis.type_id = vis_type.id
+                INNER JOIN gestalt_vis_directive AS vis_directive
+                ON vis.directive_id = vis_directive.id
+            LEFT JOIN gestalt_story_vis AS sv
+            ON vis.id = sv.vis_id
+            WHERE sv.story_id = """ + story_id + """
+            AND vis.id IS NOT NULL
+        """)
+        # obtain the data
+        data = self.cursor.fetchall()
+        # convert data to a string
+        return json.dumps(data)
+
+
 class getDirectiveNameByVis:
     """ Get the directive name for the vis so that the front-end can call
         the directive to build the vis.
     input:
         * vis.id
     output:
-        * vis.directive_name
+        * vis_directive.name
     """
     def GET(self, vis_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string
@@ -40,7 +94,7 @@ class getDirectiveNameByVis:
             SELECT vis_directive.name
             FROM gestalt_vis AS vis
             RIGHT JOIN gestalt_vis_directive AS vis_directive 
-            ON vis.vis_directive_id = vis_directive.id
+            ON vis.directive_id = vis_directive.id
             WHERE vis.id = """ + vis_id + """;
         """)
         # obtain the data

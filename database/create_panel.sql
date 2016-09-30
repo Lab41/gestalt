@@ -6,6 +6,7 @@
    * id: panel id
    * name: panel name
    * url_name: the url used to refer to this panel
+   *           the url is also used as the template to display the panel
    -------------------------------------------------------------------------
  */
 

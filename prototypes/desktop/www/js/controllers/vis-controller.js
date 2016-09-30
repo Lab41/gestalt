@@ -8,10 +8,10 @@
         .controller("visController", visController);
 
     // add additional services to be used within the controller
-    visController.$inject = ["$scope", "$state", "contentService"];
+    visController.$inject = ["$scope", "contentService"];
 
     // define the controller
-    function visController($scope, $state, contentService) {
+    function visController($scope, contentService) {
 		// --------------------------------------------------------------------
         // define bindable members
         $scope.directiveName;
@@ -27,10 +27,17 @@
         // --------------------------------------------------------------------
         // define functions
         function activate() {
-            console.log("in vis controller!!!!");
+            console.log("in vis controller2!!!!");
             // TODO: for now set Economics workspace's vis as the default
             var currentVisId = 1;
 
+
+            // check what's the default vis template and then get the respective information
+
+        }
+
+
+/*
             var getDirectiveName = function(visId) {
                 return contentService.getDirectiveName(visId).then(function(directiveName) {
                     console.log("directiveName: " + angular.toJson($scope.directiveName));
@@ -46,9 +53,7 @@
 
             getDirectiveName;
             getDummyData;
-
-        }
-
+ 
         function getListOfCountryNodes() {
             return contentService.getCountryNodes().then(function(listOfCountryNodes) {
                 $scope.nodes = listOfCountryNodes
@@ -60,6 +65,8 @@
                 $scope.nodeGroups = listOfNodeGroups;
             });
         }
+
+*/
 
     }
 
