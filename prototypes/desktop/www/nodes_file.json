@@ -1,0 +1,14 @@
+{"nodes": [{"name": "DC"}, {"name": "FS"}, {"name": "Printer"}, {"name": "TiVo"},{"name": "Nest"},{"name": "Laptop"},{"name": "WorkStation"},{"name": "CellPhone"}], 
+ "links": [{"source": "DC", "target": "FS","total_packets":"1","avg_time":"450"},
+ 			{"source": "Printer", "target": "DC", "total_packets":"200", "avg_time":"100"},
+ 			{"source": "DC", "target": "TiVo", "total_packets":"4", "avg_time":"100"},
+ 			{"source": "CellPhone", "target": "Nest", "total_packets":"52", "avg_time":"153"},
+ 			{"source": "Laptop", "target": "Printer", "total_packets":"3", "avg_time":"12"},
+ 			{"source": "Printer", "target": "WorkStation", "total_packets":"2", "avg_time":"8"},
+ 			{"source": "Laptop", "target": "Nest", "total_packets":"234", "avg_time":"43"},
+ 			{"source": "FS", "target": "TiVo", "total_packets":"500", "avg_time":"1"}
+
+
+
+ ]
+}
