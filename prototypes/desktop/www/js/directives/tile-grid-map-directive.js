@@ -25,13 +25,14 @@ angular.module("tile-grid-map-directive", [])
             var categoryLabelsLayer = {};
             var currentData = {};
             var customLayerOpts = {};
-            var emphasizedGrouping = {};
             var emphasizedGroupMembers = [];
             var sortingGroupGeoData = {};
             var sortingGroupLookup = {};
             var colorGroupLookup = {};
-            var currentSortGrouping = {};
             var populationLookup = {};
+            var filteredEmphasizedGrouping = {};
+            var filteredColorGrouping = {};
+            var filteredSortGrouping = {};
 
             // Hard-coded width and height of geographic hexagons
             var dX = 3.4641016151377;
@@ -75,6 +76,16 @@ angular.module("tile-grid-map-directive", [])
                     // Set current data to the filtered clone
                     currentData = cloneData;
 
+                    if(Object.keys(filteredEmphasizedGrouping).length !== 0) {
+                        filteredEmphasizedGrouping = scope.parseNewGrouping(filteredEmphasizedGrouping.name);
+                    }
+                    if(Object.keys(filteredColorGrouping).length !== 0) {
+                        filteredColorGrouping = scope.parseNewGrouping(filteredColorGrouping.name);
+                    }
+                    if(Object.keys(filteredSortGrouping).length !== 0) {
+                        filteredSortGrouping = scope.parseNewGrouping(filteredSortGrouping.name);
+                    }
+
                     // Broadcast a redraw is needed
                     $rootScope.$broadcast("redrawGridMap");
                 } else {
@@ -84,6 +95,7 @@ angular.module("tile-grid-map-directive", [])
             };
 
             economicService.getAllValuesByMostRecentDate(1017).then(function(result) {
+                console.log(result);
                 result.forEach(function(populationData) {
                     populationLookup[populationData.country_name] = populationData.value;
                 });
@@ -93,7 +105,7 @@ angular.module("tile-grid-map-directive", [])
             mapboxService.L().then(function(L) {
                 var defaultLayerOpts = {
                     "style": function(feature) {
-                        var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                        var emphasisClass = filteredEmphasizedGrouping.hasOwnProperty("name") && filteredEmphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         return {
                             "className": "countryHex defaultHex hex-feature-" + feature.properties.iso + " " + emphasisClass
                         };
@@ -101,7 +113,7 @@ angular.module("tile-grid-map-directive", [])
                     "onEachFeature": function(feature, layer) {
 
                         // set up class name
-                        var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                        var emphasisClass = filteredEmphasizedGrouping.hasOwnProperty("name") && filteredEmphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                         var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
                         var fontSize = getHexLabelFontSize(map.getZoom());
 
@@ -208,7 +220,7 @@ angular.module("tile-grid-map-directive", [])
                     return listItems;
                 }
 
-                function emphasizeData(grouping) {
+                function emphasizeData() {
 
                     // Remove deemphasis class from existing map elements
                     var mapElements = document.getElementsByClassName("countryHex");
@@ -220,12 +232,11 @@ angular.module("tile-grid-map-directive", [])
                         targetElement.classList.remove("deemphasizeHex");
                     });
 
-                    if(grouping.name !== "default") {
-                        emphasizedGrouping = grouping;
+                    if(filteredEmphasizedGrouping.name !== "default") {
 
                         // Make a structure for looking up group membership by iso
                         emphasizedGroupMembers = []
-                        emphasizedGrouping.subgroups.forEach(function(subgroup) {
+                        filteredEmphasizedGrouping.subgroups.forEach(function(subgroup) {
                             subgroup.nodes.forEach(function(node) {
                                 if(node !== null) {
                                     if(node.hasOwnProperty('iso') && populationLookup[node.name] > scope.selectedFilter.value) {
@@ -269,28 +280,27 @@ angular.module("tile-grid-map-directive", [])
 
                         // Check if a grouping is set, if so we'll need to redraw based
                         // on new sorting
-                        if(Object.keys(currentSortGrouping).length !== 0) {
-                            regroupData(currentSortGrouping);
+                        if(Object.keys(filteredSortGrouping).length !== 0) {
+                            regroupData();
                         }
                     } else {
-                        emphasizedGrouping = {};
+                        filteredEmphasizedGrouping = {};
                     }
                 };
 
-                function recolorData(grouping) {
-
+                function recolorData() {
                     colorGroupLookup = {};
 
-                    if(grouping.name !== "default") {
+                    if(filteredColorGrouping.name !== "default") {
                         // Generate legend data
                         var legendData = {};
-                        legendData.name = grouping.name;
+                        legendData.name = filteredColorGrouping.name;
                         legendData.legend_lookup = {};
                         legendData.legend_data = [];
 
                         // Generate lookup structure to quickly
                         // match a node to its group
-                        grouping.subgroups.forEach(function(subgroup) {
+                        filteredColorGrouping.subgroups.forEach(function(subgroup) {
                             var groupColor = getGroupColor(subgroup.name);
                             legendData.legend_lookup[subgroup.name] = groupColor;
                             legendData.legend_data.push({
@@ -314,14 +324,14 @@ angular.module("tile-grid-map-directive", [])
                         // Setup layer options for custom rendering based on color group
                         customLayerOpts = {
                             "style": function(feature) {
-                                var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                                var emphasisClass = filteredEmphasizedGrouping.hasOwnProperty("name") && filteredEmphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 return {
                                     "className": "countryHex coloredHex hex-feature-" + feature.properties.iso + " " + emphasisClass,
                                     "fillColor": legendData.legend_lookup[colorGroupLookup[feature.properties.iso]]
                                 };
                             },
                             "onEachFeature": function(feature, layer) {
-                                var emphasisClass = emphasizedGrouping.hasOwnProperty("name") && emphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
+                                var emphasisClass = filteredEmphasizedGrouping.hasOwnProperty("name") && filteredEmphasizedGrouping.name !== "default" && !emphasizedGroupMembers.includes(feature.properties.iso) ? "deemphasizeHex" : "";
                                 var className = "defaultHexLabel hex-label-" + feature.properties.iso + " " + emphasisClass;
                                 var fontSize = getHexLabelFontSize(map.getZoom());
 
@@ -347,16 +357,16 @@ angular.module("tile-grid-map-directive", [])
                         // Attach color data to the features
                         currentData.features.forEach(function(feature) {
                             var subgroupName = colorGroupLookup[feature.properties.iso];
-                            addColorByProperties(feature, grouping.name, subgroupName, legendData.legend_lookup[subgroupName]);
+                            addColorByProperties(feature, filteredColorGrouping.name, subgroupName, legendData.legend_lookup[subgroupName]);
                         });
 
-                        if(Object.keys(currentSortGrouping).length === 0) {
+                        if(Object.keys(filteredSortGrouping).length === 0) {
                             // Data is not sorted into bins, just redraw
                             redraw();
                         } else {
                             // Re-run the entire grouping process with new
                             // color rules
-                            regroupData(currentSortGrouping);
+                            regroupData();
                         }
 
                         // Broadcast update event with new legend data
@@ -375,10 +385,10 @@ angular.module("tile-grid-map-directive", [])
                         // If data isn't currently grouped just redraw with
                         // new style applied, otherwise regroup data since
                         // no color is set
-                        if(Object.keys(currentSortGrouping).length === 0) {
+                        if(Object.keys(filteredSortGrouping).length === 0) {
                             redraw();
                         } else {
-                            regroupData(currentSortGrouping);
+                            regroupData(filteredSortGrouping);
                         }
 
                         $rootScope.$broadcast("legendDataClear");
@@ -413,8 +423,7 @@ angular.module("tile-grid-map-directive", [])
                     return Math.floor((Math.random() * 255) + 1);
                 };
 
-                function regroupData(grouping) {
-                    currentSortGrouping  = grouping;
+                function regroupData() {
                     sortingGroupGeoData = {};
                     sortingGroupLookup = {};
 
@@ -424,7 +433,7 @@ angular.module("tile-grid-map-directive", [])
                     map.removeLayer(categoryLabelsLayer);
 
                     // Cook the data for the selected group
-                    if(grouping.name !== 'default') {
+                    if(filteredSortGrouping.name !== 'default') {
                         setBoundaryLayerVisiblity(false);
 
                         var labelFeatures = {
@@ -433,8 +442,8 @@ angular.module("tile-grid-map-directive", [])
                         };
 
                         var startY = 80.0;
-                        var groupSpan = Math.min(240, grouping.subgroups.length * 40);
-                        var groupWidth = groupSpan / grouping.subgroups.length;
+                        var groupSpan = Math.min(240, filteredSortGrouping.subgroups.length * 40);
+                        var groupWidth = groupSpan / filteredSortGrouping.subgroups.length;
                         var hexesPerRow = Math.floor(Math.abs(groupWidth) / dX) - 1;
 
                         sortingGroupGeoData = {};
@@ -443,21 +452,23 @@ angular.module("tile-grid-map-directive", [])
 
                             var groupColorsMapping = {};
 
-                            grouping.subgroups.forEach(function(subgroup) {
+                            filteredSortGrouping.subgroups.forEach(function(subgroup) {
                                 groupColorsMapping[subgroup.name] = [];
 
                                 subgroup.nodes.forEach(function(node) {
-                                    var colorGroup = colorGroupLookup[node.iso]
-                                    var groupname = subgroup.name + "." + colorGroup;
-                                    if(!sortingGroupGeoData.hasOwnProperty(groupname)) {
-                                        sortingGroupGeoData[groupname] = {};
-                                        sortingGroupGeoData[groupname].size = 0;
+                                    if(populationLookup[node.name] > scope.selectedFilter.value) {
+                                        var colorGroup = colorGroupLookup[node.iso]
+                                        var groupname = subgroup.name + "." + colorGroup;
+                                        if(!sortingGroupGeoData.hasOwnProperty(groupname)) {
+                                            sortingGroupGeoData[groupname] = {};
+                                            sortingGroupGeoData[groupname].size = 0;
 
-                                        // Push name of new color group onto group/color mapping structure
-                                        groupColorsMapping[subgroup.name].push(colorGroup);
+                                            // Push name of new color group onto group/color mapping structure
+                                            groupColorsMapping[subgroup.name].push(colorGroup);
+                                        }
+
+                                        sortingGroupGeoData[groupname].size = sortingGroupGeoData[groupname].size + 1;
                                     }
-
-                                    sortingGroupGeoData[groupname].size = sortingGroupGeoData[groupname].size + 1;
                                 });
                             });
 
@@ -471,7 +482,7 @@ angular.module("tile-grid-map-directive", [])
                                 sortingGroupGeoData[key].numRows = Math.ceil(sortingGroupGeoData[key].size / hexesPerRow);
                             });
 
-                            grouping.subgroups.forEach(function(subgroup, idx) {
+                            filteredSortGrouping.subgroups.forEach(function(subgroup, idx) {
                                 var currentY = startY;
                                 var startX = (-groupSpan/2) + (idx * groupWidth);
 
@@ -538,14 +549,14 @@ angular.module("tile-grid-map-directive", [])
 
                         } else {
 
-                            grouping.subgroups.forEach(function(subgroup) {
+                            filteredSortGrouping.subgroups.forEach(function(subgroup) {
                                 var groupname = subgroup.name;
                                 sortingGroupGeoData[groupname] = {};
                                 sortingGroupGeoData[groupname].size = subgroup.nodes.length;
                                 sortingGroupGeoData[groupname].numRows = Math.ceil(sortingGroupGeoData[groupname].size / hexesPerRow);
                             });
                     
-                            grouping.subgroups.forEach(function(subgroup, idx) {
+                            filteredSortGrouping.subgroups.forEach(function(subgroup, idx) {
                                 var startX = (-groupSpan/2) + (idx * groupWidth);
 
                                 var groupname = subgroup.name;
@@ -587,7 +598,7 @@ angular.module("tile-grid-map-directive", [])
                         // Calculate target location for each feature
                         currentData.features.forEach(function(feature) {
                             var sortingGroup = sortingGroupLookup[feature.properties.iso];
-                            addSortByProperties(feature, grouping.name, sortingGroup);
+                            addSortByProperties(feature, filteredSortGrouping.name, sortingGroup);
 
                             addNewDelta(featureDeltas, Object.keys(colorGroupLookup).length === 0 ? sortingGroup : sortingGroup + "." + colorGroupLookup[feature.properties.iso], feature, STEPS);
                         });
@@ -612,7 +623,7 @@ angular.module("tile-grid-map-directive", [])
                         setBoundaryLayerVisiblity(true);
 
                         var targetLocs = {};
-                        scope.vizData[0].features.forEach(function(feature) {
+                        currentData.features.forEach(function(feature) {
                             if(feature.properties.hasOwnProperty("sortBy")) {
                                 featue.properties.sortBy = {};
                             }
@@ -728,12 +739,15 @@ angular.module("tile-grid-map-directive", [])
                 });
 
                 $rootScope.$on("redrawGridMap", function() {
-                    if(Object.keys(emphasizedGrouping).length !== 0) {
+                    if(Object.keys(filteredEmphasizedGrouping).length !== 0) {
                         // redo emphasis sorting on new filtered data, then this will redraw
-                        emphasizeData(emphasizedGrouping);
-                    } else if(Object.keys(currentSortGrouping).length !== 0) {
+                        emphasizeData();
+                    } else if(Object.keys(filteredSortGrouping).length !== 0) {
                         // Re-run the entire grouping process with filtering in place
-                        regroupData(currentSortGrouping);
+                        regroupData();
+                    } else if(Object.keys(filteredColorGrouping).length !== 0) {
+                        // Re-run the entire grouping process with filtering in place
+                        recolorData();
                     } else {
                         // just simple redraw will suffice
                         redraw();
@@ -745,34 +759,55 @@ angular.module("tile-grid-map-directive", [])
 
                     if(args.val.action_name === 'cluster') {
                         // Based on the selected arg apply new grouping
-                        var newGrouping = scope.grouping.find(function(group) {
-                            return group.name === args.val.control_name;
-                        });
-                        if(newGrouping !== undefined) {
-                            regroupData(newGrouping);
-                        }
+                        filteredSortGrouping = scope.parseNewGrouping(args.val.control_name);
+                        regroupData();
                     }
                     if(args.val.action_name === 'color') {
                         // Based on the selected arg apply new grouping
-                        var newGrouping = scope.grouping.find(function(group) {
-                            return group.name === args.val.control_name;
-                        });
-                        if(newGrouping !== undefined) {
-                            recolorData(newGrouping);
-                        }
+                        filteredColorGrouping = scope.parseNewGrouping(args.val.control_name);
+                        recolorData();
                     }
                     if(args.val.action_name === 'filter') {
                         // Emphasize the selected group
-                        var newFilter = scope.grouping.find(function(group) {
-                            return group.name === args.val.control_name;
-                        });
-                        if(newFilter !== undefined) {
-                            emphasizeData(newFilter);
-                        }
+                        filteredEmphasizedGrouping = scope.parseNewGrouping(args.val.control_name);
+                        emphasizeData();
                     }
                 });
-
             });
+
+            scope.parseNewGrouping = function(filterName) {
+                var newFilter = scope.grouping.find(function(group) {
+                    return group.name === filterName;
+                });
+                console.log(newFilter);
+                if(newFilter !== undefined) {
+                    // for the grouping, remove countries that have been
+                    // filtered out based on population
+                    var filteredSubgroups = [];
+                    newFilter.subgroups.forEach(function(subgroup) {
+                        if(subgroup !== null && subgroup.hasOwnProperty("nodes")) {
+                            // Shallow copy
+                            var cloneSubgroup = JSON.parse(JSON.stringify(subgroup));
+                            cloneSubgroup.nodes = [];
+
+                            subgroup.nodes.forEach(function(node) {
+                                if(populationLookup[node.name] >= scope.selectedFilter.value) {
+                                    cloneSubgroup.nodes.push(node);
+                                }
+                            });
+
+                            if(cloneSubgroup.nodes.length > 0) {
+                                filteredSubgroups.push(cloneSubgroup);
+                            }
+                        }
+                    });
+
+                    // Set subgroups to filtered state
+                    newFilter.subgroups = filteredSubgroups;
+
+                    return newFilter;
+                }
+            };
 
         }
 
