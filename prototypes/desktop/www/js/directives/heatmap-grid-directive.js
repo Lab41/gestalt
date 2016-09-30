@@ -9,6 +9,7 @@ angular.module("heatmap-grid-directive", [])
             canvasHeight: "=",
             useLabels: "="
         },
+        template: "<div><p ng-repeat='attr in attrs'><span>{{attr.name}}:</span>{{attr.value}}</p></div>",
         link: function(scope, element, attrs){
             
             // set up the dom node to attach the d3 to
@@ -145,7 +146,7 @@ angular.module("heatmap-grid-directive", [])
                                 
                                     var groupD = d;
                                     var group = d3.select(this);
-                                
+                                    var rowName = d.name;
                                     // LABEL
 								
 									// check setting
@@ -202,8 +203,19 @@ angular.module("heatmap-grid-directive", [])
                                             width: xScaleOrdinal.rangeBand(),
                                             height: yScale.rangeBand()
                                         })
+                                        /*.on("click", function(d){
+                                        
+                                        d3.select("#myInfoBlock")
+                                            .selectAll("p")
+                                            .data([d])
+                                            .enter()
+                                            .append("p")
+                                            .text(function(d){d['srcip']});
+                                        
+                                        })*/
                                         .style({
-                                            opacity: function(d) { return cScale(d.value); }
+                                            //opacity: function(d) { return cScale(d.value); }
+                                            fill: function(d) { return d.classifier_label !== rowName ? "red" : "blue" ;}
                                         });
                                 
                                     // enter selection
@@ -218,10 +230,33 @@ angular.module("heatmap-grid-directive", [])
                                             width: xScaleOrdinal.rangeBand(),
                                             height: yScale.rangeBand()
                                         })
+                                        /*.on("click", function(d){
+                                        
+                                        d3.select("#myInfoBlock")
+                                            .selectAll("p")
+                                            .data([d])
+                                            .enter()
+                                            .append("p")
+                                            .text(function(d){d['srcip']});
+                                        
+                                        })*/
                                         .style({
-                                            opacity: function(d) { return cScale(d.value); }
+                                            //opacity: function(d) { return cScale(d.value); }
+                                            fill: function(d) { console.log("Classlabel",d.classifier_label);console.log("name",rowName);return d.classifier_label !== rowName ? "red" : "blue" ;}
                                         });
-                                
+                                    
+                                    cell
+                                        .on("click", function(d){
+                                        
+                                        var dKeys = Object.keys(d);
+                                        console.log("dkeys",dKeys);
+                                        var attrs = dKeys.map(function(a){
+                                            return {name: a,value: d[a] }; 
+                                        });
+                                        
+                                        scope.attrs = attrs
+                                    });
+                                    
                                     // exit selection
                                     cell
                                         .exit()
