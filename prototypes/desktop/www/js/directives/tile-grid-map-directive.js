@@ -223,14 +223,14 @@ angular.module("tile-grid-map-directive", [])
                 function emphasizeData() {
 
                     // Remove deemphasis class from existing map elements
-                    var mapElements = document.getElementsByClassName("countryHex");
+                    /*var mapElements = document.getElementsByClassName("countryHex");
                     Array.prototype.forEach.call(mapElements, function (targetElement) {
                         targetElement.classList.remove("deemphasizeHex");
                     });
                     mapElements = document.getElementsByClassName("defaultHexLabel");
                     Array.prototype.forEach.call(mapElements, function (targetElement) {
                         targetElement.classList.remove("deemphasizeHex");
-                    });
+                    });*/
 
                     if(filteredEmphasizedGrouping.hasOwnProperty("name") && filteredEmphasizedGrouping.name !== "default") {
 
@@ -260,15 +260,17 @@ angular.module("tile-grid-map-directive", [])
                         currentData.features.forEach(function(feature) {
                             if(!emphasizedGroupMembers.includes(feature.properties.iso)) {
                                 // Get feature and label for matching iso
-                                var targetFeature = document.getElementsByClassName("hex-feature-" + feature.properties.iso)[0];
-                                var targetLabel = document.getElementsByClassName("hex-label-" + feature.properties.iso)[0];
+                                //var targetFeature = document.getElementsByClassName("hex-feature-" + feature.properties.iso)[0];
+                                //var targetLabel = document.getElementsByClassName("hex-label-" + feature.properties.iso)[0];
 
-                                // Apply deemphasizeHex class to make features muted
-                                targetFeature.classList.add("deemphasizeHex");
-                                targetLabel.classList.add("deemphasizeHex");
+                                //if(targetFeature !== undefined) {
+                                    // Apply deemphasizeHex class to make features muted
+                                    //targetFeature.classList.add("deemphasizeHex");
+                                    //targetLabel.classList.add("deemphasizeHex");
 
-                                // Add feature to the "out group"
-                                outFeatures.push(feature);
+                                    // Add feature to the "out group"
+                                    outFeatures.push(feature);
+                                //}
                             } else {
                                 // Add feature to the "in group"
                                 inFeatures.push(feature);
@@ -282,9 +284,13 @@ angular.module("tile-grid-map-directive", [])
                         // on new sorting
                         if(Object.keys(filteredSortGrouping).length !== 0) {
                             regroupData();
+                        } else {
+                            redraw();
                         }
                     } else {
+                        // Clear grouping and redraw
                         filteredEmphasizedGrouping = {};
+                        redraw();
                     }
                 };
 
