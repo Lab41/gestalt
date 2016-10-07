@@ -126,7 +126,7 @@ class node_groups:
         g.id,
         gn.id,
         sgn.id
-        ) s on s.group_id = g.id group by g.id;
+        ) s on s.group_id = g.id group by g.id,g.name, g.type_id;
         """)
         # obtain the data
         data = self.cursor.fetchall()
