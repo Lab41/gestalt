@@ -81,7 +81,7 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     // login
     .state("login", {
         url: "/login?:t",
-        templateUrl: "templates/login.html",
+        templateUrl: "templates/app-global/login.html",
         controller: "loginCtrl",
 		params: {
 			t: theme_config.ui.start
@@ -108,7 +108,7 @@ app.config(function($stateProvider, $httpProvider,  $urlRouterProvider, $ionicCo
     .state("app", {
         url: "/{workspace}?:t",
         abstract: true,
-		templateUrl: "templates/app.html",
+		templateUrl: "templates/app-global/app.html",
 		controller: "appCtrl",
         resolve: {
 			authorized: ["$q", function($q) {

@@ -10,12 +10,16 @@ urls = (
     
     # 0.0.0.0:8000/api/data/story/
     "", "all_stories",
+    
     # 0.0.0.0:8000/api/data/story/#/, where # == story.id
     "(\d+)/", "single_story",
+    
 	# /api/data/story/idea/metric/#/, where # == storyidea.id
 	"idea/(\d+)/metric/(\d+)/", "story_idea_metrics",
+    
     # 0.0.0.0:8000/api/data/story/persona/#/, where # == persona.id
     "persona/(\d+)/", "persona_stories",
+    
     # 0.0.0.0:8000/api/data/story/persona/#/panel/#/, where first # == persona.id and second # == panel.id
     "persona/(\d+)/panel/(\d+)/", "persona_panel_stories",
     

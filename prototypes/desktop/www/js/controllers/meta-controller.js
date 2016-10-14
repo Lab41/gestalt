@@ -3,6 +3,11 @@ angular.module("meta-controller", [])
 .controller("metaCtrl", ["$scope", "$timeout", "$rootScope", "$state", function($scope, $timeout, $rootScope, $state) {
     
     // data objects
+    $scope.css = {
+		gl: mapbox_config.cssGl,
+		raster: mapbox_config.css
+	};
+    
 	$scope.theme = {
 		current: theme_config.ui.start, // inital css so browser doesn't error
         opposite: theme_config.ui.opposite

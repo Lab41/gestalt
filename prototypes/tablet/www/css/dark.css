@@ -46,7 +46,7 @@ button {
 /* empty content area/header */
 .pane {
 	
-	background: rgb(30,30,30);
+	background: rgb(26,26,26);
 	
 }
 
@@ -127,26 +127,6 @@ ion-item.item {
 	
 }
 
-/* buttons */
-.button:hover {
-	
-	color: currentColor;
-	
-}
-
-/* TEMP section */
-ion-content section {
-    
-    background: rgba(20,20,20,0.5);
-    
-}
-
-ion-content section:nth-child(even) {
-    
-    background: rgba(20,20,20,0.8);
-    
-}
-
 /******************************* !CUSTOM *******************************/
 
 /********************/
@@ -183,28 +163,46 @@ ion-content section:nth-child(even) {
 /***** !login ******/
 /*******************/
 
-.login section div:nth-child(1) {
+/* persona type */
+.login section div span {
     
-    background: rgb(80,80,80);
-    
-}
-
-.login section div:nth-child(2) {
-    
-    background: rgb(60,60,60);
+    color: rgb(244,244,244);
     
 }
 
-.login section div:nth-child(3) {
+/* persona type general */
+.login section div span[data-persona-type="general"] {
     
-    background: rgb(70,70,70);
+    background: rgb(163, 180, 70);
     
 }
 
-.login section div:nth-child(4) {
+/* persona type corporate */
+.login section div span[data-persona-type="corporate"] {
     
-    background: rgb(50,50,50);
+    background: rgb(70, 130, 180);
     
+}
+
+/* persona type sme */
+.login section div span[data-persona-type="sme"] {
+    
+    background: rgb(152, 83, 2);
+    
+}
+
+/* persona type sme */
+.login section div span[data-persona-type="peer"] {
+    
+    background: rgb(2, 140, 152);
+    
+}
+
+/* persona name */
+.login section div p:first-of-type {
+
+    color: rgb(250,250,250);
+
 }
 
 /**************************/

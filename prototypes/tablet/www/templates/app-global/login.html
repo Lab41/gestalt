@@ -1,0 +1,30 @@
+<ion-view>
+
+	<ion-content class="login">
+        
+        <!-- TITLE -->
+        <hgroup>
+        <h2>UX in data visualization is critical.</h2>
+        
+            <!-- INTRO -->
+            <p>We think visual data stories need to be tailored to you and your goals and have organized our stories to help you are interested in. You can always switch the lens through which you view any of our visual data stories through the menu icon in the top-left<i class="ion-navicon-round"></i>.</p>
+
+            <p>To get started please choose on option below!</p>
+            
+        </hgroup>
+        
+        <section>
+            
+            <!-- PERSONA -->
+            <div ng-repeat="persona in content"
+                 ng-click="login(persona.name, persona.id);">
+                <span data-persona-type="{{ persona.persona_type }}">{{ persona.persona_type }}</span>
+                <p>{{ persona.name }}</p>
+                <p>{{ persona.description }}</p>
+            </div>
+            
+        </section>
+            
+	</ion-content>
+
+</ion-view>

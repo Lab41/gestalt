@@ -8,7 +8,6 @@ app.use(bodyParser.json());
 
 // backend API
 app.use(require("./routes/workspace-1-get-all-workspaces.route"));
-app.use(require("./routes/workspace-2-get-single-workspace.route"));
 app.use(require("./routes/workspace-3-get-all-panels-single-workspace.route"));
 app.use(require("./routes/story-2-get-story-idea-metrics-single-panel-persona.route"));
 app.use(require("./routes/story-1-get-all-stories-single-panel-persona.route"));

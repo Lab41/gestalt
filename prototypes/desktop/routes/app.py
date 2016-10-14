@@ -34,7 +34,7 @@ class appConfig(web.application):
 class www:
     def GET(self, filename):
         try:
-            f = open('www/' + filename)
+            f = open('../www/' + filename)
             if filename.endswith(".css"):
                 web.header("Content-Type","text/css")
             return f.read() # or return f.read() if you're using 0.3
@@ -44,7 +44,7 @@ class www:
 class index:
     def GET(self):
         try:
-            f = open("www/index.html")
+            f = open("../www/index.html")
             return f.read()
         except IOError:
             web.notfound()

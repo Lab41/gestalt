@@ -1,6 +1,6 @@
 angular.module("meta-controller", [])
 
-.controller("metaCtrl", ["$scope", "$state", function($scope, $state) {
+.controller("metaCtrl", ["$scope", "$timeout", "$rootScope", "$state", function($scope, $timeout, $rootScope, $state) {
 	    
     // data objects
 	$scope.css = {
@@ -9,9 +9,20 @@ angular.module("meta-controller", [])
 	};
 	
 	$scope.theme = {
-		current: theme_config.ui.start,
-		opposite: theme_config.ui.opposite
+		current: theme_config.ui.start, // inital css so browser doesn't error
+        opposite: theme_config.ui.opposite
 	};
+    
+    // allow state to load then reflect theme in url param
+    $timeout(function() {
+        
+        // data objects
+        $scope.theme = {
+            current: $state.params.t,
+            opposite: $state.params.t == theme_config.ui.start ? theme_config.ui.opposite : theme_config.ui.start
+        };
+        
+    },500);
 	
 	// change theme
 	$scope.changeTheme = function(opposite) {
@@ -22,6 +33,8 @@ angular.module("meta-controller", [])
         var menu = document.getElementsByClassName("menu")[0];
         var html = document.getElementsByTagName("html")[0];
         var body = document.getElementsByTagName("body")[0];
+        
+        var originalTransition = menu.style.transition;
         
         // set smooth transition
         menu.style.transition = transition;
@@ -35,11 +48,13 @@ angular.module("meta-controller", [])
 			current: current,
 			opposite: opposite
 		};
+        
+        // update state params obj
+        var params = $state.params;
+        params["t"] = current;
 		
 		// transition URL to reflect state change
-		$state.go("app.panel", {
-			t: current
-		}, {
+		$state.go($state.current.name, params, {
 			reload: false,
 			notify: false
 		});
