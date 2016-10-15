@@ -1,10 +1,8 @@
 import json
 import web
 
-import panel
 import persona
 import story
-import tag
 import workspace
 import visualization
 import data_economic
@@ -14,9 +12,7 @@ urls = (
 
     "/api/persona/", persona.app,
     "/api/workspace/", workspace.app,
-    "/api/panel/", panel.app,
     "/api/data/story/", story.app,
-    "/api/tag/", tag.app,
     "/api/data/visualization/", visualization.app,
     "/api/data/economic/", data_economic.app,
   #  "/api/screenshot/", screenshot.app,

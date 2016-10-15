@@ -72,42 +72,9 @@ config.story.storyIdeaMetricsSinglePanelPersona = {
     route: storyBase + "/idea/:idea/metric/:control",
     
     query: [
-        "select sac.id,
-		sim.label,
-		sim.description,
-		si.id as story_idea_id,
-		case
-		when sac.story_action_id = 1 then g.name
-		when sac.story_action_id = 2 then g.name
-        when sac.story_action_id = 5 then g.name
-        when sac.story_action_id = 6 then g.name
-		when sac.story_action_id = 7 then g.name
-		else f.name
-		end 
-		as control_name,
-		sa.name as action_name,
-		sim.name as metric_name,
-		array_agg(row_to_json(m)) as metrics
-		from """ + helper.table_prefix + """story_action_control sac
-		left join """ + helper.table_prefix + """story_action sa on sa.id = sac.story_action_id
-		left join """ + helper.table_prefix + """story_idea si on si.action_id = sac.story_action_id
-		left join """ + helper.table_prefix + """group g on g.id = sac.name_id
-		left join """ + helper.table_prefix + """vertex v on v.id = sac.name_id
-		left join """ + helper.table_prefix + """flow f on f.id = sac.name_id
-		left join """ + helper.table_prefix + """story_idea_metric sim on sim.control_id = sac.id
-		left join (
-		select * from """ + helper.table_prefix + """story_idea_metric_value
-		) m on m.control_id = sac.id
-		where si.id = """ + story_idea_id + """ and sac.id = """ + control_id + """
-		group by sac.id,
-		sim.label,
-		sim.description,
-		si.id,
-		g.name,
-		v.name,
-		f.name,
-		sa.name,
-		sim.name;"
+        "select sac.id,sim.label,sim.description,si.id as story_idea_id,case when sac.story_action_id = 1 then g.name when sac.story_action_id = 2 then g.name when sac.story_action_id = 5 then g.name when sac.story_action_id = 6 then g.name when sac.story_action_id = 7 then g.name else f.name end as control_name,sa.name as action_name,sim.name as metric_name,array_agg(row_to_json(m)) as metrics from " + tablePrefix + "story_action_control sac left join " + tablePrefix + "story_action sa on sa.id = sac.story_action_id left join " + tablePrefix + "story_idea si on si.action_id = sac.story_action_id left join " + tablePrefix + "group g on g.id = sac.name_id left join " + tablePrefix + "vertex v on v.id = sac.name_id left join " + tablePrefix + "flow f on f.id = sac.name_id left join " + tablePrefix + "story_idea_metric sim on sim.control_id = sac.id left join (select * from " + tablePrefix + "story_idea_metric_value) m on m.control_id = sac.id where si.id = ",
+        " and sac.id = ",
+        " group by sac.id,sim.label,sim.description,si.id,g.name,v.name,f.name,sa.name,sim.name;"
     ]
     
 };
@@ -145,7 +112,7 @@ config.visualization.nodeGroups = {
     route: visualizationBase + "/countries/groups",
     
     query: [
-        "select g.*,array_agg(row_to_json(s)) as subgroups from " + tablePrefix + "group g left join (select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id,case when gt.id = 1 then gn.name else sgn.name end as name,case when gt.id = 1 then gt.id || '_' || gn.id else gt.id || '_' || sgn.id end as id,geo.hexagon_center_x as center_x,geo.hexagon_center_y as center_y,array_agg(row_to_json(n)) as nodes from " + tablePrefix + "subgroup sg left join " + tablePrefix + "geography_name gn on gn.id = sg.name_id left join " + tablePrefix + "subgroup_name sgn on sgn.id = sg.name_id left join " + tablePrefix + "group g on g.id = sg.group_id left join " + tablePrefix + "group_type gt on gt.id = g.type_id left join " + tablePrefix + "geography geo on geo.name_id = sg.name_id and gt.id = 1 left join (select gn.name,gcy.id,gcy.iso2code as iso from " + tablePrefix + "country gcy left join " + tablePrefix + "geography_name gn on gn.id = gcy.name_id) n on n.id = sg.country_id group by sg.name_id,sg.group_id,gn.name,sgn.name,geo.hexagon_center_x,geo.hexagon_center_y,gt.id,g.id,gn.id,sgn.id) s on s.group_id = g.id group by g.id"
+        "select g.*,array_agg(row_to_json(s)) as subgroups from " + tablePrefix + "group g left join (select distinct on (sg.name_id, sg.group_id) sg.name_id, sg.group_id,case when gt.id = 1 then gn.name else sgn.name end as name,case when gt.id = 1 then gt.id || '_' || gn.id else gt.id || '_' || sgn.id end as id, geo.hexagon_center_x as center_x,geo.hexagon_center_y as center_y,array_agg(row_to_json(n)) as nodes  from " + tablePrefix + "subgroup sg left join " + tablePrefix + "geography_name gn on gn.id = sg.name_id left join " + tablePrefix + "subgroup_name sgn on sgn.id = sg.name_id left join " + tablePrefix + "group g on g.id = sg.group_id left join " + tablePrefix + "group_type gt on gt.id = g.type_id left join " + tablePrefix + "geography geo on geo.name_id = sg.name_id and gt.id = 1 left join (select gn.name,gcy.id, gcy.iso2code as iso from " + tablePrefix + "country gcy left join " + tablePrefix + "geography_name gn on gn.id = gcy.name_id) n on n.id = sg.country_id group by sg.name_id,sg.group_id,gn.name,sgn.name,geo.hexagon_center_x,geo.hexagon_center_y,gt.id,g.id,gn.id,sgn.id) s on s.group_id = g.id group by g.id,g.name, g.type_id;"
     ]
     
 };
@@ -153,49 +120,15 @@ config.visualization.nodeGroups = {
 // visualization-2-geojson-countries.route.js
 config.visualization.geojson = {
     
-    route: visualizationBase + "/geojson/:grid",
+    route: visualizationBase + "/geography/:type/:polygon",
     
     query: [
-        "select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t," + tablePrefix + "geography geo left join (select geo.id,gn.name,cy.iso2code as iso from " + tablePrefix + "geography geo left join " + tablePrefix + "geography_name gn on gn.id = geo.name_id left join " + tablePrefix + "country cy on cy.id = geo.name_id) f on f.id = geo.id left join (with t as (select 'Polygon'::text) select t.text as type,geo.hexagon_polygon as coordinates from t," + tablePrefix + "geography geo) c on c.coordinates = geo.hexagon_polygon where geo.hexagon_polygon is not null ) r group by type;"
+        "select 'FeatureCollection' as type,array_agg(row_to_json(r)) as features from (with t as (select 'Feature'::text) select t.text as type,row_to_json(f) as properties,row_to_json(c) as geometry from t," + tablePrefix + "geography geo left join (select geo.id,gn.name,cy.iso2code as iso from " + tablePrefix + "geography geo left join " + tablePrefix + "geography_name gn on gn.id = geo.name_id left join " + tablePrefix + "country cy on cy.id = geo.name_id) f on f.id = geo.id left join (with t as (select 'Polygon'::text) select t.text as type,geo.",
+        "_polygon as coordinates from t, " + tablePrefix + "geography geo) c on c.coordinates = geo.",
+        "_polygon where geo.",
+        "_polygon is not null) r group by type;"
     ]
     
 };
-
-// visualization-3-grouped-countries.route.js
-config.visualization.groupedCountries = {
-    
-    route: visualizationBase + "/:table",
-    
-    query: [
-        "select distinct on (gn.name) gn.name,cy.iso2code as iso,cy.id,count(distinct cdis.target_id) as count from " + tablePrefix + "country cy left join " + tablePrefix + "geography_name gn on gn.id = cy.name_id left join " + tablePrefix + "geography geo on geo.name_id = cy.name_id left join " + tablePrefix + "cdis cdis on source_id = cy.id group by gn.name,cy.iso2code,cy.id"
-    ]
-    
-};
-
-// visualization-4-node-flows.route.js
-config.visualization.nodeFlows = {
-    
-    route: visualizationBase + "/flows/unique_targets/:sourceId",
-    
-    query: [
-        "select gn.name as source_name,cy.iso2code as source,gnt.name as target_name,cyt.iso2code as target,cy.id as source_id,count(cdis.target_id) as value from " + tablePrefix + "cdis cdis left join " + tablePrefix + "geography_name gn on gn.id = cdis.source_id left join " + tablePrefix + "geography_name gnt on gnt.id = cdis.target_id left join " + tablePrefix + "country cy on cy.id = cdis.source_id left join " + tablePrefix + "country cyt on cyt.id = cdis.target_id where source_id = ",
-        " and cyt.iso2code is not null group by gn.name,cy.iso2code,cy.id,gnt.name,cyt.iso2code"
-    ]
-    
-};
-
-// visualization-5-dynamic-directives.route.js
-config.visualization.dynamicDirectives = {
-    
-    route: visualizationBase + "/angular/directives/:visual",
-    
-    query: [
-        "select * from " + tablePrefix + "vis where id = ",
-		";"
-    ]
-    
-};
-
-
 
 module.exports = config;

@@ -628,6 +628,12 @@ button:focus {
     
 }
 
+.visual-tool text:hover {
+    
+    color: red;
+    
+}
+
 /******************************* !MEDIA QUERIES *******************************/
 
 @media (max-width: 1300px) {

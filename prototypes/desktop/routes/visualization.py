@@ -10,75 +10,16 @@ urls = (
     
     # rest API backend endpoints
     "geography/(.*)/(.*)/", "geography",
-    "flows/unique_targets/(\d+)/", "flows",
-    "story/metric/(\d+)/", "metrics",
     "heuristics/comparison/", "heuristic_comparison",
     "heuristics/time-series/", "heuristic_timeseries",
     "heuristics/parts-of-a-whole/", "heuristic_partofwhole",
     "heuristics/relatedness/", "heuristic_relatedness",
     "heuristics/hierarchy/", "heuristic_hierarchy",
 	"angular/directives/(\d+)/", "ng_directives",
-	"countries/groups/", "node_groups",
-    "(.*)/", "nodes"
+	"countries/groups/", "node_groups"
     
 )
 
-class flows:
-    def GET(self, source_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-        select gn.name as source_name,
-		cy.iso2code as source,
-		gnt.name as target_name,
-		cyt.iso2code as target,
-		cy.id as source_id,
-		count(cdis.target_id) as value
-		from """ + helper.table_prefix + """cdis cdis
-		left join """ + helper.table_prefix + """geography_name gn on gn.id = cdis.source_id
-		left join """ + helper.table_prefix + """geography_name gnt on gnt.id = cdis.target_id
-		left join """ + helper.table_prefix + """country cy on cy.id = cdis.source_id
-		left join """ + helper.table_prefix + """country cyt on cyt.id = cdis.target_id
-		where source_id = """ + source_id + """ and cyt.iso2code is not null
-		group by gn.name,
-		cy.iso2code,
-		cy.id,
-		gnt.name,
-		cyt.iso2code
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data, default=helper.decimal_encoder)
-    
-class nodes:
-    def GET(self, table, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
-        # connect to postgresql based on configuration in connection_string
-        connection = psycopg2.connect(connection_string)
-        # get a cursor to perform queries
-        self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        # execute query
-        self.cursor.execute("""
-		select distinct on (gn.name) gn.name,
-		cy.iso2code as iso,
-		cy.id,
-		count(distinct cdis.target_id) as count
-		from """ + helper.table_prefix + """country cy 
-		left join """ + helper.table_prefix + """geography_name gn on gn.id = cy.name_id
-		left join """ + helper.table_prefix + """geography geo on geo.name_id = cy.name_id
-		left join """ + helper.table_prefix + """cdis cdis on source_id = cy.id
-		group by gn.name,
-		cy.iso2code,
-		cy.id
-        """)
-        # obtain the data
-        data = self.cursor.fetchall()
-        # convert data to a string
-        return json.dumps(data, default=helper.decimal_encoder)
-    
 class node_groups:
     def GET(self, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
         # connect to postgresql based on configuration in connection_string

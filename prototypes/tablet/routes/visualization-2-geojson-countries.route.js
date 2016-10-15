@@ -18,12 +18,12 @@ router.get(config.visualization.geojson.route, function(req, res) {
     // get a postgres client from the connection pool
     pg.connect(conString, function(err, client, done) {
 		
-		var grid = req.params.grid;
+		var polygon = req.params.polygon;
         
         var configQuery = config.visualization.geojson.query;
                 
         // SQL query
-        var query = client.query(configQuery[0]);
+        var query = client.query(configQuery[0] + polygon + configQuery[1] + polygon + configQuery[2] + polygon + configQuery[3]);
         
         // stream results back one row at a time
         query.on("row", function(row) {
