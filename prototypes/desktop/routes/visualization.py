@@ -446,7 +446,7 @@ class heuristic_relatedness:
         data = self.cursor.fetchall()
         
         # temp open from file for now
-        with open("related.json") as json_data:
+        with open("data/related.json") as json_data:
 
             # dict
             fc = json.load(json_data)
@@ -539,7 +539,7 @@ class heuristic_hierarchy:
         data = self.cursor.fetchall()
         
         # temp open from file for now
-        with open("hierarchy.json") as json_data:
+        with open("data/hierarchy.json") as json_data:
 
             # dict
             fc = json.load(json_data)
