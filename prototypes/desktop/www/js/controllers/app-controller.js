@@ -38,7 +38,7 @@ angular.module("app-controller", [])
     authenticationService.getCredentials().then(function(userData) {
         
         var user = {"user": "general", id: 1};
-        var endpoint = "persona/" + user.id + "/";console.log(user);
+        var endpoint = "persona/" + user.id + "/";
         var objs = { multi: "workspaces", single: "workspace" };
         var check = { key: "url_name", value: workspaceParam };
 

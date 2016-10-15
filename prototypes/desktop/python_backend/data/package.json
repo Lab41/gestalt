@@ -1,15 +1,8 @@
 {
-  "name": "tablet",
+  "name": "desktop",
   "version": "1.0.0",
-  "description": "Gestalt prototype for the tablet",
-  "main": "app.js",
-  "dependencies": {
-    "angular": "^1.5.8",
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "pg": "^6.1.0"
-  },
-  "devDependencies": {},
+  "description": "Gestalt prototype for the desktop",
+  "main": "app.py",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,12 +12,15 @@
   },
   "keywords": [
     "gestalt",
-    "tablet"
+    "desktop"
   ],
   "author": "Lab41",
   "license": "SEE LICENSE IN ../../LICENSE",
   "bugs": {
     "url": "https://github.com/Lab41/gestalt/issues"
   },
-  "homepage": "https://github.com/Lab41/gestalt#readme"
+  "homepage": "https://github.com/Lab41/gestalt#readme",
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
 }

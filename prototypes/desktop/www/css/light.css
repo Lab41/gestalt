@@ -189,6 +189,25 @@ tile-grid-map path.default {
     
 }
 
+/* empty hex */
+tile-grid-map .defaultHex {
+
+    fill: rgb(250,250,250);
+
+}
+
+tile-grid-map .leaflet-label {
+
+    color: #111;
+    
+}
+
+tile-grid-map path.boundaryPolygon {
+
+    stroke: #111;
+    
+}
+
 /***********************/
 /***** !bar chart ******/
 /***********************/

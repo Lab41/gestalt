@@ -1,0 +1,1 @@
+var page = require('webpage').create(); page.viewportSize = { width: 2560, height: 1440 }; page.open('http://0.0.0.0:8000/#/econ/contagion/tile-grid-map?si=2&sc=8&t=light', function(status) { setTimeout(function(){ page.render('/Users/mknight/gestalt/prototypes/desktop/www/screenshots/screenshot-20160926-163947.png'); console.log('completed'); phantom.exit(); },1000); });

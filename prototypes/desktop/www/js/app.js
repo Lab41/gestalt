@@ -144,6 +144,6 @@ app.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
         }
     })
 
-    $urlRouterProvider.otherwise("/econ/contagion/tile-grid-map?t=" + theme_config.ui.start);
+    $urlRouterProvider.otherwise("/economics/contagion/tile-grid-map?t=" + theme_config.ui.start);
 
 });

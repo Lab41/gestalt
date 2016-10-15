@@ -22,30 +22,8 @@
 
 
 /***************************/
-
-
 /***** !tile grid map ******/
-
-
 /***************************/
-
-.vis-container {
-    z-index: -1000;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    /* Padding When Main Menu Is Hidden */
-    padding-top: 4.7rem;
-    /* Padding When Main Menu Is Shown */
-    /* padding-top: 8.1rem; */
-}
-.vis-container-inside {
-    position: relative;
-    height: 100%;
-    width: 100%;
-}
 
 tile-grid-map .leaflet-div-icon {
     background: none;
@@ -56,16 +34,16 @@ tile-grid-map .leaflet-div-icon {
 
 tile-grid-map .defaultHex {
 
+    fill-opacity: 1;
+    stroke: currentColor;
     stroke-width: 2;
     stroke-opacity: 1.0;
-    fill-opacity: 1;
-    fill: white;
 
 }
 
 tile-grid-map .defaultHexLabel {
 
-    font-weight: 500;
+    font-family:  body-copy-regular;
 
 }
 
@@ -97,48 +75,31 @@ tile-grid-map .deemphasizeHex.defaultHexLabel {
 
 }
 
-/* pop-up */
+tile-grid-map .leaflet-label {
 
-/*
-.tile-grid-popup {
-    position: relative;
-    width: 350px;
-    height: 190px;
-    margin-top: -180px;
-    padding: 15px;
-    background: #FFFFFF;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: #7f7f7f solid 1px;
+    border: 0;
+    background: 0;
+
 }
 
-.tile-grid-popup:after {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 22px 9px 0;
-    border-color: #FFFFFF transparent;
-    display: block;
-    width: 0;
-    z-index: 1;
-    bottom: -22px;
-    left: 175px;
+tile-grid-map .leaflet-label.sortingGroupLabel {
+
+    font-family: "header-regular", "Source Sans Pro Light", sans-serif;
+    font-weight: 300;
+    font-size: 2em;
+
 }
 
-.tile-grid-popup:before {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 22px 9px 0;
-    border-color: #7F7F7F transparent;
-    display: block;
-    width: 0;
-    z-index: 0;
-    bottom: -23px;
-    left: 175px;
+tile-grid-map .leaflet-label.colorGroupLabel {
+
+    font-family: "body-copy-regular";
+    font-size: 1.5em;
+
 }
-*/
+
+tile-grid-map .leaflet-label:before {
+    border: 0;
+}
 
 .tile-grid-popup .popup-container {
     padding: 15px;
@@ -150,12 +111,18 @@ tile-grid-map .deemphasizeHex.defaultHexLabel {
 }
 
 .popup-item {
-    font-size: 1.1rem;
+    font-size: 1.0rem;
     font-family: "body-copy-light", sans-serif;
 }
 
 .popup-item strong {
     font-family: "body-copy-regular", sans-serif;
+    font-weight: bold;
+}
+
+.popup-item svg {
+    display: inline;
+    margin-left: 0.5em;
 }
 
 .tile-grid-popup h3 {
@@ -177,4 +144,15 @@ tile-grid-map .deemphasizeHex.defaultHexLabel {
     -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
     -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
     box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
+}
+
+tile-grid-map .controls__container {   
+    width: 20em;
+    float: left;
+    margin: 1.5em 1.5em 0 3em;
+    z-index: 1;
+}
+
+tile-grid-map .controls__container .vis-key__container, tile-grid-map .controls__container > div {
+    margin-bottom: 0.5em;
 }
