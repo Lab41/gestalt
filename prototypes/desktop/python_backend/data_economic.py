@@ -82,7 +82,7 @@ class getAllSources:
         self.cursor.execute("""
             SELECT table_name
             FROM information_schema.tables
-            WHERE table_name LIKE 'gestalt_source%'
+            WHERE table_name LIKE '""" + helper.table_prefix + """source%'
             ORDER BY table_name;
         """)
         # obtain the data
@@ -108,7 +108,7 @@ class getAllSeriesByTableName:
         self.cursor.execute("""
             SELECT DISTINCT ON (src.series_id) src.series_id, series.code, series.description
             FROM """ + table_name + """ AS src
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON src.series_id = series.id
         """)        
         # obtain the data
@@ -117,7 +117,7 @@ class getAllSeriesByTableName:
         return json.dumps(data)
 
 class insertSeriesToMV:
-    """ Insert a particular series from a given table into gestalt_frontend_country_data
+    """ Insert a particular series from a given table into """ + helper.table_prefix + """frontend_country_data
         so that we know what data is needed from the front-end.
     input:
         * table name
@@ -130,7 +130,7 @@ class insertSeriesToMV:
         cursor = connection.cursor()
         # execute query
         cursor.execute("""
-            INSERT INTO gestalt_frontend_country_data (source_name, source_id, series_id, country_id, date, date_precision, value)
+            INSERT INTO """ + helper.table_prefix + """frontend_country_data (source_name, source_id, series_id, country_id, date, date_precision, value)
                 SELECT '""" + table_name + """' AS source_name, src.id, src.series_id, src.country_id, src.date, src.date_precision, src.value
                 FROM """ + table_name + """ AS src
                 WHERE src.series_id = """ + series_id + """;
@@ -165,10 +165,10 @@ class extractSeriesValuesBySeries:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
             ORDER BY country.name;
@@ -204,13 +204,13 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndCategoricalValues:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             AND (CASE WHEN """ + low_val + """ IS NULL THEN 1 ELSE """ + low_val + """ END) < mv.value
             AND mv.value <= """ + high_val + """
             ORDER BY country.name;
@@ -245,13 +245,13 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueGT:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             AND mv.value > """ + comp_val + """
             ORDER BY country.name;
         """)        
@@ -285,13 +285,13 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueGTE:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             AND mv.value >= """ + comp_val + """
             ORDER BY country.name;
         """)        
@@ -325,13 +325,13 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueLT:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             AND mv.value < """ + comp_val + """
             ORDER BY country.name;
         """)        
@@ -365,13 +365,13 @@ class extractSeriesValuesBySeriesAndMostRecentDateAndValueLTE:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             AND mv.value <= """ + comp_val + """
             ORDER BY country.name;
         """)        
@@ -403,13 +403,13 @@ class extractSeriesValuesBySeriesAndMostRecentDate:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             ORDER BY country.name;
         """)        
         # obtain the data
@@ -441,10 +441,10 @@ class extractSeriesValuesByCountry:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
             AND mv.country_id = """ + country_id + """
@@ -479,14 +479,14 @@ class extractSeriesValuesByCountryAndMostRecentDate:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
             AND mv.country_id = """ + country_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             ORDER BY country.name;
         """)        
         # obtain the data
@@ -520,10 +520,10 @@ class extractSeriesValuesByCountryAndDate:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
             WHERE mv.series_id = """ + series_id + """
             AND mv.country_id = """ + country_id + """
@@ -560,12 +560,12 @@ class extractSeriesValuesByRegion:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
-                INNER JOIN gestalt_subgroup AS subgroup
+                INNER JOIN """ + helper.table_prefix + """subgroup AS subgroup
                 ON mv.country_id = subgroup.country_id
             WHERE mv.series_id = """ + series_id + """
             AND subgroup.group_id = """ + group_id + """
@@ -602,17 +602,17 @@ class extractSeriesValuesByRegionAndMostRecentDate:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
-                INNER JOIN gestalt_subgroup AS subgroup
+                INNER JOIN """ + helper.table_prefix + """subgroup AS subgroup
                 ON mv.country_id = subgroup.country_id
             WHERE mv.series_id = """ + series_id + """
             AND subgroup.group_id = """ + group_id + """
             AND subgroup.name_id = """ + subgroup_name_id + """
-            AND mv.date = (SELECT max(date) FROM gestalt_frontend_country_data WHERE series_id = """ + series_id + """)
+            AND mv.date = (SELECT max(date) FROM """ + helper.table_prefix + """frontend_country_data WHERE series_id = """ + series_id + """)
             ORDER BY country.name;
         """)        
         # obtain the data
@@ -647,12 +647,12 @@ class extractSeriesValuesByRegionAndDate:
             SELECT mv.id,
                    country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,
                    mv.value, to_char(mv.date, mv.date_precision) AS date
-            FROM gestalt_frontend_country_data AS mv
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """frontend_country_data AS mv
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON mv.country_id = country.id
-                INNER JOIN gestalt_series AS series
+                INNER JOIN """ + helper.table_prefix + """series AS series
                 ON mv.series_id = series.id
-                INNER JOIN gestalt_subgroup AS subgroup
+                INNER JOIN """ + helper.table_prefix + """subgroup AS subgroup
                 ON mv.country_id = subgroup.country_id
             WHERE mv.series_id = """ + series_id + """
             AND subgroup.group_id = """ + group_id + """
@@ -684,8 +684,8 @@ class getAllSubgroupsByGroup:
         # execute query
         self.cursor.execute("""
             SELECT DISTINCT ON (subgroup.name_id) subgroup.id, subgroup.name_id, subgroup_name.name
-            FROM gestalt_subgroup AS subgroup
-                INNER JOIN gestalt_subgroup_name AS subgroup_name
+            FROM """ + helper.table_prefix + """subgroup AS subgroup
+                INNER JOIN """ + helper.table_prefix + """subgroup_name AS subgroup_name
                 ON subgroup.name_id = subgroup_name.id
             WHERE subgroup.group_id = """ + group_id + """
             ORDER BY subgroup.name_id;
@@ -712,8 +712,8 @@ class getAllCountriesBySubgroup:
         # execute query
         self.cursor.execute("""
             SELECT country.id, country.name
-            FROM gestalt_subgroup AS subgroup
-                INNER JOIN gestalt_country_with_name AS country
+            FROM """ + helper.table_prefix + """subgroup AS subgroup
+                INNER JOIN """ + helper.table_prefix + """country_with_name AS country
                 ON subgroup.country_id = country.id
             WHERE subgroup.group_id = """ + group_id + """
             AND subgroup.name_id = """ + subgroup_name_id + """
@@ -725,8 +725,8 @@ class getAllCountriesBySubgroup:
 
 
 class cleanupMV:
-    """ Delete the content of gestalt_frontend_country_data.
-        gestalt_frontend_country_data stores the necessary data needed for front-end.
+    """ Delete the content of """ + helper.table_prefix + """frontend_country_data.
+        """ + helper.table_prefix + """frontend_country_data stores the necessary data needed for front-end.
     """
     def GET(self, region_id, connection_string=helper.get_connection_string(os.environ['DATABASE_URL'])):
 
@@ -736,7 +736,7 @@ class cleanupMV:
         cursor = connection.cursor()
         # execute query
         cursor.execute("""
-            TRUNCATE gestalt_frontend_country_data;
+            TRUNCATE """ + helper.table_prefix + """frontend_country_data;
         """)
         # make changes to the database persistent
         connection.commit()

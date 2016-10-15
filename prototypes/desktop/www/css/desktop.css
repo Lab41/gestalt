@@ -170,6 +170,7 @@ button:focus {
     height: 5rem;
     line-height: 1.2rem;
     white-space: normal;
+    z-index: 9999;
 }
 
 .capture-button svg {

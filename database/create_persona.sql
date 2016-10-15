@@ -1,0 +1,14 @@
+drop table if exists gestalt_economic.gestalt_persona_type; create table gestalt_economic.gestalt_persona_type (id serial primary key, name text, description text);
+ insert into gestalt_economic.gestalt_persona_type (name,description) values ('general','Use for a high-level overview with information meant to be understood by anyone.');
+ insert into gestalt_economic.gestalt_persona_type (name,description) values ('corporate','Use for a high-level overview with information curated for helping you make high-level decisions.');
+ insert into gestalt_economic.gestalt_persona_type (name,description) values ('sme','Use for aggregate and detailed information meant to help you gain deeper understanding of the subject already familiar to you.');
+ insert into gestalt_economic.gestalt_persona_type (name,description) values ('peer','Use for aggregate and detailed information meant to help you understand the data science.');
+select * from gestalt_economic.gestalt_persona_type;
+drop table if exists gestalt_economic.gestalt_persona; create table gestalt_economic.gestalt_persona (id serial primary key, name text, persona_type integer, description text);
+ insert into gestalt_economic.gestalt_persona (name,persona_type,description) values ('anyone',1,'No background or supplemental information is needed for comprehension.');
+ insert into gestalt_economic.gestalt_persona (name,persona_type,description) values ('economist',3,'A background in economics or statistics is required for comprehension.');
+ insert into gestalt_economic.gestalt_persona (name,persona_type,description) values ('cyber security analyst',3,'A background in cyber security is required for comprehension.');
+ insert into gestalt_economic.gestalt_persona (name,persona_type,description) values ('visualization specialist',3,'A background in visual design or data visualization is required for comprehension.');
+ insert into gestalt_economic.gestalt_persona (name,persona_type,description) values ('cyber security manager',2,'A background in cyber security and IT management is required for comprehension.');
+ insert into gestalt_economic.gestalt_persona (name,persona_type,description) values ('data scientist',4,'A background in data science is required for comprehension.');
+select * from gestalt_economic.gestalt_persona;
