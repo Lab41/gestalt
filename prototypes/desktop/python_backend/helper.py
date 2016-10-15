@@ -1,6 +1,6 @@
 import decimal
 
-table_prefix = "gestalt_"
+table_prefix = "gestalt_economic.gestalt_"
 
 def get_connection_string(database_url):
     if not database_url:
