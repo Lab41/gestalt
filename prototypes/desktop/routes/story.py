@@ -91,15 +91,7 @@ class story_idea_metrics:
 		sim.label,
 		sim.description,
 		si.id as story_idea_id,
-		case
-		when sac.story_action_id = 1 then g.name
-		when sac.story_action_id = 2 then g.name
-        when sac.story_action_id = 5 then g.name
-        when sac.story_action_id = 6 then g.name
-		when sac.story_action_id = 7 then g.name
-		else f.name
-		end 
-		as control_name,
+		g.name as control_name,
 		sa.name as action_name,
 		sim.name as metric_name,
 		array_agg(row_to_json(m)) as metrics

@@ -1,0 +1,17 @@
+<!--Will prob have to string together a few statements to generate this title-->
+<div class="vis-title">
+    <h1>
+        <span ng-bind="filterTitle"></span>
+        <span ng-bind="colorTitle"></span>
+    </h1>
+    <div class="highlight-indicator center-block" ng-show="highlight()">
+        <h2>
+            Highlight Mode
+        </h2>
+        <h3>
+            Select countries to apply a highlighted state
+        </h3>
+        <button class="btn btn-default" ng-click="toggleHighlight()">Finished Highlighting</button>
+        <button class="btn btn-default">Remove ALL Highlights</button>
+    </div>
+</div>
