@@ -14,6 +14,7 @@ app.use(require("./routes/story-1-get-all-stories-single-panel-persona.route"));
 app.use(require("./routes/persona-1-get-all-personas.route"));
 app.use(require("./routes/visualization-1-node-groups.route"));
 app.use(require("./routes/visualization-2-geojson-countries.route"));
+app.use(require("./routes/economic-1-get-recent-series.route"));
 
 // static front end
 app.use("/", express.static(__dirname + "/www"));

@@ -10,6 +10,7 @@ config.workspace = {};
 config.story = {};
 config.persona = {};
 config.visualization = {};
+config.economic = {};
 
 
 
@@ -130,5 +131,28 @@ config.visualization.geojson = {
     ]
     
 };
+
+
+
+/////////////////////
+/// ECONOMIC DATA ///
+/////////////////////
+
+var economicBase = urlBase + "/data/economic";
+
+// visualization-1-node-groups.route.js
+config.economic.series = {
+    
+    route: economicBase + "/extractSeriesValuesBySeriesAndMostRecentDate/:series",
+    
+    query: [
+        "SELECT mv.id, country.id AS country_id, country.iso2code, country.iso3code, country.name AS country_name,mv.value, to_char(mv.date, mv.date_precision) AS date FROM " + tablePrefix + "frontend_country_data AS mv INNER JOIN " + tablePrefix + "country_with_name AS country ON mv.country_id = country.id INNER JOIN " + tablePrefix + "series AS series ON mv.series_id = series.id WHERE mv.series_id = ",
+        " AND mv.date = (SELECT max(date) FROM " + tablePrefix + "frontend_country_data WHERE series_id = ",
+        ") ORDER BY country.name;"
+    ]
+    
+};
+
+
 
 module.exports = config;
