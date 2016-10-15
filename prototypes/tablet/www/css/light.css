@@ -46,7 +46,7 @@ button {
 /* empty content area/header */
 .pane {
 	
-	background: rgb(250,250,250);
+	background: rgb(244,244,244);
 	
 }
 
@@ -169,28 +169,46 @@ ion-item.item {
 /***** !login ******/
 /*******************/
 
-.login section div:nth-child(1) {
+/* persona type */
+.login section div span {
     
-    background: rgb(200,200,200);
-    
-}
-
-.login section div:nth-child(2) {
-    
-    background: rgb(240,240,240);
+    color: rgb(244,244,244);
     
 }
 
-.login section div:nth-child(3) {
+/* persona type general */
+.login section div span[data-persona-type="general"] {
     
-    background: rgb(230,230,230);
+    background: rgb(163, 180, 70);
     
 }
 
-.login section div:nth-child(4) {
+/* persona type corporate */
+.login section div span[data-persona-type="corporate"] {
     
-    background: rgb(220,220,220);
+    background: rgb(70, 130, 180);
     
+}
+
+/* persona type sme */
+.login section div span[data-persona-type="sme"] {
+    
+    background: rgb(152, 83, 2);
+    
+}
+
+/* persona type sme */
+.login section div span[data-persona-type="peer"] {
+    
+    background: rgb(2, 140, 152);
+    
+}
+
+/* persona name */
+.login section div p:first-of-type {
+
+    color: rgb(30,30,30);
+
 }
 
 /**************************/

@@ -5,5 +5,6 @@ var app = angular.module("tablet.directives", [
     "bar-chart-directive",
     "story-controls-directive",
 	"dynamic-directive-directive",
-	"story-idea-metric-directive"
+	"story-idea-metric-directive",
+    "card-layout-directive"
 ]);

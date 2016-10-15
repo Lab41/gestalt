@@ -9,7 +9,7 @@ angular.module("heatmap-grid-directive", [])
             canvasHeight: "=",
             useLabels: "="
         },
-        template: "<div><p ng-repeat='attr in attrs'><span>{{attr.name}}:</span>{{attr.value}}</p></div>",
+        template: "<svg></svg><div style='margin-top:1em'><p style='margin-bottom:0.5em;' ng-repeat='attr in attrs'><span>{{attr.name}}:</span>{{attr.value}}</p></div>",
         link: function(scope, element, attrs){
             
             // set up the dom node to attach the d3 to
@@ -54,8 +54,7 @@ angular.module("heatmap-grid-directive", [])
                     .range([0.2, 0.4, 0.6, 0.8, 1]);
                 
                 // create svg canvas
-                var canvas = d3.select(domNode)
-                    .append("svg")
+                var canvas = d3.select(element.find("svg")[0])
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
@@ -215,7 +214,7 @@ angular.module("heatmap-grid-directive", [])
                                         })*/
                                         .style({
                                             //opacity: function(d) { return cScale(d.value); }
-                                            fill: function(d) { return d.classifier_label !== rowName ? "red" : "blue" ;}
+                                            fill: function(d) { return d.classifier_label !== rowName ? "##8d3434" : "#69afaa" ;}
                                         });
                                 
                                     // enter selection
@@ -242,7 +241,7 @@ angular.module("heatmap-grid-directive", [])
                                         })*/
                                         .style({
                                             //opacity: function(d) { return cScale(d.value); }
-                                            fill: function(d) { console.log("Classlabel",d.classifier_label);console.log("name",rowName);return d.classifier_label !== rowName ? "red" : "blue" ;}
+                                            fill: function(d) { return d.classifier_label !== rowName ? "#8d3434" : "#69afaa" ;}
                                         });
                                     
                                     cell

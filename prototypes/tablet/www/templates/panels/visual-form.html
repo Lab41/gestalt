@@ -2,20 +2,27 @@
 
 	<ion-content has-bouncing="true">
 		
-        <section ng-repeat="story in content">
+        <section ng-repeat="story in content" class="visual-form">
             
-            <h2>{{ story.name }}</h2>
-			
-			<div style="display: flex; margin-top: 1em;">
-    
-			<div ng-repeat="idea in story.ideas" style="margin-right: 2em;">
+            <hgroup>
+        
+                <!-- STORY TITLE -->
+                <h2>{{ story.name }}</h2>
+                <p>{{ story.intro }}</p>
 
-				<h3 style="font-weight: 700;">{{ idea.name }}<span>{{ '(' + idea.label + ')' }}</span></h3>
-				<p>{{ idea.description }}</p>
+            </hgroup>
 
-			</div>
+            <div>
 
-		</div>
+                <!-- IDEA -->
+                <div ng-repeat="idea in story.ideas">
+
+                    <!-- CONTENT -->
+                    <card-layout headline="idea.label" description="idea.description" poster="idea.svg_icon" vis-id="idea.id"></card-layout>
+
+                </div>
+
+            </div>
 			
         </section>
 						

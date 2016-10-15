@@ -1,0 +1,49 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*************************************** card-layout directive STYLE ***************************************/
+
+/* card layout directive specific styling. */
+
+/* !IMPORTS
+/* !GLOBAL
+/* !CUSTOM
+/* --- !card layout
+
+
+/******************************* !IMPORTS *******************************/
+
+/******************************* !GLOBAL *******************************/
+
+/******************************* !CUSTOM *******************************/
+
+/*************************/
+/***** !card layout ******/
+/*************************/
+
+/* poster */
+card-layout figure > div {
+    
+    cursor: pointer;
+    padding: 2em;
+    
+}
+
+/* headline */
+card-layout figure h1 {
+    
+    cursor: pointer;
+    font-size: 1.25em;
+    margin-bottom: 0.5em;
+    text-transform: capitalize;
+    
+}
+
+/* caption */
+card-layout figure figcaption {
+    
+    margin-top: 1em;
+	padding-bottom: 1em;
+    padding-top: 0.5em;
+    
+}

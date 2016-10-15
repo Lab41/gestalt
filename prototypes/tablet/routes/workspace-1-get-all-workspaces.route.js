@@ -21,7 +21,7 @@ router.get(config.workspace.allWorkspaces.route, function(req, res) {
         var configQuery = config.workspace.allWorkspaces.query;
                 
         // SQL query
-        var query = client.query(configQuery[0] + personaID + configQuery[1] + personaID + configQuery[2] + personaID + configQuery[3]);
+        var query = client.query(configQuery[0] + personaID + configQuery[1] + personaID + configQuery[2]);
         
         // stream results back one row at a time
         query.on("row", function(row) {

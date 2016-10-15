@@ -1,0 +1,26 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "Gestalt prototype for the desktop",
+  "main": "app.py",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lab41/gestalt.git"
+  },
+  "keywords": [
+    "gestalt",
+    "desktop"
+  ],
+  "author": "Lab41",
+  "license": "SEE LICENSE IN ../../LICENSE",
+  "bugs": {
+    "url": "https://github.com/Lab41/gestalt/issues"
+  },
+  "homepage": "https://github.com/Lab41/gestalt#readme",
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}

@@ -11,6 +11,7 @@
 /* !CUSTOM
 /* --- !menu
 /* --- !login
+/* --- !visual form
 
 /******************************* !IMPORTS *******************************/
 
@@ -217,20 +218,37 @@ ion-content section:last-child {
 .login {
     
     padding: 5em;
-    position: absolute;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
     
 }
 
-/* login headline subtext */
-.login h2 + p {
+/* headline */
+.login hgroup h2 {
     
-    margin-bottom: 2em;
+    margin-bottom: 1em;
+    
+}
+
+/* intro text */
+.login hgroup p:first-of-type {
+    
+    font-size: 1.15em;
+    margin-top: 2em;
+    
+}
+
+/* inline menu icon */
+.login hgroup i {
+    
+    margin-left: 0.45em;
+    margin-right: 0.45em;
+    
+}
+
+/* intro call to action */
+.login hgroup p:last-child {
+    
+    font-weight: 700;
+    margin-top: 2em;
     
 }
 
@@ -251,9 +269,57 @@ ion-content section:last-child {
     
 }
 
-.login section div p:first-child {
-    
-    font-weight: 700;
+/* persona name */
+.login section div p:first-of-type {
+
+    font-size: 1.5em;
     text-transform: capitalize;
+
+}
+
+/* persona description */
+.login section div p:last-of-type {
+
+    max-width: 400px;
+
+}
+
+/* persona type */
+.login section div span {
+    
+    font-size: 0.8em;
+    display: inline-block;
+    margin-bottom: 1em;
+    padding: 0.25em;
+    text-transform: uppercase;
+    
+}
+
+/*************************/
+/***** !visual form ******/
+/*************************/
+
+/* wrap all cards */
+.visual-form > div {
+    
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+    
+}
+
+/* individual idea div */
+.visual-form > div > div {
+    
+    margin-bottom: 2em;
+    margin-right: 50px;
+    width: calc(50% - 50px);
+    
+}
+
+/* last individual idea div */
+.visual-form > div > div:last-of-type {
+    
+    margin-right: 0;
     
 }

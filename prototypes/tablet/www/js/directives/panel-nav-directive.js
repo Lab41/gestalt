@@ -70,7 +70,7 @@ angular.module("panel-nav-directive", [])
             };
 	    	
 	    },
-		templateUrl: "templates/panel-nav.html",
+		templateUrl: "templates/app-global/panel-nav.html",
 		link: function(scope, element, attr) {
 			
 			// watch for panel change

@@ -27,3 +27,9 @@ heatmap-grid text {
     fill: currentColor;
     
 }
+
+heatmap-grid rect {
+    
+    cursor: pointer;
+    
+}

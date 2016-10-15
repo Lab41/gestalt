@@ -416,7 +416,7 @@ button:focus {
     cursor: pointer;
     margin-right: 25px;
     margin-top: 2em;
-    width: calc(33% - 12.5px);
+    width: calc(30% - 12.5px);
 
 }
 
@@ -628,8 +628,32 @@ button:focus {
     
 }
 
+.visual-tool text:hover {
+    
+    color: red;
+    
+}
+
 /******************************* !MEDIA QUERIES *******************************/
 
-@media (max-width: 600px) {
+@media (max-width: 1300px) {
+    
+    /* wrap */
+    .login {
+
+        left: 0;
+        margin: auto;
+        max-width: 100%;
+        padding-top: 2em;
+        position: relative;
+        top: 0;
+        -webkit-transform: none;
+        -moz-transform: none;
+        -ms-transform: none;
+        -o-transform: none;
+        transform: none;
+        width: 80%;
+
+    }
     
 }

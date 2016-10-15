@@ -3,19 +3,10 @@ angular.module("viz-controller", [])
 .controller("vizCtrl", ["$scope", "contentService", "$state", "$rootScope", "screenshotService", function($scope, contentService, $state, $rootScope, screenshotService) {
     	        
 	// data objects
-	$scope.nodes;
 	$scope.nodeGroups;
 	$scope.heuristics;
 	$scope.tileGridData;
 	$scope.boundaryData;
-    
-    // country nodes
-	contentService.getData("visualization/cdis/").then(function(data) {
-		
-		// set scope
-		$scope.nodes = data;
-		
-	});
 	
 	// node groups
 	contentService.getData("visualization/countries/groups/").then(function(data) {
@@ -50,6 +41,7 @@ angular.module("viz-controller", [])
 		$scope.poseidonData = data;
 		
 	});
+    
     //node link json 
 	contentService.getData("nodes_file.json").then(function(data) {
 		

@@ -58,7 +58,7 @@ angular.module("node-link-directive", [])
                 // set up force layout algorithm
 				var force = d3.layout.force()
 					.charge(-150)
-                    .linkDistance(50)
+                    .linkDistance(100)
                     .size([(width - diameter), (height - diameter)]);
                 
                 // create svg canvas
@@ -312,7 +312,7 @@ angular.module("node-link-directive", [])
                                 .selectAll("line")
                                 .data(links)
                                 .style({
-                                    stroke: "red",
+                                    stroke: "#ce00ff",
                                     "stroke-width": function(d) {
                                         console.log("In prestrokes",d);
                                         //console.log("PLSSSS",scope.selections.selectedOption.id)
