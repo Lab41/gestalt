@@ -1,0 +1,19 @@
+<div ng-if="controls[0] !== null" class="story-controls clearfix">
+
+    <div ng-repeat="control in controls" class="pull-left story-controls__option">
+        <span class="pull-left dropdown-label">{{ control.label + ' by:' | capitalize}}</span>
+        <div class="btn-group" uib-dropdown>
+            <button id="filter-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                <span ng-bind="{{control.label}}"></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filter-button">
+                <li ng-repeat="option in control.controls" role="menuitem">
+                    <a href="" ng-click="changeOption(control.label,control.id,option.id);">
+                        {{option.name | capitalize}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

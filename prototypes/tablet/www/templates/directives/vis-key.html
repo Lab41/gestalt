@@ -1,0 +1,50 @@
+<div class="vis-key__container" ng-show="isActive">
+
+    <!-- button for toggling the key to show -->
+    <div ng-show="showkey">
+
+        <button ng-click="showkey=!showkey" class="btn btn-default show-key">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                <g>
+                    <path d="M35.7,27.2h58.5c1,0,1.8-0.8,1.8-1.8s-0.8-1.8-1.8-1.8H35.7c-1,0-1.8,0.8-1.8,1.8S34.7,27.2,35.7,27.2z"></path>
+                    <path d="M94.1,47.3H35.7c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8h58.5c1,0,1.8-0.8,1.8-1.8S95.1,47.3,94.1,47.3z"></path>
+                    <path d="M94.1,70.9H35.7c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8h58.5c1,0,1.8-0.8,1.8-1.8S95.1,70.9,94.1,70.9z"></path>
+                    <path d="M22.7,39.7H7.5c-1,0-1.8,0.8-1.8,1.8v15.2c0,1,0.8,1.8,1.8,1.8h15.2c1,0,1.8-0.8,1.8-1.8V41.5   C24.4,40.5,23.6,39.7,22.7,39.7z"></path>
+                    <path d="M7.1,34h15.6c0.6,0,1.2-0.3,1.5-0.9s0.3-1.2,0-1.8l-7.8-13.5c-0.3-0.5-0.9-0.9-1.5-0.9s-1.2,0.3-1.5,0.9L5.6,31.4   c-0.3,0.5-0.3,1.2,0,1.8S6.5,34,7.1,34z"></path>
+                    <path d="M15.4,62.6c-5.5,0-10,4.5-10,10s4.5,10,10,10s10-4.5,10-10S20.9,62.6,15.4,62.6z"></path>
+                </g>
+            </svg>
+        </button>
+
+    </div>
+
+    <div class="vis-key clearfix" ng-show="!showkey">
+
+        <!-- button for toggling the key to hide -->
+        <button ng-click="showkey=!showkey" class="btn btn-default hide-key pull-right">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                <g>
+                    <g>
+                        <path fill="#000000" d="M66.497,45.917c2.287,0,4.083,1.851,4.083,4.083c0,2.287-1.797,4.083-4.083,4.083H33.503    c-2.232,0-4.083-1.797-4.083-4.083c0-2.232,1.851-4.083,4.083-4.083H66.497z"></path>
+                        <path fill="#000000" d="M86.751,50c0-10.127-4.083-19.274-10.78-25.971C69.328,17.387,60.181,13.249,50,13.249    c-10.127,0-19.328,4.138-25.971,10.78C17.387,30.726,13.249,39.873,13.249,50c0,10.181,4.138,19.328,10.78,26.025    C30.672,82.668,39.873,86.751,50,86.751c10.181,0,19.328-4.083,25.971-10.726C82.668,69.328,86.751,60.181,86.751,50z M50,5.082    C74.828,5.136,94.918,25.227,94.918,50c0,24.828-20.091,44.918-44.918,44.918C25.227,94.918,5.082,74.828,5.082,50    C5.082,25.227,25.227,5.136,50,5.082z"></path>
+                    </g>
+                </g>
+            </svg>
+        </button>
+
+        <div ng-show="true">
+            <h2>{{legendData.name}}</h2>
+            <hr>
+
+            <div>
+                <div ng-repeat="legendItem in legendData.legend_data" class="vis-key--item">
+                    <div class="vis-key__color-well" ng-style="setColor(legendItem.color)"></div>
+                    <div class="vis-key--label">{{legendItem.name}}</div>
+                    <div class="vis-key--label">{{legendItem.count}}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
