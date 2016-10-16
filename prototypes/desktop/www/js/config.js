@@ -18,9 +18,9 @@ var mapbox_config = {
 	},
 	raster: "https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js",
 	gl: "https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.js",
-	css: "https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css",
-	cssGl: "https://api.tiles.mapbox.com/mapbox-gl-js/v0.15.0/mapbox-gl.css",
-	leaflet_label: "https://api.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js"
+	css: "css/mapbox.css",
+	cssGl: "css/mapbox-gl.css",
+	leaflet_label: "lib/leaflet-label.js"
 };
 
 // app theme
