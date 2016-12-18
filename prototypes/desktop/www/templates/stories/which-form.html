@@ -1,0 +1,8 @@
+<div ng-repeat="idea in listOfIdeas" style="margin-right: 2em;">
+
+    <h3 style="font-weight: 700;">{{ idea.title }}<span>{{ '(' + idea.subtitle + ')' }}</span></h3>
+    <p>{{ idea.description }}</p>
+    
+    <ui-view name="visual"></ui-view>
+
+</div>

@@ -24,6 +24,8 @@
 # >> deactivate
 # 3. Access local database 
 # >> source makefile.sh && run_postgres
+# 4. Build (local or remote) database
+# >> source makefile.sh && setup_db
 
 # -----------------------------------------------------------------------------
 #   Directories
@@ -216,10 +218,13 @@ function populate_gestalt_db {
     if psql -lqt | cut -d \| -f 1 | grep -qw gestalt; then
         echo ">> Populate gestalt database"
         psql -d gestalt -U gestalt_user -f ./database/create_persona.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_tag.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_story.sql
-        psql -d gestalt -U gestalt_user -f ./database/create_panel.sql
         psql -d gestalt -U gestalt_user -f ./database/create_workspace.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_panel.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_story.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_vis.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_connectivity.sql
+        psql -d gestalt -U gestalt_user -f ./database/create_tag.sql
+        #psql -d gestalt -U gestalt_user -f ./database/create_econ_data.sql
     else
         echo ">> Gestalt database does not exist. \
                  Please run 'createdb gestalt' or install_postgres first. EXITING!"
@@ -306,7 +311,7 @@ function run_tablet {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start tablet prototype"
-    echo ">> Please browse to http://0.0.0.0:8000"
+    echo ">> Please browse to"
     cd ${TABLET_DIR} && node app.js
 
     # return to base directory
@@ -318,7 +323,7 @@ function run_desktop {
     is_envvar_set DATABASE_URL
     activate_virtualenv
     echo ">> Start desktop prototype"
-    echo ">> Please browse to http://0.0.0.0:8000"
+    echo ">> Please browse to"
     cd ${DESKTOP_DIR} && python ${DESKTOP_DIR}/app.py
 
     # return to base directory

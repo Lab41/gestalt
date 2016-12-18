@@ -8,10 +8,10 @@
         .controller("panelController", panelController);
 
     // add additional services to be used within the controller
-    panelController.$inject = ["$scope", "contentFactory", "layoutFactory"];
+    panelController.$inject = ["$scope", "contentService", "layoutService"];
 
     // define the controller
-    function panelController($scope, contentFactory, layoutFactory) {
+    function panelController($scope, contentService, layoutService) {
         // --------------------------------------------------------------------
         // define bindable members
         $scope.listOfStories;
@@ -23,8 +23,8 @@
         // --------------------------------------------------------------------
         // define functions    
         function activate() {
-            var currentWorkspaceId = layoutFactory.getCurrentWorkspace().id;
-            var currentPanelId = layoutFactory.getCurrentPanel().id;
+            var currentWorkspaceId = layoutService.getCurrentWorkspace().id;
+            var currentPanelId = layoutService.getCurrentPanel().id;
             
             // get all stories from a panel
             getListOfStories(currentWorkspaceId, currentPanelId);
@@ -32,7 +32,7 @@
         }
 
         function getListOfStories(workspaceId, panelId) {
-            contentFactory
+            contentService
                 .getAllStories(workspaceId, panelId)
                 .then(function(listOfStories) {
                     $scope.listOfStories = listOfStories;

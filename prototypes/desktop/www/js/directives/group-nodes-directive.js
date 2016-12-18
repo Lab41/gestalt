@@ -1,35 +1,35 @@
 angular.module("group-nodes-directive", [])
 
-.directive("groupNodes", ["d3Factory", "contentService", "$rootScope", function(d3Factory, contentService, $rootScope) {
-
-	return {
-		restrict: "E",
-		scope: {
-			vizData: "=",
-			grouping: "=",
+.directive("groupNodes", ["d3Service", "contentService", "$rootScope", function(d3Service, contentService, $rootScope) {
+    return {
+        restrict: "E",
+        scope: {
+            vizData: "=",
+            grouping: "=",
             startGroup: "=",
             canvasWidth: "=",
             canvasHeight: "="
-		},
-		link: function(scope, element, attrs) {
-			
-			// get d3 promise
-			d3Service.d3().then(function(d3) {
+        },
+        link: function(scope, element, attrs) {
+
+            console.log("inside group-nodes-directive");
+            
+            // get d3 promise
+            d3Service.d3().then(function(d3) {
                 
                 ///////////////////////////////////////////////
                 /////////////// d3 SET-UP START ///////////////
                 ///////////////////////////////////////////////
-
                                 
                 // set sizes from attributes in html element
                 // if not attributes present - use default
-				var width = parseInt(attrs.canvasWidth) || 500;
+                var width = parseInt(attrs.canvasWidth) || 500;
                 var height = parseInt(attrs.canvasHeight) || width;
                 var radius = 4;
-				var maxRadius = height * 0.5;
+                var maxRadius = height * 0.5;
                 var diameter = radius * 2;
-                var	center = { x: (width / 2), y: (height/ 2) };
-				var bottomRight = { x: width * 0.9, y: height * 0.9 };
+                var center = { x: (width / 2), y: (height/ 2) };
+                var bottomRight = { x: width * 0.9, y: height * 0.9 };
                 var nodePadding = 1;
                 var charge = {
                     default: 0,
@@ -41,26 +41,26 @@ angular.module("group-nodes-directive", [])
                 
                 // x-scale
                 var xScaleOrd = d3.scale.ordinal();
-				var xScaleLin = d3.scale.linear();
-				
-				// y-scale
-				var yScale = d3.scale.linear();
+                var xScaleLin = d3.scale.linear();
+                
+                // y-scale
+                var yScale = d3.scale.linear();
                 
                 // circle scale
                 var cScale = d3.scale.linear();
-				
+                
                 // set up force layout algorithm
-				var force = d3.layout.force()
-					.charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
-					.gravity(-0.01)
-  					.friction(0.9)
+                var force = d3.layout.force()
+                    .charge(function charge(d) { return -Math.pow(d.radius, 2.0) / 8;})
+                    .gravity(-0.01)
+                    .friction(0.9)
                     .size([(width - diameter), (height - diameter)]);
-				
-				// set up pack layout algorithm
-				var pack = d3.layout.pack()
-					.size([(width - diameter), (height - diameter)])
-					.padding(1.5)
-					.value(function(d) { return /*d.count*/1; });
+                
+                // set up pack layout algorithm
+                var pack = d3.layout.pack()
+                    .size([(width - diameter), (height - diameter)])
+                    .padding(1.5)
+                    .value(function(d) { return /*d.count*/1; });
                 
                 // set up svg canvas
                 var canvas = d3.select(element[0])
@@ -68,23 +68,23 @@ angular.module("group-nodes-directive", [])
                     .attr({
                         viewBox: "0 0 " + width + " " + height
                     });
-				
-				// add groups for nodes and links
-				// this ensures links are always behind nodes
-				var linksGroup = canvas.append("g");
-				var nodesGroup = canvas.append("g");
+                
+                // add groups for nodes and links
+                // this ensures links are always behind nodes
+                var linksGroup = canvas.append("g");
+                var nodesGroup = canvas.append("g");
                 
                 // define needed variables
-				var links = []; // links between nodes
+                var links = []; // links between nodes
                 var nodes = []; // nodes
                 var node; // each node
                 var link; // each link
                 var foci = {}; // layout focus coordinates mapped to node id
                 var geoGroup = "country"; // group name that needs specific geographic x,y coords
                 var clusterType = "cluster"; // cluster nodes functionality
-				var sizeType = "size"; // resize nodes functionality
-				var linkType = "link"; // link nodes functionality
-				
+                var sizeType = "size"; // resize nodes functionality
+                var linkType = "link"; // link nodes functionality
+                
                 /////////////////////////////////////////////
                 /////////////// d3 SET-UP END ///////////////
                 /////////////////////////////////////////////
@@ -103,8 +103,8 @@ angular.module("group-nodes-directive", [])
                         
                         var data = newData[0];
                         var groups = newData[1];
-						
-						function draw(data, groups) {
+                        
+                        function draw(data, groups) {
                             
                             ///////////////////////////////////////////////
                             /////////////// d3 RENDER START ///////////////
@@ -126,28 +126,28 @@ angular.module("group-nodes-directive", [])
 
                                 // set new node location
                                 nodes.forEach(function(o, i) {
-									
-									// get focus x,y values
-									o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
-									o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
+                                    
+                                    // get focus x,y values
+                                    o.y += (foci[o.cluster][o.subgroup].y - o.y) * k;
+                                    o.x += (foci[o.cluster][o.subgroup].x - o.x) * k;
                                                                  
                                 });
-								
-								link
-									.attr({
-										x1: function(d) { return d.source.x; },
-										y1: function(d) { return d.source.y; },
-										x2: function(d) { return d.target.x; },
-										y2: function(d) { return d.target.y; }
-									});
-								                                
+                                
+                                link
+                                    .attr({
+                                        x1: function(d) { return d.source.x; },
+                                        y1: function(d) { return d.source.y; },
+                                        x2: function(d) { return d.target.x; },
+                                        y2: function(d) { return d.target.y; }
+                                    });
+                                                                
                                 // push nodes toward focus
                                 node
                                     .each(collide(0.5))
                                     .attr({
                                         transform: function(d) { return "translate(" + d.x + "," + d.y + ")"; }
                                     });
-								
+                                
                             };
                             
                             // force layout done
@@ -155,7 +155,7 @@ angular.module("group-nodes-directive", [])
                                 console.log("do something when layout complete");                                
                             };
                             
-							// managae collision detection between nodes
+                            // managae collision detection between nodes
                             function collide(alpha) {
                                 
                                 var quadtree = d3.geom.quadtree(nodes);
@@ -300,25 +300,25 @@ angular.module("group-nodes-directive", [])
                                 o.r = radius;
                                 return o;
                             });
-														
-							// bind data to pack layout
-							//var nodes = pack.nodes({children:data}).filter(function(d) { return !d.children; });
-							nodes = data;
+                                                        
+                            // bind data to pack layout
+                            //var nodes = pack.nodes({children:data}).filter(function(d) { return !d.children; });
+                            nodes = data;
                             
                             // bind data to force layout
                             force
                                 .nodes(nodes)
-								.links(links)
+                                .links(links)
                                 .on("start", startForce)
                                 .on("tick", tick)
                                 .on("end", endForce);
-							
-							// set up selections
-							node = nodesGroup.selectAll(".node");
-							link = linksGroup.selectAll(".link");
-							
-							// run visualization
-							updateVis();
+                            
+                            // set up selections
+                            node = nodesGroup.selectAll(".node");
+                            link = linksGroup.selectAll(".link");
+                            
+                            // run visualization
+                            updateVis();
                                 
                         };
                         
@@ -462,271 +462,271 @@ angular.module("group-nodes-directive", [])
                             } else {
 
                                 // resume force layout
-                                force.resume();	
+                                force.resume(); 
 
                             };
 
                         };
-						
-						// enter/update/exit node groups
-						function updateVis() {
+                        
+                        // enter/update/exit node groups
+                        function updateVis() {
 
-							// NODE
+                            // NODE
 
-							// set selection
-							node = node.data(nodes, function(d) { return d.id; });
+                            // set selection
+                            node = node.data(nodes, function(d) { return d.id; });
 
-							// update selection
-							node
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: function(d) { return d.count == 0 ? "node inactive" : "node" },
-									id: function(d) { return "node-" + d.id; }
-								})
-								.each(function(d) {
+                            // update selection
+                            node
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: function(d) { return d.count == 0 ? "node inactive" : "node" },
+                                    id: function(d) { return "node-" + d.id; }
+                                })
+                                .each(function(d) {
 
-									updateGroupContent(d3.select(this), [d]);
+                                    updateGroupContent(d3.select(this), [d]);
 
-								});
+                                });
 
-							// enter selection
-							node
-								.enter()
-								.append("g")
-								.attr({
-									class: function(d) { return d.count == 0 ? "node inactive" : "node" },
-									id: function(d) { return "node-" + d.id; }
-								})
-								.each(function(d) {
+                            // enter selection
+                            node
+                                .enter()
+                                .append("g")
+                                .attr({
+                                    class: function(d) { return d.count == 0 ? "node inactive" : "node" },
+                                    id: function(d) { return "node-" + d.id; }
+                                })
+                                .each(function(d) {
 
-									var currentGroup = d3.select(this);
+                                    var currentGroup = d3.select(this);
 
-									// circle
-									currentGroup
-										.append("circle")
-										.attr({
-											class: "shape",
-											r: function(d) { return d.r; }
-										});
+                                    // circle
+                                    currentGroup
+                                        .append("circle")
+                                        .attr({
+                                            class: "shape",
+                                            r: function(d) { return d.r; }
+                                        });
 
-									// label
-									currentGroup
-										.append("text")
-										.attr({
-											class: "label",
-											dx: 0,
-											dy: "0.35em"
-										})
-										.text(function(d) { return d.iso });
-								})
-								.on("click", drawFlows);
+                                    // label
+                                    currentGroup
+                                        .append("text")
+                                        .attr({
+                                            class: "label",
+                                            dx: 0,
+                                            dy: "0.35em"
+                                        })
+                                        .text(function(d) { return d.iso });
+                                })
+                                .on("click", drawFlows);
 
-							// exit selection
-							node
-								.exit()
-								.transition()
-								.duration(transition.time)
-								.remove();
+                            // exit selection
+                            node
+                                .exit()
+                                .transition()
+                                .duration(transition.time)
+                                .remove();
 
-							// start force
-							force.start();
+                            // start force
+                            force.start();
 
-						};
-						
-						// update/enter/exit content of groups
-						function updateGroupContent(group, data) {
+                        };
+                        
+                        // update/enter/exit content of groups
+                        function updateGroupContent(group, data) {
 
-							// SHAPE
+                            // SHAPE
 
-							// set selection
-							var shape = group
-								.selectAll(".shape")
-								.data(data);
+                            // set selection
+                            var shape = group
+                                .selectAll(".shape")
+                                .data(data);
 
-							// update selection
-							shape
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "shape",
-									r: function(d) { return d.r; }
-								});
+                            // update selection
+                            shape
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "shape",
+                                    r: function(d) { return d.r; }
+                                });
 
-							// enter selection
-							shape
-								.append("circle")
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "shape",
-									r: function(d) { return d.r; }
-								});
+                            // enter selection
+                            shape
+                                .append("circle")
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "shape",
+                                    r: function(d) { return d.r; }
+                                });
 
-							// exit selection
-							shape
-								.exit()
-								.transition()
-								.duration(transition.time)
-								.remove();
+                            // exit selection
+                            shape
+                                .exit()
+                                .transition()
+                                .duration(transition.time)
+                                .remove();
 
-							// LABEL
+                            // LABEL
 
-							// set selection
-							var label = group
-								.selectAll(".label")
-								.data(data);
+                            // set selection
+                            var label = group
+                                .selectAll(".label")
+                                .data(data);
 
-							// update selection
-							label
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "label",
-									dx: 0,
-									dy: "0.35em"
-								})
-								.text(function(d) { return d.iso });
+                            // update selection
+                            label
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "label",
+                                    dx: 0,
+                                    dy: "0.35em"
+                                })
+                                .text(function(d) { return d.iso });
 
-							// enter selection
-							label
-								.enter()
-								.append("text")
-								.attr({
-									class: "label",
-									dx: 0,
-									dy: "0.35em"
-								})
-								.text(function(d) { return d.iso });
+                            // enter selection
+                            label
+                                .enter()
+                                .append("text")
+                                .attr({
+                                    class: "label",
+                                    dx: 0,
+                                    dy: "0.35em"
+                                })
+                                .text(function(d) { return d.iso });
 
-							// exit selection
-							label
-								.exit()
-								.transition()
-								.duration(transition.time)
-								.remove();
+                            // exit selection
+                            label
+                                .exit()
+                                .transition()
+                                .duration(transition.time)
+                                .remove();
 
-						};
-						
-						// enter/update/exit links
-						function updateLinks() {
+                        };
+                        
+                        // enter/update/exit links
+                        function updateLinks() {
 
-							// LINK
+                            // LINK
 
-							// set selection
-							link = link.data(force.links());
+                            // set selection
+                            link = link.data(force.links());
 
-							// update selection
-							link
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "link",
-									x1: function(d) { return d.source.x; },
-									y1: function(d) { return d.source.y; },
-									x2: function(d) { return d.target.x; },
-									y2: function(d) { return d.target.y; }
-								});
+                            // update selection
+                            link
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "link",
+                                    x1: function(d) { return d.source.x; },
+                                    y1: function(d) { return d.source.y; },
+                                    x2: function(d) { return d.target.x; },
+                                    y2: function(d) { return d.target.y; }
+                                });
 
 
-							// enter selection
-							link
-								.enter()
-								.append("line")
-								.transition()
-								.duration(transition.time)
-								.attr({
-									class: "link",
-									x1: function(d) { return d.source.x; },
-									y1: function(d) { return d.source.y; },
-									x2: function(d) { return d.target.x; },
-									y2: function(d) { return d.target.y; }
-								});
+                            // enter selection
+                            link
+                                .enter()
+                                .append("line")
+                                .transition()
+                                .duration(transition.time)
+                                .attr({
+                                    class: "link",
+                                    x1: function(d) { return d.source.x; },
+                                    y1: function(d) { return d.source.y; },
+                                    x2: function(d) { return d.target.x; },
+                                    y2: function(d) { return d.target.y; }
+                                });
 
-							// exit selection
-							link
-								.exit()
-								.transition()
-								.duration(transition.time)
-								.remove();
+                            // exit selection
+                            link
+                                .exit()
+                                .transition()
+                                .duration(transition.time)
+                                .remove();
 
-							// start force
-							force.start();
+                            // start force
+                            force.start();
 
-						};
-						
-						// draw flows between nodes
-						function drawFlows(d) {
+                        };
+                        
+                        // draw flows between nodes
+                        function drawFlows(d) {
 
-							// network health
-							contentService.getData("visualization/flows/unique_targets/" + d.id + "/").then(function(data) {
+                            // network health
+                            contentService.getData("visualization/flows/unique_targets/" + d.id + "/").then(function(data) {
 
-								var sourceId = d.id;
+                                var sourceId = d.id;
 
-								// map raw links to d3 index-specific objects for layout algorithm
-								// 3rd param is the connector key in the raw data that connects nodes
-								function mapLinks(links, nodes, key) {
+                                // map raw links to d3 index-specific objects for layout algorithm
+                                // 3rd param is the connector key in the raw data that connects nodes
+                                function mapLinks(links, nodes, key) {
 
-									var data = [];
+                                    var data = [];
 
-									links.forEach(function(l) {
+                                    links.forEach(function(l) {
 
-										// set up the source node
-										var source = nodes.filter(function(o, i) {
+                                        // set up the source node
+                                        var source = nodes.filter(function(o, i) {
 
-											// add index to obj
-											// note: d3 replaces any "index" key
-											o.i = i;
+                                            // add index to obj
+                                            // note: d3 replaces any "index" key
+                                            o.i = i;
 
-											return o[key] === l.source;
+                                            return o[key] === l.source;
 
-										})[0].i;
+                                        })[0].i;
 
-										// set up target node
-										var target = nodes.filter(function(o, i) {
+                                        // set up target node
+                                        var target = nodes.filter(function(o, i) {
 
-											// add index to obj
-											// note: d3 replaces any "index" key
-											o.i = i;
+                                            // add index to obj
+                                            // note: d3 replaces any "index" key
+                                            o.i = i;
 
-											return o[key] === l.target;
+                                            return o[key] === l.target;
 
-										})[0].i;
+                                        })[0].i;
 
-										// push to new array
-										data.push({
-											source: source,
-											target: target
-										});
+                                        // push to new array
+                                        data.push({
+                                            source: source,
+                                            target: target
+                                        });
 
-									});
+                                    });
 
-									return data;
+                                    return data;
 
-								};
+                                };
 
-								links = mapLinks(data, nodes, "iso"); // remap links b/c d3 wants use an index to connect nodes
+                                links = mapLinks(data, nodes, "iso"); // remap links b/c d3 wants use an index to connect nodes
 
-								force
-									.nodes(nodes)
-									.links(links)
-									.charge(function(d, i) { return d.id == sourceId ? -150 : -50; }) // for central node with links
-									.friction(0.9)
-									.linkDistance(20);
+                                force
+                                    .nodes(nodes)
+                                    .links(links)
+                                    .charge(function(d, i) { return d.id == sourceId ? -150 : -50; }) // for central node with links
+                                    .friction(0.9)
+                                    .linkDistance(20);
 
-								// update viz
-								updateLinks();
+                                // update viz
+                                updateLinks();
 
-							});
+                            });
 
-						};
-						
-						// calc circle radius when area is mapped to count
-						function calcRadius(value) {
+                        };
+                        
+                        // calc circle radius when area is mapped to count
+                        function calcRadius(value) {
 
-							return Math.sqrt(value / Math.PI);
+                            return Math.sqrt(value / Math.PI);
 
-						};
+                        };
 
                         // update the viz
                         draw(data, groups);
@@ -757,49 +757,49 @@ angular.module("group-nodes-directive", [])
                                 updateLabels(controlName, groups);
                                 
                             } else {
-								
-								if (controlName == "equal") {
-									
-									// all nodes equal size
-									nodes = data.map(function(o) {
-										o.r = radius;
-										return o;
-									});
-									
-								} else if (controlName == "high degree") {
-
-									// set nodes from data
-									// map radius value so collision detection can evaluate nodes
-									nodes = data.map(function(o) {
-										o.r = cScale(calcRadius(o.count))
-										return o;
-									});
-
-								} else if (controlName == "high centrality") {
-									
-									// set nodes from data
-									nodes = data.map(function(o) {
-										o.r = cScale(calcRadius(o.index))
-										return o;
-									});
-
-								} else if (controlName == "none") {
-									
-									force.links([]);
-									
-									updateLinks();
-									
-								};
-								
-								// update force settings
-								force
-									.friction(0)
-									.charge(0);
                                 
-								// update visualization
-								updateVis();
-							
-							};
+                                if (controlName == "equal") {
+                                    
+                                    // all nodes equal size
+                                    nodes = data.map(function(o) {
+                                        o.r = radius;
+                                        return o;
+                                    });
+                                    
+                                } else if (controlName == "high degree") {
+
+                                    // set nodes from data
+                                    // map radius value so collision detection can evaluate nodes
+                                    nodes = data.map(function(o) {
+                                        o.r = cScale(calcRadius(o.count))
+                                        return o;
+                                    });
+
+                                } else if (controlName == "high centrality") {
+                                    
+                                    // set nodes from data
+                                    nodes = data.map(function(o) {
+                                        o.r = cScale(calcRadius(o.index))
+                                        return o;
+                                    });
+
+                                } else if (controlName == "none") {
+                                    
+                                    force.links([]);
+                                    
+                                    updateLinks();
+                                    
+                                };
+                                
+                                // update force settings
+                                force
+                                    .friction(0)
+                                    .charge(0);
+                                
+                                // update visualization
+                                updateVis();
+                            
+                            };
 
                         });
                         
@@ -811,9 +811,9 @@ angular.module("group-nodes-directive", [])
                     
                 });
                 
-			});
-			
-		}
-		
-	};
+            });
+            
+        }
+        
+    };
 }]);

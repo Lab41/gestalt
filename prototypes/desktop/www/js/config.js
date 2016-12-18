@@ -1,14 +1,14 @@
 // configure development API
-var api_config = {
-    authentication_uri : "api/persona/",
-    layout_workspace_uri : "api/workspace/",
-    layout_panel_uri: "api/panel/",
-    content_story_uri : "api/story/",
-    content_vis_uri: "api/vis/"
+var apiConfig = {
+    authenticationUri : "api/persona/",
+    layoutWorkspaceUri : "api/workspace/",
+    layoutPanelUri: "api/panel/",
+    contentStoryUri : "api/story/",
+    contentVisUri: "api/vis/"
 }; 
 
 // mapbox development
-var mapbox_config = {
+var mapboxConfig = {
 	token: "pk.eyJ1IjoibGFiNDF0ZWFtIiwiYSI6ImNpaTBrb3FtbzA0dnV0ZmtocjRjMmpncTAifQ.4Zv_-peSaPDbYFzrYP4Lnw",
 	style: {
 		// should have 1 style for each theme
@@ -23,7 +23,7 @@ var mapbox_config = {
 };
 
 // app theme
-var theme_config = {
+var themeConfig = {
     ui: {
         start: "light",
         opposite: "dark"
@@ -31,7 +31,8 @@ var theme_config = {
 };
 
 // visualization
-var visual_config = {
+var visualConfig = {
+    url_name: "visual-standard",
 	tilemap: "rectangle",
     group: 5
 };

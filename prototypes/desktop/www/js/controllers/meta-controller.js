@@ -12,15 +12,17 @@
 
     // define the controller
     function metaController($rootScope, $scope, $timeout) {
-    	    
-        // data objects
-    	$scope.theme = {
-    		current: theme_config.ui.start,
-    		opposite: theme_config.ui.opposite
-    	};
-    	
-    	// change theme
-    	$scope.changeTheme = function(opposite) {
+        // --------------------------------------------------------------------
+        // define bindable members
+        $scope.theme = {
+            current: themeConfig.ui.start,
+            opposite: themeConfig.ui.opposite
+        };
+        $scope.changeTheme = changeTheme;
+
+        // --------------------------------------------------------------------
+        // define functions
+        function changeTheme(opposite) {
             
             var transition = "all 1s";
             
@@ -35,14 +37,14 @@
             menu.style.transition = transition;
             html.style.transition = transition;
             body.style.transition = transition;
-    		
-    		var current = opposite;
-    		var opposite = $scope.theme.current;
-    		
-    		$scope.theme = {
-    			current: current,
-    			opposite: opposite
-    		};
+            
+            var current = opposite;
+            var opposite = $scope.theme.current;
+            
+            $scope.theme = {
+                current: current,
+                opposite: opposite
+            };
             
             $timeout(function() {
                 
@@ -53,9 +55,9 @@
             
             // broadcast so menu theme text will update
             $rootScope.$broadcast("themeChange", { theme: $scope.theme });
-    						
-    	};
-    	
+                            
+        }
+        
     }
 
 })();

@@ -1,3 +1,14 @@
+/* ------------------------------------------------------------------------- 
+   gestalt_persona
+   This table lists the type of users using the Gestalt app.
+   * id: persona id
+   * name: persona name
+   * description: description of the persona
+   -------------------------------------------------------------------------
+ */
+
+DROP TABLE IF EXISTS gestalt_persona CASCADE;
+
 CREATE TABLE gestalt_persona (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL CHECK (name <> ''),

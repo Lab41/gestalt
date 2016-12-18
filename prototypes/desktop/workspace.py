@@ -6,6 +6,8 @@ import web
 
 import helper
 
+# TODO: handle persona_workspaces && workspace_panels
+
 urls = (
 
     # 0.0.0.0:8000/api/workspace/getDefaultWorkspaceByPersona/#, where # == persona.id
@@ -17,8 +19,6 @@ urls = (
 
 class getDefaultWorkspaceByPersona:
     """ Extract default workspace for a particular persona.
-    assumption:
-        * return one workspace if inputted correctly
     input:
         * persona.id
     output:
@@ -33,20 +33,17 @@ class getDefaultWorkspaceByPersona:
         self.cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         # execute query
         self.cursor.execute("""
-            SELECT DISTINCT ON (w.id) w.id, wn.name, w.url_name
+            SELECT w.id, wn.name, w.url_name
             FROM gestalt_workspace AS w
-            LEFT JOIN gestalt_workspace_name AS wn
-            ON w.workspace_name_id = wn.id
-            WHERE w.id IS NOT NULL 
-            AND w.persona_id = """ + persona_id + """ 
-            AND w.is_default IS TRUE
-            ORDER BY w.id;        
+                INNER JOIN gestalt_workspace_name AS wn
+                ON w.workspace_name_id = wn.id
+            WHERE w.persona_id = """ + persona_id + """ 
+            AND w.is_default IS TRUE;
         """)
         # obtain the data
         data = self.cursor.fetchall()
         # convert data to a string
         return json.dumps(data)
-
 
 class getAllWorkspacesByPersona:
     """ Extract all workspaces for a particular persona.
@@ -66,10 +63,9 @@ class getAllWorkspacesByPersona:
         self.cursor.execute("""
             SELECT w.id, wn.name, w.url_name
             FROM gestalt_workspace AS w
-            LEFT JOIN gestalt_workspace_name AS wn
-            ON w.workspace_name_id = wn.id
-            WHERE w.id IS NOT NULL 
-            AND w.persona_id = """ + persona_id + """ 
+                INNER JOIN gestalt_workspace_name AS wn
+                ON w.workspace_name_id = wn.id
+            WHERE w.persona_id = """ + persona_id + """ 
             ORDER BY wn.name;        
         """)
         # obtain the data

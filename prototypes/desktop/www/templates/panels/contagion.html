@@ -1,20 +1,11 @@
-<section ng-repeat="story in content">
+<section ng-repeat="story in listOfStories">
             
 	<h2>{{ story.name }}</h2>
     
     <div style="display: flex; margin-top: 1em;">
     
-        <div ng-repeat="idea in story.ideas" style="margin-right: 2em;">
-
-            <h3 style="font-weight: 700;">{{ idea.name }}<span>{{ '(' + idea.label + ')' }}</span></h3>
-            <p>{{ idea.description }}</p>
-
-            <story-controls controls="idea.controls"></story-controls>
-
-        </div>
+        <ui-view name="story"></ui-view>
         
     </div>
 	        
-    <ui-view name="visual"></ui-view>
-
 </section>

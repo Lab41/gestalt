@@ -3,5 +3,6 @@ angular.module("desktop.controllers", [
     "login-controller",
 	"app-controller",
 	"panel-controller",
-	"viz-controller"
+    "story-controller",
+	"vis-controller",
 ]);

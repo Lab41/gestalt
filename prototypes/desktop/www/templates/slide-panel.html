@@ -27,6 +27,6 @@
 <div class="item item-divider">Explore</div>
 
 <div ng-repeat="workspace in content.listOfWorkspaces"
-          class="item menu-item"
-          ng-class="{ 'active': content.currentWorkspaceId == workspace.id }"
-          ng-click="changeWorkspace(workspace.id, workspace.url_name);">{{ workspace.name }}</div>
+     class="item menu-item"
+     ng-class="{ 'active': content.currentWorkspaceId == workspace.id }"
+     ng-click="changeWorkspace(workspace.id, workspace.url_name);">{{ workspace.name }}</div>

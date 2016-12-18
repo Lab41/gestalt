@@ -33,12 +33,13 @@
     }
 
     // add additional services to be used within the controller
-    panelNavController.$inject = ["$scope", "$state", "contentFactory", "layoutFactory"];
+    panelNavController.$inject = ["$scope", "$state", "contentService", "layoutService"];
 
-    function panelNavController($scope, $state, contentFactory, layoutFactory) {
+    function panelNavController($scope, $state, contentService, layoutService) {
         // --------------------------------------------------------------------
         // define bindable members 
-        $scope.currentPanel = layoutFactory.getCurrentPanel();
+        $scope.currentPanel = layoutService.getCurrentPanel();
+        $scope.currentStory = contentService.getCurrentStory();
         $scope.listOfStories = [];
         $scope.changePanel = changePanel;
 
@@ -50,12 +51,13 @@
         // define functions
         function changePanel(panelId, panelUrlName) {
             // set current panel to the selected panel
-            layoutFactory.setCurrentPanel(panelId, panelUrlName);
-            $scope.currentPanel = layoutFactory.getCurrentPanel();
+            layoutService.setCurrentPanel(panelId, panelUrlName);
+            $scope.currentPanel = layoutService.getCurrentPanel();
             // transition to the selected panel
-            $state.go("app.panel", {
-                currentWorkspaceUrl: layoutFactory.getCurrentWorkspace().url_name,
-                currentPanelUrl: layoutFactory.getCurrentPanel().url_name,
+            $state.go("app.panel.story", {
+                currentWorkspaceUrl: layoutService.getCurrentWorkspace().url_name,
+                currentPanelUrl: layoutService.getCurrentPanel().url_name,
+                currentVisualUrl: visualConfig.url_name
             });
      
         }
